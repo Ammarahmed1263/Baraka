@@ -39,6 +39,7 @@
   "reminders.newActivity": "New Activity",
   "reminders.activityNamePlaceholder": "Activity name (e.g., Morning Walk)",
   "reminders.intentionPlaceholder": "Your intention (optional)",
+  "reminders.defaultIntention": "I intend {{activity}} for the sake of Allah.",
   "reminders.icon": "Icon",
   "reminders.color": "Color",
   "reminders.addActivity": "Add Activity",

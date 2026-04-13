@@ -1,103 +1,138 @@
+import "intl-pluralrules";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Localization from "expo-localization";
+import { getLocales } from "expo-localization";
 import * as Updates from "expo-updates";
 import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import { I18nManager } from "react-native";
+import { initReactI18next, useTranslation } from "react-i18next";
+import { DevSettings, I18nManager } from "react-native";
 
-import "@formatjs/intl-pluralrules/polyfill";
-import "@formatjs/intl-pluralrules/locale-data/en";
-import "@formatjs/intl-pluralrules/locale-data/ar";
-
-import ar from "./locales/ar.json";
 import en from "./locales/en.json";
+import ar from "./locales/ar.json";
+import { useCallback, useMemo } from "react";
 
-export const LANGUAGE_STORAGE_KEY = "@baraka/language";
-const RTL_APPLIED_LANGUAGE_KEY = "@baraka/rtl-applied-language";
+const LANG_KEY = "@app_language";
+const SUPPORTED = ["en", "ar"] as const;
+const FALLBACK = "ar";
+const RTL_LANGUAGES = ["ar"];
 
-let initialized = false;
-let bootstrapping = false;
+type AppLanguage = (typeof SUPPORTED)[number];
 
 const resources = {
-  ar: { translation: ar },
   en: { translation: en },
+  ar: { translation: ar },
 };
 
-type AppLanguage = "ar" | "en";
+const normalizeLanguage = (lang?: string | null): AppLanguage => {
+  if (!lang) return FALLBACK;
 
-const resolveDeviceLanguage = (): AppLanguage => {
-  const locale = Localization.getLocales()[0]?.languageTag?.toLowerCase() || "";
-  if (locale.startsWith("ar")) return "ar";
+  if (lang.startsWith("ar")) return "ar";
   return "en";
 };
 
-const applyRTLDirection = async (language: AppLanguage): Promise<void> => {
-  const shouldBeRTL = language === "ar";
+const applyRTL = (lng: string) => {
+  const isRTL = RTL_LANGUAGES.includes(lng);
+  I18nManager.allowRTL(isRTL);
+  I18nManager.forceRTL(isRTL);
+};
 
-  I18nManager.allowRTL(shouldBeRTL);
-  I18nManager.forceRTL(shouldBeRTL);
+let isReloading = false;
 
-  if (I18nManager.isRTL !== shouldBeRTL) {
-    const appliedLanguage = await AsyncStorage.getItem(
-      RTL_APPLIED_LANGUAGE_KEY,
-    );
+const reloadApp = async () => {
+  if (isReloading) return;
+  isReloading = true;
 
-    if (appliedLanguage !== language) {
-      await AsyncStorage.setItem(RTL_APPLIED_LANGUAGE_KEY, language);
+  try {
+    if (__DEV__) {
+      DevSettings.reload();
+    } else {
       await Updates.reloadAsync();
     }
-  } else {
-    await AsyncStorage.setItem(RTL_APPLIED_LANGUAGE_KEY, language);
-  }
+  } catch { }
 };
 
-i18n.use(initReactI18next);
-
-export const initializeI18n = async (): Promise<AppLanguage> => {
-  if (initialized) {
-    return (i18n.language as AppLanguage) || "ar";
+async function syncInitialRTL() {
+  try {
+    const savedLang = await AsyncStorage.getItem(LANG_KEY);
+    const lng = normalizeLanguage(savedLang);
+    applyRTL(lng);
+  } catch {
+    applyRTL(FALLBACK);
   }
+}
 
-  if (bootstrapping) {
-    return "ar";
-  }
+const languageDetector = {
+  type: "languageDetector" as const,
+  async: true,
 
-  bootstrapping = true;
+  detect: async (callback: (lang: string) => void) => {
+    try {
+      const savedLang = await AsyncStorage.getItem(LANG_KEY);
 
-  const storedLanguage = (await AsyncStorage.getItem(
-    LANGUAGE_STORAGE_KEY,
-  )) as AppLanguage | null;
-  const language = storedLanguage || resolveDeviceLanguage();
+      if (savedLang && SUPPORTED.includes(savedLang as AppLanguage)) {
+        return callback(savedLang);
+      }
 
-  await i18n.init({
-    resources,
-    lng: language,
-    fallbackLng: "en",
-    compatibilityJSON: "v4",
-    interpolation: {
-      escapeValue: false,
-    },
+      const deviceLang = getLocales()[0]?.languageCode;
+      return callback(normalizeLanguage(deviceLang));
+    } catch {
+      return callback(FALLBACK);
+    }
+  },
+
+  init: () => { },
+
+  cacheUserLanguage: async (lang: string) => {
+    if (SUPPORTED.includes(lang as AppLanguage)) {
+      await AsyncStorage.setItem(LANG_KEY, lang);
+    }
+  },
+};
+
+async function initI18n() {
+  await syncInitialRTL();
+
+  await i18n
+    .use(languageDetector)
+    .use(initReactI18next)
+    .init({
+      resources,
+      fallbackLng: FALLBACK,
+      compatibilityJSON: "v4",
+      interpolation: {
+        escapeValue: false,
+      },
+    });
+
+  i18n.on("languageChanged", async (lng) => {
+    const isRTL = RTL_LANGUAGES.includes(lng);
+
+    if (I18nManager.isRTL !== isRTL) {
+      applyRTL(lng);
+      await reloadApp();
+    }
   });
+}
 
-  await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, language);
-  await applyRTLDirection(language);
+initI18n();
 
-  i18n.on("languageChanged", async (nextLanguage) => {
-    if (!initialized) return;
+export function useLanguage() {
+  const { i18n: instance } = useTranslation();
 
-    const normalizedLanguage: AppLanguage = nextLanguage === "ar" ? "ar" : "en";
-    await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, normalizedLanguage);
-    await applyRTLDirection(normalizedLanguage);
-  });
+  const language: AppLanguage = instance.language.startsWith('ar') ? 'ar' : 'en';
 
-  initialized = true;
-  bootstrapping = false;
+  const changeLanguage = useCallback(async (lang: AppLanguage) => {
+    if (!SUPPORTED.includes(lang)) return;
+    await instance.changeLanguage(lang);
+  }, [instance]);
 
-  return language;
-};
-
-export const setAppLanguage = async (language: AppLanguage): Promise<void> => {
-  await i18n.changeLanguage(language);
-};
+  return useMemo(
+    () => ({
+      language,
+      changeLanguage,
+    }),
+    [language]
+  );
+}
 
 export default i18n;

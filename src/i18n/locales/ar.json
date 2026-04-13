@@ -39,6 +39,7 @@
   "reminders.newActivity": "نشاط جديد",
   "reminders.activityNamePlaceholder": "اسم النشاط (مثال: مشي الصباح)",
   "reminders.intentionPlaceholder": "نيتك (اختياري)",
+  "reminders.defaultIntention": "أنوي {{activity}} ابتغاء مرضاة الله.",
   "reminders.icon": "الأيقونة",
   "reminders.color": "اللون",
   "reminders.addActivity": "إضافة نشاط",

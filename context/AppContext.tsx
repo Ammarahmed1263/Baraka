@@ -31,6 +31,7 @@ export type JournalEntry = {
   id: string;
   activityId: string;
   activityName: string;
+  activityNameAr?: string;
   date: string;
   createdAt: string;
   note: string;
@@ -46,7 +47,6 @@ export type UserProfile = {
 };
 
 export type AppSettings = {
-  language: "en" | "ar";
   showBilingual: boolean;
   darkMode: "auto" | "light" | "dark";
   notificationsEnabled: boolean;
@@ -88,7 +88,6 @@ const STORAGE_KEYS = {
 };
 
 const DEFAULT_SETTINGS: AppSettings = {
-  language: "ar",
   showBilingual: false,
   darkMode: "auto",
   notificationsEnabled: true,
