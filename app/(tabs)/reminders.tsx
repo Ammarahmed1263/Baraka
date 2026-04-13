@@ -1,23 +1,23 @@
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Platform,
   ScrollView,
   StyleSheet,
   Switch,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
   useColorScheme,
 } from "react-native";
+import { AppText } from "@/components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { useApp, type UserActivity } from "@/context/AppContext";
+import { useLanguage } from "@/src/i18n";
 
 const ICON_OPTIONS = [
   "sunrise", "coffee", "briefcase", "activity", "sun", "moon",
@@ -44,6 +44,7 @@ export default function RemindersScreen() {
   const isWeb = Platform.OS === "web";
 
   const { activities, toggleActivity, addCustomActivity } = useApp();
+  const { language: lang } = useLanguage();
 
   const [showAddForm, setShowAddForm] = useState(false);
   const [newName, setNewName] = useState("");
@@ -90,11 +91,11 @@ export default function RemindersScreen() {
     const newActivity: Omit<UserActivity, "enabled"> = {
       id: generateId(),
       name: newName.trim(),
-      nameAr: "",
+      nameAr: lang === "ar" ? newName.trim() : "",
       icon: selectedIcon,
       category: "daily",
-      niyyahText: newNiyyah.trim() || `I intend ${newName.trim()} for the sake of Allah.`,
-      niyyahTextAr: "",
+      niyyahText: newNiyyah.trim() || t("reminders.defaultIntention", { activity: newName.trim() }),
+      niyyahTextAr: lang === "ar" ? newNiyyah.trim() : "",
       color: selectedColor,
     };
     await addCustomActivity(newActivity);
@@ -107,6 +108,10 @@ export default function RemindersScreen() {
   };
 
   const topPadding = isWeb ? 67 : insets.top;
+  const getActivityDisplayName = (activity: UserActivity) => {
+    if (lang === "ar") return activity.nameAr || activity.name;
+    return activity.name;
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
@@ -120,12 +125,12 @@ export default function RemindersScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={[styles.title, { color: C.text, fontFamily: "Inter_700Bold" }]}>
+            <AppText weight="Bold" style={[styles.title, { color: C.text }]}>
               {t("reminders.title")}
-            </Text>
-            <Text style={[styles.subtitle, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+            </AppText>
+            <AppText weight="Regular" style={[styles.subtitle, { color: C.textSecondary }]}>
               {t("reminders.subtitle")}
-            </Text>
+            </AppText>
           </View>
           <TouchableOpacity
             onPress={() => setShowAddForm(!showAddForm)}
@@ -140,9 +145,9 @@ export default function RemindersScreen() {
           <View
             style={[styles.addForm, { backgroundColor: C.backgroundCard, borderColor: C.border }]}
           >
-            <Text style={[styles.formTitle, { color: C.text, fontFamily: "Inter_600SemiBold" }]}>
+            <AppText weight="Bold" style={[styles.formTitle, { color: C.text }]}>
               {t("reminders.newActivity")}
-            </Text>
+            </AppText>
             <TextInput
               value={newName}
               onChangeText={setNewName}
@@ -154,7 +159,6 @@ export default function RemindersScreen() {
                   color: C.text,
                   borderColor: C.border,
                   backgroundColor: C.backgroundSecondary,
-                  fontFamily: "Inter_400Regular",
                 },
               ]}
             />
@@ -171,15 +175,14 @@ export default function RemindersScreen() {
                   color: C.text,
                   borderColor: C.border,
                   backgroundColor: C.backgroundSecondary,
-                  fontFamily: "Inter_400Regular",
                 },
               ]}
             />
 
             {/* Icon Picker */}
-            <Text style={[styles.pickerLabel, { color: C.textSecondary, fontFamily: "Inter_500Medium" }]}>
+            <AppText weight="Medium" style={[styles.pickerLabel, { color: C.textSecondary }]}>
               {t("reminders.icon")}
-            </Text>
+            </AppText>
             <View style={styles.iconPicker}>
               {ICON_OPTIONS.map((icon) => (
                 <TouchableOpacity
@@ -204,9 +207,9 @@ export default function RemindersScreen() {
             </View>
 
             {/* Color Picker */}
-            <Text style={[styles.pickerLabel, { color: C.textSecondary, fontFamily: "Inter_500Medium" }]}>
+            <AppText weight="Medium" style={[styles.pickerLabel, { color: C.textSecondary }]}>
               {t("reminders.color")}
-            </Text>
+            </AppText>
             <View style={styles.colorPicker}>
               {COLOR_OPTIONS.map((color) => (
                 <TouchableOpacity
@@ -229,9 +232,9 @@ export default function RemindersScreen() {
               onPress={handleAddActivity}
               style={[styles.formSubmit, { backgroundColor: C.tint }]}
             >
-              <Text style={[styles.formSubmitText, { fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={styles.formSubmitText}>
                 {t("reminders.addActivity")}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
         )}
@@ -247,14 +250,15 @@ export default function RemindersScreen() {
                   size={14}
                   color={C.textSecondary}
                 />
-                <Text
+                <AppText
+                  weight="Bold"
                   style={[
                     styles.categoryLabel,
-                    { color: C.textSecondary, fontFamily: "Inter_600SemiBold" },
+                    { color: C.textSecondary },
                   ]}
                 >
                   {getCategoryLabel(category)}
-                </Text>
+                </AppText>
               </View>
               <View
                 style={[
@@ -278,23 +282,25 @@ export default function RemindersScreen() {
                         />
                       </View>
                       <View style={styles.activityInfo}>
-                        <Text
+                        <AppText
+                          weight="Medium"
                           style={[
                             styles.activityName,
-                            { color: C.text, fontFamily: "Inter_500Medium" },
+                            { color: C.text },
                           ]}
                         >
-                          {activity.name}
-                        </Text>
+                            {getActivityDisplayName(activity)}
+                        </AppText>
                         {activity.hadithRef && (
-                          <Text
+                          <AppText
+                            weight="Regular"
                             style={[
                               styles.activityRef,
-                              { color: C.textMuted, fontFamily: "Inter_400Regular" },
+                              { color: C.textMuted },
                             ]}
                           >
                             {activity.hadithRef}
-                          </Text>
+                          </AppText>
                         )}
                       </View>
                       <Switch

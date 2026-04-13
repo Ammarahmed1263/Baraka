@@ -1,17 +1,17 @@
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import {
   Animated,
   Pressable,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   useColorScheme,
 } from "react-native";
 import Colors from "@/constants/colors";
 import type { UserActivity } from "@/context/AppContext";
+import { AppText } from "./UI/AppText";
 
 type Props = {
   activity: UserActivity;
@@ -56,9 +56,9 @@ export default function NiyyahCard({ activity, completed, onToggle, onPress, lan
   const iconName = (ICON_MAP[activity.icon] || "circle") as any;
   const activityColor = activity.color || C.tint;
   const selectedCount = (activity.selectedNiyyahIds ?? []).length;
-  const displayName = language === "ar" ? activity.nameAr : activity.name;
+  const displayName = language === "ar" ? activity.nameAr || activity.name : activity.name;
   const displayNiyyah = language === "ar"
-    ? activity.niyyahTextAr
+    ? activity.niyyahTextAr || activity.customNiyyah || activity.niyyahText
     : (activity.customNiyyah || activity.niyyahText);
 
   return (
@@ -88,29 +88,31 @@ export default function NiyyahCard({ activity, completed, onToggle, onPress, lan
           {/* Text */}
           <View style={styles.textContainer}>
             <View style={styles.nameRow}>
-              <Text
+              <AppText
+                weight="Bold"
                 style={[
                   styles.activityName,
-                  { color: completed ? C.tint : C.text, fontFamily: "Inter_600SemiBold" },
+                  { color: completed ? C.tint : C.text },
                 ]}
                 numberOfLines={1}
               >
                 {displayName}
-              </Text>
+              </AppText>
               {selectedCount > 0 && (
                 <View style={[styles.countBadge, { backgroundColor: C.gold + "33", borderColor: C.gold + "66" }]}>
-                  <Text style={[styles.countText, { color: C.gold, fontFamily: "Inter_600SemiBold" }]}>
+                  <AppText weight="Bold" style={[styles.countText, { color: C.gold }]}>
                     ×{selectedCount + 1}
-                  </Text>
+                  </AppText>
                 </View>
               )}
             </View>
-            <Text
-              style={[styles.niyyahPreview, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}
+            <AppText
+              weight="Regular"
+              style={[styles.niyyahPreview, { color: C.textSecondary }]}
               numberOfLines={1}
             >
               {displayNiyyah}
-            </Text>
+            </AppText>
           </View>
 
           {/* Check Button */}

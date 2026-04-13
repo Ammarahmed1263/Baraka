@@ -16,14 +16,25 @@
       "supportsTablet": false
     },
     "android": {
-      "backgroundColor": "#0D1F17"
+      "backgroundColor": "#0D1F17",
+      "package": "com.ammar_001.barakaniyyah"
     },
     "web": {
       "favicon": "./assets/images/icon.png"
     },
     "plugins": [
       "expo-router",
-      "expo-font",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Tajawal-Bold.ttf",
+            "./assets/fonts/Tajawal-Light.ttf",
+            "./assets/fonts/Tajawal-Medium.ttf",
+            "./assets/fonts/Tajawal-Regular.ttf"
+          ]
+        }
+      ],
       "expo-localization"
     ],
     "experiments": {

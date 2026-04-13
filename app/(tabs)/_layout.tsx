@@ -1,13 +1,12 @@
+import Colors from "@/constants/colors";
+import { Feather } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Tabs } from "expo-router";
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 import { SymbolView } from "expo-symbols";
-import { Feather } from "@expo/vector-icons";
-import React from "react";
-import { Platform, StyleSheet, View, useColorScheme } from "react-native";
 import { useTranslation } from "react-i18next";
-import Colors from "@/constants/colors";
+import { Platform, StyleSheet, View, useColorScheme } from "react-native";
 
 function NativeTabLayout() {
   const { t } = useTranslation();
@@ -71,7 +70,7 @@ function ClassicTabLayout() {
             <View style={[StyleSheet.absoluteFill, { backgroundColor: C.headerBg }]} />
           ) : null,
         tabBarLabelStyle: {
-          fontFamily: "Inter_500Medium",
+          fontFamily: "Tajawal-Medium",
           fontSize: 11,
         },
       }}

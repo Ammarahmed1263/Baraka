@@ -1,7 +1,7 @@
-import React from "react";
-import { View, Text, StyleSheet, useColorScheme } from "react-native";
+import { View, StyleSheet, useColorScheme } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import Colors from "@/constants/colors";
+import { AppText } from "./UI/AppText";
 
 type Props = {
   percentage: number;
@@ -23,7 +23,7 @@ export default function ProgressRing({
   const ringColor = color || C.tint;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-  const progress = Math.min(Math.max(percentage, 0), 100);
+  const progress = Math.round(Math.min(Math.max(percentage * (percentage < 1.1 ? 100 : 1), 0), 100)); // Adjusted to handle decimal percentages
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
@@ -51,9 +51,9 @@ export default function ProgressRing({
           origin={`${size / 2}, ${size / 2}`}
         />
       </Svg>
-      <Text style={[styles.percentage, { color: ringColor, fontFamily: "Inter_700Bold" }]}>
+      <AppText weight="Bold" style={[styles.percentage, { color: ringColor }]}>
         {progress}%
-      </Text>
+      </AppText>
     </View>
   );
 }

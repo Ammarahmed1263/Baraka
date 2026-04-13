@@ -2,12 +2,11 @@ import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import React, { useCallback } from "react";
-import {
+import { useCallback } from "react";
+  import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   useColorScheme,
@@ -17,9 +16,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { HADITH_OPENER } from "@/constants/data";
 import { useApp, type UserActivity } from "@/context/AppContext";
+import { useLanguage } from "@/src/i18n";
 import NiyyahCard from "@/components/NiyyahCard";
 import StreakBadge from "@/components/StreakBadge";
 import ProgressRing from "@/components/ProgressRing";
+import { AppText } from "@/components/UI/AppText";
 
 export default function TodayScreen() {
   const { t } = useTranslation();
@@ -32,7 +33,6 @@ export default function TodayScreen() {
   const {
     activities,
     streak,
-    settings,
     isCompletedToday,
     markComplete,
     unmarkComplete,
@@ -40,7 +40,7 @@ export default function TodayScreen() {
     getAjrMultiplier,
   } = useApp();
 
-  const lang = settings.language;
+  const { language: lang } = useLanguage();
   const enabledActivities = activities.filter((a) => a.enabled);
   const completionRate = getTodayCompletionRate();
   const ajr = getAjrMultiplier();
@@ -91,15 +91,16 @@ export default function TodayScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={[styles.greeting, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+            <AppText weight="Regular" style={[styles.greeting, { color: C.textSecondary }]}>
               {getDayGreeting()}
-            </Text>
-            <Text style={[styles.dayName, { color: C.text, fontFamily: "Inter_700Bold" }]}>
-              {getDayName()}
-            </Text>
+            </AppText>
           </View>
           <StreakBadge streak={streak} />
         </View>
+
+        <AppText weight="Bold" style={[styles.dayName, { color: C.text, marginBottom: 16 }]}>
+          {getDayName()}
+        </AppText>
 
         {/* Hadith Card */}
         <LinearGradient
@@ -109,14 +110,14 @@ export default function TodayScreen() {
           end={{ x: 1, y: 1 }}
         >
           <View style={styles.hadithDecor}>
-            <Text style={styles.hadithDecorText}>❝</Text>
+            <AppText style={styles.hadithDecorText}>❝</AppText>
           </View>
-          <Text style={[styles.hadithText, { fontFamily: "Inter_500Medium" }]}>
+          <AppText weight="Bold" style={styles.hadithText}>
             {lang === "ar" ? HADITH_OPENER.ar : HADITH_OPENER.en}
-          </Text>
-          <Text style={[styles.hadithRef, { fontFamily: "Inter_400Regular" }]}>
+          </AppText>
+          <AppText weight="Regular" style={styles.hadithRef}>
             {HADITH_OPENER.ref}
-          </Text>
+          </AppText>
         </LinearGradient>
 
         {/* Progress + Ajr Row */}
@@ -125,49 +126,49 @@ export default function TodayScreen() {
           <View style={[styles.progressSection, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
             <ProgressRing percentage={completionRate} size={60} color={C.tint} />
             <View style={styles.progressText}>
-              <Text style={[styles.progressTitle, { color: C.text, fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={[styles.progressTitle, { color: C.text }]}>
                 {t("dashboard.todayNiyyah")}
-              </Text>
-              <Text style={[styles.progressSubtitle, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+              </AppText>
+              <AppText weight="Regular" style={[styles.progressSubtitle, { color: C.textSecondary }]}>
                 {t("dashboard.renewedCount", { completed: completedCount, total: enabledActivities.length })}
-              </Text>
+              </AppText>
             </View>
           </View>
 
           {/* Ajr Multiplier */}
           {ajr.acts > 0 && (
             <View style={[styles.ajrSection, { backgroundColor: C.gold + "18", borderColor: C.gold + "44" }]}>
-              <Text style={[styles.ajrMultiplierNum, { color: C.gold, fontFamily: "Inter_700Bold" }]}>
+              <AppText weight="Bold" style={[styles.ajrMultiplierNum, { color: C.gold }]}>
                 ×{Math.round(ajr.total * 10) / 10}
-              </Text>
-              <Text style={[styles.ajrLabel, { color: C.gold, fontFamily: "Inter_500Medium" }]}>
+              </AppText>
+              <AppText weight="Medium" style={[styles.ajrLabel, { color: C.gold }]}>
                 {t("dashboard.ajrMultiplier")}
-              </Text>
-              <Text style={[styles.ajrSub, { color: C.gold + "BB", fontFamily: "Inter_400Regular" }]}>
+              </AppText>
+              <AppText weight="Regular" style={[styles.ajrSub, { color: C.gold + "BB" }]}>
                 {t("dashboard.ajrSub", { acts: ajr.acts, avg: ajr.avgNiyyahs })}
-              </Text>
+              </AppText>
             </View>
           )}
         </View>
 
         {/* Activities */}
-        <Text style={[styles.sectionTitle, { color: C.text, fontFamily: "Inter_600SemiBold" }]}>
+        <AppText weight="Bold" style={[styles.sectionTitle, { color: C.text }]}>
           {t("dashboard.yourIntentions")}
-        </Text>
+        </AppText>
 
         {enabledActivities.length === 0 ? (
           <View style={[styles.emptyState, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
             <Feather name="plus-circle" size={32} color={C.tintLight} />
-            <Text style={[styles.emptyText, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+            <AppText weight="Regular" style={[styles.emptyText, { color: C.textSecondary }]}>
               {t("dashboard.emptyActivities")}
-            </Text>
+            </AppText>
             <TouchableOpacity
               style={[styles.emptyButton, { backgroundColor: C.tint }]}
               onPress={() => router.push("/(tabs)/reminders")}
             >
-              <Text style={[styles.emptyButtonText, { fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={styles.emptyButtonText}>
                 {t("dashboard.addActivities")}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
         ) : (
@@ -187,9 +188,9 @@ export default function TodayScreen() {
         {ajr.acts > 0 && (
           <View style={[styles.ajrFooter, { borderColor: C.border }]}>
             <Feather name="info" size={13} color={C.textMuted} />
-            <Text style={[styles.ajrFooterText, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+            <AppText weight="Regular" style={[styles.ajrFooterText, { color: C.textMuted }]}>
               {t("dashboard.ajrFooter")}
-            </Text>
+            </AppText>
           </View>
         )}
       </ScrollView>
@@ -219,8 +220,6 @@ const styles = StyleSheet.create({
   hadithText: {
     fontSize: 15,
     color: "rgba(255,255,255,0.95)",
-    lineHeight: 24,
-    fontStyle: "italic",
     marginBottom: 10,
   },
   hadithRef: { fontSize: 12, color: "rgba(255,255,255,0.65)" },

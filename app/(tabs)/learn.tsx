@@ -1,27 +1,46 @@
+import Colors from "@/constants/colors";
+import { EDUCATION_ENTRIES, type EducationEntry } from "@/constants/data";
+import { useApp } from "@/context/AppContext";
+import { useLanguage } from "@/src/i18n";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Platform,
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
   useColorScheme,
 } from "react-native";
-import { useTranslation } from "react-i18next";
+import { AppText } from "@/components/UI/AppText";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Colors from "@/constants/colors";
-import { EDUCATION_ENTRIES, type EducationEntry } from "@/constants/data";
-import { useApp } from "@/context/AppContext";
 
-const CATEGORIES = ["All", "Foundations", "Work", "Health", "Daily Life", "Worship", "Relationships", "Learning"];
+const CATEGORIES = [
+  "All",
+  "Foundations",
+  "Work",
+  "Health",
+  "Daily Life",
+  "Worship",
+  "Relationships",
+  "Learning",
+];
 
-function EducationCard({ entry, onPress }: { entry: EducationEntry; onPress: () => void }) {
-  const { t } = useTranslation();
+function EducationCard({
+  entry,
+  lang,
+  mapCategoryLabel,
+  onPress,
+}: {
+  entry: EducationEntry;
+  lang: "en" | "ar";
+  mapCategoryLabel: (category: string) => string;
+  onPress: () => void;
+}) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const C = isDark ? Colors.dark : Colors.light;
@@ -49,37 +68,51 @@ function EducationCard({ entry, onPress }: { entry: EducationEntry; onPress: () 
         },
       ]}
     >
-      <View style={[styles.categoryBadge, { backgroundColor: catColor + "18" }]}>
-        <Text style={[styles.categoryBadgeText, { color: catColor, fontFamily: "Inter_600SemiBold" }]}>
-          {entry.category === "Foundations"
-            ? t("learn.category.foundations")
-            : entry.category === "Work"
-              ? t("reminders.category.productivity")
-              : entry.category === "Health"
-                ? t("reminders.category.health")
-                : entry.category === "Daily Life"
-                  ? t("reminders.category.daily")
-                  : entry.category === "Worship"
-                    ? t("reminders.category.worship")
-                    : entry.category === "Relationships"
-                      ? t("reminders.category.relationships")
-                      : entry.category === "Learning"
-                        ? t("reminders.category.learning")
-                        : entry.category}
-        </Text>
+      <View
+        style={[styles.categoryBadge, { backgroundColor: catColor + "18" }]}
+      >
+        <AppText
+          weight="Bold"
+          style={[
+            styles.categoryBadgeText,
+            { color: catColor },
+          ]}
+        >
+          {mapCategoryLabel(entry.category)}
+        </AppText>
       </View>
-      <Text style={[styles.eduTitle, { color: C.text, fontFamily: "Inter_600SemiBold" }]} numberOfLines={2}>
-        {entry.title}
-      </Text>
-      <Text style={[styles.eduPreview, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]} numberOfLines={3}>
-        {entry.content}
-      </Text>
+      <AppText
+        weight="Bold"
+        style={[
+          styles.eduTitle,
+          { color: C.text },
+        ]}
+        numberOfLines={2}
+      >
+        {lang === "ar" && entry.titleAr ? entry.titleAr : entry.title}
+      </AppText>
+      <AppText
+        weight="Regular"
+        style={[
+          styles.eduPreview,
+          { color: C.textSecondary },
+        ]}
+        numberOfLines={3}
+      >
+        {lang === "ar" && entry.contentAr ? entry.contentAr : entry.content}
+      </AppText>
       <View style={styles.eduFooter}>
         <View style={styles.sourceRow}>
           <Feather name="book-open" size={11} color={C.tint} />
-          <Text style={[styles.sourceText, { color: C.tint, fontFamily: "Inter_400Regular" }]}>
+          <AppText
+            weight="Regular"
+            style={[
+              styles.sourceText,
+              { color: C.tint },
+            ]}
+          >
             {entry.source}
-          </Text>
+          </AppText>
         </View>
         <Feather name="chevron-right" size={16} color={C.textMuted} />
       </View>
@@ -87,7 +120,19 @@ function EducationCard({ entry, onPress }: { entry: EducationEntry; onPress: () 
   );
 }
 
-function EducationDetail({ entry, onClose }: { entry: EducationEntry; onClose: () => void }) {
+function EducationDetail({
+  entry,
+  lang,
+  showBilingual,
+  mapCategoryLabel,
+  onClose,
+}: {
+  entry: EducationEntry;
+  lang: "en" | "ar";
+  showBilingual: boolean;
+  mapCategoryLabel: (category: string) => string;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
@@ -100,13 +145,19 @@ function EducationDetail({ entry, onClose }: { entry: EducationEntry; onClose: (
       <ScrollView
         contentContainerStyle={[
           styles.detailContent,
-          { paddingTop: (isWeb ? 67 : insets.top) + 16, paddingBottom: isWeb ? 34 : insets.bottom + 24 },
+          {
+            paddingTop: (isWeb ? 67 : insets.top) + 16,
+            paddingBottom: isWeb ? 34 : insets.bottom + 24,
+          },
         ]}
         showsVerticalScrollIndicator={false}
       >
         <TouchableOpacity
           onPress={onClose}
-          style={[styles.closeButton, { backgroundColor: C.backgroundSecondary }]}
+          style={[
+            styles.closeButton,
+            { backgroundColor: C.backgroundSecondary },
+          ]}
         >
           <Feather name="arrow-left" size={20} color={C.text} />
         </TouchableOpacity>
@@ -118,46 +169,91 @@ function EducationDetail({ entry, onClose }: { entry: EducationEntry; onClose: (
           end={{ x: 1, y: 1 }}
         >
           <View style={[styles.detailCategoryBadge]}>
-            <Text style={[styles.detailCategoryText, { fontFamily: "Inter_500Medium" }]}>
-              {entry.category}
-            </Text>
+            <AppText
+              weight="Medium"
+              style={styles.detailCategoryText}
+            >
+              {mapCategoryLabel(entry.category)}
+            </AppText>
           </View>
-          <Text style={[styles.detailTitle, { fontFamily: "Inter_700Bold" }]}>
-            {entry.title}
-          </Text>
-          {entry.titleAr && (
-            <Text style={[styles.detailTitleAr, { fontFamily: "Inter_400Regular" }]}>
+          <AppText weight="Bold" style={styles.detailTitle}>
+            {lang === "ar" && entry.titleAr ? entry.titleAr : entry.title}
+          </AppText>
+          {entry.titleAr && (showBilingual || lang === "en") && (
+            <AppText
+              weight="Regular"
+              style={styles.detailTitleAr}
+            >
               {entry.titleAr}
-            </Text>
+            </AppText>
           )}
         </LinearGradient>
 
-        <View style={[styles.detailBody, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-          <Text style={[styles.detailText, { color: C.text, fontFamily: "Inter_400Regular" }]}>
-            {entry.content}
-          </Text>
+        <View
+          style={[
+            styles.detailBody,
+            { backgroundColor: C.backgroundCard, borderColor: C.border },
+          ]}
+        >
+          <AppText
+            weight="Regular"
+            style={[
+              styles.detailText,
+              { color: C.text },
+            ]}
+          >
+            {lang === "ar" && entry.contentAr ? entry.contentAr : entry.content}
+          </AppText>
         </View>
 
-        {entry.contentAr && (
-          <View style={[styles.arabicBody, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-            <Text style={[styles.arabicLabel, { color: C.textSecondary, fontFamily: "Inter_500Medium" }]}>
+        {entry.contentAr && (showBilingual || lang === "en") && (
+          <View
+            style={[
+              styles.arabicBody,
+              { backgroundColor: C.backgroundCard, borderColor: C.border },
+            ]}
+          >
+            <AppText
+              weight="Medium"
+              style={[
+                styles.arabicLabel,
+                { color: C.textSecondary },
+              ]}
+            >
               {t("learn.arabicSection")}
-            </Text>
-            <Text style={[styles.arabicBodyText, { color: C.text }]}>
+            </AppText>
+            <AppText weight="Regular" style={[styles.arabicBodyText, { color: C.text }]}>
               {entry.contentAr}
-            </Text>
+            </AppText>
           </View>
         )}
 
-        <View style={[styles.sourceCard, { backgroundColor: C.successLight, borderColor: C.tint + "30" }]}>
+        <View
+          style={[
+            styles.sourceCard,
+            { backgroundColor: C.successLight, borderColor: C.tint + "30" },
+          ]}
+        >
           <Feather name="book-open" size={16} color={C.tint} />
           <View>
-            <Text style={[styles.sourceLabel, { color: C.tint, fontFamily: "Inter_600SemiBold" }]}>
+            <AppText
+              weight="Bold"
+              style={[
+                styles.sourceLabel,
+                { color: C.tint },
+              ]}
+            >
               {t("common.source")}
-            </Text>
-            <Text style={[styles.sourceRef, { color: C.tint, fontFamily: "Inter_400Regular" }]}>
+            </AppText>
+            <AppText
+              weight="Regular"
+              style={[
+                styles.sourceRef,
+                { color: C.tint },
+              ]}
+            >
               {entry.source}
-            </Text>
+            </AppText>
           </View>
         </View>
       </ScrollView>
@@ -173,19 +269,27 @@ export default function LearnScreen() {
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
   const { settings } = useApp();
+  const { language: lang } = useLanguage();
 
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(
+    null,
+  );
 
   const filtered = useMemo(() => {
     return EDUCATION_ENTRIES.filter((e) => {
       const matchSearch =
         !search ||
         e.title.toLowerCase().includes(search.toLowerCase()) ||
-        e.keywords.some((k) => k.toLowerCase().includes(search.toLowerCase())) ||
-        e.content.toLowerCase().includes(search.toLowerCase());
-      const matchCategory = activeCategory === "All" || e.category === activeCategory;
+        e.titleAr.toLowerCase().includes(search.toLowerCase()) ||
+        e.keywords.some((k) =>
+          k.toLowerCase().includes(search.toLowerCase()),
+        ) ||
+        e.content.toLowerCase().includes(search.toLowerCase()) ||
+        e.contentAr.toLowerCase().includes(search.toLowerCase());
+      const matchCategory =
+        activeCategory === "All" || e.category === activeCategory;
       return matchSearch && matchCategory;
     });
   }, [search, activeCategory]);
@@ -197,13 +301,22 @@ export default function LearnScreen() {
     if (category === "Health") return t("reminders.category.health");
     if (category === "Daily Life") return t("reminders.category.daily");
     if (category === "Worship") return t("reminders.category.worship");
-    if (category === "Relationships") return t("reminders.category.relationships");
+    if (category === "Relationships")
+      return t("reminders.category.relationships");
     if (category === "Learning") return t("reminders.category.learning");
     return category;
   };
 
   if (selectedEntry) {
-    return <EducationDetail entry={selectedEntry} onClose={() => setSelectedEntry(null)} />;
+    return (
+      <EducationDetail
+        entry={selectedEntry}
+        lang={lang}
+        showBilingual={settings.showBilingual}
+        mapCategoryLabel={mapCategoryLabel}
+        onClose={() => setSelectedEntry(null)}
+      />
+    );
   }
 
   const topPadding = isWeb ? 67 : insets.top;
@@ -218,22 +331,39 @@ export default function LearnScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <Text style={[styles.title, { color: C.text, fontFamily: "Inter_700Bold" }]}>
+        <AppText
+          weight="Bold"
+          style={[styles.title, { color: C.text }]}
+        >
           {t("learn.title")}
-        </Text>
-        <Text style={[styles.subtitle, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+        </AppText>
+        <AppText
+          weight="Regular"
+          style={[
+            styles.subtitle,
+            { color: C.textSecondary },
+          ]}
+        >
           {t("learn.subtitle")}
-        </Text>
+        </AppText>
 
         {/* Search */}
-        <View style={[styles.searchBar, { backgroundColor: C.backgroundSecondary, borderColor: C.border }]}>
+        <View
+          style={[
+            styles.searchBar,
+            { backgroundColor: C.backgroundSecondary, borderColor: C.border },
+          ]}
+        >
           <Feather name="search" size={16} color={C.textMuted} />
           <TextInput
             value={search}
             onChangeText={setSearch}
             placeholder={t("learn.searchPlaceholder")}
             placeholderTextColor={C.textMuted}
-            style={[styles.searchInput, { color: C.text, fontFamily: "Inter_400Regular" }]}
+            style={[
+              styles.searchInput,
+              { color: C.text },
+            ]}
           />
           {search.length > 0 && (
             <TouchableOpacity onPress={() => setSearch("")}>
@@ -262,39 +392,58 @@ export default function LearnScreen() {
                 },
               ]}
             >
-              <Text
+              <AppText
+                weight="Medium"
                 style={[
                   styles.filterText,
                   {
                     color: activeCategory === cat ? "#FFF" : C.textSecondary,
-                    fontFamily: "Inter_500Medium",
                   },
                 ]}
               >
                 {mapCategoryLabel(cat)}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
         {/* Count */}
-        <Text style={[styles.count, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
-          {t(filtered.length === 1 ? "learn.entryCount.one" : "learn.entryCount.other", { count: filtered.length })}
-        </Text>
+        <AppText
+          weight="Regular"
+          style={[
+            styles.count,
+            { color: C.textMuted },
+          ]}
+        >
+          {t(
+            filtered.length === 1
+              ? "learn.entryCount.one"
+              : "learn.entryCount.other",
+            { count: filtered.length },
+          )}
+        </AppText>
 
         {/* Entries */}
         {filtered.length === 0 ? (
           <View style={styles.emptyState}>
             <Feather name="book-open" size={32} color={C.textMuted} />
-            <Text style={[styles.emptyText, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+            <AppText
+              weight="Regular"
+              style={[
+                styles.emptyText,
+                { color: C.textSecondary },
+              ]}
+            >
               {t("learn.noResults")}
-            </Text>
+            </AppText>
           </View>
         ) : (
           filtered.map((entry) => (
             <EducationCard
               key={entry.id}
               entry={entry}
+              lang={lang}
+              mapCategoryLabel={mapCategoryLabel}
               onPress={() => setSelectedEntry(entry)}
             />
           ))
@@ -319,7 +468,7 @@ const styles = StyleSheet.create({
     gap: 10,
     marginBottom: 14,
   },
-  searchInput: { flex: 1, fontSize: 15 },
+  searchInput: { flex: 1, fontSize: 15, fontFamily: "Tajawal-Regular" },
   filterScroll: { marginBottom: 12 },
   filterContent: { gap: 8, paddingRight: 20 },
   filterChip: {
@@ -382,7 +531,11 @@ const styles = StyleSheet.create({
   },
   detailCategoryText: { fontSize: 12, color: "rgba(255,255,255,0.9)" },
   detailTitle: { fontSize: 22, color: "#FFF", lineHeight: 30 },
-  detailTitleAr: { fontSize: 15, color: "rgba(255,255,255,0.75)", textAlign: "right" },
+  detailTitleAr: {
+    fontSize: 15,
+    color: "rgba(255,255,255,0.75)",
+    textAlign: "right",
+  },
   detailBody: {
     borderRadius: 14,
     padding: 18,
@@ -398,7 +551,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   arabicLabel: { fontSize: 12 },
-  arabicBodyText: { fontSize: 16, textAlign: "right", lineHeight: 28, fontStyle: "italic" },
+  arabicBodyText: {
+    fontSize: 16,
+    textAlign: "right",
+    lineHeight: 28,
+  },
   sourceCard: {
     flexDirection: "row",
     alignItems: "flex-start",

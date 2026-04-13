@@ -1,8 +1,8 @@
 import { Feather } from "@expo/vector-icons";
-import React from "react";
-import { StyleSheet, Text, View, useColorScheme } from "react-native";
+import { StyleSheet, View, useColorScheme } from "react-native";
 import { useTranslation } from "react-i18next";
 import Colors from "@/constants/colors";
+import { AppText } from "./UI/AppText";
 
 type Props = { streak: number };
 
@@ -15,12 +15,12 @@ export default function StreakBadge({ streak }: Props) {
   return (
     <View style={[styles.container, { backgroundColor: C.streakLight }]}>
       <Feather name="zap" size={14} color={C.streak} />
-      <Text style={[styles.text, { color: C.streak, fontFamily: "Inter_700Bold" }]}>
+      <AppText weight="Bold" style={[styles.text, { color: C.streak }]}>
         {streak}
-      </Text>
-      <Text style={[styles.label, { color: C.streak, fontFamily: "Inter_400Regular" }]}>
+      </AppText>
+      <AppText weight="Regular" style={[styles.label, { color: C.streak }]}>
         {streak === 1 ? t("streak.day") : t("streak.days")}
-      </Text>
+      </AppText>
     </View>
   );
 }

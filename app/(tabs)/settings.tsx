@@ -10,17 +10,17 @@ import {
   Share,
   StyleSheet,
   Switch,
-  Text,
   TouchableOpacity,
   View,
   useColorScheme,
 } from "react-native";
+import { AppText } from "@/components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { useApp } from "@/context/AppContext";
-import { setAppLanguage } from "@/src/i18n";
 import { APP_STORAGE_KEYS } from "@/src/lib/constants";
+import { useLanguage } from "@/src/i18n";
 
 type ProfileKey = "isHomemaker" | "isParent" | "isStudent" | "isProfessional";
 
@@ -75,7 +75,7 @@ export default function SettingsScreen() {
   const isWeb = Platform.OS === "web";
 
   const { settings, updateSettings, activities, dailyLogs, journalEntries, streak } = useApp();
-  const lang = settings.language;
+  const { language: lang, changeLanguage } = useLanguage();
 
   // Toast state
   const [toastMessage, setToastMessage] = useState("");
@@ -100,9 +100,8 @@ export default function SettingsScreen() {
   }, []);
 
   const handleLanguageToggle = async () => {
-    const nextLanguage = settings.language === "en" ? "ar" : "en";
-    await updateSettings({ language: nextLanguage });
-    await setAppLanguage(nextLanguage);
+    const nextLanguage = lang === "en" ? "ar" : "en";
+    await changeLanguage(nextLanguage);
   };
 
   const handleBilingualToggle = () => {
@@ -208,13 +207,13 @@ export default function SettingsScreen() {
           <Feather name={icon as any} size={16} color={iconColor} />
         </View>
         <View style={{ flex: 1 }}>
-          <Text style={[styles.settingName, { color: C.text, fontFamily: "Inter_500Medium" }]}>
+          <AppText weight="Medium" style={[styles.settingName, { color: C.text }]}>
             {label}
-          </Text>
+          </AppText>
           {desc && (
-            <Text style={[styles.settingDesc, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+            <AppText weight="Regular" style={[styles.settingDesc, { color: C.textMuted }]}>
               {desc}
-            </Text>
+            </AppText>
           )}
         </View>
       </View>
@@ -238,9 +237,9 @@ export default function SettingsScreen() {
           pointerEvents="none"
         >
           <Feather name="unlock" size={16} color="#C9A84C" />
-          <Text style={[styles.toastText, { fontFamily: "Inter_500Medium" }]}>
+          <AppText weight="Medium" style={styles.toastText}>
             {toastMessage}
-          </Text>
+          </AppText>
         </Animated.View>
       )}
       <ScrollView
@@ -250,9 +249,9 @@ export default function SettingsScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={[styles.title, { color: C.text, fontFamily: "Inter_700Bold" }]}>
+        <AppText weight="Bold" style={[styles.title, { color: C.text }]}>
           {t("settings.title")}
-        </Text>
+        </AppText>
 
         {/* Stats Card */}
         <LinearGradient
@@ -261,40 +260,40 @@ export default function SettingsScreen() {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <Text style={[styles.statsTitle, { fontFamily: "Inter_600SemiBold" }]}>
+          <AppText weight="Bold" style={styles.statsTitle}>
             {t("settings.yourJourney")}
-          </Text>
+          </AppText>
           <View style={styles.statsRow}>
             <View style={styles.statItem}>
-              <Text style={[styles.statValue, { fontFamily: "Inter_700Bold" }]}>{streak}</Text>
-              <Text style={[styles.statLabel, { fontFamily: "Inter_400Regular" }]}>
+              <AppText weight="Bold" style={styles.statValue}>{streak}</AppText>
+              <AppText weight="Regular" style={styles.statLabel}>
                 {t("settings.dayStreak")}
-              </Text>
+              </AppText>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
-              <Text style={[styles.statValue, { fontFamily: "Inter_700Bold" }]}>{totalCompleted}</Text>
-              <Text style={[styles.statLabel, { fontFamily: "Inter_400Regular" }]}>
+              <AppText weight="Bold" style={styles.statValue}>{totalCompleted}</AppText>
+              <AppText weight="Regular" style={styles.statLabel}>
                 {t("settings.totalRenewed")}
-              </Text>
+              </AppText>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
-              <Text style={[styles.statValue, { fontFamily: "Inter_700Bold" }]}>{totalJournal}</Text>
-              <Text style={[styles.statLabel, { fontFamily: "Inter_400Regular" }]}>
+              <AppText weight="Bold" style={styles.statValue}>{totalJournal}</AppText>
+              <AppText weight="Regular" style={styles.statLabel}>
                 {t("settings.reflections")}
-              </Text>
+              </AppText>
             </View>
           </View>
         </LinearGradient>
 
         {/* ── My Profile ──────────────────────────────────────── */}
-        <Text style={[styles.sectionLabel, { color: C.textSecondary, fontFamily: "Inter_600SemiBold" }]}>
+        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
           {t("settings.myProfile")}
-        </Text>
-        <Text style={[styles.sectionSubLabel, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+        </AppText>
+        <AppText weight="Regular" style={[styles.sectionSubLabel, { color: C.textMuted }]}>
           {t("settings.profileHint")}
-        </Text>
+        </AppText>
         <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
           {PROFILE_OPTIONS.map((opt, idx) => (
             <React.Fragment key={opt.key}>
@@ -320,20 +319,20 @@ export default function SettingsScreen() {
         </View>
 
         {/* ── Preferences ─────────────────────────────────────── */}
-        <Text style={[styles.sectionLabel, { color: C.textSecondary, fontFamily: "Inter_600SemiBold" }]}>
+        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
           {t("settings.preferences")}
-        </Text>
+        </AppText>
         <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
           <SettingRow
             icon="globe"
             label={t("settings.language")}
-            desc={settings.language === "en" ? t("settings.english") : t("settings.arabic")}
+            desc={lang === "en" ? t("settings.english") : t("settings.arabic")}
             right={
               <Switch
-                value={settings.language === "ar"}
+                value={lang === "ar"}
                 onValueChange={handleLanguageToggle}
                 trackColor={{ false: C.border, true: C.tint + "80" }}
-                thumbColor={settings.language === "ar" ? C.tint : C.textMuted}
+                thumbColor={lang === "ar" ? C.tint : C.textMuted}
                 ios_backgroundColor={C.border}
               />
             }
@@ -375,9 +374,9 @@ export default function SettingsScreen() {
         </View>
 
         {/* ── Data ────────────────────────────────────────────── */}
-        <Text style={[styles.sectionLabel, { color: C.textSecondary, fontFamily: "Inter_600SemiBold" }]}>
+        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
           {t("settings.data")}
-        </Text>
+        </AppText>
         <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
           <TouchableOpacity style={styles.settingRow} onPress={handleExportData} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
@@ -385,12 +384,12 @@ export default function SettingsScreen() {
                 <Feather name="share" size={16} color={C.tint} />
               </View>
               <View>
-                <Text style={[styles.settingName, { color: C.text, fontFamily: "Inter_500Medium" }]}>
+                <AppText weight="Medium" style={[styles.settingName, { color: C.text }]}>
                   {t("settings.exportData")}
-                </Text>
-                <Text style={[styles.settingDesc, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+                </AppText>
+                <AppText weight="Regular" style={[styles.settingDesc, { color: C.textMuted }]}>
                   {t("settings.exportDataDesc")}
-                </Text>
+                </AppText>
               </View>
             </View>
             <Feather name="chevron-right" size={18} color={C.textMuted} />
@@ -402,12 +401,12 @@ export default function SettingsScreen() {
                 <Feather name="trash-2" size={16} color="#EF4444" />
               </View>
               <View>
-                <Text style={[styles.settingName, { color: "#EF4444", fontFamily: "Inter_500Medium" }]}>
+                <AppText weight="Medium" style={[styles.settingName, { color: "#EF4444" }]}>
                   {t("settings.clearData")}
-                </Text>
-                <Text style={[styles.settingDesc, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+                </AppText>
+                <AppText weight="Regular" style={[styles.settingDesc, { color: C.textMuted }]}>
                   {t("settings.clearDataDesc")}
-                </Text>
+                </AppText>
               </View>
             </View>
             <Feather name="chevron-right" size={18} color={C.textMuted} />
@@ -415,35 +414,35 @@ export default function SettingsScreen() {
         </View>
 
         {/* ── About ───────────────────────────────────────────── */}
-        <Text style={[styles.sectionLabel, { color: C.textSecondary, fontFamily: "Inter_600SemiBold" }]}>
+        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
           {t("settings.about")}
-        </Text>
+        </AppText>
         <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
           <View style={styles.aboutCard}>
-            <Text style={[styles.aboutTitle, { color: C.text, fontFamily: "Inter_600SemiBold" }]}>
+            <AppText weight="Bold" style={[styles.aboutTitle, { color: C.text }]}>
               {t("settings.aboutTitle")}
-            </Text>
-            <Text style={[styles.aboutDesc, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+            </AppText>
+            <AppText weight="Regular" style={[styles.aboutDesc, { color: C.textSecondary }]}>
               {t("settings.aboutDesc")}
-            </Text>
-            <Text style={[styles.aboutQuote, { color: C.tint, fontFamily: "Inter_400Regular" }]}>
+            </AppText>
+            <AppText weight="Regular" style={[styles.aboutQuote, { color: C.tint }]}>
               {t("settings.quote")}
-            </Text>
-            <Text style={[styles.aboutRef, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+            </AppText>
+            <AppText weight="Regular" style={[styles.aboutRef, { color: C.textMuted }]}>
               {t("settings.quoteRef")}
-            </Text>
-            <Text style={[styles.version, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+            </AppText>
+            <AppText weight="Regular" style={[styles.version, { color: C.textMuted }]}>
               {t("settings.version")}
-            </Text>
+            </AppText>
           </View>
         </View>
 
         {/* Privacy Note */}
         <View style={[styles.privacyNote, { backgroundColor: C.successLight, borderColor: C.tint + "30" }]}>
           <Feather name="shield" size={16} color={C.tint} />
-          <Text style={[styles.privacyText, { color: C.tint, fontFamily: "Inter_400Regular" }]}>
+          <AppText weight="Regular" style={[styles.privacyText, { color: C.tint }]}>
             {t("settings.privacy")}
-          </Text>
+          </AppText>
         </View>
       </ScrollView>
     </View>
@@ -484,7 +483,7 @@ const styles = StyleSheet.create({
   aboutCard: { padding: 18, gap: 8 },
   aboutTitle: { fontSize: 18 },
   aboutDesc: { fontSize: 14, lineHeight: 22 },
-  aboutQuote: { fontSize: 15, fontStyle: "italic", marginTop: 4 },
+  aboutQuote: { fontSize: 15, marginTop: 4 },
   aboutRef: { fontSize: 12 },
   version: { fontSize: 12, marginTop: 8 },
   privacyNote: {

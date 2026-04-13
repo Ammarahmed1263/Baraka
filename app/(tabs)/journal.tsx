@@ -1,22 +1,23 @@
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Alert,
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
   useColorScheme,
 } from "react-native";
+import { AppText } from "@/components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { NIYYAH_OPTIONS } from "@/constants/data";
 import { useApp, type JournalEntry } from "@/context/AppContext";
+import { useLanguage } from "@/src/i18n";
 
 function JournalCard({ entry, lang }: { entry: JournalEntry; lang: "en" | "ar" }) {
   const colorScheme = useColorScheme();
@@ -27,53 +28,59 @@ function JournalCard({ entry, lang }: { entry: JournalEntry; lang: "en" | "ar" }
     lang === "ar" ? "ar-SA" : "en-US",
     { weekday: "short", month: "short", day: "numeric" }
   );
-  const formattedTime = new Date(entry.createdAt).toLocaleTimeString("en-US", {
+  const formattedTime = new Date(entry.createdAt).toLocaleTimeString(
+    lang === "ar" ? "ar-SA" : "en-US",
+    {
     hour: "2-digit",
     minute: "2-digit",
-  });
+    }
+  );
 
   const impactfulOption = entry.impactfulNiyyah
     ? NIYYAH_OPTIONS.find((n) => n.id === entry.impactfulNiyyah)
     : null;
+
+  const activityDisplayName =
+    lang === "ar" ? entry.activityNameAr || entry.activityName : entry.activityName;
 
   return (
     <View style={[styles.journalCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
       <View style={styles.cardHeader}>
         <View style={styles.cardChips}>
           <View style={[styles.activityChip, { backgroundColor: C.tint + "18" }]}>
-            <Text style={[styles.activityChipText, { color: C.tint, fontFamily: "Inter_600SemiBold" }]}>
-              {entry.activityName}
-            </Text>
+            <AppText weight="Bold" style={[styles.activityChipText, { color: C.tint }]}>
+              {activityDisplayName}
+            </AppText>
           </View>
           {(entry.selectedNiyyahCount ?? 0) > 1 && (
             <View style={[styles.countChip, { backgroundColor: C.gold + "22", borderColor: C.gold + "55" }]}>
               <Feather name="star" size={10} color={C.gold} />
-              <Text style={[styles.countChipText, { color: C.gold, fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={[styles.countChipText, { color: C.gold }]}>
                 ×{entry.selectedNiyyahCount}
-              </Text>
+              </AppText>
             </View>
           )}
         </View>
         <View style={styles.dateInfo}>
-          <Text style={[styles.dateText, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+          <AppText weight="Regular" style={[styles.dateText, { color: C.textMuted }]}>
             {formattedDate}
-          </Text>
-          <Text style={[styles.timeText, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+          </AppText>
+          <AppText weight="Regular" style={[styles.timeText, { color: C.textMuted }]}>
             {formattedTime}
-          </Text>
+          </AppText>
         </View>
       </View>
-      <Text style={[styles.noteText, { color: C.text, fontFamily: "Inter_400Regular" }]}>
+      <AppText weight="Regular" style={[styles.noteText, { color: C.text }]}>
         {entry.note}
-      </Text>
+      </AppText>
       {impactfulOption && (
         <View style={[styles.impactRow, { backgroundColor: C.gold + "11", borderColor: C.gold + "33" }]}>
           <Feather name="heart" size={12} color={C.gold} />
-          <Text style={[styles.impactText, { color: C.gold, fontFamily: "Inter_400Regular" }]}>
+          <AppText weight="Regular" style={[styles.impactText, { color: C.gold}]}>
             {lang === "ar" && impactfulOption.textAr
               ? impactfulOption.textAr
               : impactfulOption.text}
-          </Text>
+          </AppText>
         </View>
       )}
     </View>
@@ -88,12 +95,12 @@ export default function JournalScreen() {
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
 
-  const { journalEntries, activities, settings, addJournalEntry } = useApp();
-  const lang = settings.language;
+  const { journalEntries, activities, addJournalEntry } = useApp();
+  const { language: lang } = useLanguage();
 
   const [showAdd, setShowAdd] = useState(false);
   const [note, setNote] = useState("");
-  const [selectedActivity, setSelectedActivity] = useState("");
+  const [selectedActivityId, setSelectedActivityId] = useState("");
   const [filterActivity, setFilterActivity] = useState("__all__");
   const [search, setSearch] = useState("");
 
@@ -102,17 +109,17 @@ export default function JournalScreen() {
   const filtered = useMemo(() => {
     return journalEntries.filter((e) => {
       const matchActivity =
-        filterActivity === "__all__" || e.activityName === filterActivity;
+        filterActivity === "__all__" || e.activityId === filterActivity;
       const matchSearch =
         !search || e.note.toLowerCase().includes(search.toLowerCase());
       return matchActivity && matchSearch;
     });
   }, [journalEntries, filterActivity, search]);
 
-  const grouped = useMemo(() => {
+  const groupedLocalized = useMemo(() => {
     const groups: Record<string, JournalEntry[]> = {};
     filtered.forEach((entry) => {
-      const date = new Date(entry.createdAt).toLocaleDateString("en-US", {
+      const date = new Date(entry.createdAt).toLocaleDateString(lang === "ar" ? "ar-SA" : "en-US", {
         weekday: "long",
         month: "long",
         day: "numeric",
@@ -122,24 +129,25 @@ export default function JournalScreen() {
       groups[date].push(entry);
     });
     return groups;
-  }, [filtered]);
+  }, [filtered, lang]);
 
   const handleSave = async () => {
     if (!note.trim()) {
       Alert.alert(t("journal.alert.emptyNoteTitle"), t("journal.alert.emptyNoteMessage"));
       return;
     }
-    const activityName =
-      selectedActivity ||
-      (enabledActivities[0]?.name || t("journal.general"));
+    const selectedActivityObj = enabledActivities.find((a) => a.id === selectedActivityId);
+    const activityName = selectedActivityObj?.name || t("journal.general", { lng: "en" });
+    const activityNameAr = selectedActivityObj?.nameAr || t("journal.general", { lng: "ar" });
     await addJournalEntry({
-      activityId: selectedActivity || "general",
+      activityId: selectedActivityId || "general",
       activityName,
+      activityNameAr,
       date: new Date().toISOString().split("T")[0],
       note: note.trim(),
     });
     setNote("");
-    setSelectedActivity("");
+    setSelectedActivityId("");
     setShowAdd(false);
   };
 
@@ -157,12 +165,12 @@ export default function JournalScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={[styles.title, { color: C.text, fontFamily: "Inter_700Bold" }]}>
+            <AppText weight="Bold" style={[styles.title, { color: C.text }]}>
               {t("journal.title")}
-            </Text>
-            <Text style={[styles.subtitle, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+            </AppText>
+            <AppText weight="Regular" style={[styles.subtitle, { color: C.textSecondary }]}>
               {t(journalEntries.length === 1 ? "journal.subtitle.one" : "journal.subtitle.other", { count: journalEntries.length })}
-            </Text>
+            </AppText>
           </View>
           <TouchableOpacity
             onPress={() => setShowAdd(!showAdd)}
@@ -179,9 +187,9 @@ export default function JournalScreen() {
               colors={isDark ? ["#1A3326", "#0D2E1F"] : ["#EDF7F0", "#F0FAF4"]}
               style={styles.formGradient}
             >
-              <Text style={[styles.formTitle, { color: C.text, fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={[styles.formTitle, { color: C.text }]}>
                 {t("journal.newReflection")}
-              </Text>
+              </AppText>
             </LinearGradient>
 
             {/* Activity Selector */}
@@ -194,36 +202,36 @@ export default function JournalScreen() {
                 <TouchableOpacity
                   key={activity.id}
                   onPress={() =>
-                    setSelectedActivity(
-                      selectedActivity === activity.name ? "" : activity.name
+                    setSelectedActivityId(
+                      selectedActivityId === activity.id ? "" : activity.id
                     )
                   }
                   style={[
                     styles.activityChipSelector,
                     {
                       backgroundColor:
-                        selectedActivity === activity.name
+                        selectedActivityId === activity.id
                           ? C.tint
                           : C.backgroundSecondary,
                       borderColor:
-                        selectedActivity === activity.name ? C.tint : C.border,
+                        selectedActivityId === activity.id ? C.tint : C.border,
                     },
                   ]}
                 >
-                  <Text
+                  <AppText
+                    weight="Medium"
                     style={[
                       styles.activityChipSelectorText,
                       {
                         color:
-                          selectedActivity === activity.name
+                          selectedActivityId === activity.id
                             ? "#FFF"
                             : C.textSecondary,
-                        fontFamily: "Inter_500Medium",
                       },
                     ]}
                   >
-                    {activity.name}
-                  </Text>
+                    {lang === "ar" ? activity.nameAr || activity.name : activity.name}
+                  </AppText>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -240,7 +248,6 @@ export default function JournalScreen() {
                   color: C.text,
                   borderColor: C.border,
                   backgroundColor: C.backgroundSecondary,
-                  fontFamily: "Inter_400Regular",
                 },
               ]}
             />
@@ -249,17 +256,17 @@ export default function JournalScreen() {
                 onPress={() => { setShowAdd(false); setNote(""); }}
                 style={[styles.cancelBtn, { borderColor: C.border }]}
               >
-                <Text style={[styles.cancelBtnText, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+                <AppText weight="Regular" style={[styles.cancelBtnText, { color: C.textSecondary }]}>
                   {t("common.cancel")}
-                </Text>
+                </AppText>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleSave}
                 style={[styles.saveBtn, { backgroundColor: C.tint }]}
               >
-                <Text style={[styles.saveBtnText, { fontFamily: "Inter_600SemiBold" }]}>
+                <AppText weight="Bold" style={styles.saveBtnText}>
                   {t("common.save")}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             </View>
           </View>
@@ -274,7 +281,7 @@ export default function JournalScreen() {
               onChangeText={setSearch}
               placeholder={t("journal.searchPlaceholder")}
               placeholderTextColor={C.textMuted}
-              style={[styles.searchInput, { color: C.text, fontFamily: "Inter_400Regular" }]}
+              style={[styles.searchInput, { color: C.text }]}
             />
             {search.length > 0 && (
               <TouchableOpacity onPress={() => setSearch("")}>
@@ -294,10 +301,17 @@ export default function JournalScreen() {
           >
             {([
               { label: t("journal.general"), value: "__all__" },
-              ...Array.from(new Set(journalEntries.map((e) => e.activityName))).map((name) => ({
-                label: name,
-                value: name,
-              })),
+              ...Array.from(new Set(journalEntries.map((e) => e.activityId))).map((activityId) => {
+                const firstEntry = journalEntries.find((e) => e.activityId === activityId);
+                const label =
+                  lang === "ar"
+                    ? firstEntry?.activityNameAr || firstEntry?.activityName || t("journal.general")
+                    : firstEntry?.activityName || t("journal.general");
+                return {
+                  label,
+                  value: activityId,
+                };
+              }),
             ] as Array<{ label: string; value: string }>).map((item) => (
               <TouchableOpacity
                 key={item.value}
@@ -314,18 +328,18 @@ export default function JournalScreen() {
                   },
                 ]}
               >
-                <Text
+                <AppText
+                  weight="Medium"
                   style={[
                     styles.filterText,
                     {
                       color:
                         filterActivity === item.value ? "#FFF" : C.textSecondary,
-                      fontFamily: "Inter_500Medium",
                     },
                   ]}
                 >
                   {item.label}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -335,31 +349,32 @@ export default function JournalScreen() {
         {journalEntries.length === 0 && !showAdd && (
           <View style={styles.emptyState}>
             <Feather name="edit-3" size={40} color={C.textMuted} />
-            <Text style={[styles.emptyTitle, { color: C.text, fontFamily: "Inter_600SemiBold" }]}>
+            <AppText weight="Bold" style={[styles.emptyTitle, { color: C.text }]}>
               {t("journal.empty.title")}
-            </Text>
-            <Text style={[styles.emptyText, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+            </AppText>
+            <AppText weight="Regular" style={[styles.emptyText, { color: C.textSecondary }]}>
               {t("journal.empty.message")}
-            </Text>
+            </AppText>
             <TouchableOpacity
               onPress={() => setShowAdd(true)}
               style={[styles.emptyBtn, { backgroundColor: C.tint }]}
             >
-              <Text style={[styles.emptyBtnText, { fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={styles.emptyBtnText}>
                 {t("journal.empty.button")}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
         )}
 
         {/* Journal Entries */}
-        {Object.entries(grouped).map(([date, entries]) => (
+        {Object.entries(groupedLocalized).map(([date, entries]) => (
           <View key={date} style={styles.dateGroup}>
-            <Text
-              style={[styles.dateGroupLabel, { color: C.textSecondary, fontFamily: "Inter_600SemiBold" }]}
+            <AppText
+              weight="Bold"
+              style={[styles.dateGroupLabel, { color: C.textSecondary }]}
             >
               {date}
-            </Text>
+            </AppText>
             {entries.map((entry) => (
               <JournalCard key={entry.id} entry={entry} lang={lang} />
             ))}
@@ -369,9 +384,9 @@ export default function JournalScreen() {
         {filtered.length === 0 && journalEntries.length > 0 && (
           <View style={styles.emptyState}>
             <Feather name="search" size={32} color={C.textMuted} />
-            <Text style={[styles.emptyText, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+            <AppText weight="Regular" style={[styles.emptyText, { color: C.textSecondary }]}>
               {t("journal.noFilterResults")}
-            </Text>
+            </AppText>
           </View>
         )}
       </ScrollView>
@@ -445,7 +460,7 @@ const styles = StyleSheet.create({
     gap: 10,
     marginBottom: 12,
   },
-  searchInput: { flex: 1, fontSize: 15 },
+  searchInput: { flex: 1, fontSize: 15, fontFamily: "Tajawal-Regular" },
   filterScroll: { marginBottom: 16 },
   filterContent: { gap: 8 },
   filterChip: {
@@ -504,5 +519,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 2,
   },
-  impactText: { flex: 1, fontSize: 12, lineHeight: 18, fontStyle: "italic" },
+  impactText: { flex: 1, fontSize: 12 },
 });

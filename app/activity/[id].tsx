@@ -1,23 +1,25 @@
 import Colors from "@/constants/colors";
 import { getNiyyahOptions, type NiyyahOption } from "@/constants/data";
 import { useApp } from "@/context/AppContext";
+import { useLanguage } from "@/src/i18n";
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
+  Text,
   useColorScheme
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AppText } from "@/components/UI/AppText";
 
 type Step = "view" | "reflect";
 
@@ -35,7 +37,6 @@ export default function ActivityDetailScreen() {
     activities,
     settings,
     isCompletedToday,
-    getTodayLogForActivity,
     markComplete,
     unmarkComplete,
     addJournalEntry,
@@ -43,7 +44,7 @@ export default function ActivityDetailScreen() {
     getProfileTags,
   } = useApp();
 
-  const lang = settings.language;
+  const lang = useLanguage().language;
   const showBilingual = settings.showBilingual;
   const activity = activities.find((a) => a.id === id);
   const profileTags = getProfileTags();
@@ -79,13 +80,13 @@ export default function ActivityDetailScreen() {
   }
 
   const completed = isCompletedToday(activity.id);
-  const todayLog = getTodayLogForActivity(activity.id);
   const activityColor = activity.color || C.tint;
+  const activityName = lang === "ar" ? activity.nameAr || activity.name : activity.name;
+  const activityNameAr = activity.nameAr || activity.name;
   const customOptions: NiyyahOption[] = (activity.customNiyyahOptions || []).map(
     (o) => ({ ...o, activityId: activity.id, level: "advanced" as const })
   );
   const allAdvanced = [...advancedNiyyahs, ...customOptions];
-  const totalSelected = localSelected.length + (localSelected.length === 0 ? 1 : 0);
 
   const toggleNiyyah = (nId: string) => {
     setLocalSelected((prev) =>
@@ -111,7 +112,8 @@ export default function ActivityDetailScreen() {
     if (reflectionNote.trim()) {
       await addJournalEntry({
         activityId: activity.id,
-        activityName: lang === "ar" ? activity.nameAr : activity.name,
+        activityName: activity.name,
+        activityNameAr,
         date: new Date().toISOString().split("T")[0],
         note: reflectionNote.trim(),
         selectedNiyyahCount: localSelected.length || 1,
@@ -181,47 +183,47 @@ export default function ActivityDetailScreen() {
             style={styles.reflectBanner}
           >
             <Feather name="check-circle" size={28} color="#C9A84C" />
-            <Text style={[styles.reflectTitle, { fontFamily: "Inter_700Bold" }]}>
+            <AppText weight="Bold" style={styles.reflectTitle}>
               {t("activity.renewed")}
-            </Text>
-            <Text style={[styles.reflectSub, { fontFamily: "Inter_400Regular" }]}>
-              {lang === "ar" ? activity.nameAr : activity.name}
-            </Text>
+            </AppText>
+            <AppText weight="Regular" style={styles.reflectSub}>
+              {activityName}
+            </AppText>
             {localSelected.length > 1 && (
               <View style={styles.multiplierBadge}>
-                <Text style={[styles.multiplierText, { fontFamily: "Inter_700Bold" }]}>
+                <AppText weight="Bold" style={styles.multiplierText}>
                   {t("activity.multiplierBadge", { count: localSelected.length })}
-                </Text>
+                </AppText>
               </View>
             )}
           </LinearGradient>
 
           {selectedTexts.length > 0 && (
             <View style={[styles.reflectNiyyahList, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-              <Text style={[styles.sectionLabel, { color: C.textSecondary, fontFamily: "Inter_500Medium" }]}>
+              <AppText weight="Medium" style={[styles.sectionLabel, { color: C.textSecondary }]}>
                 {t("activity.intentionsForAct")}
-              </Text>
+              </AppText>
               {selectedTexts.map((n) => (
                 <View key={n.id} style={styles.reflectNiyyahItem}>
                   <Feather name="check" size={14} color={C.tint} style={{ marginTop: 2 }} />
-                  <Text style={[styles.reflectNiyyahText, { color: C.text, fontFamily: "Inter_400Regular" }]}>
+                  <AppText weight="Regular" style={[styles.reflectNiyyahText, { color: C.text }]}>
                     {lang === "ar" && n.textAr ? n.textAr : n.text}
-                  </Text>
+                  </AppText>
                 </View>
               ))}
             </View>
           )}
 
           <View style={[styles.reflectCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-            <Text style={[styles.reflectPromptLabel, { color: C.text, fontFamily: "Inter_600SemiBold" }]}>
+            <AppText weight="Bold" style={[styles.reflectPromptLabel, { color: C.text }]}>
               {t("activity.quickReflection")}{" "}
-              <Text style={{ color: C.textMuted, fontFamily: "Inter_400Regular", fontSize: 13 }}>
+              <AppText weight="Regular" style={{ color: C.textMuted, fontSize: 13 }}>
                 ({t("common.optional")})
-              </Text>
-            </Text>
-            <Text style={[styles.reflectPromptHint, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+              </AppText>
+            </AppText>
+            <AppText weight="Regular" style={[styles.reflectPromptHint, { color: C.textSecondary }]}>
               {lang === "ar" ? getImpactPromptAr() : getImpactPrompt()}
-            </Text>
+            </AppText>
             <TextInput
               value={reflectionNote}
               onChangeText={setReflectionNote}
@@ -234,16 +236,15 @@ export default function ActivityDetailScreen() {
                   color: C.text,
                   backgroundColor: C.backgroundSecondary,
                   borderColor: C.border,
-                  fontFamily: "Inter_400Regular",
                 },
               ]}
             />
 
             {localSelected.length > 1 && (
               <>
-                <Text style={[styles.impactLabel, { color: C.textSecondary, fontFamily: "Inter_500Medium" }]}>
+                <AppText weight="Medium" style={[styles.impactLabel, { color: C.textSecondary }]}>
                   {t("activity.impactQuestion")}
-                </Text>
+                </AppText>
                 {allAdvanced
                   .filter((n) => localSelected.includes(n.id))
                   .map((n) => (
@@ -265,9 +266,9 @@ export default function ActivityDetailScreen() {
                           { backgroundColor: impactfulNiyyah === n.id ? C.tint : "transparent", borderColor: C.tint },
                         ]}
                       />
-                      <Text style={[styles.impactOptionText, { color: C.text, fontFamily: "Inter_400Regular" }]}>
+                      <AppText weight="Regular" style={[styles.impactOptionText, { color: C.text }]}>
                         {lang === "ar" && n.textAr ? n.textAr : n.text}
-                      </Text>
+                      </AppText>
                     </TouchableOpacity>
                   ))}
               </>
@@ -279,18 +280,18 @@ export default function ActivityDetailScreen() {
               onPress={() => router.back()}
               style={[styles.skipBtn, { borderColor: C.border }]}
             >
-              <Text style={[styles.skipBtnText, { color: C.textSecondary, fontFamily: "Inter_400Regular" }]}>
+              <AppText weight="Regular" style={[styles.skipBtnText, { color: C.textSecondary }]}>
                 {t("common.skip")}
-              </Text>
+              </AppText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleSaveReflection}
               style={[styles.saveBtn, { backgroundColor: C.tint }]}
             >
               <Feather name="book" size={16} color="#FFF" />
-              <Text style={[styles.saveBtnText, { fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={styles.saveBtnText}>
                 {t("activity.saveReflection")}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -319,9 +320,9 @@ export default function ActivityDetailScreen() {
           {completed && (
             <View style={[styles.completedBadge, { backgroundColor: C.tint + "22", borderColor: C.tint + "55" }]}>
               <Feather name="check-circle" size={14} color={C.tint} />
-              <Text style={[styles.completedBadgeText, { color: C.tint, fontFamily: "Inter_500Medium" }]}>
+              <AppText weight="Medium" style={[styles.completedBadgeText, { color: C.tint }]}>
                 {t("activity.completedToday")}
-              </Text>
+              </AppText>
             </View>
           )}
         </View>
@@ -333,18 +334,18 @@ export default function ActivityDetailScreen() {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <Text style={[styles.activityName, { fontFamily: "Inter_700Bold" }]}>
-            {lang === "ar" ? activity.nameAr : activity.name}
-          </Text>
+          <AppText weight="Bold" style={styles.activityName}>
+            {activityName}
+          </AppText>
           {showBilingual && (
-            <Text style={[styles.activityNameAr, { fontFamily: "Inter_400Regular" }]}>
-              {lang === "ar" ? activity.name : activity.nameAr}
-            </Text>
+            <AppText weight="Regular" style={styles.activityNameAr}>
+              {lang === "ar" ? activity.name : activityNameAr}
+            </AppText>
           )}
           {!showBilingual && lang === "en" && activity.nameAr && (
-            <Text style={[styles.activityNameAr, { fontFamily: "Inter_400Regular" }]}>
+            <AppText weight="Regular" style={styles.activityNameAr}>
               {activity.nameAr}
-            </Text>
+            </AppText>
           )}
         </LinearGradient>
 
@@ -352,9 +353,9 @@ export default function ActivityDetailScreen() {
         <View style={[styles.card, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
           <View style={styles.cardHeader}>
             <View style={[styles.basicBadge, { backgroundColor: C.tint + "22" }]}>
-              <Text style={[styles.basicBadgeText, { color: C.tint, fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={[styles.basicBadgeText, { color: C.tint }]}>
                 {t("activity.coreIntention")}
-              </Text>
+              </AppText>
             </View>
             <TouchableOpacity onPress={() => setShowEditNiyyah(!showEditNiyyah)}>
               <Feather name="edit-2" size={16} color={C.tintLight} />
@@ -373,7 +374,6 @@ export default function ActivityDetailScreen() {
                     color: C.text,
                     borderColor: C.tint,
                     backgroundColor: C.backgroundSecondary,
-                    fontFamily: "Inter_400Regular",
                   },
                 ]}
                 placeholderTextColor={C.textMuted}
@@ -383,36 +383,36 @@ export default function ActivityDetailScreen() {
                   onPress={() => setShowEditNiyyah(false)}
                   style={[styles.editBtn, { borderColor: C.border }]}
                 >
-                  <Text style={[styles.editBtnText, { color: C.textSecondary }]}>{t("common.cancel")}</Text>
+                  <AppText style={[styles.editBtnText, { color: C.textSecondary }]}>{t("common.cancel")}</AppText>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={handleSaveNiyyah}
                   style={[styles.editBtn, { backgroundColor: C.tint }]}
                 >
-                  <Text style={[styles.editBtnText, { color: "#FFF", fontFamily: "Inter_600SemiBold" }]}>
+                  <AppText weight="Bold" style={[styles.editBtnText, { color: "#FFF" }]}>
                     {t("common.save")}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
               </View>
             </>
           ) : (
             <>
-              <Text style={[styles.niyyahText, { color: C.text, fontFamily: "Inter_400Regular" }]}>
+              <AppText weight="Regular" style={[styles.niyyahText, { color: C.text }]}>
                 {lang === "ar"
                   ? basicNiyyah?.textAr || activity.niyyahTextAr
                   : activity.customNiyyah || basicNiyyah?.text || activity.niyyahText}
-              </Text>
+              </AppText>
               {(showBilingual || lang === "en") && activity.niyyahTextAr && (
-                <Text style={[styles.arabicText, { color: C.textSecondary }]}>
+                <AppText style={[styles.arabicText, { color: C.textSecondary }]}>
                   {basicNiyyah?.textAr || activity.niyyahTextAr}
-                </Text>
+                </AppText>
               )}
               {basicNiyyah?.source && (
                 <View style={styles.sourceRow}>
                   <Feather name="book-open" size={12} color={C.tintLight} />
-                  <Text style={[styles.sourceText, { color: C.tintLight, fontFamily: "Inter_400Regular" }]}>
+                  <AppText weight="Regular" style={[styles.sourceText, { color: C.tintLight }]}>
                     {basicNiyyah.source}
-                  </Text>
+                  </AppText>
                 </View>
               )}
             </>
@@ -423,16 +423,16 @@ export default function ActivityDetailScreen() {
         {allAdvanced.length > 0 && (
           <View style={[styles.card, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
             <View style={styles.cardHeader}>
-              <Text style={[styles.sectionLabel, { color: C.textSecondary, fontFamily: "Inter_500Medium" }]}>
+              <AppText weight="Medium" style={[styles.sectionLabel, { color: C.textSecondary }]}>
                 {t("activity.multiplyIntentions")}
-              </Text>
-              <Text style={[styles.selectedCount, { color: C.tint, fontFamily: "Inter_600SemiBold" }]}>
+              </AppText>
+              <AppText weight="Bold" style={[styles.selectedCount, { color: C.tint }]}>
                 {localSelected.length > 0 ? t("activity.selectedCount", { count: localSelected.length }) : t("activity.selectAny")}
-              </Text>
+              </AppText>
             </View>
-            <Text style={[styles.multiHint, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+            <AppText weight="Regular" style={[styles.multiHint, { color: C.textMuted }]}>
               {t("activity.multiHint")}
-            </Text>
+            </AppText>
 
             {allAdvanced.map((option) => {
               const checked = localSelected.includes(option.id);
@@ -461,26 +461,26 @@ export default function ActivityDetailScreen() {
                     {checked && <Feather name="check" size={12} color="#FFF" />}
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text
+                    <AppText
+                      weight={checked ? "Medium" : "Regular"}
                       style={[
                         styles.optionText,
                         {
                           color: checked ? C.text : C.textSecondary,
-                          fontFamily: checked ? "Inter_500Medium" : "Inter_400Regular",
                         },
                       ]}
                     >
                       {lang === "ar" && option.textAr ? option.textAr : option.text}
-                    </Text>
+                    </AppText>
                     {showBilingual && option.textAr && (
-                      <Text style={[styles.optionTextAr, { color: C.textMuted }]}>
+                      <AppText weight="Regular" style={[styles.optionTextAr, { color: C.textMuted }]}>
                         {option.textAr}
-                      </Text>
+                      </AppText>
                     )}
                     {option.source && (
-                      <Text style={[styles.optionSource, { color: C.tintLight }]}>
+                      <AppText weight="Regular" style={[styles.optionSource, { color: C.tintLight }]}>
                         {option.source}
-                      </Text>
+                      </AppText>
                     )}
                   </View>
                 </TouchableOpacity>
@@ -494,9 +494,9 @@ export default function ActivityDetailScreen() {
                 style={[styles.addCustomBtn, { borderColor: C.tint + "66" }]}
               >
                 <Feather name="plus" size={14} color={C.tintLight} />
-                <Text style={[styles.addCustomText, { color: C.tintLight, fontFamily: "Inter_500Medium" }]}>
+                <AppText weight="Medium" style={[styles.addCustomText, { color: C.tintLight }]}>
                   {t("activity.addCustomIntention")}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             ) : (
               <View style={[styles.customInputCard, { backgroundColor: C.backgroundSecondary, borderColor: C.border }]}>
@@ -505,7 +505,7 @@ export default function ActivityDetailScreen() {
                   onChangeText={setCustomText}
                   placeholder={t("activity.customEnPlaceholder")}
                   placeholderTextColor={C.textMuted}
-                  style={[styles.customInput, { color: C.text, borderColor: C.border, fontFamily: "Inter_400Regular" }]}
+                  style={[styles.customInput, { color: C.text, borderColor: C.border }]}
                 />
                 <TextInput
                   value={customTextAr}
@@ -513,22 +513,22 @@ export default function ActivityDetailScreen() {
                   placeholder={t("activity.customArPlaceholder")}
                   placeholderTextColor={C.textMuted}
                   textAlign="right"
-                  style={[styles.customInput, { color: C.text, borderColor: C.border, fontFamily: "Inter_400Regular" }]}
+                  style={[styles.customInput, { color: C.text, borderColor: C.border }]}
                 />
                 <View style={styles.editActions}>
                   <TouchableOpacity
                     onPress={() => setShowAddCustom(false)}
                     style={[styles.editBtn, { borderColor: C.border }]}
                   >
-                    <Text style={[styles.editBtnText, { color: C.textSecondary }]}>{t("common.cancel")}</Text>
+                    <AppText style={[styles.editBtnText, { color: C.textSecondary }]}>{t("common.cancel")}</AppText>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={handleAddCustomNiyyah}
                     style={[styles.editBtn, { backgroundColor: C.tint }]}
                   >
-                    <Text style={[styles.editBtnText, { color: "#FFF", fontFamily: "Inter_600SemiBold" }]}>
+                    <AppText weight="Bold" style={[styles.editBtnText, { color: "#FFF" }]}>
                       {t("common.add")}
-                    </Text>
+                    </AppText>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -540,9 +540,9 @@ export default function ActivityDetailScreen() {
         {localSelected.length > 0 && (
           <View style={[styles.ajrPreview, { backgroundColor: C.gold + "22", borderColor: C.gold + "55" }]}>
             <Feather name="star" size={16} color={C.gold} />
-            <Text style={[styles.ajrText, { color: C.gold, fontFamily: "Inter_500Medium" }]}>
+            <AppText weight="Medium" style={[styles.ajrText, { color: C.gold }]}>
               {t("activity.ajrPreview", { count: localSelected.length + 1 })}
-            </Text>
+            </AppText>
           </View>
         )}
 
@@ -550,9 +550,9 @@ export default function ActivityDetailScreen() {
         {activity.hadithRef && (
           <View style={[styles.sourceSection, { backgroundColor: C.successLight, borderColor: C.tint + "30" }]}>
             <Feather name="book-open" size={14} color={C.tint} />
-            <Text style={[styles.sourceText, { color: C.tint, fontFamily: "Inter_500Medium" }]}>
+            <AppText weight="Medium" style={[styles.sourceText, { color: C.tint }]}>
               {activity.hadithRef}
-            </Text>
+            </AppText>
           </View>
         )}
 
@@ -563,17 +563,17 @@ export default function ActivityDetailScreen() {
               style={[styles.renewButton, { backgroundColor: C.tint + "22", borderColor: C.tint + "55", borderWidth: 1 }]}
             >
               <Feather name="check-circle" size={20} color={C.tint} />
-              <Text style={[styles.renewText, { color: C.tint, fontFamily: "Inter_600SemiBold" }]}>
+              <AppText weight="Bold" style={[styles.renewText, { color: C.tint }]}>
                 {t("activity.renewedButton")}
-              </Text>
+              </AppText>
             </View>
             <TouchableOpacity
               onPress={handleUnmark}
               style={[styles.unmarkButton, { borderColor: C.border }]}
             >
-              <Text style={[styles.unmarkText, { color: C.textMuted, fontFamily: "Inter_400Regular" }]}>
+              <AppText weight="Regular" style={[styles.unmarkText, { color: C.textMuted }]}>
                 {t("activity.unmark")}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
         ) : (
@@ -583,11 +583,11 @@ export default function ActivityDetailScreen() {
             style={[styles.renewButton, { backgroundColor: C.tint }]}
           >
             <Feather name="refresh-cw" size={20} color="#FFF" />
-            <Text style={[styles.renewText, { color: "#FFF", fontFamily: "Inter_600SemiBold" }]}>
+            <AppText weight="Bold" style={[styles.renewText, { color: "#FFF" }]}>
               {localSelected.length > 0
                 ? t("activity.renewIntentions", { count: localSelected.length + 1 })
                 : t("activity.renewNiyyah")}
-            </Text>
+            </AppText>
           </TouchableOpacity>
         )}
       </ScrollView>
@@ -610,7 +610,7 @@ const styles = StyleSheet.create({
   basicBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
   basicBadgeText: { fontSize: 12, textTransform: "uppercase", letterSpacing: 0.6 },
   niyyahText: { fontSize: 15, lineHeight: 24 },
-  arabicText: { fontSize: 15, textAlign: "right", lineHeight: 26, fontStyle: "italic", marginTop: 4 },
+  arabicText: { fontSize: 15, textAlign: "right", lineHeight: 26, marginTop: 4 },
   sourceRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   sourceText: { fontSize: 12 },
   sectionLabel: { fontSize: 12, textTransform: "uppercase", letterSpacing: 0.8 },
@@ -636,7 +636,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   optionText: { fontSize: 14, lineHeight: 20 },
-  optionTextAr: { fontSize: 13, textAlign: "right", lineHeight: 20, marginTop: 2, fontStyle: "italic" },
+  optionTextAr: { fontSize: 13, textAlign: "right", lineHeight: 20, marginTop: 2 },
   optionSource: { fontSize: 11, marginTop: 2 },
   addCustomBtn: { flexDirection: "row", alignItems: "center", gap: 8, padding: 12, borderRadius: 10, borderWidth: 1, borderStyle: "dashed", marginTop: 6 },
   addCustomText: { fontSize: 14 },
