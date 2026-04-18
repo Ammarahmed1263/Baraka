@@ -1,6 +1,5 @@
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useCallback } from "react";
   import {
@@ -14,13 +13,13 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
-import { HADITH_OPENER } from "@/constants/data";
 import { useApp, type UserActivity } from "@/context/AppContext";
 import { useLanguage } from "@/src/i18n";
 import NiyyahCard from "@/components/NiyyahCard";
 import StreakBadge from "@/components/StreakBadge";
-import ProgressRing from "@/components/ProgressRing";
 import { AppText } from "@/components/UI/AppText";
+import HadithCard from "@/components/Home/HadithCard";
+import DashboardStats from "@/components/Home/DashboardStats";
 
 export default function TodayScreen() {
   const { t } = useTranslation();
@@ -103,53 +102,15 @@ export default function TodayScreen() {
         </AppText>
 
         {/* Hadith Card */}
-        <LinearGradient
-          colors={isDark ? ["#1A3326", "#0D2E1F"] : ["#2D7A4F", "#1A5C38"]}
-          style={styles.hadithCard}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View style={styles.hadithDecor}>
-            <AppText style={styles.hadithDecorText}>❝</AppText>
-          </View>
-          <AppText weight="Bold" style={styles.hadithText}>
-            {lang === "ar" ? HADITH_OPENER.ar : HADITH_OPENER.en}
-          </AppText>
-          <AppText weight="Regular" style={styles.hadithRef}>
-            {HADITH_OPENER.ref}
-          </AppText>
-        </LinearGradient>
+        <HadithCard lang={lang} />
 
         {/* Progress + Ajr Row */}
-        <View style={styles.statsRow}>
-          {/* Progress Section */}
-          <View style={[styles.progressSection, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-            <ProgressRing percentage={completionRate} size={60} color={C.tint} />
-            <View style={styles.progressText}>
-              <AppText weight="Bold" style={[styles.progressTitle, { color: C.text }]}>
-                {t("dashboard.todayNiyyah")}
-              </AppText>
-              <AppText weight="Regular" style={[styles.progressSubtitle, { color: C.textSecondary }]}>
-                {t("dashboard.renewedCount", { completed: completedCount, total: enabledActivities.length })}
-              </AppText>
-            </View>
-          </View>
-
-          {/* Ajr Multiplier */}
-          {ajr.acts > 0 && (
-            <View style={[styles.ajrSection, { backgroundColor: C.gold + "18", borderColor: C.gold + "44" }]}>
-              <AppText weight="Bold" style={[styles.ajrMultiplierNum, { color: C.gold }]}>
-                ×{Math.round(ajr.total * 10) / 10}
-              </AppText>
-              <AppText weight="Medium" style={[styles.ajrLabel, { color: C.gold }]}>
-                {t("dashboard.ajrMultiplier")}
-              </AppText>
-              <AppText weight="Regular" style={[styles.ajrSub, { color: C.gold + "BB" }]}>
-                {t("dashboard.ajrSub", { acts: ajr.acts, avg: ajr.avgNiyyahs })}
-              </AppText>
-            </View>
-          )}
-        </View>
+        <DashboardStats
+          completionRate={completionRate}
+          completedCount={completedCount}
+          totalActivities={enabledActivities.length}
+          ajr={ajr}
+        />
 
         {/* Activities */}
         <AppText weight="Bold" style={[styles.sectionTitle, { color: C.text }]}>
@@ -209,45 +170,6 @@ const styles = StyleSheet.create({
   },
   greeting: { fontSize: 14, marginBottom: 2 },
   dayName: { fontSize: 20 },
-  hadithCard: {
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    overflow: "hidden",
-  },
-  hadithDecor: { marginBottom: 8 },
-  hadithDecorText: { fontSize: 28, color: "rgba(255,255,255,0.3)" },
-  hadithText: {
-    fontSize: 15,
-    color: "rgba(255,255,255,0.95)",
-    marginBottom: 10,
-  },
-  hadithRef: { fontSize: 12, color: "rgba(255,255,255,0.65)" },
-  statsRow: { flexDirection: "row", gap: 10, marginBottom: 24 },
-  progressSection: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 14,
-    borderRadius: 16,
-    borderWidth: 1,
-    gap: 12,
-  },
-  progressText: { flex: 1 },
-  progressTitle: { fontSize: 15, marginBottom: 3 },
-  progressSubtitle: { fontSize: 12, lineHeight: 16 },
-  ajrSection: {
-    width: 100,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 12,
-    borderRadius: 16,
-    borderWidth: 1,
-    gap: 2,
-  },
-  ajrMultiplierNum: { fontSize: 22 },
-  ajrLabel: { fontSize: 11, textAlign: "center" },
-  ajrSub: { fontSize: 10, textAlign: "center" },
   sectionTitle: { fontSize: 18, marginBottom: 12 },
   emptyState: {
     alignItems: "center",

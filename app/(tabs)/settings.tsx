@@ -1,6 +1,5 @@
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
@@ -21,6 +20,8 @@ import Colors from "@/constants/colors";
 import { useApp } from "@/context/AppContext";
 import { APP_STORAGE_KEYS } from "@/src/lib/constants";
 import { useLanguage } from "@/src/i18n";
+import SettingRow from "@/components/Settings/SettingRow";
+import UserStatsCard from "@/components/Settings/UserStatsCard";
 
 type ProfileKey = "isHomemaker" | "isParent" | "isStudent" | "isProfessional";
 
@@ -186,40 +187,7 @@ export default function SettingsScreen() {
   const totalCompleted = dailyLogs.length;
   const totalJournal = journalEntries.length;
 
-  const SettingRow = ({
-    icon,
-    iconColor = C.tint,
-    iconBg = C.tint + "18",
-    label,
-    desc,
-    right,
-  }: {
-    icon: string;
-    iconColor?: string;
-    iconBg?: string;
-    label: string;
-    desc?: string;
-    right: React.ReactNode;
-  }) => (
-    <View style={styles.settingRow}>
-      <View style={styles.settingLeft}>
-        <View style={[styles.settingIcon, { backgroundColor: iconBg }]}>
-          <Feather name={icon as any} size={16} color={iconColor} />
-        </View>
-        <View style={{ flex: 1 }}>
-          <AppText weight="Medium" style={[styles.settingName, { color: C.text }]}>
-            {label}
-          </AppText>
-          {desc && (
-            <AppText weight="Regular" style={[styles.settingDesc, { color: C.textMuted }]}>
-              {desc}
-            </AppText>
-          )}
-        </View>
-      </View>
-      {right}
-    </View>
-  );
+
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
@@ -254,38 +222,11 @@ export default function SettingsScreen() {
         </AppText>
 
         {/* Stats Card */}
-        <LinearGradient
-          colors={isDark ? ["#1A3326", "#0D2E1F"] : ["#2D7A4F", "#1A5C38"]}
-          style={styles.statsCard}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <AppText weight="Bold" style={styles.statsTitle}>
-            {t("settings.yourJourney")}
-          </AppText>
-          <View style={styles.statsRow}>
-            <View style={styles.statItem}>
-              <AppText weight="Bold" style={styles.statValue}>{streak}</AppText>
-              <AppText weight="Regular" style={styles.statLabel}>
-                {t("settings.dayStreak")}
-              </AppText>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <AppText weight="Bold" style={styles.statValue}>{totalCompleted}</AppText>
-              <AppText weight="Regular" style={styles.statLabel}>
-                {t("settings.totalRenewed")}
-              </AppText>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <AppText weight="Bold" style={styles.statValue}>{totalJournal}</AppText>
-              <AppText weight="Regular" style={styles.statLabel}>
-                {t("settings.reflections")}
-              </AppText>
-            </View>
-          </View>
-        </LinearGradient>
+        <UserStatsCard
+          streak={streak}
+          totalCompleted={totalCompleted}
+          totalJournal={totalJournal}
+        />
 
         {/* ── My Profile ──────────────────────────────────────── */}
         <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
@@ -453,13 +394,6 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollContent: { paddingHorizontal: 20 },
   title: { fontSize: 28, marginBottom: 20 },
-  statsCard: { borderRadius: 16, padding: 20, marginBottom: 24, gap: 16 },
-  statsTitle: { fontSize: 16, color: "rgba(255,255,255,0.85)" },
-  statsRow: { flexDirection: "row", justifyContent: "space-around" },
-  statItem: { alignItems: "center", gap: 4 },
-  statValue: { fontSize: 28, color: "#FFF" },
-  statLabel: { fontSize: 12, color: "rgba(255,255,255,0.7)", textAlign: "center" },
-  statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.2)" },
   sectionLabel: {
     fontSize: 12,
     textTransform: "uppercase",
