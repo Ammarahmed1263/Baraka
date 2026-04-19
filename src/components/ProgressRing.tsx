@@ -1,0 +1,64 @@
+import { View, StyleSheet, useColorScheme } from "react-native";
+import Svg, { Circle } from "react-native-svg";
+import Colors from "@constants/colors";
+import { AppText } from "@components/UI/AppText";
+
+type Props = {
+  percentage: number;
+  size?: number;
+  color?: string;
+  strokeWidth?: number;
+};
+
+export default function ProgressRing({
+  percentage,
+  size = 72,
+  color,
+  strokeWidth = 6,
+}: Props) {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
+  const C = isDark ? Colors.dark : Colors.light;
+
+  const ringColor = color || C.tint;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const progress = Math.round(Math.min(Math.max(percentage * (percentage < 1.1 ? 100 : 1), 0), 100)); // Adjusted to handle decimal percentages
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
+  return (
+    <View style={{ width: size, height: size, alignItems: "center", justifyContent: "center" }}>
+      <Svg width={size} height={size} style={{ position: "absolute" }}>
+        <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={ringColor + "20"}
+          strokeWidth={strokeWidth}
+          fill="none"
+        />
+        <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={ringColor}
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={`${circumference}`}
+          strokeDashoffset={strokeDashoffset}
+          strokeLinecap="round"
+          rotation="-90"
+          origin={`${size / 2}, ${size / 2}`}
+        />
+      </Svg>
+      <AppText weight="Bold" style={[styles.percentage, { color: ringColor }]}>
+        {progress}%
+      </AppText>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  percentage: { fontSize: 14 },
+});
+
