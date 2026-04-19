@@ -13,7 +13,7 @@ export default function StreakBadge({ streak }: Props) {
   const C = isDark ? Colors.dark : Colors.light;
 
   return (
-    <View style={[styles.container, { backgroundColor: C.streakLight }]}>
+    <View style={[styles.container, { backgroundColor: C.goldLight }]}>
       <Feather name="zap" size={14} color={C.streak} />
       <AppText weight="Bold" style={[styles.text, { color: C.streak }]}>
         {streak}

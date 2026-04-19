@@ -26,9 +26,7 @@ const COLOR_OPTIONS = [
   "#D97706", "#0891B2",
 ];
 
-function generateId() {
-  return "custom_" + Date.now().toString() + Math.random().toString(36).substr(2, 5);
-}
+import { generateCustomId } from "@utils/id";
 
 interface AddActivityFormProps {
   onClose: () => void;
@@ -55,7 +53,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
     }
     const defaultNiyyah = t("reminders.defaultIntention", { activity: newName.trim() });
     const newActivity = {
-      id: generateId(),
+      id: generateCustomId(),
       name: { en: newName.trim(), ar: newName.trim() },
       icon: selectedIcon,
       category: "daily",

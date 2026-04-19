@@ -1,32 +1,12 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { format, subDays, differenceInCalendarDays, parse } from "date-fns";
+import { format, subDays } from "date-fns";
 import type { DailyLog } from "@types";
 
-function getTodayString() {
-  return format(new Date(), "yyyy-MM-dd");
-}
-
-function generateId() {
-  return Date.now().toString() + Math.random().toString(36).substr(2, 9);
-}
-
-function computeStreak(logs: DailyLog[]): number {
-  const uniqueDates = Array.from(new Set(logs.map((l) => l.date)))
-    .map((d) => parse(d, "yyyy-MM-dd", new Date()))
-    .sort((a, b) => b.getTime() - a.getTime());
-
-  let streak = 0;
-  const today = new Date();
-
-  for (const date of uniqueDates) {
-    if (differenceInCalendarDays(today, date) === streak) streak++;
-    else break;
-  }
-
-  return streak;
-}
+import { generateId } from "@utils/id";
+import { getTodayString } from "@utils/date";
+import { computeStreak } from "@utils/stats";
 
 type LogsStore = {
   dailyLogs: DailyLog[];

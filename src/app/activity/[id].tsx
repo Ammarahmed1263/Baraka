@@ -11,6 +11,7 @@ import {
 import { useTodayLogs } from "@hooks/useTodayLogs";
 import { useLanguage } from "@i18n";
 import { Feather } from "@expo/vector-icons";
+import { getTodayString } from "@utils/date";
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
@@ -119,7 +120,7 @@ export default function ActivityDetailScreen() {
       await addJournalEntry({
         activityId: activity.id,
         activityName: activity.name,
-        date: new Date().toISOString().split("T")[0],
+        date: getTodayString(),
         note: reflectionNote.trim(),
         selectedNiyyahCount: localSelected.length || 1,
         impactfulNiyyah: impactfulNiyyah || undefined,
