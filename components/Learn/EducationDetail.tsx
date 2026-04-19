@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import {
+  I18nManager,
   Platform,
   ScrollView,
   StyleSheet,
@@ -12,7 +13,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@/components/UI/AppText";
 import Colors from "@/constants/colors";
-import { type EducationEntry } from "@/constants/data";
+import { type EducationEntry } from "@/src/types";
 
 interface EducationDetailProps {
   entry: EducationEntry;
@@ -55,7 +56,7 @@ export default function EducationDetail({
             { backgroundColor: C.backgroundSecondary },
           ]}
         >
-          <Feather name="arrow-left" size={20} color={C.text} />
+          <Feather name={I18nManager.isRTL ? "arrow-right" : "arrow-left"} size={20} color={C.text} />
         </TouchableOpacity>
 
         <LinearGradient

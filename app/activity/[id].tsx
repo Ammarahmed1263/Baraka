@@ -1,5 +1,7 @@
 import Colors from "@/constants/colors";
-import { getNiyyahOptions, type NiyyahOption } from "@/constants/data";
+import { type NiyyahOption } from "@/src/types";
+import { getNiyyahOptions } from "@/src/data/niyyahTemplates";
+
 import { useApp } from "@/context/AppContext";
 import { useLanguage } from "@/src/i18n";
 import { Feather } from "@expo/vector-icons";

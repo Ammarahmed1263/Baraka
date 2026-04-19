@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { StyleSheet, View, useColorScheme } from "react-native";
 import { AppText } from "@/components/UI/AppText";
 import Colors from "@/constants/colors";
-import { NIYYAH_OPTIONS } from "@/constants/data";
+import { NIYYAH_OPTIONS } from "@/src/data/niyyahTemplates";
 import { type JournalEntry } from "@/context/AppContext";
 
 interface JournalCardProps {

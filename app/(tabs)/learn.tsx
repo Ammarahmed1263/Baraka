@@ -1,5 +1,7 @@
 import Colors from "@/constants/colors";
-import { EDUCATION_ENTRIES, type EducationEntry } from "@/constants/data";
+import { type EducationEntry } from "@/src/types";
+import { EDUCATION_ENTRIES } from "@/src/data/learnContent";
+
 import { useApp } from "@/context/AppContext";
 import { useLanguage } from "@/src/i18n";
 import { Feather } from "@expo/vector-icons";

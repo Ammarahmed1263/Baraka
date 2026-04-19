@@ -1,7 +1,7 @@
 import { View, StyleSheet, useColorScheme } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { AppText } from "@/components/UI/AppText";
-import { HADITH_OPENER } from "@/constants/data";
+import { HADITH_OPENER } from "@/src/data/uiConstants";
 
 interface HadithCardProps {
   lang: "en" | "ar";

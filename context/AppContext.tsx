@@ -8,7 +8,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { DEFAULT_ACTIVITIES, type Activity } from "@/constants/data";
+import { type Activity } from "@/src/types";
+import { DEFAULT_ACTIVITIES } from "@/src/data/activities";
+
 
 export type UserActivity = Activity & {
   enabled: boolean;

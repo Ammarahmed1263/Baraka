@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { Pressable, StyleSheet, View, useColorScheme } from "react-native";
 import { AppText } from "@/components/UI/AppText";
 import Colors from "@/constants/colors";
-import { type EducationEntry } from "@/constants/data";
+import { type EducationEntry } from "@/src/types";
 
 interface EducationCardProps {
   entry: EducationEntry;
