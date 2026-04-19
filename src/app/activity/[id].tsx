@@ -176,7 +176,7 @@ export default function ActivityDetailScreen() {
           <View style={styles.header}>
             <TouchableOpacity
               onPress={() => router.back()}
-              style={[styles.backButton, { backgroundColor: C.backgroundSecondary }]}
+              style={[styles.backButton, { backgroundColor: C.backgroundSubtle }]}
             >
               <Feather name="x" size={20} color={C.text} />
             </TouchableOpacity>
@@ -238,7 +238,7 @@ export default function ActivityDetailScreen() {
                 styles.noteInput,
                 {
                   color: C.text,
-                  backgroundColor: C.backgroundSecondary,
+                  backgroundColor: C.backgroundSubtle,
                   borderColor: C.border,
                 },
               ]}
@@ -259,7 +259,7 @@ export default function ActivityDetailScreen() {
                         styles.impactOption,
                         {
                           backgroundColor:
-                            impactfulNiyyah === n.id ? C.tint + "22" : C.backgroundSecondary,
+                            impactfulNiyyah === n.id ? C.tint + "22" : C.backgroundSubtle,
                           borderColor: impactfulNiyyah === n.id ? C.tint : C.border,
                         },
                       ]}
@@ -317,7 +317,7 @@ export default function ActivityDetailScreen() {
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => router.back()}
-            style={[styles.backButton, { backgroundColor: C.backgroundSecondary }]}
+            style={[styles.backButton, { backgroundColor: C.backgroundSubtle }]}
           >
             <Feather name="x" size={20} color={C.text} />
           </TouchableOpacity>
@@ -372,7 +372,7 @@ export default function ActivityDetailScreen() {
                   {
                     color: C.text,
                     borderColor: C.tint,
-                    backgroundColor: C.backgroundSecondary,
+                    backgroundColor: C.backgroundSubtle,
                   },
                 ]}
                 placeholderTextColor={C.textMuted}
@@ -440,7 +440,7 @@ export default function ActivityDetailScreen() {
                   style={[
                     styles.niyyahOption,
                     {
-                      backgroundColor: checked ? C.tint + "15" : C.backgroundSecondary,
+                      backgroundColor: checked ? C.tint + "15" : C.backgroundSubtle,
                       borderColor: checked ? C.tint + "88" : C.border,
                     },
                   ]}
@@ -496,7 +496,7 @@ export default function ActivityDetailScreen() {
                 </AppText>
               </TouchableOpacity>
             ) : (
-              <View style={[styles.customInputCard, { backgroundColor: C.backgroundSecondary, borderColor: C.border }]}>
+              <View style={[styles.customInputCard, { backgroundColor: C.backgroundSubtle, borderColor: C.border }]}>
                 <TextInput
                   value={customText}
                   onChangeText={setCustomText}

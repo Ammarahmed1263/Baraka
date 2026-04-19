@@ -147,7 +147,7 @@ export default function JournalScreen() {
                       backgroundColor:
                         selectedActivityId === activity.id
                           ? C.tint
-                          : C.backgroundSecondary,
+                          : C.backgroundSubtle,
                       borderColor:
                         selectedActivityId === activity.id ? C.tint : C.border,
                     },
@@ -182,7 +182,7 @@ export default function JournalScreen() {
                 {
                   color: C.text,
                   borderColor: C.border,
-                  backgroundColor: C.backgroundSecondary,
+                  backgroundColor: C.backgroundSubtle,
                 },
               ]}
             />
@@ -209,7 +209,7 @@ export default function JournalScreen() {
 
         {/* Search */}
         {journalEntries.length > 0 && (
-          <View style={[styles.searchBar, { backgroundColor: C.backgroundSecondary, borderColor: C.border }]}>
+          <View style={[styles.searchBar, { backgroundColor: C.backgroundSubtle, borderColor: C.border }]}>
             <Feather name="search" size={16} color={C.textMuted} />
             <TextInput
               value={search}
@@ -256,7 +256,7 @@ export default function JournalScreen() {
                     backgroundColor:
                       filterActivity === item.value
                         ? C.tint
-                        : C.backgroundSecondary,
+                        : C.backgroundSubtle,
                     borderColor:
                       filterActivity === item.value ? C.tint : C.border,
                   },

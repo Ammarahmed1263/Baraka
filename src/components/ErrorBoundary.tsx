@@ -102,7 +102,7 @@ export class ErrorBoundary extends Component<
       },
       errorDetails: {
         width: '100%',
-        backgroundColor: colors.backgroundSecondary,
+        backgroundColor: colors.backgroundSubtle,
         borderRadius: 16,
         padding: 16,
         marginBottom: 32,

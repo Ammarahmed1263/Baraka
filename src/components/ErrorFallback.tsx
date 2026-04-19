@@ -27,7 +27,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
 
   const theme = {
     background: isDark ? "#000000" : "#FFFFFF",
-    backgroundSecondary: isDark ? "#1C1C1E" : "#F2F2F7",
+    backgroundSubtle: isDark ? "#1C1C1E" : "#F2F2F7",
     text: isDark ? "#FFFFFF" : "#000000",
     textSecondary: isDark ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.7)",
     link: "#007AFF",
@@ -70,7 +70,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
             styles.topButton,
             {
               top: insets.top + 16,
-              backgroundColor: theme.backgroundSecondary,
+              backgroundColor: theme.backgroundSubtle,
               opacity: pressed ? 0.8 : 1,
             },
           ]}
@@ -156,7 +156,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
                 <View
                   style={[
                     styles.errorContainer,
-                    { backgroundColor: theme.backgroundSecondary },
+                    { backgroundColor: theme.backgroundSubtle },
                   ]}
                 >
                   <Text

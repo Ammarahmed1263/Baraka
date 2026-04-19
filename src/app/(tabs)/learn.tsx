@@ -118,7 +118,7 @@ export default function LearnScreen() {
         <View
           style={[
             styles.searchBar,
-            { backgroundColor: C.backgroundSecondary, borderColor: C.border },
+            { backgroundColor: C.backgroundSubtle, borderColor: C.border },
           ]}
         >
           <Feather name="search" size={16} color={C.textMuted} />
@@ -154,7 +154,7 @@ export default function LearnScreen() {
                 styles.filterChip,
                 {
                   backgroundColor:
-                    activeCategory === cat ? C.tint : C.backgroundSecondary,
+                    activeCategory === cat ? C.tint : C.backgroundSubtle,
                   borderColor: activeCategory === cat ? C.tint : C.border,
                 },
               ]}

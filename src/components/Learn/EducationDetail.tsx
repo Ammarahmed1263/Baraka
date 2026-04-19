@@ -53,7 +53,7 @@ export default function EducationDetail({
           onPress={onClose}
           style={[
             styles.closeButton,
-            { backgroundColor: C.backgroundSecondary },
+            { backgroundColor: C.backgroundSubtle },
           ]}
         >
           <Feather name={I18nManager.isRTL ? "arrow-right" : "arrow-left"} size={20} color={C.text} />

@@ -88,7 +88,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
         placeholderTextColor={C.textMuted}
         style={[
           styles.formInput,
-          { color: C.text, borderColor: C.border, backgroundColor: C.backgroundSecondary },
+          { color: C.text, borderColor: C.border, backgroundColor: C.backgroundSubtle },
         ]}
       />
       <TextInput
@@ -100,7 +100,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
         style={[
           styles.formInput,
           styles.formInputMulti,
-          { color: C.text, borderColor: C.border, backgroundColor: C.backgroundSecondary },
+          { color: C.text, borderColor: C.border, backgroundColor: C.backgroundSubtle },
         ]}
       />
 
@@ -117,7 +117,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
               styles.iconOption,
               {
                 backgroundColor:
-                  selectedIcon === icon ? C.tint + "20" : C.backgroundSecondary,
+                  selectedIcon === icon ? C.tint + "20" : C.backgroundSubtle,
                 borderColor: selectedIcon === icon ? C.tint : "transparent",
               },
             ]}
