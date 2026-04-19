@@ -8,19 +8,22 @@
     "scheme": "baraka",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0D1F17"
+      "backgroundColor": "#002020"
     },
     "ios": {
       "supportsTablet": false
     },
     "android": {
-      "backgroundColor": "#0D1F17",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#002020"
+      },
       "package": "com.ammar_001.barakaniyyah"
     },
     "web": {
-      "favicon": "./assets/images/icon.png"
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",
