@@ -9,12 +9,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from "react-native";
+import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Colors from "@constants/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { type JournalEntry } from "@types";
 import { useActivitiesStore, useJournalStore } from "@store";
 import { useLanguage } from "@i18n";
@@ -23,9 +23,7 @@ import JournalCard from "@components/Journal/JournalCard";
 
 export default function JournalScreen() {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
 
@@ -100,7 +98,7 @@ export default function JournalScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <AppText weight="Bold" style={[styles.title, { color: C.text }]}>
+            <AppText weight="Bold" style={[styles.title, { color: C.gold }]}>
               {t("journal.title")}
             </AppText>
             <AppText weight="Regular" style={[styles.subtitle, { color: C.textSecondary }]}>
@@ -305,7 +303,7 @@ export default function JournalScreen() {
           <View key={date} style={styles.dateGroup}>
             <AppText
               weight="Bold"
-              style={[styles.dateGroupLabel, { color: C.textSecondary }]}
+              style={[styles.dateGroupLabel, { color: C.gold }]}
             >
               {date}
             </AppText>

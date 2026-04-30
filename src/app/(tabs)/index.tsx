@@ -2,17 +2,16 @@ import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 import { useCallback } from "react";
-  import {
+import {
   Platform,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Colors from "@constants/colors";
+import { useTheme } from "@context/ThemeContext";
 import { type UserActivity } from "@types";
 import { useActivitiesStore, useLogsStore } from "@store";
 import { useTodayLogs } from "@hooks/useTodayLogs";
@@ -26,9 +25,7 @@ import DashboardStats from "@components/Home/DashboardStats";
 
 export default function TodayScreen() {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
 
@@ -36,7 +33,7 @@ export default function TodayScreen() {
   const streak = useLogsStore((s) => s.streak);
   const markComplete = useLogsStore((s) => s.markComplete);
   const unmarkComplete = useLogsStore((s) => s.unmarkComplete);
-  
+
   const { isCompletedToday } = useTodayLogs();
   const { getTodayCompletionRate, getAjrMultiplier } = useActivityStats();
 
@@ -91,14 +88,14 @@ export default function TodayScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <AppText weight="Medium" style={[styles.greeting, { color: C.textSecondary }]}>
+            <AppText weight="Medium" style={[styles.greeting, { color: C.gold }]}>
               {getDayGreeting()}
             </AppText>
           </View>
           <StreakBadge streak={streak} />
         </View>
 
-        <AppText weight="Bold" style={[styles.dayName, { color: C.text, marginBottom: 16 }]}>
+        <AppText weight="Bold" style={[styles.dayName, { color: C.gold, marginBottom: 16 }]}>
           {getDayName()}
         </AppText>
 
@@ -114,7 +111,7 @@ export default function TodayScreen() {
         />
 
         {/* Activities */}
-        <AppText weight="Bold" style={[styles.sectionTitle, { color: C.text }]}>
+        <AppText weight="Bold" style={[styles.sectionTitle, { color: C.gold }]}>
           {t("dashboard.yourIntentions")}
         </AppText>
 

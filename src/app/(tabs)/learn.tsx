@@ -1,4 +1,3 @@
-import Colors from "@constants/colors";
 import { type EducationEntry } from "@types";
 import { EDUCATION_ENTRIES } from "@data/learnContent";
 
@@ -13,8 +12,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from "react-native";
+import { useTheme } from "@context/ThemeContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@components/UI/AppText";
 import EducationCard from "@components/Learn/EducationCard";
@@ -33,9 +32,7 @@ const CATEGORIES = [
 
 export default function LearnScreen() {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
   const settings = useSettingsStore((s) => s.settings);
@@ -100,7 +97,7 @@ export default function LearnScreen() {
         {/* Header */}
         <AppText
           weight="Bold"
-          style={[styles.title, { color: C.text }]}
+          style={[styles.title, { color: C.gold }]}
         >
           {t("learn.title")}
         </AppText>

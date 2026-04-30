@@ -1,4 +1,5 @@
-import { View, StyleSheet, useColorScheme } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { useTheme } from "@context/ThemeContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { AppText } from "@components/UI/AppText";
 import { HADITH_OPENER } from "@data/uiConstants";
@@ -8,7 +9,7 @@ interface HadithCardProps {
 }
 
 export default function HadithCard({ lang }: HadithCardProps) {
-  const isDark = useColorScheme() === "dark";
+  const { colors: C, isDark } = useTheme();
 
   return (
     <LinearGradient
@@ -18,12 +19,13 @@ export default function HadithCard({ lang }: HadithCardProps) {
       end={{ x: 1, y: 1 }}
     >
       <View style={styles.hadithDecor}>
-        <AppText style={styles.hadithDecorText}>❝</AppText>
+        <AppText style={[styles.hadithDecorText, { color: C.gold }]}>❝</AppText>
       </View>
       <AppText weight="Bold" style={styles.hadithText}>
         {lang === "ar" ? HADITH_OPENER.ar : HADITH_OPENER.en}
       </AppText>
-      <AppText weight="Regular" style={styles.hadithRef}>
+      <View style={[styles.refAccent, { backgroundColor: C.gold }]} />
+      <AppText weight="Regular" style={[styles.hadithRef, { color: C.gold }]}>
         {HADITH_OPENER.ref}
       </AppText>
     </LinearGradient>
@@ -44,6 +46,12 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.95)",
     marginBottom: 10,
   },
-  hadithRef: { fontSize: 12, color: "rgba(255,255,255,0.65)" },
+  refAccent: {
+    width: 24,
+    height: 2,
+    marginBottom: 6,
+    borderRadius: 1,
+  },
+  hadithRef: { fontSize: 12 },
 });
 

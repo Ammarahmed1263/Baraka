@@ -7,12 +7,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from "react-native";
+import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Colors from "@constants/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { type UserActivity } from "@types";
 import { useActivitiesStore } from "@store";
 
@@ -21,9 +21,7 @@ import CategorySection from "@components/Reminders/CategorySection";
 
 export default function RemindersScreen() {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
 
@@ -52,7 +50,7 @@ export default function RemindersScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <AppText weight="Bold" style={[styles.title, { color: C.text }]}>
+            <AppText weight="Bold" style={[styles.title, { color: C.gold }]}>
               {t("reminders.title")}
             </AppText>
             <AppText weight="Regular" style={[styles.subtitle, { color: C.textSecondary }]}>

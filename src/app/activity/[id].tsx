@@ -1,4 +1,3 @@
-import Colors from "@constants/colors";
 import { type NiyyahOption } from "@types";
 import { getNiyyahOptions } from "@data/niyyahTemplates";
 import { useLocalize } from "@hooks/useLocalize";
@@ -25,8 +24,8 @@ import {
   TouchableOpacity,
   View,
   Text,
-  useColorScheme
 } from "react-native";
+import { useTheme } from "@context/ThemeContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@components/UI/AppText";
 
@@ -35,9 +34,7 @@ type Step = "view" | "reflect";
 export default function ActivityDetailScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
   const topPadding = isWeb ? 67 : insets.top;
@@ -421,7 +418,7 @@ export default function ActivityDetailScreen() {
         {allAdvanced.length > 0 && (
           <View style={[styles.card, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
             <View style={styles.cardHeader}>
-              <AppText weight="Medium" style={[styles.sectionLabel, { color: C.textSecondary }]}>
+              <AppText weight="Medium" style={[styles.sectionLabel, { color: C.gold }]}>
                 {t("activity.multiplyIntentions")}
               </AppText>
               <AppText weight="Bold" style={[styles.selectedCount, { color: C.tint }]}>

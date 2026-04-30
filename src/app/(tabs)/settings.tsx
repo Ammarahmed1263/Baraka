@@ -11,12 +11,12 @@ import {
   Switch,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from "react-native";
+import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Colors from "@constants/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useSettingsStore,
   useActivitiesStore,
@@ -74,9 +74,7 @@ const ROLE_TRANSLATION_KEYS: Record<ProfileKey, { label: string; desc: string }>
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C, theme: currentMode } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
 
@@ -206,7 +204,9 @@ export default function SettingsScreen() {
           style={[
             styles.toast,
             {
-              backgroundColor: isDark ? "#1A3326" : "#2D7A4F",
+              backgroundColor: C.backgroundCard,
+              borderColor: C.border,
+              borderWidth: 1,
               opacity: toastOpacity,
               bottom: isWeb ? 34 + 84 : 100,
             },
@@ -226,7 +226,7 @@ export default function SettingsScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <AppText weight="Bold" style={[styles.title, { color: C.text }]}>
+        <AppText weight="Bold" style={[styles.title, { color: C.gold }]}>
           {t("settings.title")}
         </AppText>
 
@@ -238,7 +238,7 @@ export default function SettingsScreen() {
         />
 
         {/* ── My Profile ──────────────────────────────────────── */}
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
+        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.myProfile")}
         </AppText>
         <AppText weight="Regular" style={[styles.sectionSubLabel, { color: C.textMuted }]}>
@@ -269,7 +269,7 @@ export default function SettingsScreen() {
         </View>
 
         {/* ── Preferences ─────────────────────────────────────── */}
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
+        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.preferences")}
         </AppText>
         <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
@@ -321,10 +321,38 @@ export default function SettingsScreen() {
               />
             }
           />
+          <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
+          <SettingRow
+            icon={currentMode === "dark" ? "moon" : "sun"}
+            iconColor={C.gold}
+            iconBg={C.gold + "18"}
+            label={t("settings.theme")}
+            desc={t(`settings.themeModes.${currentMode}`, { defaultValue: currentMode })}
+            right={
+              <View style={styles.themeSelector}>
+                {(["light", "auto", "dark"] as const).map((mode) => (
+                  <TouchableOpacity
+                    key={mode}
+                    onPress={() => updateSettings({ darkMode: mode })}
+                    style={[
+                      styles.themeOption,
+                      { backgroundColor: currentMode === mode ? C.tint : C.border },
+                    ]}
+                  >
+                    <Feather
+                      name={mode === "auto" ? "smartphone" : mode === "dark" ? "moon" : "sun"}
+                      size={14}
+                      color={currentMode === mode ? "#FFF" : C.textSecondary}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+            }
+          />
         </View>
 
         {/* ── Data ────────────────────────────────────────────── */}
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
+        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.data")}
         </AppText>
         <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
@@ -364,7 +392,7 @@ export default function SettingsScreen() {
         </View>
 
         {/* ── About ───────────────────────────────────────────── */}
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.textSecondary }]}>
+        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.about")}
         </AppText>
         <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
@@ -375,7 +403,7 @@ export default function SettingsScreen() {
             <AppText weight="Regular" style={[styles.aboutDesc, { color: C.textSecondary }]}>
               {t("settings.aboutDesc")}
             </AppText>
-            <AppText weight="Regular" style={[styles.aboutQuote, { color: C.tint }]}>
+            <AppText weight="Regular" style={[styles.aboutQuote, { color: C.gold }]}>
               {t("settings.quote")}
             </AppText>
             <AppText weight="Regular" style={[styles.aboutRef, { color: C.textMuted }]}>
@@ -423,6 +451,8 @@ const styles = StyleSheet.create({
   settingName: { fontSize: 15 },
   settingDesc: { fontSize: 12, marginTop: 2 },
   divider: { height: 1, marginLeft: 64 },
+  themeSelector: { flexDirection: "row", backgroundColor: "#00000008", borderRadius: 10, padding: 4, gap: 4 },
+  themeOption: { width: 32, height: 32, borderRadius: 8, alignItems: "center", justifyContent: "center" },
   aboutCard: { padding: 18, gap: 8 },
   aboutTitle: { fontSize: 18 },
   aboutDesc: { fontSize: 14, lineHeight: 22 },
