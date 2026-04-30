@@ -1,86 +1,32 @@
-import Colors from "@constants/colors";
 import { Feather } from "@expo/vector-icons";
-import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Tabs } from "expo-router";
-import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 import { SymbolView } from "expo-symbols";
 import { useTranslation } from "react-i18next";
-import { Platform, Pressable, useColorScheme } from "react-native";
+import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "@context/ThemeContext";
 
-function NativeTabLayout() {
+export default function TabLayout() {
   const { t } = useTranslation();
-
-  return (
-    <NativeTabs>
-      <NativeTabs.Trigger name="index">
-        <Icon sf={{ default: "house", selected: "house.fill" }} />
-        <Label>{t("tabs.today")}</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="reminders">
-        <Icon sf={{ default: "bell", selected: "bell.fill" }} />
-        <Label>{t("tabs.reminders")}</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="learn">
-        <Icon sf={{ default: "book", selected: "book.fill" }} />
-        <Label>{t("tabs.learn")}</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="journal">
-        <Icon sf={{ default: "pencil.and.list.clipboard", selected: "pencil.and.list.clipboard" }} />
-        <Label>{t("tabs.journal")}</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="settings">
-        <Icon sf={{ default: "gearshape", selected: "gearshape.fill" }} />
-        <Label>{t("tabs.settings")}</Label>
-      </NativeTabs.Trigger>
-    </NativeTabs>
-  );
-}
-
-function ClassicTabLayout() {
-  const { t } = useTranslation();
-  const colorScheme = useColorScheme();
+  const { colors: C } = useTheme();
   const insets = useSafeAreaInsets();
-  const isDark = colorScheme === "dark";
   const isIOS = Platform.OS === "ios";
   const isWeb = Platform.OS === "web";
-  const C = isDark ? Colors.dark : Colors.light;
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: C.tint,
+        tabBarActiveTintColor: C.gold,
         tabBarInactiveTintColor: C.tabIconDefault,
         headerShown: false,
         tabBarStyle: {
           position: "absolute",
-          backgroundColor: isIOS ? "transparent" : C.headerBg,
+          backgroundColor: isIOS ? "transparent" : C.backgroundCard,
           borderTopWidth: isWeb ? 1 : 0,
           borderTopColor: C.border,
           elevation: 0,
-          ...(isWeb ? { height: 84 } : {}),
-          height: 70 + insets.bottom,
+          height: isWeb ? 84 : 70 + insets.bottom,
         },
-        // tabBarBackground: () =>
-        //   isIOS ? (
-        //     <BlurView
-        //       intensity={100}
-        //       tint={isDark ? "dark" : "light"}
-        //       style={StyleSheet.absoluteFill}
-        //     />
-        //   ) : isWeb ? (
-        //     <View style={[StyleSheet.absoluteFill, { backgroundColor: C.headerBg }]} />
-        //   ) : null,
-        // in screenOptions
-        tabBarButton: ({ ref, ...props }) => (
-          <Pressable
-            {...props}
-            style={[
-              props.style,
-              { flex: 1, justifyContent: 'center', alignItems: 'center'}
-            ]}
-          />
-        ),
         tabBarItemStyle: {
           justifyContent: 'center',
           alignItems: 'center',
@@ -154,11 +100,3 @@ function ClassicTabLayout() {
     </Tabs>
   );
 }
-
-export default function TabLayout() {
-  if (isLiquidGlassAvailable()) {
-    return <NativeTabLayout />;
-  }
-  return <ClassicTabLayout />;
-}
-
