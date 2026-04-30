@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
-import { Text, TextProps, useColorScheme } from 'react-native';
-import Colors from '@constants/colors';
+import { Text, TextProps } from 'react-native';
+import { useTheme } from '@context/ThemeContext';
 
 type FontWeight = 'Light' | 'Regular' | 'Medium' | 'Bold';
 
@@ -10,15 +10,14 @@ interface AppTextProps extends TextProps {
 
 export const AppText = forwardRef<Text, AppTextProps>(
   ({ weight = 'Regular', style, ...props }, ref) => {
-    const isDark = useColorScheme() === 'dark';
-    const C = isDark ? Colors.dark : Colors.light;
+    const { colors: C } = useTheme();
     const fontFamily = `Tajawal-${weight}`;
 
     return (
-      <Text 
-        ref={ref} 
-        style={[{ fontFamily, color: C.text }, style]} 
-        {...props} 
+      <Text
+        ref={ref}
+        style={[{ fontFamily, color: C.text }, style]}
+        {...props}
       />
     );
   }

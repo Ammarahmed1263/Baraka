@@ -4,11 +4,10 @@ import {
   StyleSheet,
   ActivityIndicator,
   View,
-  useColorScheme,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import Colors from "@constants/colors";
+import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive";
@@ -31,8 +30,7 @@ export function AppButton({
   disabled,
   ...props
 }: AppButtonProps) {
-  const isDark = useColorScheme() === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
 
   const handlePress = (e: any) => {
     if (haptic) {

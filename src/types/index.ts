@@ -72,9 +72,11 @@ export type UserProfile = {
   isProfessional: boolean;
 };
 
+export type AppThemeMode = "auto" | "light" | "dark";
+
 export type AppSettings = {
   showBilingual: boolean;
-  darkMode: "auto" | "light" | "dark";
+  darkMode: AppThemeMode;
   notificationsEnabled: boolean;
   onboardingComplete: boolean;
   profile: UserProfile;

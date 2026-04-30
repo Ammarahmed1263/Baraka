@@ -4,9 +4,8 @@ import {
   TextInputProps,
   StyleSheet,
   View,
-  useColorScheme,
 } from "react-native";
-import Colors from "@constants/colors";
+import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
 
 interface AppTextInputProps extends TextInputProps {
@@ -22,8 +21,7 @@ export function AppTextInput({
   onBlur,
   ...props
 }: AppTextInputProps) {
-  const isDark = useColorScheme() === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = (e: any) => {
