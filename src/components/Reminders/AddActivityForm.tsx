@@ -5,25 +5,48 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  useColorScheme,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import * as Haptics from "expo-haptics";
 import { AppText } from "@components/UI/AppText";
-import Colors from "@constants/colors";
 import { useActivitiesStore } from "@store";
+import { useTheme } from "@context/ThemeContext";
 
 const ICON_OPTIONS = [
-  "sunrise", "coffee", "briefcase", "activity", "sun", "moon",
-  "map-pin", "clock", "heart", "gift", "book-open", "music",
-  "camera", "star", "home", "users", "droplet", "feather",
+  "sunrise",
+  "coffee",
+  "briefcase",
+  "activity",
+  "sun",
+  "moon",
+  "map-pin",
+  "clock",
+  "heart",
+  "gift",
+  "book-open",
+  "music",
+  "camera",
+  "star",
+  "home",
+  "users",
+  "droplet",
+  "feather",
 ];
 
 const COLOR_OPTIONS = [
-  "#2D7A4F", "#C9A84C", "#3B82F6", "#EF4444", "#EC4899",
-  "#8B5CF6", "#F97316", "#10B981", "#6366F1", "#059669",
-  "#D97706", "#0891B2",
+  "#2D7A4F",
+  "#C9A84C",
+  "#3B82F6",
+  "#EF4444",
+  "#EC4899",
+  "#8B5CF6",
+  "#F97316",
+  "#10B981",
+  "#6366F1",
+  "#059669",
+  "#D97706",
+  "#0891B2",
 ];
 
 import { generateCustomId } from "@utils/id";
@@ -35,8 +58,7 @@ interface AddActivityFormProps {
 export default function AddActivityForm({ onClose }: AddActivityFormProps) {
   const { t } = useTranslation();
   const addCustomActivity = useActivitiesStore((s) => s.addCustomActivity);
-  const isDark = useColorScheme() === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
 
   const [newName, setNewName] = useState("");
   const [newNiyyah, setNewNiyyah] = useState("");
@@ -47,11 +69,13 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
     if (!newName.trim()) {
       Alert.alert(
         t("reminders.alert.nameRequiredTitle"),
-        t("reminders.alert.nameRequiredMessage")
+        t("reminders.alert.nameRequiredMessage"),
       );
       return;
     }
-    const defaultNiyyah = t("reminders.defaultIntention", { activity: newName.trim() });
+    const defaultNiyyah = t("reminders.defaultIntention", {
+      activity: newName.trim(),
+    });
     const newActivity = {
       id: generateCustomId(),
       name: { en: newName.trim(), ar: newName.trim() },
@@ -75,8 +99,13 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
   };
 
   return (
-    <View style={[styles.addForm, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-      <AppText weight="Bold" style={[styles.formTitle, { color: C.text }]}>
+    <View
+      style={[
+        styles.addForm,
+        { backgroundColor: C.backgroundCard, borderColor: C.border },
+      ]}
+    >
+      <AppText weight='Bold' style={[styles.formTitle, { color: C.text }]}>
         {t("reminders.newActivity")}
       </AppText>
       <TextInput
@@ -86,7 +115,11 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
         placeholderTextColor={C.textMuted}
         style={[
           styles.formInput,
-          { color: C.text, borderColor: C.border, backgroundColor: C.backgroundSubtle },
+          {
+            color: C.text,
+            borderColor: C.border,
+            backgroundColor: C.backgroundSubtle,
+          },
         ]}
       />
       <TextInput
@@ -98,12 +131,19 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
         style={[
           styles.formInput,
           styles.formInputMulti,
-          { color: C.text, borderColor: C.border, backgroundColor: C.backgroundSubtle },
+          {
+            color: C.text,
+            borderColor: C.border,
+            backgroundColor: C.backgroundSubtle,
+          },
         ]}
       />
 
       {/* Icon Picker */}
-      <AppText weight="Medium" style={[styles.pickerLabel, { color: C.textSecondary }]}>
+      <AppText
+        weight='Medium'
+        style={[styles.pickerLabel, { color: C.textSecondary }]}
+      >
         {t("reminders.icon")}
       </AppText>
       <View style={styles.iconPicker}>
@@ -130,7 +170,10 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
       </View>
 
       {/* Color Picker */}
-      <AppText weight="Medium" style={[styles.pickerLabel, { color: C.textSecondary }]}>
+      <AppText
+        weight='Medium'
+        style={[styles.pickerLabel, { color: C.textSecondary }]}
+      >
         {t("reminders.color")}
       </AppText>
       <View style={styles.colorPicker}>
@@ -145,7 +188,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
             ]}
           >
             {selectedColor === color && (
-              <Feather name="check" size={12} color="#FFF" />
+              <Feather name='check' size={12} color='#FFF' />
             )}
           </TouchableOpacity>
         ))}
@@ -155,7 +198,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
         onPress={handleAddActivity}
         style={[styles.formSubmit, { backgroundColor: C.tint }]}
       >
-        <AppText weight="Bold" style={styles.formSubmitText}>
+        <AppText weight='Bold' style={styles.formSubmitText}>
           {t("reminders.addActivity")}
         </AppText>
       </TouchableOpacity>
@@ -212,4 +255,3 @@ const styles = StyleSheet.create({
   },
   formSubmitText: { color: "#FFF", fontSize: 16 },
 });
-

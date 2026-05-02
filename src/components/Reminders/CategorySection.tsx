@@ -1,10 +1,10 @@
-import { View, StyleSheet, Switch, useColorScheme } from "react-native";
+import { View, StyleSheet, Switch } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { AppText } from "@components/UI/AppText";
-import Colors from "@constants/colors";
 import { useLocalize } from "@hooks/useLocalize";
 import { type UserActivity } from "@types";
+import { useTheme } from "@context/ThemeContext";
 
 interface CategorySectionProps {
   category: string;
@@ -18,9 +18,7 @@ export default function CategorySection({
   onToggleActivity,
 }: CategorySectionProps) {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
   const localize = useLocalize();
 
   const getCategoryLabel = (cat: string) => {
@@ -47,7 +45,6 @@ export default function CategorySection({
     return icons[cat] || "circle";
   };
 
-
   if (categoryActivities.length === 0) return null;
 
   return (
@@ -58,7 +55,10 @@ export default function CategorySection({
           size={14}
           color={C.textSecondary}
         />
-        <AppText weight="Bold" style={[styles.categoryLabel, { color: C.textSecondary }]}>
+        <AppText
+          weight='Bold'
+          style={[styles.categoryLabel, { color: C.textSecondary }]}
+        >
           {getCategoryLabel(category)}
         </AppText>
       </View>
@@ -84,11 +84,17 @@ export default function CategorySection({
                 />
               </View>
               <View style={styles.activityInfo}>
-                <AppText weight="Medium" style={[styles.activityName, { color: C.text }]}>
+                <AppText
+                  weight='Medium'
+                  style={[styles.activityName, { color: C.text }]}
+                >
                   {localize(activity.name)}
                 </AppText>
                 {activity.hadithRef && (
-                  <AppText weight="Regular" style={[styles.activityRef, { color: C.textMuted }]}>
+                  <AppText
+                    weight='Regular'
+                    style={[styles.activityRef, { color: C.textMuted }]}
+                  >
                     {activity.hadithRef}
                   </AppText>
                 )}
@@ -102,7 +108,9 @@ export default function CategorySection({
               />
             </View>
             {index < categoryActivities.length - 1 && (
-              <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
+              <View
+                style={[styles.divider, { backgroundColor: C.borderLight }]}
+              />
             )}
           </View>
         ))}
@@ -144,4 +152,3 @@ const styles = StyleSheet.create({
   activityRef: { fontSize: 11 },
   divider: { height: 1, marginLeft: 62 },
 });
-

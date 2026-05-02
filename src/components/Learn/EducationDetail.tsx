@@ -8,13 +8,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@components/UI/AppText";
-import Colors from "@constants/colors";
 import { type EducationEntry } from "@types";
 import { useLocalize } from "@hooks/useLocalize";
+import { useTheme } from "@context/ThemeContext";
 
 interface EducationDetailProps {
   entry: EducationEntry;
@@ -30,9 +29,7 @@ export default function EducationDetail({
   onClose,
 }: EducationDetailProps) {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
   const localize = useLocalize();
@@ -51,12 +48,13 @@ export default function EducationDetail({
       >
         <TouchableOpacity
           onPress={onClose}
-          style={[
-            styles.closeButton,
-            { backgroundColor: C.backgroundSubtle },
-          ]}
+          style={[styles.closeButton, { backgroundColor: C.backgroundSubtle }]}
         >
-          <Feather name={I18nManager.isRTL ? "arrow-right" : "arrow-left"} size={20} color={C.text} />
+          <Feather
+            name={I18nManager.isRTL ? "arrow-right" : "arrow-left"}
+            size={20}
+            color={C.text}
+          />
         </TouchableOpacity>
 
         <LinearGradient
@@ -66,15 +64,15 @@ export default function EducationDetail({
           end={{ x: 1, y: 1 }}
         >
           <View style={[styles.detailCategoryBadge]}>
-            <AppText weight="Medium" style={styles.detailCategoryText}>
+            <AppText weight='Medium' style={styles.detailCategoryText}>
               {mapCategoryLabel(entry.category)}
             </AppText>
           </View>
-          <AppText weight="Bold" style={styles.detailTitle}>
+          <AppText weight='Bold' style={styles.detailTitle}>
             {localize(entry.title)}
           </AppText>
           {showBilingual && (
-            <AppText weight="Regular" style={styles.detailTitleAr}>
+            <AppText weight='Regular' style={styles.detailTitleAr}>
               {entry.title.ar}
             </AppText>
           )}
@@ -86,7 +84,10 @@ export default function EducationDetail({
             { backgroundColor: C.backgroundCard, borderColor: C.border },
           ]}
         >
-          <AppText weight="Regular" style={[styles.detailText, { color: C.text }]}>
+          <AppText
+            weight='Regular'
+            style={[styles.detailText, { color: C.text }]}
+          >
             {localize(entry.content)}
           </AppText>
         </View>
@@ -98,10 +99,16 @@ export default function EducationDetail({
               { backgroundColor: C.backgroundCard, borderColor: C.border },
             ]}
           >
-            <AppText weight="Medium" style={[styles.arabicLabel, { color: C.textSecondary }]}>
+            <AppText
+              weight='Medium'
+              style={[styles.arabicLabel, { color: C.textSecondary }]}
+            >
               {t("learn.arabicSection")}
             </AppText>
-            <AppText weight="Regular" style={[styles.arabicBodyText, { color: C.text }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.arabicBodyText, { color: C.text }]}
+            >
               {entry.content.ar}
             </AppText>
           </View>
@@ -113,12 +120,18 @@ export default function EducationDetail({
             { backgroundColor: C.successLight, borderColor: C.tint + "30" },
           ]}
         >
-          <Feather name="book-open" size={16} color={C.tint} />
+          <Feather name='book-open' size={16} color={C.tint} />
           <View style={{ flex: 1 }}>
-            <AppText weight="Bold" style={[styles.sourceLabel, { color: C.tint }]}>
+            <AppText
+              weight='Bold'
+              style={[styles.sourceLabel, { color: C.tint }]}
+            >
               {t("common.source")}
             </AppText>
-            <AppText weight="Regular" style={[styles.sourceRef, { color: C.tint }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.sourceRef, { color: C.tint }]}
+            >
               {entry.source}
             </AppText>
           </View>
@@ -190,4 +203,3 @@ const styles = StyleSheet.create({
   sourceLabel: { fontSize: 12 },
   sourceRef: { fontSize: 14 },
 });
-

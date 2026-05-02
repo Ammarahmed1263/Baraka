@@ -1,9 +1,9 @@
 import { Feather } from "@expo/vector-icons";
-import { Pressable, StyleSheet, View, useColorScheme } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { AppText } from "@components/UI/AppText";
-import Colors from "@constants/colors";
 import { type EducationEntry } from "@types";
 import { useLocalize } from "@hooks/useLocalize";
+import { useTheme } from "@context/ThemeContext";
 
 interface EducationCardProps {
   entry: EducationEntry;
@@ -16,9 +16,7 @@ export default function EducationCard({
   mapCategoryLabel,
   onPress,
 }: EducationCardProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
   const localize = useLocalize();
 
   const categoryColors: Record<string, string> = {
@@ -44,25 +42,41 @@ export default function EducationCard({
         },
       ]}
     >
-      <View style={[styles.categoryBadge, { backgroundColor: catColor + "18" }]}>
-        <AppText weight="Bold" style={[styles.categoryBadgeText, { color: catColor }]}>
+      <View
+        style={[styles.categoryBadge, { backgroundColor: catColor + "18" }]}
+      >
+        <AppText
+          weight='Bold'
+          style={[styles.categoryBadgeText, { color: catColor }]}
+        >
           {mapCategoryLabel(entry.category)}
         </AppText>
       </View>
-      <AppText weight="Bold" style={[styles.eduTitle, { color: C.text }]} numberOfLines={2}>
+      <AppText
+        weight='Bold'
+        style={[styles.eduTitle, { color: C.text }]}
+        numberOfLines={2}
+      >
         {localize(entry.title)}
       </AppText>
-      <AppText weight="Regular" style={[styles.eduPreview, { color: C.textSecondary }]} numberOfLines={3}>
+      <AppText
+        weight='Regular'
+        style={[styles.eduPreview, { color: C.textSecondary }]}
+        numberOfLines={3}
+      >
         {localize(entry.content)}
       </AppText>
       <View style={styles.eduFooter}>
         <View style={styles.sourceRow}>
-          <Feather name="book-open" size={11} color={C.tint} />
-          <AppText weight="Regular" style={[styles.sourceText, { color: C.tint }]}>
+          <Feather name='book-open' size={11} color={C.tint} />
+          <AppText
+            weight='Regular'
+            style={[styles.sourceText, { color: C.tint }]}
+          >
             {entry.source}
           </AppText>
         </View>
-        <Feather name="chevron-right" size={16} color={C.textMuted} />
+        <Feather name='chevron-right' size={16} color={C.textMuted} />
       </View>
     </Pressable>
   );
@@ -94,4 +108,3 @@ const styles = StyleSheet.create({
   sourceRow: { flexDirection: "row", alignItems: "center", gap: 5 },
   sourceText: { fontSize: 11 },
 });
-
