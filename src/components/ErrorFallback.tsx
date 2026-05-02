@@ -9,10 +9,10 @@ import {
   StyleSheet,
   Text,
   View,
-  useColorScheme,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "@context/ThemeContext";
 
 export type ErrorFallbackProps = {
   error: Error;
@@ -21,16 +21,15 @@ export type ErrorFallbackProps = {
 
 export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
+  const { colors: C } = useTheme();
   const insets = useSafeAreaInsets();
 
   const theme = {
-    background: isDark ? "#000000" : "#FFFFFF",
-    backgroundSubtle: isDark ? "#1C1C1E" : "#F2F2F7",
-    text: isDark ? "#FFFFFF" : "#000000",
-    textSecondary: isDark ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.7)",
-    link: "#007AFF",
+    background: C.background,
+    backgroundSubtle: C.backgroundSubtle,
+    text: C.text,
+    textSecondary: C.textSecondary,
+    link: C.tint,
     buttonText: "#FFFFFF",
   };
 
@@ -65,7 +64,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
         <Pressable
           onPress={() => setIsModalVisible(true)}
           accessibilityLabel={t("error.viewDetails")}
-          accessibilityRole="button"
+          accessibilityRole='button'
           style={({ pressed }) => [
             styles.topButton,
             {
@@ -75,7 +74,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
             },
           ]}
         >
-          <Feather name="alert-circle" size={20} color={theme.text} />
+          <Feather name='alert-circle' size={20} color={theme.text} />
         </Pressable>
       ) : null}
 
@@ -108,7 +107,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
       {__DEV__ ? (
         <Modal
           visible={isModalVisible}
-          animationType="slide"
+          animationType='slide'
           transparent={true}
           onRequestClose={() => setIsModalVisible(false)}
         >
@@ -123,9 +122,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
                 style={[
                   styles.modalHeader,
                   {
-                    borderBottomColor: isDark
-                      ? "rgba(255, 255, 255, 0.1)"
-                      : "rgba(0, 0, 0, 0.1)",
+                    borderBottomColor: C.border,
                   },
                 ]}
               >
@@ -135,13 +132,13 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
                 <Pressable
                   onPress={() => setIsModalVisible(false)}
                   accessibilityLabel={t("error.closeDetails")}
-                  accessibilityRole="button"
+                  accessibilityRole='button'
                   style={({ pressed }) => [
                     styles.closeButton,
                     { opacity: pressed ? 0.6 : 1 },
                   ]}
                 >
-                  <Feather name="x" size={24} color={theme.text} />
+                  <Feather name='x' size={24} color={theme.text} />
                 </Pressable>
               </View>
 

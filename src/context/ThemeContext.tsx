@@ -4,7 +4,7 @@ import Colors from "@constants/colors";
 import { useSettingsStore } from "@store/settingsStore";
 import { type AppSettings } from "@/types";
 
-type ThemeType = AppSettings['darkMode'];
+type ThemeType = Exclude<AppSettings["darkMode"], "auto">;
 
 interface ThemeContextType {
   theme: ThemeType;
@@ -14,12 +14,11 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const systemColorScheme = useColorScheme();
   const darkModePreference = useSettingsStore((s) => s.settings.darkMode);
-  const isLoading = useSettingsStore((s) => s.isLoading);
-
-  if (isLoading) return null;
 
   const theme: ThemeType = useMemo(() => {
     if (darkModePreference === "auto") {
@@ -28,13 +27,18 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return darkModePreference;
   }, [darkModePreference, systemColorScheme]);
 
-  const value = useMemo(() => ({
-    theme,
-    colors: Colors[theme],
-    isDark: theme === "dark",
-  }), [theme]);
+  const value = useMemo(
+    () => ({
+      theme,
+      colors: Colors[theme],
+      isDark: theme === "dark",
+    }),
+    [theme],
+  );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 };
 
 export const useTheme = () => {

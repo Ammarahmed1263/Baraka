@@ -44,15 +44,15 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <ErrorBoundary>
-        <ThemeProvider>
+      <ThemeProvider>
+        <ErrorBoundary>
           <I18nextProvider i18n={i18n}>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <RootLayoutNav />
             </GestureHandlerRootView>
           </I18nextProvider>
-        </ThemeProvider>
-      </ErrorBoundary>
+        </ErrorBoundary>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }
