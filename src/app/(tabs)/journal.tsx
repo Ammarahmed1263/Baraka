@@ -14,7 +14,6 @@ import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { type JournalEntry } from "@types";
 import { useActivitiesStore, useJournalStore } from "@store";
 import { useLanguage } from "@i18n";
@@ -262,6 +261,7 @@ export default function JournalScreen() {
               >
                 <AppText
                   weight="Medium"
+                  numberOfLines={1}
                   style={[
                     styles.filterText,
                     {
@@ -401,6 +401,10 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     borderRadius: 20,
     borderWidth: 1,
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   filterText: { fontSize: 13 },
   emptyState: { alignItems: "center", paddingVertical: 48, gap: 12 },

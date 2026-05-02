@@ -1,34 +1,32 @@
 import { Feather } from "@expo/vector-icons";
-import { StyleSheet, View, useColorScheme } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { AppText } from "@components/UI/AppText";
-import Colors from "@constants/colors";
 import { NIYYAH_OPTIONS } from "@data/niyyahTemplates";
 import { useLocalize } from "@hooks/useLocalize";
 import { type JournalEntry } from "@types";
+import { useTheme } from "@context/ThemeContext";
 
 interface JournalCardProps {
   entry: JournalEntry;
 }
 
 export default function JournalCard({ entry }: JournalCardProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
   const localize = useLocalize();
   const { i18n } = useTranslation();
   const lang = i18n.language as "en" | "ar";
 
   const formattedDate = new Date(entry.createdAt).toLocaleDateString(
     lang === "ar" ? "ar-SA" : "en-US",
-    { weekday: "short", month: "short", day: "numeric" }
+    { weekday: "short", month: "short", day: "numeric" },
   );
   const formattedTime = new Date(entry.createdAt).toLocaleTimeString(
     lang === "ar" ? "ar-SA" : "en-US",
     {
       hour: "2-digit",
       minute: "2-digit",
-    }
+    },
   );
 
   const impactfulOption = entry.impactfulNiyyah
@@ -38,39 +36,71 @@ export default function JournalCard({ entry }: JournalCardProps) {
   const activityDisplayName = localize(entry.activityName);
 
   return (
-    <View style={[styles.journalCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
+    <View
+      style={[
+        styles.journalCard,
+        { backgroundColor: C.backgroundCard, borderColor: C.border },
+      ]}
+    >
       <View style={styles.cardHeader}>
         <View style={styles.cardChips}>
-          <View style={[styles.activityChip, { backgroundColor: C.tint + "18" }]}>
-            <AppText weight="Bold" style={[styles.activityChipText, { color: C.tint }]}>
+          <View
+            style={[styles.activityChip, { backgroundColor: C.tint + "18" }]}
+          >
+            <AppText
+              weight='Bold'
+              style={[styles.activityChipText, { color: C.tint }]}
+            >
               {activityDisplayName}
             </AppText>
           </View>
           {(entry.selectedNiyyahCount ?? 0) > 1 && (
-            <View style={[styles.countChip, { backgroundColor: C.gold + "22", borderColor: C.gold + "55" }]}>
-              <Feather name="star" size={10} color={C.gold} />
-              <AppText weight="Bold" style={[styles.countChipText, { color: C.gold }]}>
+            <View
+              style={[
+                styles.countChip,
+                { backgroundColor: C.gold + "22", borderColor: C.gold + "55" },
+              ]}
+            >
+              <Feather name='star' size={10} color={C.gold} />
+              <AppText
+                weight='Bold'
+                style={[styles.countChipText, { color: C.gold }]}
+              >
                 ×{entry.selectedNiyyahCount}
               </AppText>
             </View>
           )}
         </View>
         <View style={styles.dateInfo}>
-          <AppText weight="Regular" style={[styles.dateText, { color: C.textMuted }]}>
+          <AppText
+            weight='Regular'
+            style={[styles.dateText, { color: C.textMuted }]}
+          >
             {formattedDate}
           </AppText>
-          <AppText weight="Regular" style={[styles.timeText, { color: C.textMuted }]}>
+          <AppText
+            weight='Regular'
+            style={[styles.timeText, { color: C.textMuted }]}
+          >
             {formattedTime}
           </AppText>
         </View>
       </View>
-      <AppText weight="Regular" style={[styles.noteText, { color: C.text }]}>
+      <AppText weight='Regular' style={[styles.noteText, { color: C.text }]}>
         {entry.note}
       </AppText>
       {impactfulOption && (
-        <View style={[styles.impactRow, { backgroundColor: C.gold + "11", borderColor: C.gold + "33" }]}>
-          <Feather name="heart" size={12} color={C.gold} />
-          <AppText weight="Regular" style={[styles.impactText, { color: C.gold }]}>
+        <View
+          style={[
+            styles.impactRow,
+            { backgroundColor: C.gold + "11", borderColor: C.gold + "33" },
+          ]}
+        >
+          <Feather name='heart' size={12} color={C.gold} />
+          <AppText
+            weight='Regular'
+            style={[styles.impactText, { color: C.gold }]}
+          >
             {localize(impactfulOption.text)}
           </AppText>
         </View>
@@ -92,7 +122,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-  cardChips: { flexDirection: "row", gap: 6, alignItems: "center", flexWrap: "wrap", flex: 1 },
+  cardChips: {
+    flexDirection: "row",
+    gap: 6,
+    alignItems: "center",
+    flexWrap: "wrap",
+    flex: 1,
+  },
   activityChip: {
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -124,4 +160,3 @@ const styles = StyleSheet.create({
   },
   impactText: { flex: 1, fontSize: 12 },
 });
-
