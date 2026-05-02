@@ -16,7 +16,6 @@ import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useSettingsStore,
   useActivitiesStore,
@@ -288,7 +287,7 @@ export default function SettingsScreen() {
             }
           />
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
-          <SettingRow
+          {/* <SettingRow
             icon="layers"
             iconColor={C.gold}
             iconBg={C.gold + "18"}
@@ -303,7 +302,7 @@ export default function SettingsScreen() {
                 ios_backgroundColor={C.border}
               />
             }
-          />
+          /> */}
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
           <SettingRow
             icon="bell"
@@ -432,10 +431,10 @@ const styles = StyleSheet.create({
   scrollContent: { paddingHorizontal: 20 },
   title: { fontSize: 28, marginBottom: 20 },
   sectionLabel: {
-    fontSize: 12,
+    fontSize: 16,
     textTransform: "uppercase",
     letterSpacing: 1,
-    marginBottom: 4,
+    marginBottom: 8,
     marginLeft: 4,
   },
   sectionSubLabel: { fontSize: 13, lineHeight: 18, marginBottom: 10, marginLeft: 4 },

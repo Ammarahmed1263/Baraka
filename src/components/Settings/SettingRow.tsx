@@ -1,8 +1,8 @@
 import React from "react";
-import { View, StyleSheet, useColorScheme } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { AppText } from "@components/UI/AppText";
-import Colors from "@constants/colors";
+import { useTheme } from "@context/ThemeContext";
 
 interface SettingRowProps {
   icon: keyof typeof Feather.glyphMap | string;
@@ -21,9 +21,7 @@ export default function SettingRow({
   desc,
   right,
 }: SettingRowProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+  const { colors: C } = useTheme();
 
   const color = iconColor || C.tint;
   const bg = iconBg || C.tint + "18";
@@ -35,11 +33,17 @@ export default function SettingRow({
           <Feather name={icon as any} size={16} color={color} />
         </View>
         <View style={{ flex: 1 }}>
-          <AppText weight="Medium" style={[styles.settingName, { color: C.text }]}>
+          <AppText
+            weight='Medium'
+            style={[styles.settingName, { color: C.text }]}
+          >
             {label}
           </AppText>
           {desc && (
-            <AppText weight="Regular" style={[styles.settingDesc, { color: C.textMuted }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.settingDesc, { color: C.textMuted }]}
+            >
               {desc}
             </AppText>
           )}
@@ -68,4 +72,3 @@ const styles = StyleSheet.create({
   settingName: { fontSize: 15 },
   settingDesc: { fontSize: 12, marginTop: 2 },
 });
-
