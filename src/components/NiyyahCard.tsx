@@ -7,12 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from "react-native";
-import Colors from "@constants/colors";
 import type { UserActivity } from "@types";
 import { useLocalize } from "@hooks/useLocalize";
 import { AppText } from "@components/UI/AppText";
+import { useTheme } from "@context/ThemeContext";
 
 type Props = {
   activity: UserActivity;
@@ -38,17 +37,28 @@ const ICON_MAP: Record<string, string> = {
   wind: "wind",
 };
 
-export default function NiyyahCard({ activity, completed, onToggle, onPress }: Props) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const C = isDark ? Colors.dark : Colors.light;
+export default function NiyyahCard({
+  activity,
+  completed,
+  onToggle,
+  onPress,
+}: Props) {
+  const { colors: C, isDark } = useTheme();
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const localize = useLocalize();
 
   const handleCheckPress = async () => {
     Animated.sequence([
-      Animated.timing(scaleAnim, { toValue: 0.94, duration: 80, useNativeDriver: true }),
-      Animated.timing(scaleAnim, { toValue: 1, duration: 120, useNativeDriver: true }),
+      Animated.timing(scaleAnim, {
+        toValue: 0.94,
+        duration: 80,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 120,
+        useNativeDriver: true,
+      }),
     ]).start();
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onToggle();
@@ -60,16 +70,19 @@ export default function NiyyahCard({ activity, completed, onToggle, onPress }: P
   const displayName = localize(activity.name);
   const displayNiyyah = activity.customNiyyah ?? localize(activity.niyyahText);
 
-
   return (
-    <Animated.View style={{ transform: [{ scale: scaleAnim }], marginBottom: 10 }}>
+    <Animated.View
+      style={{ transform: [{ scale: scaleAnim }], marginBottom: 10 }}
+    >
       <Pressable
         onPress={onPress}
         style={({ pressed }) => [
           styles.card,
           {
             backgroundColor: completed
-              ? isDark ? C.successLight : "#F0FDF4"
+              ? isDark
+                ? C.successLight
+                : "#F0FDF4"
               : C.backgroundCard,
             borderColor: completed ? C.tint + "40" : C.border,
             opacity: pressed ? 0.95 : 1,
@@ -77,11 +90,16 @@ export default function NiyyahCard({ activity, completed, onToggle, onPress }: P
         ]}
       >
         {/* Color accent bar */}
-        <View style={[styles.accentBar, { backgroundColor: activityColor }]} />
+        {/* <View style={[styles.accentBar, { backgroundColor: activityColor }]} /> */}
 
         <View style={styles.content}>
           {/* Icon */}
-          <View style={[styles.iconContainer, { backgroundColor: activityColor + "18" }]}>
+          <View
+            style={[
+              styles.iconContainer,
+              { backgroundColor: activityColor + "18" },
+            ]}
+          >
             <Feather name={iconName} size={18} color={activityColor} />
           </View>
 
@@ -89,7 +107,7 @@ export default function NiyyahCard({ activity, completed, onToggle, onPress }: P
           <View style={styles.textContainer}>
             <View style={styles.nameRow}>
               <AppText
-                weight="Bold"
+                weight='Bold'
                 style={[
                   styles.activityName,
                   { color: completed ? C.tint : C.text },
@@ -99,15 +117,26 @@ export default function NiyyahCard({ activity, completed, onToggle, onPress }: P
                 {displayName}
               </AppText>
               {selectedCount > 0 && (
-                <View style={[styles.countBadge, { backgroundColor: C.gold + "33", borderColor: C.gold + "66" }]}>
-                  <AppText weight="Bold" style={[styles.countText, { color: C.gold }]}>
+                <View
+                  style={[
+                    styles.countBadge,
+                    {
+                      backgroundColor: C.gold + "33",
+                      borderColor: C.gold + "66",
+                    },
+                  ]}
+                >
+                  <AppText
+                    weight='Bold'
+                    style={[styles.countText, { color: C.gold }]}
+                  >
                     ×{selectedCount + 1}
                   </AppText>
                 </View>
               )}
             </View>
             <AppText
-              weight="Regular"
+              weight='Regular'
               style={[styles.niyyahPreview, { color: C.textSecondary }]}
               numberOfLines={1}
             >
@@ -128,7 +157,7 @@ export default function NiyyahCard({ activity, completed, onToggle, onPress }: P
               },
             ]}
           >
-            {completed && <Feather name="check" size={14} color="#FFF" />}
+            {completed && <Feather name='check' size={14} color='#FFF' />}
           </TouchableOpacity>
         </View>
       </Pressable>
@@ -177,4 +206,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-

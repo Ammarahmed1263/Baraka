@@ -31,6 +31,13 @@ import { AppText } from "@components/UI/AppText";
 
 type Step = "view" | "reflect";
 
+const ROLE_META = {
+  homemaker: { icon: "home", color: "#EC4899", label: "Homemaker" },
+  parent: { icon: "users", color: "#F97316", label: "Parent" },
+  student: { icon: "book", color: "#8B5CF6", label: "Student" },
+  professional: { icon: "briefcase", color: "#3B82F6", label: "Professional" },
+};
+
 export default function ActivityDetailScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -456,17 +463,41 @@ export default function ActivityDetailScreen() {
                     {checked && <Feather name="check" size={12} color="#FFF" />}
                   </View>
                   <View style={{ flex: 1 }}>
-                    <AppText
-                      weight={checked ? "Medium" : "Regular"}
-                      style={[
-                        styles.optionText,
-                        {
-                          color: checked ? C.text : C.textSecondary,
-                        },
-                      ]}
-                    >
-                      {localize(option.text)}
-                    </AppText>
+                    <View style={styles.optionHeader}>
+                      <AppText
+                        weight={checked ? "Medium" : "Regular"}
+                        style={[
+                          styles.optionText,
+                          {
+                            color: checked ? C.text : C.textSecondary,
+                          },
+                        ]}
+                      >
+                        {localize(option.text)}
+                      </AppText>
+                      {option.profileTag && (
+                        <View
+                          style={[
+                            styles.roleBadge,
+                            { backgroundColor: ROLE_META[option.profileTag].color + "20" },
+                          ]}
+                        >
+                          <Feather
+                            name={ROLE_META[option.profileTag].icon as any}
+                            size={10}
+                            color={ROLE_META[option.profileTag].color}
+                          />
+                          <AppText
+                            style={[
+                              styles.roleBadgeText,
+                              { color: ROLE_META[option.profileTag].color },
+                            ]}
+                          >
+                            {t(`settings.profile.${option.profileTag}`)}
+                          </AppText>
+                        </View>
+                      )}
+                    </View>
                     {showBilingual && (
                       <AppText weight="Regular" style={[styles.optionTextAr, { color: C.textMuted }]}>
                         {option.text.ar}
@@ -630,7 +661,24 @@ const styles = StyleSheet.create({
     marginTop: 1,
     flexShrink: 0,
   },
-  optionText: { fontSize: 14, lineHeight: 20 },
+  optionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    gap: 8,
+  },
+  optionText: { fontSize: 14, lineHeight: 20, flex: 1 },
+  roleBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    alignSelf: "flex-start",
+    marginTop: 2,
+  },
+  roleBadgeText: { fontSize: 10, fontWeight: "600" },
   optionTextAr: { fontSize: 13, textAlign: "right", lineHeight: 20, marginTop: 2 },
   optionSource: { fontSize: 11, marginTop: 2 },
   addCustomBtn: { flexDirection: "row", alignItems: "center", gap: 8, padding: 12, borderRadius: 10, borderWidth: 1, borderStyle: "dashed", marginTop: 6 },
