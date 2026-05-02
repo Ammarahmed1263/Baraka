@@ -8,7 +8,12 @@ export const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export const HADITH_OPENER = {
-  en: '"Actions are only by intentions, and every person will have only what they intended."',
-  ar: '"إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى."',
-  ref: "— Prophet Muhammad ﷺ (Bukhari & Muslim)",
+  text: {
+    en: '"Actions are only by intentions, and every person will have only what they intended."',
+    ar: '"إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى."',
+  },
+  ref: {
+    en: "— Prophet Muhammad ﷺ (Bukhari & Muslim)",
+    ar: "— محمد رسول الله ﷺ (البخاري ومسلم)",
+  },
 };

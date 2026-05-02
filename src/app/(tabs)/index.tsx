@@ -66,7 +66,7 @@ export default function TodayScreen() {
         markComplete(activity.id, activity.selectedNiyyahIds ?? []);
       }
     },
-    [isCompletedToday, markComplete, unmarkComplete]
+    [isCompletedToday, markComplete, unmarkComplete],
   );
 
   const handleCardPress = useCallback((activity: UserActivity) => {
@@ -74,7 +74,9 @@ export default function TodayScreen() {
   }, []);
 
   const topPadding = isWeb ? 67 : insets.top;
-  const completedCount = enabledActivities.filter((a) => isCompletedToday(a.id)).length;
+  const completedCount = enabledActivities.filter((a) =>
+    isCompletedToday(a.id),
+  ).length;
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
@@ -85,22 +87,24 @@ export default function TodayScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <View>
-            <AppText weight="Medium" style={[styles.greeting, { color: C.gold }]}>
-              {getDayGreeting()}
-            </AppText>
+        {/* Header Hero Area */}
+        <View style={styles.heroArea}>
+          <View style={styles.header}>
+            <View style={styles.greetingContainer}>
+              <AppText weight='Medium' style={[styles.greeting, { color: C.gold }]}>
+                {getDayGreeting()}
+              </AppText>
+            </View>
+            <StreakBadge streak={streak} />
           </View>
-          <StreakBadge streak={streak} />
+
+          <AppText weight='Bold' style={[styles.dayName, { color: C.text }]}>
+            {getDayName()}
+          </AppText>
         </View>
 
-        <AppText weight="Bold" style={[styles.dayName, { color: C.gold, marginBottom: 16 }]}>
-          {getDayName()}
-        </AppText>
-
         {/* Hadith Card */}
-        <HadithCard lang={lang} />
+        <HadithCard />
 
         {/* Progress + Ajr Row */}
         <DashboardStats
@@ -110,24 +114,50 @@ export default function TodayScreen() {
           ajr={ajr}
         />
 
-        {/* Activities */}
-        <AppText weight="Bold" style={[styles.sectionTitle, { color: C.gold }]}>
-          {t("dashboard.yourIntentions")}
-        </AppText>
+        {/* Activities Section Header */}
+        <View style={styles.sectionHeader}>
+          <AppText weight='Bold' style={[styles.sectionTitle, { color: C.gold }]}>
+            {t("dashboard.yourIntentions")}
+          </AppText>
+          {enabledActivities.length > 0 && (
+            <View style={[styles.countBadge, { backgroundColor: C.gold + "15", borderColor: C.gold + "30" }]}>
+              <AppText weight="Bold" style={[styles.countBadgeText, { color: C.gold }]}>
+                {completedCount}/{enabledActivities.length}
+              </AppText>
+            </View>
+          )}
+        </View>
 
         {enabledActivities.length === 0 ? (
-          <View style={[styles.emptyState, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-            <Feather name="plus-circle" size={32} color={C.tintLight} />
-            <AppText weight="Regular" style={[styles.emptyText, { color: C.textSecondary }]}>
+          <View
+            style={[
+              styles.emptyState,
+              { backgroundColor: C.backgroundCard, borderColor: C.border },
+            ]}
+          >
+            <View style={[styles.emptyIconContainer, { backgroundColor: C.tint + "10" }]}>
+              <Feather name='plus-circle' size={38} color={C.tint} />
+            </View>
+            <AppText
+              weight='Medium'
+              style={[styles.emptyTitle, { color: C.text }]}
+            >
+              {t("common.noActivities", "Ready to start?")}
+            </AppText>
+            <AppText
+              weight='Regular'
+              style={[styles.emptyText, { color: C.textSecondary }]}
+            >
               {t("dashboard.emptyActivities")}
             </AppText>
             <TouchableOpacity
               style={[styles.emptyButton, { backgroundColor: C.tint }]}
               onPress={() => router.push("/(tabs)/reminders")}
             >
-              <AppText weight="Bold" style={styles.emptyButtonText}>
+              <AppText weight='Bold' style={styles.emptyButtonText}>
                 {t("dashboard.addActivities")}
               </AppText>
+              <Feather name="arrow-right" size={16} color="#FFF" />
             </TouchableOpacity>
           </View>
         ) : (
@@ -145,8 +175,11 @@ export default function TodayScreen() {
         {/* Ajr explanation footer */}
         {ajr.acts > 0 && (
           <View style={[styles.ajrFooter, { borderColor: C.border }]}>
-            <Feather name="info" size={13} color={C.textMuted} />
-            <AppText weight="Regular" style={[styles.ajrFooterText, { color: C.textMuted }]}>
+            <Feather name='info' size={13} color={C.textMuted} />
+            <AppText
+              weight='Regular'
+              style={[styles.ajrFooterText, { color: C.textMuted }]}
+            >
               {t("dashboard.ajrFooter")}
             </AppText>
           </View>
@@ -163,35 +196,64 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 20,
+    marginBottom: 12,
   },
-  greeting: { fontSize: 24, marginBottom: 2 },
-  dayName: { fontSize: 20 },
-  sectionTitle: { fontSize: 18, marginBottom: 12 },
+  heroArea: {
+    marginBottom: 24,
+    paddingTop: 8,
+  },
+  greetingContainer: { flex: 1 },
+  greeting: { fontSize: 16, marginBottom: 2 },
+  dayName: { fontSize: 24, letterSpacing: -0.5 },
+  sectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  sectionTitle: { fontSize: 20 },
+  countBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  countBadgeText: { fontSize: 13 },
   emptyState: {
     alignItems: "center",
-    padding: 32,
-    borderRadius: 16,
+    padding: 40,
+    borderRadius: 24,
     borderWidth: 1,
-    gap: 12,
+    gap: 16,
   },
-  emptyText: { fontSize: 15, textAlign: "center", lineHeight: 22 },
+  emptyIconContainer: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 8,
+  },
+  emptyTitle: { fontSize: 20 },
+  emptyText: { fontSize: 15, textAlign: "center", lineHeight: 22, opacity: 0.8 },
   emptyButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 16,
+    marginTop: 8,
   },
-  emptyButtonText: { color: "#FFF", fontSize: 15 },
+  emptyButtonText: { color: "#FFF", fontSize: 16 },
   ajrFooter: {
     flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 8,
-    marginTop: 16,
-    paddingTop: 12,
-    borderTopWidth: 1,
+    alignItems: "center",
+    gap: 10,
+    marginTop: 24,
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: "rgba(0,0,0,0.03)",
   },
-  ajrFooterText: { flex: 1, fontSize: 12, lineHeight: 16 },
+  ajrFooterText: { flex: 1, fontSize: 12, lineHeight: 18 },
 });
-
-
