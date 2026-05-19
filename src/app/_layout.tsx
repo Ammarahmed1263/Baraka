@@ -14,8 +14,8 @@ SplashScreen.preventAutoHideAsync();
 function RootLayoutNav() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="activity/[id]" options={{ presentation: "modal" }} />
+      <Stack.Screen name='(tabs)' />
+      <Stack.Screen name='activity/[id]' options={{ presentation: "modal" }} />
     </Stack>
   );
 }
@@ -43,18 +43,16 @@ export default function RootLayout() {
   if (!i18nReady) return null;
 
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <ErrorBoundary>
-          <I18nextProvider i18n={i18n}>
-            <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <ErrorBoundary>
+            <I18nextProvider i18n={i18n}>
               <RootLayoutNav />
-            </GestureHandlerRootView>
-          </I18nextProvider>
-        </ErrorBoundary>
-      </ThemeProvider>
-    </SafeAreaProvider>
+            </I18nextProvider>
+          </ErrorBoundary>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
-
-
