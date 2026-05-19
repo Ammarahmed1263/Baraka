@@ -112,9 +112,9 @@ export default function SettingsScreen() {
     await changeLanguage(nextLanguage);
   };
 
-  const handleBilingualToggle = () => {
-    updateSettings({ showBilingual: !settings.showBilingual });
-  };
+  // const handleBilingualToggle = () => {
+  //   updateSettings({ showBilingual: !settings.showBilingual });
+  // };
 
   const ROLE_UNLOCK_MESSAGES: Record<ProfileKey, { en: string; ar: string }> = {
     isHomemaker: {
@@ -286,8 +286,8 @@ export default function SettingsScreen() {
               />
             }
           />
-          <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
-          {/* <SettingRow
+          {/* <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
+          <SettingRow
             icon="layers"
             iconColor={C.gold}
             iconBg={C.gold + "18"}

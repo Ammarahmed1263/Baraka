@@ -34,7 +34,7 @@ export default function UserStatsCard({
         {/* Streak */}
         <View style={styles.statItem}>
           <View style={[styles.iconBox, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
-            <Feather name="zap" size={16} color={C.gold} />
+            <Feather name="zap" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {streak}
@@ -47,7 +47,7 @@ export default function UserStatsCard({
         {/* Total Completed */}
         <View style={styles.statItem}>
           <View style={[styles.iconBox, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
-            <Feather name="check-circle" size={16} color={C.gold} />
+            <Feather name="check-circle" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {totalCompleted}
@@ -60,7 +60,7 @@ export default function UserStatsCard({
         {/* Journal Entries */}
         <View style={styles.statItem}>
           <View style={[styles.iconBox, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
-            <Feather name="book-open" size={16} color={C.gold} />
+            <Feather name="book-open" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {totalJournal}
@@ -104,9 +104,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   iconBox: {
-    width: 32,
-    height: 32,
-    borderRadius: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 4,
