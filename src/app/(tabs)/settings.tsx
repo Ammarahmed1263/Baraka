@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
   Animated,
+  I18nManager,
   Platform,
   ScrollView,
   Share,
@@ -369,7 +370,7 @@ export default function SettingsScreen() {
                 </AppText>
               </View>
             </View>
-            <Feather name="chevron-right" size={18} color={C.textMuted} />
+            <Feather name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={C.textMuted} />
           </TouchableOpacity>
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
           <TouchableOpacity style={styles.settingRow} onPress={handleClearData} activeOpacity={0.7}>
@@ -386,7 +387,7 @@ export default function SettingsScreen() {
                 </AppText>
               </View>
             </View>
-            <Feather name="chevron-right" size={18} color={C.textMuted} />
+            <Feather name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={C.textMuted} />
           </TouchableOpacity>
         </View>
 

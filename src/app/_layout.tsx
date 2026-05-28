@@ -8,20 +8,35 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { ErrorBoundary } from "@components/ErrorBoundary";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { useSettingsStore } from "@store/settingsStore";
 
 SplashScreen.preventAutoHideAsync();
 
 function RootLayoutNav() {
+  const onboardingComplete = useSettingsStore(
+    (s) => s.settings.onboardingComplete,
+  );
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='(tabs)' />
-      <Stack.Screen name='activity/[id]' options={{ presentation: "modal" }} />
+      <Stack.Protected guard={onboardingComplete}>
+        <Stack.Screen name='(tabs)' />
+        <Stack.Screen
+          name='activity/[id]'
+          options={{ presentation: "modal" }}
+        />
+      </Stack.Protected>
+
+      <Stack.Protected guard={!onboardingComplete}>
+        <Stack.Screen name='onboarding' options={{ gestureEnabled: false }} />
+      </Stack.Protected>
     </Stack>
   );
 }
 
 export default function RootLayout() {
   const [i18nReady, setI18nReady] = useState(false);
+  const isLoading = useSettingsStore((s) => s.isLoading);
 
   useEffect(() => {
     if (i18n.isInitialized) {
@@ -35,12 +50,12 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    if (i18nReady) {
+    if (i18nReady && !isLoading) {
       SplashScreen.hideAsync();
     }
-  }, [i18nReady]);
+  }, [i18nReady, isLoading]);
 
-  if (!i18nReady) return null;
+  if (!i18nReady || isLoading) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

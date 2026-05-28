@@ -154,5 +154,13 @@
   "activity.reflectPromptSingle": "كيف شعرت بتجديد هذه النية؟",
   "activity.reflectPromptMulti": "جددت {{count}} نيات معاً. أيها أثّرت فيك أكثر اليوم؟",
   "activity.multiplierBadge": "×{{count}} نيات",
-  "activity.cancel": "إلغاء"
+  "activity.cancel": "إلغاء",
+  "onboarding.skip": "تخطي",
+  "onboarding.next": "التالي",
+  "onboarding.getStarted": "ابدأ الآن",
+  "onboarding.pickTitle": "اختر أول ٣ أنشطة لك",
+  "onboarding.pickSubtext": "يمكنك إضافة المزيد لاحقاً. ({{count}}/{{max}})",
+  "onboarding.done": "تم",
+  "onboarding.skipForNow": "تخطي الآن",
+  "onboarding.continueWithDefaults": "المتابعة بالأنشطة الافتراضية"
 }

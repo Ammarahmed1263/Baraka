@@ -19,6 +19,7 @@ const DEFAULT_SETTINGS: AppSettings = {
 type SettingsStore = {
   settings: AppSettings;
   isLoading: boolean;
+  setLoading: () => void;
   updateSettings: (updates: Partial<AppSettings>) => void;
   getProfileTags: () => string[];
 };
@@ -29,6 +30,7 @@ export const useSettingsStore = create<SettingsStore>()(
       settings: DEFAULT_SETTINGS,
       isLoading: true,
 
+      setLoading: () => set({ isLoading: false }),
       updateSettings: (updates) =>
         set((state) => ({
           settings: {
@@ -49,10 +51,11 @@ export const useSettingsStore = create<SettingsStore>()(
       name: "@niyyah_settings",
       storage: createJSONStorage(() => AsyncStorage),
       onRehydrateStorage: () => (state) => {
-        state?.updateSettings({}); // trigger merge with defaults
-        if (state) state.isLoading = false;
+        if (state) {
+          state.updateSettings({});
+          state.setLoading();
+        }
       },
-    }
-  )
+    },
+  ),
 );
-

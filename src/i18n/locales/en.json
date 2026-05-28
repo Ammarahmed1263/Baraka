@@ -154,5 +154,13 @@
   "activity.reflectPromptSingle": "How did renewing this intention feel?",
   "activity.reflectPromptMulti": "You renewed {{count}} intentions at once. Which one impacted you most today?",
   "activity.multiplierBadge": "×{{count}} intentions",
-  "activity.cancel": "Cancel"
+  "activity.cancel": "Cancel",
+  "onboarding.skip": "Skip",
+  "onboarding.next": "Next",
+  "onboarding.getStarted": "Get Started",
+  "onboarding.pickTitle": "Pick your first 3 activities",
+  "onboarding.pickSubtext": "You can always add more later. ({{count}}/{{max}})",
+  "onboarding.done": "Done",
+  "onboarding.skipForNow": "Skip for now",
+  "onboarding.continueWithDefaults": "Continue with defaults"
 }

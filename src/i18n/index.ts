@@ -54,11 +54,14 @@ const reloadApp = async () => {
 async function syncInitialRTL() {
   try {
     const savedLang = await AsyncStorage.getItem(LANG_KEY);
-    const lng = normalizeLanguage(savedLang);
-    applyRTL(lng);
-  } catch {
-    applyRTL(FALLBACK);
-  }
+    if (savedLang) {
+      applyRTL(normalizeLanguage(savedLang));
+      return;
+    }
+  } catch { }
+
+  const deviceLang = getLocales()[0]?.languageCode;
+  applyRTL(normalizeLanguage(deviceLang));
 }
 
 const languageDetector = {
