@@ -7,18 +7,13 @@
     "icon": "./assets/images/icon.png",
     "scheme": "baraka",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#002020"
-    },
     "ios": {
       "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#002020"
+        "backgroundColor": "#0D1F17"
       },
       "package": "com.ammar_001.barakaniyyah"
     },
@@ -27,6 +22,18 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#F8FAF9",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "dark": {
+            "backgroundColor": "#0D1F17",
+            "image": "./assets/images/splash-icon.png"
+          }
+        }
+      ],
       [
         "expo-font",
         {
