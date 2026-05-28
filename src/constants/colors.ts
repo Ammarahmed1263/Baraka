@@ -1,5 +1,5 @@
 const emerald = "#2D7A4F";
-const emeraldLight = "#3DA066";
+const emeraldLight = "#2DA066";
 const gold = "#C9A84C";
 const goldLight = "#E8C96A";
 
