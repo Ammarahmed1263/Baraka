@@ -73,3 +73,8 @@ This document outlines the phased roadmap for upgrading the Baraka app's archite
 
 ### Automated Testing
 - `npm run typecheck` to ensure no regression in TypeScript interfaces.
+
+### TODO: Before Store MVP
+- Android widgets
+- Report wrong/weak hadith
+- Activity-specific reminders
