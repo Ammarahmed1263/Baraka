@@ -413,7 +413,7 @@ export default function ActivityDetailScreen() {
                 <View style={styles.sourceRow}>
                   <Feather name="book-open" size={12} color={C.tintLight} />
                   <AppText weight="Regular" style={[styles.sourceText, { color: C.tintLight }]}>
-                    {basicNiyyah.source}
+                    {localize(basicNiyyah.source)}
                   </AppText>
                 </View>
               )}
@@ -505,7 +505,7 @@ export default function ActivityDetailScreen() {
                     )}
                     {option.source && (
                       <AppText weight="Regular" style={[styles.optionSource, { color: C.tintLight }]}>
-                        {option.source}
+                        {localize(option.source)}
                       </AppText>
                     )}
                   </View>
@@ -577,7 +577,7 @@ export default function ActivityDetailScreen() {
           <View style={[styles.sourceSection, { backgroundColor: C.successLight, borderColor: C.tint + "30" }]}>
             <Feather name="book-open" size={14} color={C.tint} />
             <AppText weight="Medium" style={[styles.sourceText, { color: C.tint }]}>
-              {activity.hadithRef}
+              {localize(activity.hadithRef)}
             </AppText>
           </View>
         )}

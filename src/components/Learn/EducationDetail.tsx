@@ -132,7 +132,7 @@ export default function EducationDetail({
               weight='Regular'
               style={[styles.sourceRef, { color: C.tint }]}
             >
-              {entry.source}
+              {localize(entry.source)}
             </AppText>
           </View>
         </View>

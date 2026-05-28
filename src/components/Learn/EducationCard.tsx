@@ -1,9 +1,9 @@
-import { Feather } from "@expo/vector-icons";
-import { Pressable, StyleSheet, View } from "react-native";
 import { AppText } from "@components/UI/AppText";
-import { type EducationEntry } from "@types";
-import { useLocalize } from "@hooks/useLocalize";
 import { useTheme } from "@context/ThemeContext";
+import { Feather } from "@expo/vector-icons";
+import { useLocalize } from "@hooks/useLocalize";
+import { type EducationEntry } from "@types";
+import { I18nManager, Pressable, StyleSheet, View } from "react-native";
 
 interface EducationCardProps {
   entry: EducationEntry;
@@ -73,10 +73,10 @@ export default function EducationCard({
             weight='Regular'
             style={[styles.sourceText, { color: C.tint }]}
           >
-            {entry.source}
+            {localize(entry.source)}
           </AppText>
         </View>
-        <Feather name='chevron-right' size={16} color={C.textMuted} />
+        <Feather name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={C.textMuted} />
       </View>
     </Pressable>
   );

@@ -7,14 +7,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "basic",
     text: { en: "Gain strength for ibadah", ar: "اكتساب القوة للعبادة" },
-    source: "Muslim 2013",
+    source: { en: "Muslim 2013", ar: "مسلم ٢٠١٣" },
   },
   {
     id: "eat_1",
     activityId: "breakfast",
     level: "advanced",
     text: { en: "Follow Sunnah manners (Bismillah, right hand, sitting)", ar: "اتباع آداب السنة (بسم الله، باليد اليمنى، جلوساً)" },
-    source: "Bukhari 5376",
+    source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
   },
   {
     id: "eat_2",
@@ -27,14 +27,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: { en: "Express gratitude to Allah for His rizq", ar: "التعبير عن الشكر لله على رزقه" },
-    source: "Quran 14:7",
+    source: { en: "Quran 14:7", ar: "القرآن ١٤:٧" },
   },
   {
     id: "eat_4",
     activityId: "breakfast",
     level: "advanced",
     text: { en: "Eat moderately to avoid heedlessness", ar: "الأكل باعتدال لتجنب الغفلة" },
-    source: "Ibn Majah 3349",
+    source: { en: "Ibn Majah 3349", ar: "ابن ماجه ٣٣٤٩" },
   },
   {
     id: "lunch_basic",
@@ -47,7 +47,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "lunch",
     level: "advanced",
     text: { en: "Follow Sunnah manners (Bismillah, right hand)", ar: "اتباع آداب السنة (بسم الله، اليد اليمنى)" },
-    source: "Bukhari 5376",
+    source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
   },
   {
     id: "lunch_2",
@@ -72,14 +72,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "dinner",
     level: "advanced",
     text: { en: "Follow Sunnah manners (Bismillah, right hand)", ar: "اتباع آداب السنة (بسم الله، اليد اليمنى)" },
-    source: "Bukhari 5376",
+    source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
   },
   {
     id: "dinner_2",
     activityId: "dinner",
     level: "advanced",
     text: { en: "Strengthen family bonds as an act of worship", ar: "تعزيز روابط الأسرة كعبادة" },
-    source: "Tirmidhi 1897",
+    source: { en: "Tirmidhi 1897", ar: "الترمذي ١٨٩٧" },
   },
   {
     id: "dinner_3",
@@ -94,28 +94,28 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "basic",
     text: { en: "Earn halal provision for myself and family", ar: "كسب الرزق الحلال لنفسي وعائلتي" },
-    source: "Tabarani",
+    source: { en: "Tabarani", ar: "الطبراني" },
   },
   {
     id: "work_1",
     activityId: "work",
     level: "advanced",
     text: { en: "Providing for family as a form of sadaqah", ar: "الإنفاق على الأسرة كصدقة" },
-    source: "Muslim 994",
+    source: { en: "Muslim 994", ar: "مسلم ٩٩٤" },
   },
   {
     id: "work_2",
     activityId: "work",
     level: "advanced",
     text: { en: "Avoid dependence on others and preserve dignity", ar: "تجنب التعلق بالآخرين والحفاظ على الكرامة" },
-    source: "Bukhari 1470",
+    source: { en: "Bukhari 1470", ar: "البخاري ١٤٧٠" },
   },
   {
     id: "work_3",
     activityId: "work",
     level: "advanced",
     text: { en: "Use future earnings for zakat and good causes", ar: "استخدام الأرباح المستقبلية للزكاة والأعمال الخيرية" },
-    source: "Quran 2:177",
+    source: { en: "Quran 2:177", ar: "القرآن ٢:١٧٧" },
   },
   {
     id: "work_4",
@@ -128,7 +128,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "advanced",
     text: { en: "Work with honesty and excellence as an act of worship", ar: "العمل بأمانة وإتقان كعبادة" },
-    source: "Tabarani",
+    source: { en: "Tabarani", ar: "الطبراني" },
     profileTag: "professional",
   },
   {
@@ -136,7 +136,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "advanced",
     text: { en: "Use earnings in Allah's path through zakat and sadaqah", ar: "إنفاق الكسب في سبيل الله بالزكاة والصدقة" },
-    source: "Quran 2:261",
+    source: { en: "Quran 2:261", ar: "القرآن ٢:٢٦١" },
     profileTag: "professional",
   },
   {
@@ -144,7 +144,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "advanced",
     text: { en: "Earn halal provision as sadaqah for the family", ar: "كسب الرزق الحلال كصدقة على العائلة" },
-    source: "Muslim 994",
+    source: { en: "Muslim 994", ar: "مسلم ٩٩٤" },
     profileTag: "professional",
   },
 
@@ -154,7 +154,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "basic",
     text: { en: "Care for the body as Allah's amanah", ar: "الاعتناء بالجسم أمانةً من الله" },
-    source: "Muslim 2664",
+    source: { en: "Muslim 2664", ar: "مسلم ٢٦٦٤" },
   },
   {
     id: "exercise_1",
@@ -167,14 +167,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: { en: "Better serve family and community with strong health", ar: "خدمة العائلة والمجتمع بصحة أفضل" },
-    source: "Tirmidhi 1897",
+    source: { en: "Tirmidhi 1897", ar: "الترمذي ١٨٩٧" },
   },
   {
     id: "exercise_3",
     activityId: "exercise",
     level: "advanced",
     text: { en: "Follow the Sunnah of the strong believer", ar: "اتباع سنة المؤمن القوي" },
-    source: "Muslim 2664",
+    source: { en: "Muslim 2664", ar: "مسلم ٢٦٦٤" },
   },
   {
     id: "exercise_4",
@@ -195,14 +195,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cooking",
     level: "advanced",
     text: { en: "Feed family as an act of charity and love", ar: "إطعام العائلة كصدقة ومحبة" },
-    source: "Muslim 994",
+    source: { en: "Muslim 994", ar: "مسلم ٩٩٤" },
   },
   {
     id: "cooking_2",
     activityId: "cooking",
     level: "advanced",
     text: { en: "Serve spouse and household — a marital Sunnah", ar: "خدمة الزوج والأسرة — سنة زوجية" },
-    source: "Tirmidhi 1162",
+    source: { en: "Tirmidhi 1162", ar: "الترمذي ١١٦٢" },
     profileTag: "homemaker",
   },
   {
@@ -216,7 +216,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cooking",
     level: "advanced",
     text: { en: "Practice mindful Bismillah at every step", ar: "ممارسة بسم الله بوعي في كل خطوة" },
-    source: "Bukhari 5376",
+    source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
   },
   {
     id: "cooking_homemaker_1",
@@ -246,7 +246,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cleaning",
     level: "basic",
     text: { en: "Maintain a clean home following Sunnah of cleanliness", ar: "الحفاظ على نظافة البيت اتباعاً لسنة النظافة" },
-    source: "Muslim 223",
+    source: { en: "Muslim 223", ar: "مسلم ٢٢٣" },
   },
   {
     id: "cleaning_1",
@@ -266,7 +266,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cleaning",
     level: "advanced",
     text: { en: "Embody that 'cleanliness is half of faith'", ar: "تجسيد أن النظافة نصف الإيمان" },
-    source: "Muslim 223",
+    source: { en: "Muslim 223", ar: "مسلم ٢٢٣" },
   },
   {
     id: "cleaning_4",
@@ -296,14 +296,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "sleep",
     level: "basic",
     text: { en: "Rest the body to recharge for worship", ar: "إراحة الجسم لتجديد طاقته للعبادة" },
-    source: "Bukhari 247",
+    source: { en: "Bukhari 247", ar: "البخاري ٢٤٧" },
   },
   {
     id: "sleep_1",
     activityId: "sleep",
     level: "advanced",
     text: { en: "Wake for Tahajjud — set the intention now", ar: "الاستيقاظ للتهجد — اعقد النية الآن" },
-    source: "Bukhari 1145",
+    source: { en: "Bukhari 1145", ar: "البخاري ١١٤٥" },
   },
   {
     id: "sleep_2",
@@ -316,14 +316,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "sleep",
     level: "advanced",
     text: { en: "Follow Sunnah sleep du'a and right-side posture", ar: "اتباع دعاء النوم السني والنوم على الجانب الأيمن" },
-    source: "Bukhari 247",
+    source: { en: "Bukhari 247", ar: "البخاري ٢٤٧" },
   },
   {
     id: "sleep_4",
     activityId: "sleep",
     level: "advanced",
     text: { en: "Rest as counted reward — like a night of worship", ar: "الراحة كأجر محتسب — كليلة من العبادة" },
-    source: "Abu Dawud 5056",
+    source: { en: "Abu Dawud 5056", ar: "أبو داود ٥٠٥٦" },
   },
 
   // ── Prayers ──
@@ -332,28 +332,28 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "fajr",
     level: "basic",
     text: { en: "Obey Allah's command for Fajr prayer", ar: "طاعة أمر الله في صلاة الفجر" },
-    source: "Quran 17:78",
+    source: { en: "Quran 17:78", ar: "القرآن ١٧:٧٨" },
   },
   {
     id: "fajr_1",
     activityId: "fajr",
     level: "advanced",
     text: { en: "Start the day under Allah's protection", ar: "بدء اليوم تحت حماية الله" },
-    source: "Abu Dawud 5082",
+    source: { en: "Abu Dawud 5082", ar: "أبو داود ٥٠٨٢" },
   },
   {
     id: "fajr_2",
     activityId: "fajr",
     level: "advanced",
     text: { en: "Witness the dawn — a moment witnessed by angels", ar: "شهود الفجر — لحظة يشهدها الملائكة" },
-    source: "Quran 17:78",
+    source: { en: "Quran 17:78", ar: "القرآن ١٧:٧٨" },
   },
   {
     id: "fajr_3",
     activityId: "fajr",
     level: "advanced",
     text: { en: "Earn the reward greater than the world and all it contains", ar: "كسب الأجر الأعظم من الدنيا وما فيها" },
-    source: "Muslim 725",
+    source: { en: "Muslim 725", ar: "مسلم ٧٢٥" },
   },
   {
     id: "dhuhur_basic",
@@ -378,7 +378,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "basic",
     text: { en: "Guard the middle prayer as commanded", ar: "حفظ الصلاة الوسطى كما أُمرنا" },
-    source: "Quran 2:238",
+    source: { en: "Quran 2:238", ar: "القرآن ٢:٢٣٨" },
   },
   {
     id: "asr_1",
@@ -391,7 +391,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "advanced",
     text: { en: "Protect from the warning for missing Asr", ar: "الحماية من التحذير لمن يفوته العصر" },
-    source: "Bukhari 552",
+    source: { en: "Bukhari 552", ar: "البخاري ٥٥٢" },
   },
   {
     id: "maghrib_basic",
@@ -416,14 +416,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "isha",
     level: "basic",
     text: { en: "End the day in submission to Allah", ar: "ختام اليوم بالخضوع لله" },
-    source: "Muslim 657",
+    source: { en: "Muslim 657", ar: "مسلم ٦٥٧" },
   },
   {
     id: "isha_1",
     activityId: "isha",
     level: "advanced",
     text: { en: "Guard Isha for its exceptional reward", ar: "الحفاظ على العشاء لأجرها الاستثنائي" },
-    source: "Muslim 656",
+    source: { en: "Muslim 656", ar: "مسلم ٦٥٦" },
   },
   {
     id: "isha_2",
@@ -438,7 +438,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "reading",
     level: "basic",
     text: { en: "Seek knowledge as a religious obligation", ar: "طلب العلم واجب ديني" },
-    source: "Ibn Majah 224",
+    source: { en: "Ibn Majah 224", ar: "ابن ماجه ٢٢٤" },
   },
   {
     id: "reading_1",
@@ -452,7 +452,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "reading",
     level: "advanced",
     text: { en: "Share knowledge as ongoing sadaqah jariyah", ar: "نشر العلم كصدقة جارية" },
-    source: "Muslim 1631",
+    source: { en: "Muslim 1631", ar: "مسلم ١٦٣١" },
   },
   {
     id: "reading_3",
@@ -465,7 +465,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "reading",
     level: "advanced",
     text: { en: "Seek knowledge for Allah's sake alone", ar: "طلب العلم لوجه الله وحده" },
-    source: "Ibn Majah 224",
+    source: { en: "Ibn Majah 224", ar: "ابن ماجه ٢٢٤" },
     profileTag: "student",
   },
   {
@@ -489,14 +489,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "family",
     level: "basic",
     text: { en: "Fulfill rights of family as an act of worship", ar: "أداء حقوق العائلة كعبادة" },
-    source: "Tirmidhi 1897",
+    source: { en: "Tirmidhi 1897", ar: "الترمذي ١٨٩٧" },
   },
   {
     id: "family_1",
     activityId: "family",
     level: "advanced",
     text: { en: "Strengthen blood ties that Allah commanded", ar: "تقوية صلة الرحم التي أوجبها الله" },
-    source: "Bukhari 5988",
+    source: { en: "Bukhari 5988", ar: "البخاري ٥٩٨٨" },
   },
   {
     id: "family_2",
@@ -510,14 +510,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "family",
     level: "advanced",
     text: { en: "Be among the best to my spouse", ar: "أن أكون من أفضل الناس لزوجي" },
-    source: "Tirmidhi 3895",
+    source: { en: "Tirmidhi 3895", ar: "الترمذي ٣٨٩٥" },
   },
   {
     id: "family_parent_1",
     activityId: "family",
     level: "advanced",
     text: { en: "Raise righteous children who will make du'a for me", ar: "تربية أطفال صالحين يدعون لي" },
-    source: "Muslim 1631",
+    source: { en: "Muslim 1631", ar: "مسلم ١٦٣١" },
     profileTag: "parent",
   },
   {
@@ -541,28 +541,28 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "charity",
     level: "basic",
     text: { en: "Give purely for Allah's sake alone", ar: "العطاء خالصاً لوجه الله" },
-    source: "Bukhari 1419",
+    source: { en: "Bukhari 1419", ar: "البخاري ١٤١٩" },
   },
   {
     id: "charity_1",
     activityId: "charity",
     level: "advanced",
     text: { en: "Purify my wealth through giving", ar: "تطهير مالي من خلال العطاء" },
-    source: "Quran 9:103",
+    source: { en: "Quran 9:103", ar: "القرآن ٩:١٠٣" },
   },
   {
     id: "charity_2",
     activityId: "charity",
     level: "advanced",
     text: { en: "Seek the sevenfold multiplication Allah promises", ar: "السعي للمضاعفة السبعينية التي وعد الله بها" },
-    source: "Quran 2:261",
+    source: { en: "Quran 2:261", ar: "القرآن ٢:٢٦١" },
   },
   {
     id: "charity_3",
     activityId: "charity",
     level: "advanced",
     text: { en: "Protect my wealth from loss through sadaqah", ar: "حماية مالي من الضياع بالصدقة" },
-    source: "Muslim 2588",
+    source: { en: "Muslim 2588", ar: "مسلم ٢٥٨٨" },
   },
 
   // ── Commute ──
@@ -577,14 +577,14 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "commute",
     level: "advanced",
     text: { en: "Fill the journey with dhikr and Quran", ar: "ملء الرحلة بالذكر والقرآن" },
-    source: "Bukhari 6682",
+    source: { en: "Bukhari 6682", ar: "البخاري ٦٦٨٢" },
   },
   {
     id: "commute_2",
     activityId: "commute",
     level: "advanced",
     text: { en: "Recite the travel du'a as prophetic Sunnah", ar: "قراءة دعاء السفر اتباعاً للسنة النبوية" },
-    source: "Abu Dawud 2602",
+    source: { en: "Abu Dawud 2602", ar: "أبو داود ٢٦٠٢" },
   },
   {
     id: "commute_3",
@@ -605,4 +605,3 @@ export function getNiyyahOptions(
       (!n.profileTag || profileTags.includes(n.profileTag))
   );
 }
-

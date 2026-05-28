@@ -11,7 +11,7 @@ export type Activity = {
   category: string;
   /** Default niyyah text shown before user selects specific options */
   niyyahText: LocalizedString;
-  hadithRef?: string;
+  hadithRef?: LocalizedString;
   defaultTime?: string;
   color: string;
 };
@@ -21,7 +21,7 @@ export type NiyyahOption = {
   activityId: string;
   level: "basic" | "advanced";
   text: LocalizedString;
-  source?: string;
+  source?: LocalizedString;
   profileTag?: "homemaker" | "student" | "professional" | "parent";
 };
 
@@ -31,7 +31,7 @@ export type EducationEntry = {
   /** Category key used for filtering (e.g. "Foundations", "Work") */
   category: string;
   content: LocalizedString;
-  source: string;
+  source: LocalizedString;
   keywords: string[];
 };
 

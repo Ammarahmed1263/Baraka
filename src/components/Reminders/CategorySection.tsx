@@ -20,6 +20,7 @@ export default function CategorySection({
   const { t } = useTranslation();
   const { colors: C } = useTheme();
   const localize = useLocalize();
+  console.log(categoryActivities)
 
   const getCategoryLabel = (cat: string) => {
     const labels: Record<string, string> = {
@@ -95,7 +96,7 @@ export default function CategorySection({
                     weight='Regular'
                     style={[styles.activityRef, { color: C.textMuted }]}
                   >
-                    {activity.hadithRef}
+                    {localize(activity.hadithRef)}
                   </AppText>
                 )}
               </View>
