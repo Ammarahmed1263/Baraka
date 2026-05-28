@@ -3,9 +3,10 @@ import { EDUCATION_ENTRIES } from "@data/learnContent";
 
 import { useSettingsStore } from "@store";
 import { Feather } from "@expo/vector-icons";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  BackHandler,
   Platform,
   ScrollView,
   StyleSheet,
@@ -42,6 +43,22 @@ export default function LearnScreen() {
   const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(
     null,
   );
+
+  useEffect(() => {
+    if (!selectedEntry) return;
+
+    const backAction = () => {
+      setSelectedEntry(null);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [selectedEntry]);
 
   const filtered = useMemo(() => {
     return EDUCATION_ENTRIES.filter((e) => {
@@ -227,7 +244,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingVertical: 4,
     gap: 10,
     marginBottom: 14,
   },
