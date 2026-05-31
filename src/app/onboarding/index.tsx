@@ -126,7 +126,7 @@ export default function OnboardingPager() {
             variant="primary"
             label={isLastSlide ? t("onboarding.getStarted") : t("onboarding.next")}
             onPress={goNext}
-            style={{ backgroundColor: C.gold }}
+            style={{ backgroundColor: C.gold, paddingHorizontal: 32 }}
           />
         </View>
       </View>

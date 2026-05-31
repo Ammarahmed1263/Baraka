@@ -99,7 +99,7 @@ export default function ActivityPickerScreen() {
           variant="primary"
           label={selectedIds.length === 0 ? t("onboarding.continueWithDefaults") : t("onboarding.done")}
           onPress={handleDone}
-          style={[styles.confirm, { backgroundColor: selectedIds.length === 0 ? C.goldLight : C.gold }]}
+          style={[styles.confirm, { backgroundColor: C.gold }]}
         />
       </View>
     </View>

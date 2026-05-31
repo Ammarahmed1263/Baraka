@@ -64,7 +64,7 @@ export function AppTextInput({
           placeholderTextColor={C.textMuted}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          cursorColor={C.tintDark}
+          cursorColor={C.tint}
           {...props}
         />
         {props.rightIcon && (
