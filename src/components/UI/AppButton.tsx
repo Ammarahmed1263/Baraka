@@ -1,10 +1,9 @@
 import {
-  TouchableOpacity,
-  TouchableOpacityProps,
   StyleSheet,
   ActivityIndicator,
   View,
 } from "react-native";
+import { AnimatedPressable, AnimatedPressableProps } from "./AnimatedPressable";
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "@context/ThemeContext";
@@ -12,7 +11,7 @@ import { AppText } from "./AppText";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive";
 
-interface AppButtonProps extends TouchableOpacityProps {
+interface AppButtonProps extends AnimatedPressableProps {
   label: string;
   variant?: ButtonVariant;
   icon?: keyof typeof Feather.glyphMap;
@@ -83,7 +82,7 @@ export function AppButton({
   const v = getVariantStyles();
 
   return (
-    <TouchableOpacity
+    <AnimatedPressable
       activeOpacity={0.7}
       disabled={disabled || loading}
       onPress={handlePress}
@@ -105,17 +104,17 @@ export function AppButton({
           </AppText>
         </View>
       )}
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 56,
+    height: 48,
     borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 28,
   },
   content: {
     flexDirection: "row",

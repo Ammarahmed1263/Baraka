@@ -7,10 +7,13 @@ import {
 } from "react-native";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
+import { Feather } from "@expo/vector-icons";
 
 interface AppTextInputProps extends TextInputProps {
   label?: string;
   error?: string;
+  leftIcon?: keyof typeof Feather.glyphMap;
+  rightIcon?: React.ReactNode;
 }
 
 export function AppTextInput({
@@ -41,22 +44,35 @@ export function AppTextInput({
           {label}
         </AppText>
       )}
-      <TextInput
-        style={[
-          styles.input,
-          {
-            color: C.text,
-            backgroundColor: C.backgroundSubtle,
-            borderColor: isFocused ? C.tint : C.border,
-          },
-          props.multiline && styles.multiline,
-          style,
-        ]}
-        placeholderTextColor={C.textMuted}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        {...props}
-      />
+      <View style={styles.inputContainer}>
+        {props.leftIcon && (
+          <Feather name={props.leftIcon} size={18} color={C.textMuted} style={styles.leftIcon} />
+        )}
+        <TextInput
+          style={[
+            styles.input,
+            {
+              color: C.text,
+              backgroundColor: C.backgroundSubtle,
+              borderColor: isFocused ? C.tint : C.border,
+            },
+            props.multiline && styles.multiline,
+            props.leftIcon ? { paddingStart: 42 } : undefined,
+            props.rightIcon ? { paddingEnd: 42 } : undefined,
+            style,
+          ]}
+          placeholderTextColor={C.textMuted}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          cursorColor={C.tintDark}
+          {...props}
+        />
+        {props.rightIcon && (
+          <View style={styles.rightIconContainer}>
+            {props.rightIcon}
+          </View>
+        )}
+      </View>
       {error && (
         <AppText style={[styles.error, { color: C.error }]}>
           {error}
@@ -76,13 +92,27 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 4,
   },
+  inputContainer: {
+    position: "relative",
+    justifyContent: "center",
+  },
   input: {
     height: 56,
     borderRadius: 16,
     borderWidth: 1.5,
     paddingHorizontal: 16,
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: "Tajawal-Regular",
+  },
+  leftIcon: {
+    position: "absolute",
+    left: 16,
+    zIndex: 1,
+  },
+  rightIconContainer: {
+    position: "absolute",
+    right: 16,
+    zIndex: 1,
   },
   multiline: {
     height: 120,
