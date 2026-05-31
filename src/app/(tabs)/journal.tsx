@@ -6,10 +6,11 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { AppTextInput } from "@components/UI/AppTextInput";
+import { AppButton } from "@components/UI/AppButton";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
@@ -104,12 +105,12 @@ export default function JournalScreen() {
               {t(journalEntries.length === 1 ? "journal.subtitle.one" : "journal.subtitle.other", { count: journalEntries.length })}
             </AppText>
           </View>
-          <TouchableOpacity
+          <AnimatedPressable
             onPress={() => setShowAdd(!showAdd)}
             style={[styles.addButton, { backgroundColor: C.tint }]}
           >
             <Feather name={showAdd ? "x" : "edit-3"} size={20} color="#FFF" />
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
 
         {/* Add Entry Form */}
@@ -131,7 +132,7 @@ export default function JournalScreen() {
               contentContainerStyle={styles.activityScroll}
             >
               {enabledActivities.map((activity) => (
-                <TouchableOpacity
+                <AnimatedPressable
                   key={activity.id}
                   onPress={() =>
                     setSelectedActivityId(
@@ -164,62 +165,47 @@ export default function JournalScreen() {
                   >
                     {localize(activity.name)}
                   </AppText>
-                </TouchableOpacity>
+                </AnimatedPressable>
               ))}
             </ScrollView>
 
-            <TextInput
+            <AppTextInput
               value={note}
               onChangeText={setNote}
               placeholder={t("journal.notePlaceholder")}
-              placeholderTextColor={C.textMuted}
               multiline
-              style={[
-                styles.noteInput,
-                {
-                  color: C.text,
-                  borderColor: C.border,
-                  backgroundColor: C.backgroundSubtle,
-                },
-              ]}
+              style={{ marginHorizontal: 16, marginTop: 0 }}
             />
             <View style={styles.formActions}>
-              <TouchableOpacity
+              <AppButton
+                variant="ghost"
+                label={t("common.cancel")}
                 onPress={() => { setShowAdd(false); setNote(""); }}
-                style={[styles.cancelBtn, { borderColor: C.border }]}
-              >
-                <AppText weight="Regular" style={[styles.cancelBtnText, { color: C.textSecondary }]}>
-                  {t("common.cancel")}
-                </AppText>
-              </TouchableOpacity>
-              <TouchableOpacity
+              />
+              <AppButton
+                variant="primary"
+                label={t("common.save")}
                 onPress={handleSave}
-                style={[styles.saveBtn, { backgroundColor: C.tint }]}
-              >
-                <AppText weight="Bold" style={styles.saveBtnText}>
-                  {t("common.save")}
-                </AppText>
-              </TouchableOpacity>
+              />
             </View>
           </View>
         )}
 
-        {/* Search */}
         {journalEntries.length > 0 && (
-          <View style={[styles.searchBar, { backgroundColor: C.backgroundSubtle, borderColor: C.border }]}>
-            <Feather name="search" size={16} color={C.textMuted} />
-            <TextInput
+          <View style={{ marginBottom: 12 }}>
+            <AppTextInput
               value={search}
               onChangeText={setSearch}
               placeholder={t("journal.searchPlaceholder")}
-              placeholderTextColor={C.textMuted}
-              style={[styles.searchInput, { color: C.text }]}
+              leftIcon="search"
+              rightIcon={
+                search.length > 0 ? (
+                  <AnimatedPressable onPress={() => setSearch("")}>
+                    <Feather name="x" size={16} color={C.textMuted} />
+                  </AnimatedPressable>
+                ) : undefined
+              }
             />
-            {search.length > 0 && (
-              <TouchableOpacity onPress={() => setSearch("")}>
-                <Feather name="x" size={16} color={C.textMuted} />
-              </TouchableOpacity>
-            )}
           </View>
         )}
 
@@ -244,8 +230,9 @@ export default function JournalScreen() {
                 };
               }),
             ] as Array<{ label: string; value: string }>).map((item) => (
-              <TouchableOpacity
+              <AnimatedPressable
                 key={item.value}
+                scaleDownTo={0.94}
                 onPress={() => setFilterActivity(item.value)}
                 style={[
                   styles.filterChip,
@@ -272,7 +259,7 @@ export default function JournalScreen() {
                 >
                   {item.label}
                 </AppText>
-              </TouchableOpacity>
+              </AnimatedPressable>
             ))}
           </ScrollView>
         )}
@@ -287,14 +274,12 @@ export default function JournalScreen() {
             <AppText weight="Regular" style={[styles.emptyText, { color: C.textSecondary }]}>
               {t("journal.empty.message")}
             </AppText>
-            <TouchableOpacity
+            <AppButton
+              variant="primary"
+              label={t("journal.empty.button")}
               onPress={() => setShowAdd(true)}
-              style={[styles.emptyBtn, { backgroundColor: C.tint }]}
-            >
-              <AppText weight="Bold" style={styles.emptyBtnText}>
-                {t("journal.empty.button")}
-              </AppText>
-            </TouchableOpacity>
+              style={{ marginTop: 8 }}
+            />
           </View>
         )}
 
@@ -360,18 +345,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   activityChipSelectorText: { fontSize: 13 },
-  noteInput: {
-    borderRadius: 10,
-    borderWidth: 1,
-    padding: 14,
-    fontSize: 15,
-    lineHeight: 24,
-    minHeight: 120,
-    textAlignVertical: "top",
-    margin: 16,
-    marginTop: 0,
-    fontFamily: "Tajawal-Regular"
-  },
   formActions: {
     flexDirection: "row",
     gap: 8,
@@ -383,17 +356,6 @@ const styles = StyleSheet.create({
   cancelBtnText: { fontSize: 14 },
   saveBtn: { paddingHorizontal: 20, paddingVertical: 10, borderRadius: 8 },
   saveBtnText: { fontSize: 14, color: "#FFF" },
-  searchBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 12,
-    borderWidth: 1,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    gap: 10,
-    marginBottom: 12,
-  },
-  searchInput: { flex: 1, fontSize: 15, fontFamily: "Tajawal-Regular" },
   filterScroll: { marginBottom: 16 },
   filterContent: { gap: 8 },
   filterChip: {

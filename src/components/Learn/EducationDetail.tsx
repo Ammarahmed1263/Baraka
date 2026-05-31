@@ -6,9 +6,9 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@components/UI/AppText";
 import { type EducationEntry } from "@types";
@@ -46,7 +46,7 @@ export default function EducationDetail({
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <TouchableOpacity
+        <AnimatedPressable
           onPress={onClose}
           style={[styles.closeButton, { backgroundColor: C.backgroundSubtle }]}
         >
@@ -55,7 +55,7 @@ export default function EducationDetail({
             size={20}
             color={C.text}
           />
-        </TouchableOpacity>
+        </AnimatedPressable>
 
         <LinearGradient
           colors={isDark ? ["#1A3326", "#0D2E1F"] : ["#2D7A4F", "#1A5C38"]}

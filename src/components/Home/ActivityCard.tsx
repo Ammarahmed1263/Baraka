@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
 import { useLocalize } from "@hooks/useLocalize";
@@ -24,7 +25,7 @@ export default function ActivityCard({
   const localize = useLocalize();
 
   return (
-    <TouchableOpacity
+    <AnimatedPressable
       onPress={onPress}
       activeOpacity={0.8}
       style={[
@@ -60,7 +61,7 @@ export default function ActivityCard({
           )}
         </View>
 
-        <TouchableOpacity
+        <AnimatedPressable
           onPress={(e) => {
             e.stopPropagation();
             onToggle();
@@ -74,9 +75,9 @@ export default function ActivityCard({
           ]}
         >
           {completed && <Feather name="check" size={14} color="#FFF" />}
-        </TouchableOpacity>
+        </AnimatedPressable>
       </View>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 

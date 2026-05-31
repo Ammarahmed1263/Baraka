@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { View, FlatList, Pressable, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
+import { AppButton } from "@components/UI/AppButton";
 import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
@@ -94,21 +95,12 @@ export default function ActivityPickerScreen() {
           <OnboardingDots total={ONBOARDING_SLIDES.length + 1} currentIndex={ONBOARDING_SLIDES.length} />
         </View>
 
-        <Pressable
+        <AppButton
+          variant="primary"
+          label={selectedIds.length === 0 ? t("onboarding.continueWithDefaults") : t("onboarding.done")}
           onPress={handleDone}
-          style={[
-            styles.doneButton,
-            {
-              backgroundColor: C.gold,
-            },
-          ]}
-        >
-          <AppText weight='Bold' style={styles.doneText}>
-            {selectedIds.length === 0
-              ? t("onboarding.continueWithDefaults")
-              : t("onboarding.done")}
-          </AppText>
-        </Pressable>
+          style={[styles.confirm, { backgroundColor: selectedIds.length === 0 ? C.goldLight : C.gold }]}
+        />
       </View>
     </View>
   );
@@ -156,4 +148,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingVertical: 4,
   },
+  confirm: {
+    width: "100%",
+    height: 56,
+  }
 });

@@ -3,16 +3,16 @@ import * as Haptics from "expo-haptics";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
-  Animated,
   I18nManager,
   Platform,
   ScrollView,
   Share,
   StyleSheet,
   Switch,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
+import Animated, { useSharedValue, useAnimatedStyle, withSequence, withTiming, withDelay } from "react-native-reanimated";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
@@ -88,19 +88,22 @@ export default function SettingsScreen() {
 
   // Toast state
   const [toastMessage, setToastMessage] = useState("");
-  const toastOpacity = useRef(new Animated.Value(0)).current;
+  const toastOpacity = useSharedValue(0);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const showToast = (message: string) => {
     setToastMessage(message);
     if (toastTimer.current) clearTimeout(toastTimer.current);
-    Animated.sequence([
-      Animated.timing(toastOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-      Animated.delay(2200),
-      Animated.timing(toastOpacity, { toValue: 0, duration: 300, useNativeDriver: true }),
-    ]).start();
+    toastOpacity.value = withSequence(
+      withTiming(1, { duration: 200 }),
+      withDelay(2200, withTiming(0, { duration: 300 }))
+    );
     toastTimer.current = setTimeout(() => setToastMessage(""), 2800);
   };
+
+  const animatedToastStyle = useAnimatedStyle(() => ({
+    opacity: toastOpacity.value,
+  }));
 
   useEffect(() => {
     return () => {
@@ -207,9 +210,9 @@ export default function SettingsScreen() {
               backgroundColor: C.backgroundCard,
               borderColor: C.border,
               borderWidth: 1,
-              opacity: toastOpacity,
               bottom: isWeb ? 34 + 84 : 100,
             },
+            animatedToastStyle,
           ]}
           pointerEvents="none"
         >
@@ -331,7 +334,7 @@ export default function SettingsScreen() {
             right={
               <View style={styles.themeSelector}>
                 {(["light", "auto", "dark"] as const).map((mode) => (
-                  <TouchableOpacity
+                  <AnimatedPressable
                     key={mode}
                     onPress={() => updateSettings({ darkMode: mode })}
                     style={[
@@ -344,7 +347,7 @@ export default function SettingsScreen() {
                       size={14}
                       color={currentMode === mode ? "#FFF" : C.textSecondary}
                     />
-                  </TouchableOpacity>
+                  </AnimatedPressable>
                 ))}
               </View>
             }
@@ -356,7 +359,7 @@ export default function SettingsScreen() {
           {t("settings.data")}
         </AppText>
         <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-          <TouchableOpacity style={styles.settingRow} onPress={handleExportData} activeOpacity={0.7}>
+          <AnimatedPressable style={styles.settingRow} onPress={handleExportData} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
               <View style={[styles.settingIcon, { backgroundColor: C.tint + "18" }]}>
                 <Feather name="share" size={16} color={C.tint} />
@@ -371,9 +374,9 @@ export default function SettingsScreen() {
               </View>
             </View>
             <Feather name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={C.textMuted} />
-          </TouchableOpacity>
+          </AnimatedPressable>
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
-          <TouchableOpacity style={styles.settingRow} onPress={handleClearData} activeOpacity={0.7}>
+          <AnimatedPressable style={styles.settingRow} onPress={handleClearData} activeOpacity={0.7}>
             <View style={styles.settingLeft}>
               <View style={[styles.settingIcon, { backgroundColor: "#EF444420" }]}>
                 <Feather name="trash-2" size={16} color="#EF4444" />
@@ -388,7 +391,7 @@ export default function SettingsScreen() {
               </View>
             </View>
             <Feather name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={C.textMuted} />
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
 
         {/* ── About ───────────────────────────────────────────── */}

@@ -20,11 +20,12 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
   View,
   Text,
 } from "react-native";
+import { AppTextInput } from "@components/UI/AppTextInput";
+import { AppButton } from "@components/UI/AppButton";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { useTheme } from "@context/ThemeContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@components/UI/AppText";
@@ -179,12 +180,12 @@ export default function ActivityDetailScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.header}>
-            <TouchableOpacity
+            <AnimatedPressable
               onPress={() => router.back()}
               style={[styles.backButton, { backgroundColor: C.backgroundSubtle }]}
             >
               <Feather name="x" size={20} color={C.text} />
-            </TouchableOpacity>
+            </AnimatedPressable>
           </View>
 
           <LinearGradient
@@ -233,20 +234,11 @@ export default function ActivityDetailScreen() {
             <AppText weight="Regular" style={[styles.reflectPromptHint, { color: C.textSecondary }]}>
               {lang === "ar" ? getImpactPromptAr() : getImpactPrompt()}
             </AppText>
-            <TextInput
+            <AppTextInput
               value={reflectionNote}
               onChangeText={setReflectionNote}
               multiline
               placeholder={t("activity.reflectionPlaceholder")}
-              placeholderTextColor={C.textMuted}
-              style={[
-                styles.noteInput,
-                {
-                  color: C.text,
-                  backgroundColor: C.backgroundSubtle,
-                  borderColor: C.border,
-                },
-              ]}
             />
 
             {localSelected.length > 1 && (
@@ -257,7 +249,7 @@ export default function ActivityDetailScreen() {
                 {allAdvanced
                   .filter((n) => localSelected.includes(n.id))
                   .map((n) => (
-                    <TouchableOpacity
+                    <AnimatedPressable
                       key={n.id}
                       onPress={() => setImpactfulNiyyah(impactfulNiyyah === n.id ? "" : n.id)}
                       style={[
@@ -278,30 +270,26 @@ export default function ActivityDetailScreen() {
                       <AppText weight="Regular" style={[styles.impactOptionText, { color: C.text }]}>
                         {localize(n.text)}
                       </AppText>
-                    </TouchableOpacity>
+                    </AnimatedPressable>
                   ))}
               </>
             )}
           </View>
 
           <View style={styles.reflectActions}>
-            <TouchableOpacity
+            <AppButton
+              variant="outline"
+              label={t("common.skip")}
               onPress={() => router.back()}
-              style={[styles.skipBtn, { borderColor: C.border }]}
-            >
-              <AppText weight="Regular" style={[styles.skipBtnText, { color: C.textSecondary }]}>
-                {t("common.skip")}
-              </AppText>
-            </TouchableOpacity>
-            <TouchableOpacity
+              style={{ flex: 1 }}
+            />
+            <AppButton
+              variant="primary"
+              label={t("activity.saveReflection")}
+              icon="book"
               onPress={handleSaveReflection}
-              style={[styles.saveBtn, { backgroundColor: C.tint }]}
-            >
-              <Feather name="book" size={16} color="#FFF" />
-              <AppText weight="Bold" style={styles.saveBtnText}>
-                {t("activity.saveReflection")}
-              </AppText>
-            </TouchableOpacity>
+              style={{ flex: 2 }}
+            />
           </View>
         </ScrollView>
       </View>
@@ -320,12 +308,12 @@ export default function ActivityDetailScreen() {
       >
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity
+          <AnimatedPressable
             onPress={() => router.back()}
             style={[styles.backButton, { backgroundColor: C.backgroundSubtle }]}
           >
             <Feather name="x" size={20} color={C.text} />
-          </TouchableOpacity>
+          </AnimatedPressable>
           {completed && (
             <View style={[styles.completedBadge, { backgroundColor: C.tint + "22", borderColor: C.tint + "55" }]}>
               <Feather name="check-circle" size={14} color={C.tint} />
@@ -361,42 +349,29 @@ export default function ActivityDetailScreen() {
                 {t("activity.coreIntention")}
               </AppText>
             </View>
-            <TouchableOpacity onPress={() => setShowEditNiyyah(!showEditNiyyah)}>
+            <AnimatedPressable onPress={() => setShowEditNiyyah(!showEditNiyyah)}>
               <Feather name="edit-2" size={16} color={C.tintLight} />
-            </TouchableOpacity>
+            </AnimatedPressable>
           </View>
 
           {showEditNiyyah ? (
             <>
-              <TextInput
+              <AppTextInput
                 value={editedNiyyah}
                 onChangeText={setEditedNiyyah}
                 multiline
-                style={[
-                  styles.editInput,
-                  {
-                    color: C.text,
-                    borderColor: C.tint,
-                    backgroundColor: C.backgroundSubtle,
-                  },
-                ]}
-                placeholderTextColor={C.textMuted}
               />
               <View style={styles.editActions}>
-                <TouchableOpacity
+                <AppButton
+                  variant="ghost"
+                  label={t("common.cancel")}
                   onPress={() => setShowEditNiyyah(false)}
-                  style={[styles.editBtn, { borderColor: C.border }]}
-                >
-                  <AppText style={[styles.editBtnText, { color: C.textSecondary }]}>{t("common.cancel")}</AppText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                />
+                <AppButton
+                  variant="primary"
+                  label={t("common.save")}
                   onPress={handleSaveNiyyah}
-                  style={[styles.editBtn, { backgroundColor: C.tint }]}
-                >
-                  <AppText weight="Bold" style={[styles.editBtnText, { color: "#FFF" }]}>
-                    {t("common.save")}
-                  </AppText>
-                </TouchableOpacity>
+                />
               </View>
             </>
           ) : (
@@ -439,7 +414,7 @@ export default function ActivityDetailScreen() {
             {allAdvanced.map((option) => {
               const checked = localSelected.includes(option.id);
               return (
-                <TouchableOpacity
+                <AnimatedPressable
                   key={option.id}
                   onPress={() => toggleNiyyah(option.id)}
                   style={[
@@ -509,13 +484,13 @@ export default function ActivityDetailScreen() {
                       </AppText>
                     )}
                   </View>
-                </TouchableOpacity>
+                </AnimatedPressable>
               );
             })}
 
             {/* Add custom niyyah */}
             {!showAddCustom ? (
-              <TouchableOpacity
+              <AnimatedPressable
                 onPress={() => setShowAddCustom(true)}
                 style={[styles.addCustomBtn, { borderColor: C.tint + "66" }]}
               >
@@ -523,39 +498,31 @@ export default function ActivityDetailScreen() {
                 <AppText weight="Medium" style={[styles.addCustomText, { color: C.tintLight }]}>
                   {t("activity.addCustomIntention")}
                 </AppText>
-              </TouchableOpacity>
+              </AnimatedPressable>
             ) : (
               <View style={[styles.customInputCard, { backgroundColor: C.backgroundSubtle, borderColor: C.border }]}>
-                <TextInput
+                <AppTextInput
                   value={customText}
                   onChangeText={setCustomText}
                   placeholder={t("activity.customEnPlaceholder")}
-                  placeholderTextColor={C.textMuted}
-                  style={[styles.customInput, { color: C.text, borderColor: C.border }]}
                 />
-                <TextInput
+                <AppTextInput
                   value={customTextAr}
                   onChangeText={setCustomTextAr}
                   placeholder={t("activity.customArPlaceholder")}
-                  placeholderTextColor={C.textMuted}
                   textAlign="right"
-                  style={[styles.customInput, { color: C.text, borderColor: C.border }]}
                 />
                 <View style={styles.editActions}>
-                  <TouchableOpacity
+                  <AppButton
+                    variant="ghost"
+                    label={t("common.cancel")}
                     onPress={() => setShowAddCustom(false)}
-                    style={[styles.editBtn, { borderColor: C.border }]}
-                  >
-                    <AppText style={[styles.editBtnText, { color: C.textSecondary }]}>{t("common.cancel")}</AppText>
-                  </TouchableOpacity>
-                  <TouchableOpacity
+                  />
+                  <AppButton
+                    variant="primary"
+                    label={t("common.add")}
                     onPress={handleAddCustomNiyyah}
-                    style={[styles.editBtn, { backgroundColor: C.tint }]}
-                  >
-                    <AppText weight="Bold" style={[styles.editBtnText, { color: "#FFF" }]}>
-                      {t("common.add")}
-                    </AppText>
-                  </TouchableOpacity>
+                  />
                 </View>
               </View>
             )}
@@ -593,28 +560,22 @@ export default function ActivityDetailScreen() {
                 {t("activity.renewedButton")}
               </AppText>
             </View>
-            <TouchableOpacity
+            <AppButton
+              variant="outline"
+              label={t("activity.unmark")}
               onPress={handleUnmark}
-              style={[styles.unmarkButton, { borderColor: C.border }]}
-            >
-              <AppText weight="Regular" style={[styles.unmarkText, { color: C.textMuted }]}>
-                {t("activity.unmark")}
-              </AppText>
-            </TouchableOpacity>
+              style={{ marginBottom: 10 }}
+            />
           </View>
         ) : (
-          <TouchableOpacity
-            onPress={handleSaveAndRenew}
-            activeOpacity={0.85}
-            style={[styles.renewButton, { backgroundColor: C.tint }]}
-          >
-            <Feather name="refresh-cw" size={20} color="#FFF" />
-            <AppText weight="Bold" style={[styles.renewText, { color: "#FFF" }]}>
-              {localSelected.length > 0
+          <AppButton
+            variant="primary"
+            icon="refresh-cw"
+            label={localSelected.length > 0
                 ? t("activity.renewIntentions", { count: localSelected.length + 1 })
                 : t("activity.renewNiyyah")}
-            </AppText>
-          </TouchableOpacity>
+            onPress={handleSaveAndRenew}
+          />
         )}
       </ScrollView>
     </View>
@@ -684,8 +645,6 @@ const styles = StyleSheet.create({
   addCustomBtn: { flexDirection: "row", alignItems: "center", gap: 8, padding: 12, borderRadius: 10, borderWidth: 1, borderStyle: "dashed", marginTop: 6 },
   addCustomText: { fontSize: 14 },
   customInputCard: { borderRadius: 10, padding: 12, borderWidth: 1, gap: 8, marginTop: 6 },
-  customInput: { borderWidth: 1, borderRadius: 8, padding: 10, fontSize: 14 },
-  editInput: { borderWidth: 1.5, borderRadius: 10, padding: 12, fontSize: 15, lineHeight: 22, minHeight: 90, textAlignVertical: "top" },
   editActions: { flexDirection: "row", gap: 8, marginTop: 4, justifyContent: "flex-end" },
   editBtn: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8, borderWidth: 1 },
   editBtnText: { fontSize: 14 },
@@ -708,7 +667,6 @@ const styles = StyleSheet.create({
   reflectCard: { borderRadius: 14, padding: 16, marginBottom: 16, borderWidth: 1, gap: 12 },
   reflectPromptLabel: { fontSize: 16 },
   reflectPromptHint: { fontSize: 14, lineHeight: 20, marginTop: -4 },
-  noteInput: { borderRadius: 10, borderWidth: 1, padding: 12, fontSize: 15, lineHeight: 22, minHeight: 100, textAlignVertical: "top" },
   impactLabel: { fontSize: 13, textTransform: "uppercase", letterSpacing: 0.6 },
   impactOption: { flexDirection: "row", alignItems: "center", gap: 10, padding: 10, borderRadius: 8, borderWidth: 1, marginTop: 6 },
   impactDot: { width: 16, height: 16, borderRadius: 8, borderWidth: 2, flexShrink: 0 },

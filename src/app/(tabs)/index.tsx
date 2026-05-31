@@ -6,9 +6,9 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { AppButton } from "@components/UI/AppButton";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@context/ThemeContext";
@@ -150,15 +150,12 @@ export default function TodayScreen() {
             >
               {t("dashboard.emptyActivities")}
             </AppText>
-            <TouchableOpacity
-              style={[styles.emptyButton, { backgroundColor: C.tint }]}
+            <AppButton
+              variant="primary"
+              label={t("dashboard.addActivities")}
               onPress={() => router.push("/(tabs)/reminders")}
-            >
-              <AppText weight='Bold' style={styles.emptyButtonText}>
-                {t("dashboard.addActivities")}
-              </AppText>
-              <Feather name="arrow-right" size={16} color="#FFF" />
-            </TouchableOpacity>
+              style={{ marginTop: 20 }}
+            />
           </View>
         ) : (
           enabledActivities.map((activity) => (

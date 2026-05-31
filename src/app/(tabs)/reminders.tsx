@@ -5,7 +5,6 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { useTheme } from "@context/ThemeContext";
@@ -14,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { type UserActivity } from "@types";
 import { useActivitiesStore } from "@store";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 
 import AddActivityForm from "@components/Reminders/AddActivityForm";
 import CategorySection from "@components/Reminders/CategorySection";
@@ -56,12 +56,12 @@ export default function RemindersScreen() {
               {t("reminders.subtitle")}
             </AppText>
           </View>
-          <TouchableOpacity
+          <AnimatedPressable
             onPress={() => setShowAddForm(!showAddForm)}
             style={[styles.addButton, { backgroundColor: C.tint }]}
           >
             <Feather name={showAddForm ? "x" : "plus"} size={20} color="#FFF" />
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
 
         {/* Add Form */}

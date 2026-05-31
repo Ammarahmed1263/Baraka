@@ -2,10 +2,10 @@ import { useRef, useState, useCallback } from "react";
 import {
   View,
   FlatList,
-  Pressable,
   StyleSheet,
   useWindowDimensions,
 } from "react-native";
+import { AppButton } from "@components/UI/AppButton";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -115,21 +115,19 @@ export default function OnboardingPager() {
           style={[styles.buttonRow, currentIndex === 0 && styles.buttonRowEnd]}
         >
           {currentIndex > 0 && (
-            <Pressable onPress={goToActivityPicker} hitSlop={12}>
-              <AppText style={[styles.skipText, { color: C.textMuted }]}>
-                {t("onboarding.skip")}
-              </AppText>
-            </Pressable>
+            <AppButton
+              variant="ghost"
+              label={t("onboarding.skip")}
+              onPress={goToActivityPicker}
+            />
           )}
 
-          <Pressable
+          <AppButton
+            variant="primary"
+            label={isLastSlide ? t("onboarding.getStarted") : t("onboarding.next")}
             onPress={goNext}
-            style={[styles.nextButton, { backgroundColor: C.gold }]}
-          >
-            <AppText weight='Bold' style={styles.nextText}>
-              {isLastSlide ? t("onboarding.getStarted") : t("onboarding.next")}
-            </AppText>
-          </Pressable>
+            style={{ backgroundColor: C.gold }}
+          />
         </View>
       </View>
     </View>

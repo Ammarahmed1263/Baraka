@@ -2,10 +2,11 @@ import { useState } from "react";
 import {
   View,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
   Alert,
 } from "react-native";
+import { AppButton } from "@components/UI/AppButton";
+import { AppTextInput } from "@components/UI/AppTextInput";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { Feather } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import * as Haptics from "expo-haptics";
@@ -108,35 +109,16 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
       <AppText weight='Bold' style={[styles.formTitle, { color: C.text }]}>
         {t("reminders.newActivity")}
       </AppText>
-      <TextInput
+      <AppTextInput
         value={newName}
         onChangeText={setNewName}
         placeholder={t("reminders.activityNamePlaceholder")}
-        placeholderTextColor={C.textMuted}
-        style={[
-          styles.formInput,
-          {
-            color: C.text,
-            borderColor: C.border,
-            backgroundColor: C.backgroundSubtle,
-          },
-        ]}
       />
-      <TextInput
+      <AppTextInput
         value={newNiyyah}
         onChangeText={setNewNiyyah}
         placeholder={t("reminders.intentionPlaceholder")}
-        placeholderTextColor={C.textMuted}
         multiline
-        style={[
-          styles.formInput,
-          styles.formInputMulti,
-          {
-            color: C.text,
-            borderColor: C.border,
-            backgroundColor: C.backgroundSubtle,
-          },
-        ]}
       />
 
       {/* Icon Picker */}
@@ -148,7 +130,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
       </AppText>
       <View style={styles.iconPicker}>
         {ICON_OPTIONS.map((icon) => (
-          <TouchableOpacity
+          <AnimatedPressable
             key={icon}
             onPress={() => setSelectedIcon(icon)}
             style={[
@@ -165,7 +147,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
               size={18}
               color={selectedIcon === icon ? C.tint : C.textSecondary}
             />
-          </TouchableOpacity>
+          </AnimatedPressable>
         ))}
       </View>
 
@@ -178,7 +160,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
       </AppText>
       <View style={styles.colorPicker}>
         {COLOR_OPTIONS.map((color) => (
-          <TouchableOpacity
+          <AnimatedPressable
             key={color}
             onPress={() => setSelectedColor(color)}
             style={[
@@ -190,18 +172,16 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
             {selectedColor === color && (
               <Feather name='check' size={12} color='#FFF' />
             )}
-          </TouchableOpacity>
+          </AnimatedPressable>
         ))}
       </View>
 
-      <TouchableOpacity
+      <AppButton
+        label={t("reminders.addActivity")}
         onPress={handleAddActivity}
-        style={[styles.formSubmit, { backgroundColor: C.tint }]}
-      >
-        <AppText weight='Bold' style={styles.formSubmitText}>
-          {t("reminders.addActivity")}
-        </AppText>
-      </TouchableOpacity>
+        variant="primary"
+        style={{ marginTop: 4 }}
+      />
     </View>
   );
 }
@@ -215,13 +195,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   formTitle: { fontSize: 17, marginBottom: 4 },
-  formInput: {
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 12,
-    fontSize: 15,
-  },
-  formInputMulti: { minHeight: 80, textAlignVertical: "top" },
   pickerLabel: { fontSize: 13 },
   iconPicker: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   iconOption: {
@@ -247,11 +220,4 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
   },
-  formSubmit: {
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-    marginTop: 4,
-  },
-  formSubmitText: { color: "#FFF", fontSize: 16 },
 });

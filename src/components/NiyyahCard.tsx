@@ -1,13 +1,17 @@
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { useRef } from "react";
 import {
-  Animated,
-  Pressable,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+  withSpring,
+} from "react-native-reanimated";
+import { AnimatedPressable } from "./UI/AnimatedPressable";
 import type { UserActivity } from "@types";
 import { useLocalize } from "@hooks/useLocalize";
 import { AppText } from "@components/UI/AppText";
@@ -44,22 +48,14 @@ export default function NiyyahCard({
   onPress,
 }: Props) {
   const { colors: C, isDark } = useTheme();
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const checkScale = useSharedValue(1);
   const localize = useLocalize();
 
   const handleCheckPress = async () => {
-    Animated.sequence([
-      Animated.timing(scaleAnim, {
-        toValue: 0.94,
-        duration: 80,
-        useNativeDriver: true,
-      }),
-      Animated.timing(scaleAnim, {
-        toValue: 1,
-        duration: 120,
-        useNativeDriver: true,
-      }),
-    ]).start();
+    checkScale.value = withSequence(
+      withTiming(0.94, { duration: 80 }),
+      withSpring(1, { damping: 15, stiffness: 300 })
+    );
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onToggle();
   };
@@ -70,13 +66,15 @@ export default function NiyyahCard({
   const displayName = localize(activity.name);
   const displayNiyyah = activity.customNiyyah ?? localize(activity.niyyahText);
 
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: checkScale.value }],
+  }));
+
   return (
-    <Animated.View
-      style={{ transform: [{ scale: scaleAnim }], marginBottom: 10 }}
-    >
-      <Pressable
+    <Animated.View style={[animatedStyle, { marginBottom: 10 }]}>
+      <AnimatedPressable
         onPress={onPress}
-        style={({ pressed }) => [
+        style={[
           styles.card,
           {
             backgroundColor: completed
@@ -85,7 +83,6 @@ export default function NiyyahCard({
                 : "#F0FDF4"
               : C.backgroundCard,
             borderColor: completed ? C.tint + "40" : C.border,
-            opacity: pressed ? 0.95 : 1,
           },
         ]}
       >
@@ -145,9 +142,8 @@ export default function NiyyahCard({
           </View>
 
           {/* Check Button */}
-          <TouchableOpacity
+          <AnimatedPressable
             onPress={handleCheckPress}
-            activeOpacity={0.8}
             style={[
               styles.checkButton,
               {
@@ -158,9 +154,9 @@ export default function NiyyahCard({
             ]}
           >
             {completed && <Feather name='check' size={14} color='#FFF' />}
-          </TouchableOpacity>
+          </AnimatedPressable>
         </View>
-      </Pressable>
+      </AnimatedPressable>
     </Animated.View>
   );
 }

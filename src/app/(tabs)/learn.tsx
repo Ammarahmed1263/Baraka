@@ -10,10 +10,10 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { AppTextInput } from "@components/UI/AppTextInput";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { useTheme } from "@context/ThemeContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@components/UI/AppText";
@@ -129,28 +129,20 @@ export default function LearnScreen() {
         </AppText>
 
         {/* Search */}
-        <View
-          style={[
-            styles.searchBar,
-            { backgroundColor: C.backgroundSubtle, borderColor: C.border },
-          ]}
-        >
-          <Feather name="search" size={16} color={C.textMuted} />
-          <TextInput
+        <View style={{ marginBottom: 14 }}>
+          <AppTextInput
             value={search}
             onChangeText={setSearch}
             placeholder={t("learn.searchPlaceholder")}
-            placeholderTextColor={C.textMuted}
-            style={[
-              styles.searchInput,
-              { color: C.text },
-            ]}
+            leftIcon="search"
+            rightIcon={
+              search.length > 0 ? (
+                <AnimatedPressable onPress={() => setSearch("")}>
+                  <Feather name="x" size={16} color={C.textMuted} />
+                </AnimatedPressable>
+              ) : undefined
+            }
           />
-          {search.length > 0 && (
-            <TouchableOpacity onPress={() => setSearch("")}>
-              <Feather name="x" size={16} color={C.textMuted} />
-            </TouchableOpacity>
-          )}
         </View>
 
         {/* Category Filter */}
@@ -161,8 +153,9 @@ export default function LearnScreen() {
           contentContainerStyle={styles.filterContent}
         >
           {CATEGORIES.map((cat) => (
-            <TouchableOpacity
+            <AnimatedPressable
               key={cat}
+              scaleDownTo={0.94}
               onPress={() => setActiveCategory(cat)}
               style={[
                 styles.filterChip,
@@ -184,7 +177,7 @@ export default function LearnScreen() {
               >
                 {mapCategoryLabel(cat)}
               </AppText>
-            </TouchableOpacity>
+            </AnimatedPressable>
           ))}
         </ScrollView>
 
@@ -238,19 +231,8 @@ const styles = StyleSheet.create({
   scrollContent: { paddingHorizontal: 20 },
   title: { fontSize: 28, marginBottom: 4 },
   subtitle: { fontSize: 14, marginBottom: 16 },
-  searchBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 12,
-    borderWidth: 1,
-    paddingHorizontal: 14,
-    paddingVertical: 4,
-    gap: 10,
-    marginBottom: 14,
-  },
-  searchInput: { flex: 1, fontSize: 15, fontFamily: "Tajawal-Regular" },
-  filterScroll: { marginBottom: 12 },
-  filterContent: { gap: 8, paddingRight: 20 },
+  filterScroll: { marginBottom: 12, marginHorizontal: -20 },
+  filterContent: { gap: 8, paddingHorizontal: 20 },
   filterChip: {
     paddingHorizontal: 14,
     paddingVertical: 7,
