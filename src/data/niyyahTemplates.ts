@@ -215,7 +215,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     id: "cooking_4",
     activityId: "cooking",
     level: "advanced",
-    text: { en: "Practice mindful Bismillah at every step", ar: "ممارسة بسم الله بوعي في كل خطوة" },
+    text: { en: "Say Bismillah with mindfulness at every step", ar: "قول بسم الله بوعي في كل خطوة" },
     source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
   },
   {

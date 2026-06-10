@@ -20,7 +20,6 @@ export default function CategorySection({
   const { t } = useTranslation();
   const { colors: C } = useTheme();
   const localize = useLocalize();
-  console.log(categoryActivities)
 
   const getCategoryLabel = (cat: string) => {
     const labels: Record<string, string> = {
