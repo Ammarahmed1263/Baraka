@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
     marginBottom: 12,
   },
   heroArea: {
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   greetingContainer: { flex: 1 },
-  greeting: { fontSize: 16, marginBottom: 2 },
+  greeting: { fontSize: 18 },
   dayName: { fontSize: 24, letterSpacing: -0.5 },
   sectionHeader: {
     flexDirection: "row",

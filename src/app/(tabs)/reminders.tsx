@@ -1,12 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { useState } from "react";
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
@@ -49,10 +44,13 @@ export default function RemindersScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <AppText weight="Bold" style={[styles.title, { color: C.gold }]}>
+            <AppText weight='Bold' style={[styles.title, { color: C.gold }]}>
               {t("reminders.title")}
             </AppText>
-            <AppText weight="Regular" style={[styles.subtitle, { color: C.textSecondary }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.subtitle, { color: C.textSecondary }]}
+            >
               {t("reminders.subtitle")}
             </AppText>
           </View>
@@ -60,16 +58,24 @@ export default function RemindersScreen() {
             onPress={() => setShowAddForm(!showAddForm)}
             style={[styles.addButton, { backgroundColor: C.tint }]}
           >
-            <Feather name={showAddForm ? "x" : "plus"} size={20} color="#FFF" />
+            <Feather
+              name={showAddForm ? "x" : "plus"}
+              size={20}
+              color={C.background}
+            />
           </AnimatedPressable>
         </View>
 
         {/* Add Form */}
-        {showAddForm && <AddActivityForm onClose={() => setShowAddForm(false)} />}
+        {showAddForm && (
+          <AddActivityForm onClose={() => setShowAddForm(false)} />
+        )}
 
         {/* Activity List by Category */}
         {categories.map((category) => {
-          const categoryActivities = activities.filter((a) => a.category === category);
+          const categoryActivities = activities.filter(
+            (a) => a.category === category,
+          );
           return (
             <CategorySection
               key={category}
@@ -103,5 +109,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-

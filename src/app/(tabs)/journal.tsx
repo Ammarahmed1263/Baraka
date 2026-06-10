@@ -1,13 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useMemo, useState } from "react";
-import {
-  Alert,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Alert, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { AppTextInput } from "@components/UI/AppTextInput";
 import { AppButton } from "@components/UI/AppButton";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
@@ -54,12 +48,15 @@ export default function JournalScreen() {
   const groupedLocalized = useMemo(() => {
     const groups: Record<string, JournalEntry[]> = {};
     filtered.forEach((entry) => {
-      const date = new Date(entry.createdAt).toLocaleDateString(lang === "ar" ? "ar-SA" : "en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
+      const date = new Date(entry.createdAt).toLocaleDateString(
+        lang === "ar" ? "ar-SA" : "en-US",
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        },
+      );
       if (!groups[date]) groups[date] = [];
       groups[date].push(entry);
     });
@@ -68,11 +65,19 @@ export default function JournalScreen() {
 
   const handleSave = async () => {
     if (!note.trim()) {
-      Alert.alert(t("journal.alert.emptyNoteTitle"), t("journal.alert.emptyNoteMessage"));
+      Alert.alert(
+        t("journal.alert.emptyNoteTitle"),
+        t("journal.alert.emptyNoteMessage"),
+      );
       return;
     }
-    const selectedActivityObj = enabledActivities.find((a) => a.id === selectedActivityId);
-    const activityName = selectedActivityObj?.name ?? { en: t("journal.general", { lng: "en" }), ar: t("journal.general", { lng: "ar" }) };
+    const selectedActivityObj = enabledActivities.find(
+      (a) => a.id === selectedActivityId,
+    );
+    const activityName = selectedActivityObj?.name ?? {
+      en: t("journal.general", { lng: "en" }),
+      ar: t("journal.general", { lng: "ar" }),
+    };
     await addJournalEntry({
       activityId: selectedActivityId || "general",
       activityName,
@@ -98,29 +103,49 @@ export default function JournalScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <AppText weight="Bold" style={[styles.title, { color: C.gold }]}>
+            <AppText weight='Bold' style={[styles.title, { color: C.gold }]}>
               {t("journal.title")}
             </AppText>
-            <AppText weight="Regular" style={[styles.subtitle, { color: C.textSecondary }]}>
-              {t(journalEntries.length === 1 ? "journal.subtitle.one" : "journal.subtitle.other", { count: journalEntries.length })}
+            <AppText
+              weight='Regular'
+              style={[styles.subtitle, { color: C.textSecondary }]}
+            >
+              {t(
+                journalEntries.length === 1
+                  ? "journal.subtitle.one"
+                  : "journal.subtitle.other",
+                { count: journalEntries.length },
+              )}
             </AppText>
           </View>
           <AnimatedPressable
             onPress={() => setShowAdd(!showAdd)}
             style={[styles.addButton, { backgroundColor: C.tint }]}
           >
-            <Feather name={showAdd ? "x" : "edit-3"} size={20} color="#FFF" />
+            <Feather
+              name={showAdd ? "x" : "edit-3"}
+              size={20}
+              color={C.background}
+            />
           </AnimatedPressable>
         </View>
 
         {/* Add Entry Form */}
         {showAdd && (
-          <View style={[styles.addForm, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
+          <View
+            style={[
+              styles.addForm,
+              { backgroundColor: C.backgroundCard, borderColor: C.border },
+            ]}
+          >
             <LinearGradient
               colors={isDark ? ["#1A3326", "#0D2E1F"] : ["#EDF7F0", "#F0FAF4"]}
               style={styles.formGradient}
             >
-              <AppText weight="Bold" style={[styles.formTitle, { color: C.text }]}>
+              <AppText
+                weight='Bold'
+                style={[styles.formTitle, { color: C.text }]}
+              >
                 {t("journal.newReflection")}
               </AppText>
             </LinearGradient>
@@ -136,7 +161,7 @@ export default function JournalScreen() {
                   key={activity.id}
                   onPress={() =>
                     setSelectedActivityId(
-                      selectedActivityId === activity.id ? "" : activity.id
+                      selectedActivityId === activity.id ? "" : activity.id,
                     )
                   }
                   style={[
@@ -152,7 +177,7 @@ export default function JournalScreen() {
                   ]}
                 >
                   <AppText
-                    weight="Medium"
+                    weight='Medium'
                     style={[
                       styles.activityChipSelectorText,
                       {
@@ -178,12 +203,15 @@ export default function JournalScreen() {
             />
             <View style={styles.formActions}>
               <AppButton
-                variant="ghost"
+                variant='ghost'
                 label={t("common.cancel")}
-                onPress={() => { setShowAdd(false); setNote(""); }}
+                onPress={() => {
+                  setShowAdd(false);
+                  setNote("");
+                }}
               />
               <AppButton
-                variant="primary"
+                variant='primary'
                 label={t("common.save")}
                 onPress={handleSave}
               />
@@ -197,11 +225,11 @@ export default function JournalScreen() {
               value={search}
               onChangeText={setSearch}
               placeholder={t("journal.searchPlaceholder")}
-              leftIcon="search"
+              leftIcon='search'
               rightIcon={
                 search.length > 0 ? (
                   <AnimatedPressable onPress={() => setSearch("")}>
-                    <Feather name="x" size={16} color={C.textMuted} />
+                    <Feather name='x' size={16} color={C.textMuted} />
                   </AnimatedPressable>
                 ) : undefined
               }
@@ -217,19 +245,25 @@ export default function JournalScreen() {
             style={styles.filterScroll}
             contentContainerStyle={styles.filterContent}
           >
-            {([
-              { label: t("journal.general"), value: "__all__" },
-              ...Array.from(new Set(journalEntries.map((e) => e.activityId))).map((activityId) => {
-                const firstEntry = journalEntries.find((e) => e.activityId === activityId);
-                const label = firstEntry
-                  ? localize(firstEntry.activityName)
-                  : t("journal.general");
-                return {
-                  label,
-                  value: activityId,
-                };
-              }),
-            ] as Array<{ label: string; value: string }>).map((item) => (
+            {(
+              [
+                { label: t("journal.general"), value: "__all__" },
+                ...Array.from(
+                  new Set(journalEntries.map((e) => e.activityId)),
+                ).map((activityId) => {
+                  const firstEntry = journalEntries.find(
+                    (e) => e.activityId === activityId,
+                  );
+                  const label = firstEntry
+                    ? localize(firstEntry.activityName)
+                    : t("journal.general");
+                  return {
+                    label,
+                    value: activityId,
+                  };
+                }),
+              ] as Array<{ label: string; value: string }>
+            ).map((item) => (
               <AnimatedPressable
                 key={item.value}
                 scaleDownTo={0.94}
@@ -247,13 +281,15 @@ export default function JournalScreen() {
                 ]}
               >
                 <AppText
-                  weight="Medium"
+                  weight='Medium'
                   numberOfLines={1}
                   style={[
                     styles.filterText,
                     {
                       color:
-                        filterActivity === item.value ? "#FFF" : C.textSecondary,
+                        filterActivity === item.value
+                          ? "#FFF"
+                          : C.textSecondary,
                     },
                   ]}
                 >
@@ -267,15 +303,21 @@ export default function JournalScreen() {
         {/* Empty State */}
         {journalEntries.length === 0 && !showAdd && (
           <View style={styles.emptyState}>
-            <Feather name="edit-3" size={40} color={C.textMuted} />
-            <AppText weight="Bold" style={[styles.emptyTitle, { color: C.text }]}>
+            <Feather name='edit-3' size={40} color={C.textMuted} />
+            <AppText
+              weight='Bold'
+              style={[styles.emptyTitle, { color: C.text }]}
+            >
               {t("journal.empty.title")}
             </AppText>
-            <AppText weight="Regular" style={[styles.emptyText, { color: C.textSecondary }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.emptyText, { color: C.textSecondary }]}
+            >
               {t("journal.empty.message")}
             </AppText>
             <AppButton
-              variant="primary"
+              variant='primary'
               label={t("journal.empty.button")}
               onPress={() => setShowAdd(true)}
               style={{ marginTop: 8 }}
@@ -287,7 +329,7 @@ export default function JournalScreen() {
         {Object.entries(groupedLocalized).map(([date, entries]) => (
           <View key={date} style={styles.dateGroup}>
             <AppText
-              weight="Bold"
+              weight='Bold'
               style={[styles.dateGroupLabel, { color: C.gold }]}
             >
               {date}
@@ -300,8 +342,11 @@ export default function JournalScreen() {
 
         {filtered.length === 0 && journalEntries.length > 0 && (
           <View style={styles.emptyState}>
-            <Feather name="search" size={32} color={C.textMuted} />
-            <AppText weight="Regular" style={[styles.emptyText, { color: C.textSecondary }]}>
+            <Feather name='search' size={32} color={C.textMuted} />
+            <AppText
+              weight='Regular'
+              style={[styles.emptyText, { color: C.textSecondary }]}
+            >
               {t("journal.noFilterResults")}
             </AppText>
           </View>
@@ -352,7 +397,12 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     justifyContent: "flex-end",
   },
-  cancelBtn: { paddingHorizontal: 16, paddingVertical: 10, borderRadius: 8, borderWidth: 1 },
+  cancelBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
   cancelBtnText: { fontSize: 14 },
   saveBtn: { paddingHorizontal: 20, paddingVertical: 10, borderRadius: 8 },
   saveBtnText: { fontSize: 14, color: "#FFF" },
@@ -371,11 +421,24 @@ const styles = StyleSheet.create({
   filterText: { fontSize: 13 },
   emptyState: { alignItems: "center", paddingVertical: 48, gap: 12 },
   emptyTitle: { fontSize: 18 },
-  emptyText: { fontSize: 15, textAlign: "center", lineHeight: 22, maxWidth: 300 },
-  emptyBtn: { paddingHorizontal: 20, paddingVertical: 12, borderRadius: 12, marginTop: 8 },
+  emptyText: {
+    fontSize: 15,
+    textAlign: "center",
+    lineHeight: 22,
+    maxWidth: 300,
+  },
+  emptyBtn: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 12,
+    marginTop: 8,
+  },
   emptyBtnText: { fontSize: 15, color: "#FFF" },
   dateGroup: { marginBottom: 24 },
-  dateGroupLabel: { fontSize: 13, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.6 },
+  dateGroupLabel: {
+    fontSize: 13,
+    marginBottom: 10,
+    textTransform: "uppercase",
+    letterSpacing: 0.6,
+  },
 });
-
-
