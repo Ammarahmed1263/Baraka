@@ -11,7 +11,7 @@ import { useTodayLogs } from "@hooks/useTodayLogs";
 import { useLanguage } from "@i18n";
 import { Feather } from "@expo/vector-icons";
 import { getTodayString } from "@utils/date";
-import * as Haptics from "expo-haptics";
+import { Haptic } from "@utils/haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
@@ -106,24 +106,24 @@ export default function ActivityDetailScreen() {
   };
 
   const handleSaveAndRenew = async () => {
-    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    await Haptic.success();
     const finalSelected =
       localSelected.length === 0 && basicNiyyah
         ? [basicNiyyah.id]
         : localSelected;
-    await updateActivity(activity.id, { selectedNiyyahIds: finalSelected });
-    await markComplete(activity.id, finalSelected);
+    updateActivity(activity.id, { selectedNiyyahIds: finalSelected });
+    markComplete(activity.id, finalSelected);
     setStep("reflect");
   };
 
   const handleUnmark = async () => {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    await unmarkComplete(activity.id);
+    await Haptic.lightTap();
+    unmarkComplete(activity.id);
   };
 
   const handleSaveReflection = async () => {
     if (reflectionNote.trim()) {
-      await addJournalEntry({
+      addJournalEntry({
         activityId: activity.id,
         activityName: activity.name,
         date: getTodayString(),
@@ -136,7 +136,7 @@ export default function ActivityDetailScreen() {
   };
 
   const handleSaveNiyyah = async () => {
-    await updateActivity(activity.id, { customNiyyah: editedNiyyah });
+    updateActivity(activity.id, { customNiyyah: editedNiyyah });
     setShowEditNiyyah(false);
   };
 
@@ -153,7 +153,7 @@ export default function ActivityDetailScreen() {
       },
     };
     const existing = activity.customNiyyahOptions || [];
-    await updateActivity(activity.id, {
+    updateActivity(activity.id, {
       customNiyyahOptions: [...existing, newOption],
     });
     setCustomText("");

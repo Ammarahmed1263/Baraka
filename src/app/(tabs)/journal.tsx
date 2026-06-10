@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { Haptic } from "@utils/haptics";
 import { useMemo, useState } from "react";
 import { Alert, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { AppTextInput } from "@components/UI/AppTextInput";
@@ -159,11 +160,12 @@ export default function JournalScreen() {
               {enabledActivities.map((activity) => (
                 <AnimatedPressable
                   key={activity.id}
-                  onPress={() =>
+                  onPress={() => {
+                    Haptic.selection();
                     setSelectedActivityId(
                       selectedActivityId === activity.id ? "" : activity.id,
-                    )
-                  }
+                    );
+                  }}
                   style={[
                     styles.activityChipSelector,
                     {
@@ -267,7 +269,10 @@ export default function JournalScreen() {
               <AnimatedPressable
                 key={item.value}
                 scaleDownTo={0.94}
-                onPress={() => setFilterActivity(item.value)}
+                onPress={() => {
+                  Haptic.selection();
+                  setFilterActivity(item.value);
+                }}
                 style={[
                   styles.filterChip,
                   {

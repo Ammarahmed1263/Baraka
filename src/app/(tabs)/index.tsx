@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
+import { Haptic } from "@utils/haptics";
 import { router } from "expo-router";
 import { useCallback } from "react";
 import {
@@ -59,7 +59,7 @@ export default function TodayScreen() {
 
   const handleToggle = useCallback(
     async (activity: UserActivity) => {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      await Haptic.selection();
       if (isCompletedToday(activity.id)) {
         unmarkComplete(activity.id);
       } else {

@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
+import { Haptic } from "@utils/haptics";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
@@ -143,7 +143,7 @@ export default function SettingsScreen() {
     const newValue = !settings.profile[key];
     updateSettings({ profile: { ...settings.profile, [key]: newValue } });
     if (newValue) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      Haptic.success();
       const msg = ROLE_UNLOCK_MESSAGES[key];
       showToast(lang === "ar" ? msg.ar : msg.en);
     }

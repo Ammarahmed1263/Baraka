@@ -3,6 +3,7 @@ import { EDUCATION_ENTRIES } from "@data/learnContent";
 
 import { useSettingsStore } from "@store";
 import { Feather } from "@expo/vector-icons";
+import { Haptic } from "@utils/haptics";
 import { useMemo, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -77,16 +78,26 @@ export default function LearnScreen() {
   }, [search, activeCategory]);
 
   const mapCategoryLabel = (category: string) => {
-    if (category === "All") return t("learn.category.all");
-    if (category === "Foundations") return t("learn.category.foundations");
-    if (category === "Work") return t("reminders.category.productivity");
-    if (category === "Health") return t("reminders.category.health");
-    if (category === "Daily Life") return t("reminders.category.daily");
-    if (category === "Worship") return t("reminders.category.worship");
-    if (category === "Relationships")
-      return t("reminders.category.relationships");
-    if (category === "Learning") return t("reminders.category.learning");
-    return category;
+    switch (category) {
+      case "All":
+        return t("learn.category.all");
+      case "Foundations":
+        return t("learn.category.foundations");
+      case "Work":
+        return t("reminders.category.productivity");
+      case "Health":
+        return t("reminders.category.health");
+      case "Daily Life":
+        return t("reminders.category.daily");
+      case "Worship":
+        return t("reminders.category.worship");
+      case "Relationships":
+        return t("reminders.category.relationships");
+      case "Learning":
+        return t("reminders.category.learning");
+      default:
+        return category;
+    }
   };
 
   if (selectedEntry) {
@@ -112,18 +123,12 @@ export default function LearnScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <AppText
-          weight="Bold"
-          style={[styles.title, { color: C.gold }]}
-        >
+        <AppText weight='Bold' style={[styles.title, { color: C.gold }]}>
           {t("learn.title")}
         </AppText>
         <AppText
-          weight="Regular"
-          style={[
-            styles.subtitle,
-            { color: C.textSecondary },
-          ]}
+          weight='Regular'
+          style={[styles.subtitle, { color: C.textSecondary }]}
         >
           {t("learn.subtitle")}
         </AppText>
@@ -134,11 +139,11 @@ export default function LearnScreen() {
             value={search}
             onChangeText={setSearch}
             placeholder={t("learn.searchPlaceholder")}
-            leftIcon="search"
+            leftIcon='search'
             rightIcon={
               search.length > 0 ? (
                 <AnimatedPressable onPress={() => setSearch("")}>
-                  <Feather name="x" size={16} color={C.textMuted} />
+                  <Feather name='x' size={16} color={C.textMuted} />
                 </AnimatedPressable>
               ) : undefined
             }
@@ -156,7 +161,10 @@ export default function LearnScreen() {
             <AnimatedPressable
               key={cat}
               scaleDownTo={0.94}
-              onPress={() => setActiveCategory(cat)}
+              onPress={() => {
+                Haptic.selection();
+                setActiveCategory(cat);
+              }}
               style={[
                 styles.filterChip,
                 {
@@ -167,7 +175,7 @@ export default function LearnScreen() {
               ]}
             >
               <AppText
-                weight="Medium"
+                weight='Medium'
                 style={[
                   styles.filterText,
                   {
@@ -183,11 +191,8 @@ export default function LearnScreen() {
 
         {/* Count */}
         <AppText
-          weight="Regular"
-          style={[
-            styles.count,
-            { color: C.textMuted },
-          ]}
+          weight='Regular'
+          style={[styles.count, { color: C.textMuted }]}
         >
           {t(
             filtered.length === 1
@@ -200,13 +205,10 @@ export default function LearnScreen() {
         {/* Entries */}
         {filtered.length === 0 ? (
           <View style={styles.emptyState}>
-            <Feather name="book-open" size={32} color={C.textMuted} />
+            <Feather name='book-open' size={32} color={C.textMuted} />
             <AppText
-              weight="Regular"
-              style={[
-                styles.emptyText,
-                { color: C.textSecondary },
-              ]}
+              weight='Regular'
+              style={[styles.emptyText, { color: C.textSecondary }]}
             >
               {t("learn.noResults")}
             </AppText>
@@ -244,5 +246,3 @@ const styles = StyleSheet.create({
   emptyState: { alignItems: "center", paddingVertical: 40, gap: 12 },
   emptyText: { fontSize: 15 },
 });
-
-

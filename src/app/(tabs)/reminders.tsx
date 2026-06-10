@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
+import { Haptic } from "@utils/haptics";
 import { useState } from "react";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useTheme } from "@context/ThemeContext";
@@ -26,7 +26,7 @@ export default function RemindersScreen() {
   const categories = [...new Set(activities.map((a) => a.category))];
 
   const handleToggle = async (activity: UserActivity) => {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    await Haptic.selection();
     await toggleActivity(activity.id);
   };
 
