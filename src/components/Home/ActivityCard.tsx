@@ -51,11 +51,14 @@ export default function ActivityCard({
         </View>
 
         <View style={styles.info}>
-          <AppText weight="Bold" style={[styles.name, { color: C.text }]}>
+          <AppText weight='Bold' style={[styles.name, { color: C.text }]}>
             {localize(activity.name)}
           </AppText>
           {showBilingual && (
-            <AppText weight="Regular" style={[styles.nameAr, { color: C.textSecondary }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.nameAr, { color: C.textSecondary }]}
+            >
               {activity.name.ar}
             </AppText>
           )}
@@ -74,7 +77,7 @@ export default function ActivityCard({
             },
           ]}
         >
-          {completed && <Feather name="check" size={14} color="#FFF" />}
+          {completed && <Feather name='check' size={14} color={C.background} />}
         </AnimatedPressable>
       </View>
     </AnimatedPressable>

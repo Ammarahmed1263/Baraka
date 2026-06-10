@@ -47,8 +47,8 @@ export function AppButton({
       case "primary":
         return {
           container: { backgroundColor: C.tint },
-          text: { color: "#FFFFFF" },
-          icon: "#FFFFFF",
+          text: { color: C.background },
+          icon: C.background,
         };
       case "secondary":
         return {
