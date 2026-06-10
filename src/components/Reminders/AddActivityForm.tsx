@@ -9,7 +9,7 @@ import { AppTextInput } from "@components/UI/AppTextInput";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { Feather } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import * as Haptics from "expo-haptics";
+import { Haptic } from "@utils/haptics";
 import { AppText } from "@components/UI/AppText";
 import { useActivitiesStore } from "@store";
 import { useTheme } from "@context/ThemeContext";
@@ -91,7 +91,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
 
     await addCustomActivity(newActivity);
 
-    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    await Haptic.success();
     setNewName("");
     setNewNiyyah("");
     setSelectedIcon("star");

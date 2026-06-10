@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
+import { Haptic } from "@utils/haptics";
 import {
   StyleSheet,
   View,
@@ -56,7 +56,7 @@ export default function NiyyahCard({
       withTiming(0.94, { duration: 80 }),
       withSpring(1, { damping: 15, stiffness: 300 })
     );
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    await Haptic.selection();
     onToggle();
   };
 
