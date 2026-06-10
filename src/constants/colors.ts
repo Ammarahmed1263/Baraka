@@ -4,13 +4,13 @@
 
 const gold50 = "#FCFAF5";
 const gold100 = "#F7E8BA";
-const gold300 = "#E8C45A";
+// const gold300 = "#E8C45A";
 
 const gold400 = "#D4AF37"; // Sacred reward gold
-const gold500 = "#E5B83B"; // Main UI gold
+// const gold500 = "#E5B83B"; // Main UI gold
 const gold600 = "#E8A605"; // Hero titles / active states
 
-const gold700 = "#B58104";
+// const gold700 = "#B58104";
 const gold900 = "#3B2900";
 
 // ------------------------------------------------------------
@@ -19,7 +19,7 @@ const gold900 = "#3B2900";
 
 const green50 = "#F4F8F5";
 const green100 = "#D7EADF";
-const green200 = "#B5D8C4";
+// const green200 = "#B5D8C4";
 const green300 = "#89C0A4";
 
 const green400 = "#1C8A60";
@@ -28,7 +28,7 @@ const green600 = "#0F5A3D";
 
 const green700 = "#13271F";
 const green800 = "#0E1D17";
-const green900 = "#08110D";
+// const green900 = "#08110D";
 
 // ------------------------------------------------------------
 // WISDOM (Learning / Reflection / Hadith)
@@ -46,7 +46,7 @@ const wisdom700 = "#34554F";
 // ------------------------------------------------------------
 
 const neutral50 = "#F5F6F7";
-const neutral100 = "#E8EAEC";
+// const neutral100 = "#E8EAEC";
 
 const neutral400 = "#9AA0A6";
 const neutral700 = "#5F6670";
