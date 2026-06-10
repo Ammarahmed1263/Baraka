@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { AnimatedPressable, AnimatedPressableProps } from "./AnimatedPressable";
 import { Feather } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
+import { Haptic } from "@utils/haptics";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
 
@@ -16,7 +16,7 @@ interface AppButtonProps extends AnimatedPressableProps {
   variant?: ButtonVariant;
   icon?: keyof typeof Feather.glyphMap;
   loading?: boolean;
-  haptic?: Haptics.ImpactFeedbackStyle | Haptics.NotificationFeedbackType;
+  haptic?: "light" | "selection" | "success" | "warning" | "error";
 }
 
 export function AppButton({
@@ -33,10 +33,13 @@ export function AppButton({
 
   const handlePress = (e: any) => {
     if (haptic) {
-      if (typeof haptic === "string" && haptic in Haptics.ImpactFeedbackStyle) {
-        Haptics.impactAsync(haptic as Haptics.ImpactFeedbackStyle);
-      } else if (typeof haptic === "string") {
-        Haptics.notificationAsync(haptic as Haptics.NotificationFeedbackType);
+      switch(haptic) {
+        case "light": Haptic.lightTap(); break;
+        case "selection": Haptic.selection(); break;
+        case "success": Haptic.success(); break;
+        case "warning": Haptic.warning(); break;
+        case "error": Haptic.error(); break;
+        default: Haptic.lightTap(); break;
       }
     }
     if (props.onPress) props.onPress(e);
