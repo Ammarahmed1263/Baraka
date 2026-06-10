@@ -11,6 +11,10 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { useSettingsStore } from "@store/settingsStore";
 
 SplashScreen.preventAutoHideAsync();
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
 
 function RootLayoutNav() {
   const onboardingComplete = useSettingsStore(
