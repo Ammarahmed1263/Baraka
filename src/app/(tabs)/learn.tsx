@@ -20,6 +20,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@components/UI/AppText";
 import EducationCard from "@components/Learn/EducationCard";
 import EducationDetail from "@components/Learn/EducationDetail";
+import { Skeleton } from "@components/UI/Skeleton";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
 const CATEGORIES = [
   "All",
@@ -44,6 +46,12 @@ export default function LearnScreen() {
   const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(
     null,
   );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!selectedEntry) return;
@@ -189,39 +197,60 @@ export default function LearnScreen() {
           ))}
         </ScrollView>
 
-        {/* Count */}
-        <AppText
-          weight='Regular'
-          style={[styles.count, { color: C.textMuted }]}
-        >
-          {t(
-            filtered.length === 1
-              ? "learn.entryCount.one"
-              : "learn.entryCount.other",
-            { count: filtered.length },
-          )}
-        </AppText>
+        {loading ? (
+          <>
+            {/* Count Skeleton */}
+            <Skeleton width={80} height={14} style={{ marginBottom: 16 }} />
 
-        {/* Entries */}
-        {filtered.length === 0 ? (
-          <View style={styles.emptyState}>
-            <Feather name='book-open' size={32} color={C.textMuted} />
+            {/* Entries Skeletons */}
+            <View style={{ gap: 12 }}>
+              <Skeleton height={140} borderRadius={14} />
+              <Skeleton height={140} borderRadius={14} />
+              <Skeleton height={140} borderRadius={14} />
+            </View>
+          </>
+        ) : (
+          <>
+            {/* Count */}
             <AppText
               weight='Regular'
-              style={[styles.emptyText, { color: C.textSecondary }]}
+              style={[styles.count, { color: C.textMuted }]}
             >
-              {t("learn.noResults")}
+              {t(
+                filtered.length === 1
+                  ? "learn.entryCount.one"
+                  : "learn.entryCount.other",
+                { count: filtered.length },
+              )}
             </AppText>
-          </View>
-        ) : (
-          filtered.map((entry) => (
-            <EducationCard
-              key={entry.id}
-              entry={entry}
-              mapCategoryLabel={mapCategoryLabel}
-              onPress={() => setSelectedEntry(entry)}
-            />
-          ))
+
+            {/* Entries */}
+            {filtered.length === 0 ? (
+              <View style={styles.emptyState}>
+                <Feather name='book-open' size={32} color={C.textMuted} />
+                <AppText
+                  weight='Regular'
+                  style={[styles.emptyText, { color: C.textSecondary }]}
+                >
+                  {t("learn.noResults")}
+                </AppText>
+              </View>
+            ) : (
+              filtered.map((entry, index) => (
+                <Animated.View
+                  key={entry.id}
+                  entering={FadeInDown.delay(index * 50).duration(250)}
+                  style={{ marginBottom: 12 }}
+                >
+                  <EducationCard
+                    entry={entry}
+                    mapCategoryLabel={mapCategoryLabel}
+                    onPress={() => setSelectedEntry(entry)}
+                  />
+                </Animated.View>
+              ))
+            )}
+          </>
         )}
       </ScrollView>
     </View>

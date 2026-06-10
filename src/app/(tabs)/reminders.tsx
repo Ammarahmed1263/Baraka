@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { Haptic } from "@utils/haptics";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
@@ -12,6 +12,8 @@ import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 
 import AddActivityForm from "@components/Reminders/AddActivityForm";
 import CategorySection from "@components/Reminders/CategorySection";
+import { Skeleton } from "@components/UI/Skeleton";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
 export default function RemindersScreen() {
   const { t } = useTranslation();
@@ -22,6 +24,12 @@ export default function RemindersScreen() {
   const activities = useActivitiesStore((s) => s.activities);
   const toggleActivity = useActivitiesStore((s) => s.toggleActivity);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const categories = [...new Set(activities.map((a) => a.category))];
 
@@ -71,20 +79,40 @@ export default function RemindersScreen() {
           <AddActivityForm onClose={() => setShowAddForm(false)} />
         )}
 
-        {/* Activity List by Category */}
-        {categories.map((category) => {
-          const categoryActivities = activities.filter(
-            (a) => a.category === category,
-          );
-          return (
-            <CategorySection
-              key={category}
-              category={category}
-              categoryActivities={categoryActivities}
-              onToggleActivity={handleToggle}
-            />
-          );
-        })}
+        {loading ? (
+          <View style={{ gap: 20 }}>
+            <View style={{ gap: 8 }}>
+              <Skeleton width={100} height={12} style={{ marginLeft: 4 }} />
+              <Skeleton height={140} borderRadius={14} />
+            </View>
+            <View style={{ gap: 8 }}>
+              <Skeleton width={120} height={12} style={{ marginLeft: 4 }} />
+              <Skeleton height={190} borderRadius={14} />
+            </View>
+          </View>
+        ) : (
+          <>
+            {/* Activity List by Category */}
+            {categories.map((category, index) => {
+              const categoryActivities = activities.filter(
+                (a) => a.category === category,
+              );
+              return (
+                <Animated.View
+                  key={category}
+                  entering={FadeInDown.delay(index * 50).duration(250)}
+                  style={{ marginBottom: 20 }}
+                >
+                  <CategorySection
+                    category={category}
+                    categoryActivities={categoryActivities}
+                    onToggleActivity={handleToggle}
+                  />
+                </Animated.View>
+              );
+            })}
+          </>
+        )}
       </ScrollView>
     </View>
   );

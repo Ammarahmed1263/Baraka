@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Haptic } from "@utils/haptics";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Alert, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { AppTextInput } from "@components/UI/AppTextInput";
 import { AppButton } from "@components/UI/AppButton";
@@ -15,6 +15,8 @@ import { useActivitiesStore, useJournalStore } from "@store";
 import { useLanguage } from "@i18n";
 import { useLocalize } from "@hooks/useLocalize";
 import JournalCard from "@components/Journal/JournalCard";
+import { Skeleton } from "@components/UI/Skeleton";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
 export default function JournalScreen() {
   const { t } = useTranslation();
@@ -23,6 +25,12 @@ export default function JournalScreen() {
   const isWeb = Platform.OS === "web";
 
   const journalEntries = useJournalStore((s) => s.journalEntries);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
   const addJournalEntry = useJournalStore((s) => s.addJournalEntry);
   const activities = useActivitiesStore((s) => s.activities);
   const { language: lang } = useLanguage();
@@ -330,31 +338,49 @@ export default function JournalScreen() {
           </View>
         )}
 
-        {/* Journal Entries */}
-        {Object.entries(groupedLocalized).map(([date, entries]) => (
-          <View key={date} style={styles.dateGroup}>
-            <AppText
-              weight='Bold'
-              style={[styles.dateGroupLabel, { color: C.gold }]}
-            >
-              {date}
-            </AppText>
-            {entries.map((entry) => (
-              <JournalCard key={entry.id} entry={entry} />
+        {loading ? (
+          <View style={styles.dateGroup}>
+            <Skeleton width={100} height={14} style={{ marginBottom: 10 }} />
+            <View style={{ gap: 10 }}>
+              <Skeleton height={110} borderRadius={14} />
+              <Skeleton height={110} borderRadius={14} />
+            </View>
+          </View>
+        ) : (
+          <>
+            {/* Journal Entries */}
+            {Object.entries(groupedLocalized).map(([date, entries], outerIndex) => (
+              <View key={date} style={styles.dateGroup}>
+                <AppText
+                  weight='Bold'
+                  style={[styles.dateGroupLabel, { color: C.gold }]}
+                >
+                  {date}
+                </AppText>
+                {entries.map((entry, innerIndex) => (
+                  <Animated.View
+                    key={entry.id}
+                    entering={FadeInDown.delay((outerIndex * 2 + innerIndex) * 50).duration(250)}
+                    style={{ marginBottom: 10 }}
+                  >
+                    <JournalCard entry={entry} />
+                  </Animated.View>
+                ))}
+              </View>
             ))}
-          </View>
-        ))}
 
-        {filtered.length === 0 && journalEntries.length > 0 && (
-          <View style={styles.emptyState}>
-            <Feather name='search' size={32} color={C.textMuted} />
-            <AppText
-              weight='Regular'
-              style={[styles.emptyText, { color: C.textSecondary }]}
-            >
-              {t("journal.noFilterResults")}
-            </AppText>
-          </View>
+            {filtered.length === 0 && journalEntries.length > 0 && (
+              <View style={styles.emptyState}>
+                <Feather name='search' size={32} color={C.textMuted} />
+                <AppText
+                  weight='Regular'
+                  style={[styles.emptyText, { color: C.textSecondary }]}
+                >
+                  {t("journal.noFilterResults")}
+                </AppText>
+              </View>
+            )}
+          </>
         )}
       </ScrollView>
     </View>
