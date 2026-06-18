@@ -4,15 +4,27 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
   I18nManager,
+  Linking,
+  Modal,
   Platform,
+  Pressable,
   ScrollView,
   Share,
   StyleSheet,
   Switch,
+  TouchableOpacity,
   View,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { parseReminderTime } from "@utils/parseReminderTime";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
-import Animated, { useSharedValue, useAnimatedStyle, withSequence, withTiming, withDelay } from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+  withDelay,
+} from "react-native-reanimated";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
@@ -27,33 +39,43 @@ import { APP_STORAGE_KEYS } from "@lib/constants";
 import { useLanguage } from "@i18n";
 import SettingRow from "@components/Settings/SettingRow";
 import UserStatsCard from "@components/Settings/UserStatsCard";
+import {
+  cancelDailyNotification,
+  registerForPushNotificationsAsync,
+  scheduleDailyNotification,
+} from "@/services/notifications";
+import { useLocalize } from "@hooks/useLocalize";
 
 type ProfileKey = "isHomemaker" | "isParent" | "isStudent" | "isProfessional";
 
-const PROFILE_OPTIONS: Array<{ key: ProfileKey; icon: string; color: string }> = [
-  {
-    key: "isHomemaker",
-    icon: "home",
-    color: "#EC4899",
-  },
-  {
-    key: "isParent",
-    icon: "users",
-    color: "#F97316",
-  },
-  {
-    key: "isStudent",
-    icon: "book",
-    color: "#8B5CF6",
-  },
-  {
-    key: "isProfessional",
-    icon: "briefcase",
-    color: "#3B82F6",
-  },
-];
+const PROFILE_OPTIONS: Array<{ key: ProfileKey; icon: string; color: string }> =
+  [
+    {
+      key: "isHomemaker",
+      icon: "home",
+      color: "#EC4899",
+    },
+    {
+      key: "isParent",
+      icon: "users",
+      color: "#F97316",
+    },
+    {
+      key: "isStudent",
+      icon: "book",
+      color: "#8B5CF6",
+    },
+    {
+      key: "isProfessional",
+      icon: "briefcase",
+      color: "#3B82F6",
+    },
+  ];
 
-const ROLE_TRANSLATION_KEYS: Record<ProfileKey, { label: string; desc: string }> = {
+const ROLE_TRANSLATION_KEYS: Record<
+  ProfileKey,
+  { label: string; desc: string }
+> = {
   isHomemaker: {
     label: "settings.role.homemaker",
     desc: "settings.roleDesc.homemaker",
@@ -79,12 +101,14 @@ export default function SettingsScreen() {
   const isWeb = Platform.OS === "web";
 
   const settings = useSettingsStore((s) => s.settings);
+  console.log(JSON.stringify(settings, null, 2));
   const updateSettings = useSettingsStore((s) => s.updateSettings);
   const activities = useActivitiesStore((s) => s.activities);
   const dailyLogs = useLogsStore((s) => s.dailyLogs);
   const streak = useLogsStore((s) => s.streak);
   const journalEntries = useJournalStore((s) => s.journalEntries);
   const { language: lang, changeLanguage } = useLanguage();
+  const localize = useLocalize();
 
   // Toast state
   const [toastMessage, setToastMessage] = useState("");
@@ -96,7 +120,7 @@ export default function SettingsScreen() {
     if (toastTimer.current) clearTimeout(toastTimer.current);
     toastOpacity.value = withSequence(
       withTiming(1, { duration: 200 }),
-      withDelay(2200, withTiming(0, { duration: 300 }))
+      withDelay(2200, withTiming(0, { duration: 300 })),
     );
     toastTimer.current = setTimeout(() => setToastMessage(""), 2800);
   };
@@ -104,6 +128,46 @@ export default function SettingsScreen() {
   const animatedToastStyle = useAnimatedStyle(() => ({
     opacity: toastOpacity.value,
   }));
+
+  // Time picker state
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
+  const formatReminderTime = (timeStr: string): string => {
+    const { hour, minute } = parseReminderTime(timeStr);
+    const ampm =
+      hour >= 12 ? (lang === "ar" ? "م" : "PM") : lang === "ar" ? "ص" : "AM";
+    const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+    const displayMinute = String(minute).padStart(2, "0");
+    return `${displayHour}:${displayMinute} ${ampm}`;
+  };
+
+  const getPickerDate = (timeStr: string): Date => {
+    const { hour, minute } = parseReminderTime(timeStr);
+    const date = new Date();
+    date.setHours(hour, minute, 0, 0);
+    return date;
+  };
+
+  const handleTimeChange = async (event: any, selectedDate?: Date) => {
+    if (Platform.OS === "android") {
+      setShowTimePicker(false);
+    }
+
+    if (selectedDate && event.type !== "dismissed") {
+      const hours = String(selectedDate.getHours()).padStart(2, "0");
+      const minutes = String(selectedDate.getMinutes()).padStart(2, "0");
+      const timeStr = `${hours}:${minutes}`;
+
+      updateSettings({ reminderTime: timeStr });
+
+      if (
+        settings.notificationsEnabled &&
+        settings.notificationsStatus === "granted"
+      ) {
+        await scheduleDailyNotification(timeStr, localize);
+      }
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -153,12 +217,14 @@ export default function SettingsScreen() {
     const data = {
       exportedAt: new Date().toISOString(),
       profile: settings.profile,
-      activities: activities.filter((a) => a.enabled).map((a) => ({
-        name: a.name,
-        enabled: a.enabled,
-        customNiyyah: a.customNiyyah,
-        selectedNiyyahIds: a.selectedNiyyahIds,
-      })),
+      activities: activities
+        .filter((a) => a.enabled)
+        .map((a) => ({
+          name: a.name,
+          enabled: a.enabled,
+          customNiyyah: a.customNiyyah,
+          selectedNiyyahIds: a.selectedNiyyahIds,
+        })),
       dailyLogs: dailyLogs.slice(-30),
       journalEntries: journalEntries.slice(-50),
       streak,
@@ -167,7 +233,10 @@ export default function SettingsScreen() {
     try {
       await Share.share({ title: t("settings.exportTitle"), message: json });
     } catch {
-      Alert.alert(t("settings.exportFallbackTitle"), t("settings.exportFallbackMessage"));
+      Alert.alert(
+        t("settings.exportFallbackTitle"),
+        t("settings.exportFallbackMessage"),
+      );
     }
   };
 
@@ -181,23 +250,56 @@ export default function SettingsScreen() {
           text: t("settings.clear"),
           style: "destructive",
           onPress: async () => {
-            const AsyncStorage = (await import("@react-native-async-storage/async-storage")).default;
+            const AsyncStorage = (
+              await import("@react-native-async-storage/async-storage")
+            ).default;
             await AsyncStorage.multiRemove([...APP_STORAGE_KEYS]);
             Alert.alert(
               t("settings.clearedTitle"),
-              t("settings.clearedMessage")
+              t("settings.clearedMessage"),
             );
           },
         },
-      ]
+      ],
     );
+  };
+
+  const handleNotificationToggle = async (v: boolean) => {
+    if (v) {
+      const status = await registerForPushNotificationsAsync();
+      updateSettings({
+        notificationsStatus: status,
+        notificationsEnabled: status === "granted",
+      });
+
+      if (status === "granted") {
+        await Haptic.success();
+        await scheduleDailyNotification(
+          settings.reminderTime || "08:00",
+          localize,
+        );
+      } else {
+        Alert.alert(
+          t("settings.notifPermissionTitle"),
+          t("settings.notifPermissionMessage"),
+          [
+            { text: t("common.cancel"), style: "cancel" },
+            {
+              text: t("settings.openSettings"),
+              onPress: () => Linking.openSettings(),
+            },
+          ],
+        );
+      }
+    } else {
+      await cancelDailyNotification();
+      updateSettings({ notificationsEnabled: false });
+    }
   };
 
   const topPadding = isWeb ? 67 : insets.top;
   const totalCompleted = dailyLogs.length;
   const totalJournal = journalEntries.length;
-
-
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
@@ -214,10 +316,10 @@ export default function SettingsScreen() {
             },
             animatedToastStyle,
           ]}
-          pointerEvents="none"
+          pointerEvents='none'
         >
-          <Feather name="unlock" size={16} color="#C9A84C" />
-          <AppText weight="Medium" style={styles.toastText}>
+          <Feather name='unlock' size={16} color='#C9A84C' />
+          <AppText weight='Medium' style={styles.toastText}>
             {toastMessage}
           </AppText>
         </Animated.View>
@@ -229,7 +331,7 @@ export default function SettingsScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <AppText weight="Bold" style={[styles.title, { color: C.gold }]}>
+        <AppText weight='Bold' style={[styles.title, { color: C.gold }]}>
           {t("settings.title")}
         </AppText>
 
@@ -241,16 +343,28 @@ export default function SettingsScreen() {
         />
 
         {/* ── My Profile ──────────────────────────────────────── */}
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
+        <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.myProfile")}
         </AppText>
-        <AppText weight="Regular" style={[styles.sectionSubLabel, { color: C.textMuted }]}>
+        <AppText
+          weight='Regular'
+          style={[styles.sectionSubLabel, { color: C.textMuted }]}
+        >
           {t("settings.profileHint")}
         </AppText>
-        <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
+        <View
+          style={[
+            styles.settingsCard,
+            { backgroundColor: C.backgroundCard, borderColor: C.border },
+          ]}
+        >
           {PROFILE_OPTIONS.map((opt, idx) => (
             <React.Fragment key={opt.key}>
-              {idx > 0 && <View style={[styles.divider, { backgroundColor: C.borderLight }]} />}
+              {idx > 0 && (
+                <View
+                  style={[styles.divider, { backgroundColor: C.borderLight }]}
+                />
+              )}
               <SettingRow
                 icon={opt.icon}
                 iconColor={opt.color}
@@ -262,7 +376,9 @@ export default function SettingsScreen() {
                     value={settings.profile[opt.key]}
                     onValueChange={() => handleProfileToggle(opt.key)}
                     trackColor={{ false: C.border, true: C.tint + "80" }}
-                    thumbColor={settings.profile[opt.key] ? C.tint : C.textMuted}
+                    thumbColor={
+                      settings.profile[opt.key] ? C.tint : C.textMuted
+                    }
                     ios_backgroundColor={C.border}
                   />
                 }
@@ -272,12 +388,17 @@ export default function SettingsScreen() {
         </View>
 
         {/* ── Preferences ─────────────────────────────────────── */}
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
+        <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.preferences")}
         </AppText>
-        <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
+        <View
+          style={[
+            styles.settingsCard,
+            { backgroundColor: C.backgroundCard, borderColor: C.border },
+          ]}
+        >
           <SettingRow
-            icon="globe"
+            icon='globe'
             label={t("settings.language")}
             desc={lang === "en" ? t("settings.english") : t("settings.arabic")}
             right={
@@ -309,28 +430,71 @@ export default function SettingsScreen() {
           /> */}
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
           <SettingRow
-            icon="bell"
-            iconColor="#8B5CF6"
-            iconBg="#8B5CF620"
+            icon='bell'
+            iconColor='#8B5CF6'
+            iconBg='#8B5CF620'
             label={t("settings.notifications")}
             desc={t("settings.notificationsDesc")}
             right={
               <Switch
-                value={settings.notificationsEnabled}
-                onValueChange={(v) => updateSettings({ notificationsEnabled: v })}
+                value={
+                  settings.notificationsEnabled &&
+                  settings.notificationsStatus === "granted"
+                }
+                onValueChange={handleNotificationToggle}
                 trackColor={{ false: C.border, true: C.tint + "80" }}
-                thumbColor={settings.notificationsEnabled ? C.tint : C.textMuted}
+                thumbColor={
+                  settings.notificationsEnabled &&
+                  settings.notificationsStatus === "granted"
+                    ? C.tint
+                    : C.textMuted
+                }
                 ios_backgroundColor={C.border}
               />
             }
           />
+          {settings.notificationsEnabled &&
+            settings.notificationsStatus === "granted" && (
+              <>
+                <View
+                  style={[styles.divider, { backgroundColor: C.borderLight }]}
+                />
+                <SettingRow
+                  icon='clock'
+                  iconColor='#10B981'
+                  iconBg='#10B98120'
+                  label={t("settings.reminderTimeLabel")}
+                  desc={formatReminderTime(settings.reminderTime || "08:00")}
+                  right={
+                    <AnimatedPressable
+                      onPress={() => setShowTimePicker(true)}
+                      style={[
+                        styles.timePickerButton,
+                        {
+                          backgroundColor: C.border,
+                        },
+                      ]}
+                    >
+                      <AppText
+                        weight='Medium'
+                        style={{ color: C.textSecondary, fontSize: 13 }}
+                      >
+                        {t("settings.change")}
+                      </AppText>
+                    </AnimatedPressable>
+                  }
+                />
+              </>
+            )}
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
           <SettingRow
             icon={currentMode === "dark" ? "moon" : "sun"}
             iconColor={C.gold}
             iconBg={C.gold + "18"}
             label={t("settings.theme")}
-            desc={t(`settings.themeModes.${currentMode}`, { defaultValue: currentMode })}
+            desc={t(`settings.themeModes.${currentMode}`, {
+              defaultValue: currentMode,
+            })}
             right={
               <View style={styles.themeSelector}>
                 {(["light", "auto", "dark"] as const).map((mode) => (
@@ -339,11 +503,20 @@ export default function SettingsScreen() {
                     onPress={() => updateSettings({ darkMode: mode })}
                     style={[
                       styles.themeOption,
-                      { backgroundColor: currentMode === mode ? C.tint : C.border },
+                      {
+                        backgroundColor:
+                          currentMode === mode ? C.tint : C.border,
+                      },
                     ]}
                   >
                     <Feather
-                      name={mode === "auto" ? "smartphone" : mode === "dark" ? "moon" : "sun"}
+                      name={
+                        mode === "auto"
+                          ? "smartphone"
+                          : mode === "dark"
+                            ? "moon"
+                            : "sun"
+                      }
                       size={14}
                       color={currentMode === mode ? "#FFF" : C.textSecondary}
                     />
@@ -355,77 +528,190 @@ export default function SettingsScreen() {
         </View>
 
         {/* ── Data ────────────────────────────────────────────── */}
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
+        <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.data")}
         </AppText>
-        <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
-          <AnimatedPressable style={styles.settingRow} onPress={handleExportData} activeOpacity={0.7}>
+        <View
+          style={[
+            styles.settingsCard,
+            { backgroundColor: C.backgroundCard, borderColor: C.border },
+          ]}
+        >
+          <AnimatedPressable
+            style={styles.settingRow}
+            onPress={handleExportData}
+            activeOpacity={0.7}
+          >
             <View style={styles.settingLeft}>
-              <View style={[styles.settingIcon, { backgroundColor: C.tint + "18" }]}>
-                <Feather name="share" size={16} color={C.tint} />
+              <View
+                style={[styles.settingIcon, { backgroundColor: C.tint + "18" }]}
+              >
+                <Feather name='share' size={16} color={C.tint} />
               </View>
               <View>
-                <AppText weight="Medium" style={[styles.settingName, { color: C.text }]}>
+                <AppText
+                  weight='Medium'
+                  style={[styles.settingName, { color: C.text }]}
+                >
                   {t("settings.exportData")}
                 </AppText>
-                <AppText weight="Regular" style={[styles.settingDesc, { color: C.textMuted }]}>
+                <AppText
+                  weight='Regular'
+                  style={[styles.settingDesc, { color: C.textMuted }]}
+                >
                   {t("settings.exportDataDesc")}
                 </AppText>
               </View>
             </View>
-            <Feather name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={C.textMuted} />
+            <Feather
+              name={I18nManager.isRTL ? "chevron-left" : "chevron-right"}
+              size={18}
+              color={C.textMuted}
+            />
           </AnimatedPressable>
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
-          <AnimatedPressable style={styles.settingRow} onPress={handleClearData} activeOpacity={0.7}>
+          <AnimatedPressable
+            style={styles.settingRow}
+            onPress={handleClearData}
+            activeOpacity={0.7}
+          >
             <View style={styles.settingLeft}>
-              <View style={[styles.settingIcon, { backgroundColor: "#EF444420" }]}>
-                <Feather name="trash-2" size={16} color="#EF4444" />
+              <View
+                style={[styles.settingIcon, { backgroundColor: "#EF444420" }]}
+              >
+                <Feather name='trash-2' size={16} color='#EF4444' />
               </View>
               <View>
-                <AppText weight="Medium" style={[styles.settingName, { color: "#EF4444" }]}>
+                <AppText
+                  weight='Medium'
+                  style={[styles.settingName, { color: "#EF4444" }]}
+                >
                   {t("settings.clearData")}
                 </AppText>
-                <AppText weight="Regular" style={[styles.settingDesc, { color: C.textMuted }]}>
+                <AppText
+                  weight='Regular'
+                  style={[styles.settingDesc, { color: C.textMuted }]}
+                >
                   {t("settings.clearDataDesc")}
                 </AppText>
               </View>
             </View>
-            <Feather name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={C.textMuted} />
+            <Feather
+              name={I18nManager.isRTL ? "chevron-left" : "chevron-right"}
+              size={18}
+              color={C.textMuted}
+            />
           </AnimatedPressable>
         </View>
 
         {/* ── About ───────────────────────────────────────────── */}
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
+        <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.about")}
         </AppText>
-        <View style={[styles.settingsCard, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
+        <View
+          style={[
+            styles.settingsCard,
+            { backgroundColor: C.backgroundCard, borderColor: C.border },
+          ]}
+        >
           <View style={styles.aboutCard}>
-            <AppText weight="Bold" style={[styles.aboutTitle, { color: C.text }]}>
+            <AppText
+              weight='Bold'
+              style={[styles.aboutTitle, { color: C.text }]}
+            >
               {t("settings.aboutTitle")}
             </AppText>
-            <AppText weight="Regular" style={[styles.aboutDesc, { color: C.textSecondary }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.aboutDesc, { color: C.textSecondary }]}
+            >
               {t("settings.aboutDesc")}
             </AppText>
-            <AppText weight="Regular" style={[styles.aboutQuote, { color: C.gold }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.aboutQuote, { color: C.gold }]}
+            >
               {t("settings.quote")}
             </AppText>
-            <AppText weight="Regular" style={[styles.aboutRef, { color: C.textMuted }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.aboutRef, { color: C.textMuted }]}
+            >
               {t("settings.quoteRef")}
             </AppText>
-            <AppText weight="Regular" style={[styles.version, { color: C.textMuted }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.version, { color: C.textMuted }]}
+            >
               {t("settings.version")}
             </AppText>
           </View>
         </View>
 
         {/* Privacy Note */}
-        <View style={[styles.privacyNote, { backgroundColor: C.successLight, borderColor: C.tint + "30" }]}>
-          <Feather name="shield" size={16} color={C.tint} />
-          <AppText weight="Regular" style={[styles.privacyText, { color: C.tint }]}>
+        <View
+          style={[
+            styles.privacyNote,
+            { backgroundColor: C.successLight, borderColor: C.tint + "30" },
+          ]}
+        >
+          <Feather name='shield' size={16} color={C.tint} />
+          <AppText
+            weight='Regular'
+            style={[styles.privacyText, { color: C.tint }]}
+          >
             {t("settings.privacy")}
           </AppText>
         </View>
       </ScrollView>
+
+      {Platform.OS === "ios" && showTimePicker && (
+        <Modal
+          transparent={true}
+          animationType='slide'
+          visible={showTimePicker}
+          onRequestClose={() => setShowTimePicker(false)}
+        >
+          <Pressable
+            style={styles.modalOverlay}
+            onPress={() => setShowTimePicker(false)}
+          >
+            <View
+              style={[styles.modalSheet, { backgroundColor: C.backgroundCard }]}
+            >
+              <View style={styles.modalHeader}>
+                <TouchableOpacity onPress={() => setShowTimePicker(false)}>
+                  <AppText weight='Medium' style={{ color: C.textMuted }}>
+                    {t("common.cancel")}
+                  </AppText>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setShowTimePicker(false)}>
+                  <AppText weight='Bold' style={{ color: C.tint }}>
+                    {t("onboarding.done")}
+                  </AppText>
+                </TouchableOpacity>
+              </View>
+              <DateTimePicker
+                value={getPickerDate(settings.reminderTime || "08:00")}
+                mode='time'
+                display='spinner'
+                is24Hour={false}
+                onChange={handleTimeChange}
+                textColor={C.text}
+              />
+            </View>
+          </Pressable>
+        </Modal>
+      )}
+
+      {Platform.OS === "android" && showTimePicker && (
+        <DateTimePicker
+          value={getPickerDate(settings.reminderTime || "08:00")}
+          mode='time'
+          is24Hour={false}
+          onChange={handleTimeChange}
+        />
+      )}
     </View>
   );
 }
@@ -441,8 +727,18 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 4,
   },
-  sectionSubLabel: { fontSize: 13, lineHeight: 18, marginBottom: 10, marginLeft: 4 },
-  settingsCard: { borderRadius: 14, borderWidth: 1, overflow: "hidden", marginBottom: 24 },
+  sectionSubLabel: {
+    fontSize: 13,
+    lineHeight: 18,
+    marginBottom: 10,
+    marginLeft: 4,
+  },
+  settingsCard: {
+    borderRadius: 14,
+    borderWidth: 1,
+    overflow: "hidden",
+    marginBottom: 24,
+  },
   settingRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -450,12 +746,39 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   settingLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1 },
-  settingIcon: { width: 36, height: 36, borderRadius: 10, alignItems: "center", justifyContent: "center" },
+  settingIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   settingName: { fontSize: 15 },
   settingDesc: { fontSize: 12, marginTop: 2 },
   divider: { height: 1, marginLeft: 64 },
-  themeSelector: { flexDirection: "row", backgroundColor: "#00000008", borderRadius: 10, padding: 4, gap: 4 },
-  themeOption: { width: 32, height: 32, borderRadius: 8, alignItems: "center", justifyContent: "center" },
+  themeSelector: {
+    flexDirection: "row",
+    backgroundColor: "#00000008",
+    borderRadius: 10,
+    padding: 4,
+    gap: 4,
+  },
+  themeOption: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  timePickerButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    height: "auto",
+    width: "auto",
+  },
   aboutCard: { padding: 18, gap: 8 },
   aboutTitle: { fontSize: 18 },
   aboutDesc: { fontSize: 14, lineHeight: 22 },
@@ -490,6 +813,20 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   toastText: { color: "#FFF", fontSize: 14, flex: 1 },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "flex-end",
+  },
+  modalSheet: {
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 16,
+    paddingBottom: 40,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
 });
-
-
