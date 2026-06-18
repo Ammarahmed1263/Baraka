@@ -23,6 +23,13 @@
     "plugins": [
       "expo-router",
       [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/adaptive-icon.png",
+          "color": "#0D1F17"
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "backgroundColor": "#F8FAF9",
@@ -45,11 +52,18 @@
           ]
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "cc6d34eb-dfa5-442c-86de-d1b3358a0246"
+      }
     }
   }
 }
