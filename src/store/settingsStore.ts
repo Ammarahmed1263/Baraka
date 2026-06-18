@@ -6,7 +6,9 @@ import type { AppSettings } from "@types";
 const DEFAULT_SETTINGS: AppSettings = {
   showBilingual: false,
   darkMode: "auto",
+  notificationsStatus: "undetermined",
   notificationsEnabled: true,
+  reminderTime: "08:00",
   onboardingComplete: false,
   profile: {
     isHomemaker: false,
@@ -50,6 +52,22 @@ export const useSettingsStore = create<SettingsStore>()(
     {
       name: "@niyyah_settings",
       storage: createJSONStorage(() => AsyncStorage),
+      merge: (persistedState: any, currentState) => {
+        if (!persistedState) return currentState;
+        const mergedSettings = {
+          ...currentState.settings,
+          ...(persistedState.settings ?? {}),
+          profile: {
+            ...currentState.settings.profile,
+            ...(persistedState.settings?.profile ?? {}),
+          },
+        };
+        return {
+          ...currentState,
+          ...persistedState,
+          settings: mergedSettings,
+        };
+      },
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.updateSettings({});

@@ -6,8 +6,9 @@ import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { ErrorBoundary } from "@components/ErrorBoundary";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { useNotifications } from "@/hooks/useNotifications";
+import { ErrorBoundary } from "@components/ErrorBoundary";
 import { useSettingsStore } from "@store/settingsStore";
 
 SplashScreen.preventAutoHideAsync();
@@ -41,6 +42,7 @@ function RootLayoutNav() {
 export default function RootLayout() {
   const [i18nReady, setI18nReady] = useState(false);
   const isLoading = useSettingsStore((s) => s.isLoading);
+  useNotifications();
 
   useEffect(() => {
     if (i18n.isInitialized) {
