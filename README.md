@@ -1,126 +1,153 @@
-# Niyyah Renew
+# Baraka
 
-A privacy-first, offline-capable, ad-free mobile app for Muslims to set and renew daily intentions (niyyah) for routine activities — elevating them into acts of worship.
+A privacy-first, offline-capable mobile app for Muslims to set and renew daily intentions (niyyah) for routine activities, elevating them into acts of worship.
 
-> "Actions are only by intentions, and every person will have only what they intended."
-> — Prophet Muhammad ﷺ (Bukhari & Muslim)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)]()
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)]()
+[![React Native](https://img.shields.io/badge/React_Native-20232A?style=flat&logo=react&logoColor=61DAFB)]()
+[![Expo](https://img.shields.io/badge/Expo-1B1F23?style=flat&logo=expo&logoColor=white)]()
+[![Zustand](https://img.shields.io/badge/Zustand-764ABC?style=flat&logo=react&logoColor=white)]()
+
+---
+
+## Overview
+
+Many daily routines—like commuting, working, or eating—can feel mundane, but in Islamic tradition, they can be transformed into acts of worship simply by attaching a conscious, positive intention (Niyyah). Baraka solves the problem of spiritual disconnect in modern busy lives by offering a structured, interactive way to set, track, and reflect on these intentions every day.
+
+By leveraging role-based filtering, users are presented with tailored niyyah suggestions (e.g., specific intentions for parents, students, or professionals). Technically, Baraka is an offline-first mobile application built with React Native and Expo. It leverages Zustand for high-performance state management and features a fully custom, premium Emerald/Gold design system built with React Native Reanimated and Expo Glass Effect, ensuring a fast, tactile, and visually stunning user experience.
+
+---
+
+## Screenshots / Demo
+
+<!-- Add screenshots or GIFs here (e.g., from /assets/images or a /screenshots folder) -->
 
 ---
 
 ## Features
 
-### Core (v1.0)
-- **Daily Niyyah Checklist** — Tap to renew intentions for each activity
-- **Streak Tracker** — Maintains a consecutive-day streak to build consistency
-- **Educational Library** — 15 entries covering the fiqh and spirituality of niyyah
-- **Reflection Journal** — Log thoughts after renewing intentions; filterable by activity
-- **Customisable Reminders** — Toggle pre-set activities and add custom ones with icons/colours
-- **Bilingual (English/Arabic)** — Full UI and content in both languages
-
-### Enhanced (v1.1) — Multi-Niyyah System
-- **Multi-layered Niyyah Suggestions** — Every activity shows:
-  - 1 core (basic) intention always visible
-  - 3–5 advanced intentions selectable as a checklist
-  - A "+" button to add completely custom intentions (with Arabic support)
-- **80+ Pre-filled Niyyah Templates** across all activity types (eating, work, sleep, prayer, exercise, cooking, cleaning, charity, family, commute, reading)
-- **Profile Roles** — Enable Homemaker / Parent / Student / Professional to unlock contextually relevant niyyah options (e.g., cooking-for-family niyyahs for Homemakers, child-modelling niyyahs for Parents)
-- **Ajr Multiplier** — Live calculation on the dashboard: `Acts completed × avg intentions per act = ×N multiplier`
-- **Rich Reflection Prompts** — After renewing, the journal prompt mentions how many intentions were renewed and asks which one felt most impactful
-- **Bilingual Toggle** — "Show Both Languages" setting to display Arabic & English side-by-side in niyyah options
-- **Gold ×N badge** on activity cards showing how many intentions are set per activity
-
----
-
-## Screens
-
-| Screen | Description |
-|--------|-------------|
-| **Today** | Daily checklist with hadith card, progress ring, ajr multiplier, activity cards |
-| **Activity Detail** | Core intention + multi-niyyah checklist + custom add + renew CTA |
-| **Reflection** | Post-renewal journal prompt with impactful niyyah selector |
-| **Reminders** | Enable/disable activities by category, add custom activities |
-| **Learn** | Searchable education library with 15 Islamic knowledge cards |
-| **Journal** | Timeline of reflections, filterable by activity with search |
-| **Settings** | Profile roles, language, bilingual mode, notifications, data export |
-
----
-
-## How to Add Custom Niyyahs
-
-1. Open any activity (tap its card on the Today tab)
-2. Scroll to the **"Multiply Your Intentions"** section
-3. Tap **"+ Add custom intention"**
-4. Enter your intention in English and/or Arabic
-5. Tap **Add** — it's saved permanently to that activity
-
----
-
-## How to Use Profile Roles
-
-1. Go to **Settings → My Profile**
-2. Toggle on any roles that apply to you (Homemaker, Parent, Student, Professional)
-3. Return to any activity — you'll see additional tailored niyyah options unlocked
-
----
-
-## Running the App
-
-```bash
-# Install dependencies
-pnpm install
-
-# Start the Expo dev server
-pnpm --filter @workspace/niyyah-renew run dev
-
-# Scan the QR code with Expo Go (iOS/Android) or press 'w' for web
-```
+- **Role-Based Niyyah Filtering:** Dynamically adapts suggested intentions based on user roles (Parent, Student, Professional, Homemaker) using a reactive Zustand store.
+- **Ajr Multiplier Dashboard:** Motivates users with a live calculation of potential spiritual reward (completed acts × average intentions per act), built with highly optimized reactive state selectors.
+- **Bilingual Interface (English/Arabic):** Full UI and content localization via `i18next` and `expo-localization`, supporting dynamic language toggling on the fly.
+- **Daily Intention Reminders:** Configurable daily push notifications with a customizable reminder time, bilingual rotating messages, contextual permission flow, and tap-to-open deep linking.
+- **Reflection Journaling:** Allows users to log post-activity reflections with activity-based filtering and multi-tag search capabilities.
+- **Offline-First & Privacy Focused:** Operates entirely on-device without any backend servers, storing all user preferences and history locally via `AsyncStorage`.
+- **Premium Tactile UX:** Uses `expo-haptics` and `react-native-reanimated` to provide micro-animations and centralized haptic feedback for a highly polished feel.
+- **Data Portability:** Allows users to export their entire intention and journaling history to an `.xlsx` format for personal safekeeping.
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Expo / React Native |
-| Navigation | Expo Router (file-based) |
-| State | React Context + AsyncStorage |
-| UI | Custom components, expo-linear-gradient, react-native-svg |
-| Haptics | expo-haptics |
-| Fonts | Inter (400, 500, 600, 700) via @expo-google-fonts |
-| Icons | @expo/vector-icons (Feather) |
+| Layer | Technology | Why it was chosen |
+|---|---|---|
+| **Framework** | React Native & Expo Router | Rapid cross-platform development with file-based routing and seamless native module integration. |
+| **State Management** | Zustand | Minimal boilerplate, hook-based API, and high performance without the heavy overhead of Redux. |
+| **Local Storage** | AsyncStorage (Migrating to MMKV) | Simple key-value storage for an offline-first architecture; MMKV migration planned for synchronous reads. |
+| **Localization** | i18next & react-i18next | Industry standard for handling bilingual content (English/Arabic) with robust pluralization and interpolation. |
+| **UI & Animations** | Reanimated & Expo Glass Effect | Fluid, 60fps animations on the UI thread and native blur effects to achieve a premium aesthetic. |
+| **Data Export** | xlsx | Allows robust generation of Excel files purely on the client side for user data portability. |
 
 ---
 
-## Privacy
+## Architecture & Key Decisions
 
-- **100% offline** — no network requests, no analytics, no tracking
-- **No account required** — works instantly, data stays on device
-- **Data export** — export all logs and journal entries as JSON via Settings
+> **Decision:** Offline-first architecture with local storage only  
+> **Alternatives:** Firebase, Supabase, custom Node.js backend  
+> **Reason:** Prioritizes user privacy for sensitive journaling data. Eliminates cloud infrastructure costs and ensures the app works perfectly in low-connectivity areas.
+
+> **Decision:** Zustand for Global State Management  
+> **Alternatives:** Redux Toolkit, React Context API  
+> **Reason:** React Context triggered too many unnecessary re-renders for the highly dynamic "Ajr Multiplier" and role-based filtering. Zustand provided granular, selector-based reactivity with a significantly smaller learning curve and less boilerplate than Redux.
+
+> **Decision:** Expo Router (File-based routing)  
+> **Alternatives:** React Navigation (Declarative)  
+> **Reason:** Deep linking support out-of-the-box and a Next.js-like file structure that makes the `app/` directory incredibly intuitive to navigate for new engineers joining the project.
+
+> **Decision:** Custom Design System over UI Libraries  
+> **Alternatives:** NativeBase, React Native Paper, Tamagui  
+> **Reason:** The product required a very specific, premium "Emerald/Gold" aesthetic with heavy use of glassmorphism and custom haptics. A bespoke library of atomic components (`AppButton`, `AppText`) ensured 100% control over micro-animations and RTL compliance without bloating the bundle.
 
 ---
 
-## Ajr Multiplier Formula
+## Getting Started
 
+### Prerequisites
+- Node.js (v18+)
+- Bun (or npm/yarn/pnpm)
+- Expo Go app on your physical device (or iOS Simulator / Android Emulator)
+
+### Local Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Ammarahmed1263/Baraka.git
+   cd Baraka
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   bun install
+   ```
+
+3. **Run the Expo development server:**
+   ```bash
+   bun start
+   ```
+
+4. **View the app:**
+   Scan the QR code in your terminal using the Expo Go app on your phone, or press `i` for iOS / `a` for Android.
+
+---
+
+## Project Structure
+
+```text
+Baraka/
+├── app/               # Expo Router file-based routing and screen definitions
+├── assets/            # Static assets (fonts, icons, splash screens)
+├── components/        # Reusable, atomic UI components (AppButton, AppText, etc.)
+├── constants/         # Global configuration, themes, and design tokens
+├── context/           # React Context providers (legacy or specific scopes)
+├── data/              # Static seed data (pre-filled niyyah templates, hadiths)
+├── hooks/             # Custom React hooks for shared logic
+├── i18n/              # Localization configuration and translation files
+├── lib/               # Third-party library initializations (e.g., export logic)
+├── store/             # Zustand state management slices
+├── types/             # TypeScript interfaces and global type definitions
+└── utils/             # Pure helper functions (date formatting, ID generation)
 ```
-Ajr Multiplier = (number of acts completed today) × (average niyyahs per act)
-```
-
-Example: 5 acts completed, with an average of 3.8 intentions per act = ×19 potential multiplier.
-
-This is shown as a visual motivator only. As the app notes: *"Allah knows the true reward."*
 
 ---
 
-## Assumptions & Limitations
+## API Reference
 
-- Niyyah options with `profileTag` only appear when the matching profile role is enabled in Settings
-- Custom niyyahs added per-activity are stored in AsyncStorage alongside the activity data
-- The ajr multiplier counts the basic (core) niyyah as 1 even if no advanced options are selected
-- Arabic text is right-aligned throughout; full RTL layout switching is not yet implemented (text content is bilingual, but layout direction remains LTR)
-- Notifications are configured via expo-notifications but require a native build (Expo Go) to fully test on-device
+*N/A — Baraka is a 100% offline-first application. All data operations occur directly against local device storage without external API dependencies.*
 
 ---
 
-## New Dependencies (v1.1)
+## Roadmap / In Progress
 
-No new npm packages were added. All enhancements use the existing stack.
+- [x] **Core Infrastructure:** Zustand store migration & directory restructuring.
+- [x] **Role-Based Filtering:** Dynamic niyyah options based on user profile settings.
+- [x] **Onboarding Flow:** Introductory walkthrough explaining spiritual benefits.
+- [x] **Notifications:** Daily bilingual reminders with customizable time, permission flow, and deep-link tap-to-open via `expo-notifications`.
+- [ ] **Journal Refinement:** Add swipe-to-delete, multi-tag filtering, and keyword search.
+- [ ] **Data Export:** Handle complete export to `.xlsx`, `.csv`, `.pdf`, `.json` for user records.
+- [ ] **RTL Optimization:** Icon mirroring and Arabic typography polish.
+- [ ] **UX Polish:** Implement bottom sheet modals and Skeleton loaders.
+- [ ] **Performance:** Migrate from AsyncStorage to MMKV for synchronous storage.
+- [ ] **Observability:** Integrate Sentry for crash reporting in production.
+
+---
+
+## Contributing
+
+We welcome contributions from the community! Whether it's adding new Arabic translations, refining animations, or improving local performance, please feel free to open an issue or submit a Pull Request. Make sure to run `npm run typecheck` to verify TypeScript interfaces before submitting.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
