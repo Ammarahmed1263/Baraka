@@ -73,14 +73,19 @@ export type UserProfile = {
 };
 
 export type AppThemeMode = "auto" | "light" | "dark";
+export type NotificationPermissionStatus = "undetermined" | "granted" | "denied";
 
 export type AppSettings = {
   showBilingual: boolean;
   darkMode: AppThemeMode;
+  notificationsStatus: NotificationPermissionStatus;
   notificationsEnabled: boolean;
+  reminderTime: string;
   onboardingComplete: boolean;
   profile: UserProfile;
 };
 
-
-
+export interface Time {
+  hour: number;
+  minute: number;
+}
