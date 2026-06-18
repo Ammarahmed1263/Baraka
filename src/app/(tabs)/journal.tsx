@@ -87,7 +87,7 @@ export default function JournalScreen() {
       en: t("journal.general", { lng: "en" }),
       ar: t("journal.general", { lng: "ar" }),
     };
-    await addJournalEntry({
+    addJournalEntry({
       activityId: selectedActivityId || "general",
       activityName,
       date: new Date().toISOString().split("T")[0],

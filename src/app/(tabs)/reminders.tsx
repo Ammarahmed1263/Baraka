@@ -35,7 +35,7 @@ export default function RemindersScreen() {
 
   const handleToggle = async (activity: UserActivity) => {
     await Haptic.selection();
-    await toggleActivity(activity.id);
+    toggleActivity(activity.id);
   };
 
   const topPadding = isWeb ? 67 : insets.top;
