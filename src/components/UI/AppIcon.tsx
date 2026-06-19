@@ -1,4 +1,3 @@
-import React from 'react';
 import { I18nManager, StyleProp, TextStyle } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 

@@ -3,7 +3,7 @@ import { useTheme } from "@context/ThemeContext";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
 import { useLocalize } from "@hooks/useLocalize";
 import { type EducationEntry } from "@types";
-import { I18nManager, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 interface EducationCardProps {
   entry: EducationEntry;

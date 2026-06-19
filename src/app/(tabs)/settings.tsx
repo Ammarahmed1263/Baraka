@@ -3,7 +3,6 @@ import { Haptic } from "@utils/haptics";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
-  I18nManager,
   Linking,
   Modal,
   Platform,

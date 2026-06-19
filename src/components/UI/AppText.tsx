@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { Text, TextProps, StyleSheet } from "react-native";
+import { Text, TextProps } from "react-native";
 import { useTheme } from "@context/ThemeContext";
 
 type FontWeight = "Light" | "Regular" | "Medium" | "Bold";
