@@ -1,6 +1,8 @@
 import i18n from "@i18n";
-import { Stack } from "expo-router";
+import * as Sentry from '@sentry/react-native';
+import { Stack, useNavigationContainerRef } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { isRunningInExpoGo } from "expo";
 import { useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -15,6 +17,26 @@ SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
   duration: 1000,
   fade: true,
+});
+
+// const navigationIntegration = Sentry.reactNavigationIntegration({
+//   enableTimeToInitialDisplay: !isRunningInExpoGo(),
+// });
+
+Sentry.init({
+  dsn: 'https://d67ecd69ea0ee09d4040e12083eb2c56@o4511592993390593.ingest.de.sentry.io/4511593155395664',
+
+  sendDefaultPii: true,
+
+  enableLogs: true,
+
+  // Performance Monitoring
+  // tracesSampleRate: __DEV__ ? 1.0 : 0.05, // Capture 100% of transactions (lower this in production)
+  // integrations: [navigationIntegration],
+  // enableNativeFramesTracking: !isRunningInExpoGo(),
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  spotlight: __DEV__,
 });
 
 function RootLayoutNav() {
@@ -39,10 +61,18 @@ function RootLayoutNav() {
   );
 }
 
-export default function RootLayout() {
+function App() {
+  // const ref = useNavigationContainerRef();
   const [i18nReady, setI18nReady] = useState(false);
   const isLoading = useSettingsStore((s) => s.isLoading);
   useNotifications();
+
+  // useEffect(() => {
+  //   if (ref) {
+  //     navigationIntegration.registerNavigationContainer(ref);
+  //   }
+  // }, [ref]);
+
 
   useEffect(() => {
     if (i18n.isInitialized) {
@@ -77,3 +107,5 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+export default Sentry.wrap(App);

@@ -1,8 +1,9 @@
+import * as Sentry from '@sentry/react-native';
 import { Feather } from "@expo/vector-icons";
 import { Haptic } from "@utils/haptics";
 import { router } from "expo-router";
 import { useCallback, useState, useEffect } from "react";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { AppButton } from "@components/UI/AppButton";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

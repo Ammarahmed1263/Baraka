@@ -14,6 +14,7 @@
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-community/datetimepicker": "8.4.4",
+    "@sentry/react-native": "^8.15.1",
     "date-fns": "^3.6.0",
     "expo": "^54.0.0",
     "expo-blur": "~15.0.8",
