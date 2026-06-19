@@ -68,11 +68,34 @@ export const useSettingsStore = create<SettingsStore>()(
           settings: mergedSettings,
         };
       },
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          state.updateSettings({});
-          state.setLoading();
-        }
+      onRehydrateStorage: (state) => {
+        const timeoutId = setTimeout(() => {
+          try {
+            const current = useSettingsStore.getState();
+            if (current && current.isLoading) {
+              console.warn("Settings store hydration timed out. Forcing isLoading to false.");
+              current.setLoading();
+            }
+          } catch (e) {
+            console.error("Error in settings store hydration timeout:", e);
+            if (state) {
+              state.setLoading();
+            }
+          }
+        }, 2500);
+
+        return (stateAfter, error) => {
+          clearTimeout(timeoutId);
+          if (error) {
+            console.error("Error during settings store hydration:", error);
+          }
+          if (stateAfter) {
+            stateAfter.updateSettings({});
+            stateAfter.setLoading();
+          } else if (state) {
+            state.setLoading();
+          }
+        };
       },
     },
   ),
