@@ -1,11 +1,11 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { AppIcon as Feather, FeatherIconName } from "@components/UI/AppIcon";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
 
 interface SettingRowProps {
-  icon: keyof typeof Feather.glyphMap | string;
+  icon: FeatherIconName | string;
   iconColor?: string;
   iconBg?: string;
   label: string;

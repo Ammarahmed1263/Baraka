@@ -9,7 +9,7 @@ import {
 } from "@store";
 import { useTodayLogs } from "@hooks/useTodayLogs";
 import { useLanguage } from "@i18n";
-import { Feather } from "@expo/vector-icons";
+import { AppIcon as Feather } from "@components/UI/AppIcon";
 import { getTodayString } from "@utils/date";
 import { Haptic } from "@utils/haptics";
 import { LinearGradient } from "expo-linear-gradient";

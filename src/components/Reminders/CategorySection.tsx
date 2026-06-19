@@ -1,5 +1,5 @@
 import { View, StyleSheet, Switch } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { AppIcon } from "@components/UI/AppIcon";
 import { useTranslation } from "react-i18next";
 import { AppText } from "@components/UI/AppText";
 import { useLocalize } from "@hooks/useLocalize";
@@ -50,7 +50,7 @@ export default function CategorySection({
   return (
     <View style={styles.categorySection}>
       <View style={styles.categoryHeader}>
-        <Feather
+        <AppIcon
           name={getCategoryIcon(category)}
           size={14}
           color={C.textSecondary}
@@ -77,7 +77,7 @@ export default function CategorySection({
                   { backgroundColor: (activity.color || C.tint) + "18" },
                 ]}
               >
-                <Feather
+                <AppIcon
                   name={(activity.icon as any) || "circle"}
                   size={16}
                   color={activity.color || C.tint}

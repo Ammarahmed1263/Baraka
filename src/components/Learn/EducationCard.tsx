@@ -1,6 +1,6 @@
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
-import { Feather } from "@expo/vector-icons";
+import { AppIcon as Feather } from "@components/UI/AppIcon";
 import { useLocalize } from "@hooks/useLocalize";
 import { type EducationEntry } from "@types";
 import { I18nManager, Pressable, StyleSheet, View } from "react-native";
@@ -76,7 +76,7 @@ export default function EducationCard({
             {localize(entry.source)}
           </AppText>
         </View>
-        <Feather name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={C.textMuted} />
+        <Feather name="chevron-right" size={16} color={C.textMuted} flipRTL />
       </View>
     </Pressable>
   );

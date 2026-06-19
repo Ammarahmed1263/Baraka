@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import { AppIcon as Feather } from "@components/UI/AppIcon";
 import { Haptic } from "@utils/haptics";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -101,7 +101,6 @@ export default function SettingsScreen() {
   const isWeb = Platform.OS === "web";
 
   const settings = useSettingsStore((s) => s.settings);
-  console.log(JSON.stringify(settings, null, 2));
   const updateSettings = useSettingsStore((s) => s.updateSettings);
   const activities = useActivitiesStore((s) => s.activities);
   const dailyLogs = useLogsStore((s) => s.dailyLogs);
@@ -564,9 +563,10 @@ export default function SettingsScreen() {
               </View>
             </View>
             <Feather
-              name={I18nManager.isRTL ? "chevron-left" : "chevron-right"}
+              name="chevron-right"
               size={18}
               color={C.textMuted}
+              flipRTL
             />
           </AnimatedPressable>
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
@@ -597,9 +597,10 @@ export default function SettingsScreen() {
               </View>
             </View>
             <Feather
-              name={I18nManager.isRTL ? "chevron-left" : "chevron-right"}
+              name="chevron-right"
               size={18}
               color={C.textMuted}
+              flipRTL
             />
           </AnimatedPressable>
         </View>
