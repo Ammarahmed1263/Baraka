@@ -55,6 +55,7 @@ export function AppTextInput({
               color: C.text,
               backgroundColor: C.backgroundSubtle,
               borderColor: isFocused ? C.tint : C.border,
+              letterSpacing: 0,
             },
             props.multiline && styles.multiline,
             props.leftIcon ? { paddingStart: 42 } : undefined,
