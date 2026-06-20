@@ -1,8 +1,7 @@
 import i18n from "@i18n";
 import * as Sentry from '@sentry/react-native';
-import { Stack, useNavigationContainerRef } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { isRunningInExpoGo } from "expo";
 import { useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -24,7 +23,8 @@ SplashScreen.setOptions({
 // });
 
 Sentry.init({
-  dsn: 'https://d67ecd69ea0ee09d4040e12083eb2c56@o4511592993390593.ingest.de.sentry.io/4511593155395664',
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+  environment: __DEV__ ? "development" : "production",
 
   sendDefaultPii: true,
 
