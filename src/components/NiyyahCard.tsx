@@ -1,9 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { Haptic } from "@utils/haptics";
-import {
-  StyleSheet,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -24,23 +21,6 @@ type Props = {
   onPress: () => void;
 };
 
-const ICON_MAP: Record<string, string> = {
-  sunrise: "sunrise",
-  coffee: "coffee",
-  briefcase: "briefcase",
-  activity: "activity",
-  sun: "sun",
-  moon: "moon",
-  "map-pin": "map-pin",
-  clock: "clock",
-  heart: "heart",
-  sunset: "sunset",
-  gift: "gift",
-  "book-open": "book-open",
-  zap: "zap",
-  wind: "wind",
-};
-
 export default function NiyyahCard({
   activity,
   completed,
@@ -54,15 +34,15 @@ export default function NiyyahCard({
   const handleCheckPress = async () => {
     checkScale.value = withSequence(
       withTiming(0.94, { duration: 80 }),
-      withSpring(1, { damping: 15, stiffness: 300 })
+      withSpring(1, { damping: 15, stiffness: 300 }),
     );
-    await Haptic.selection();
+    Haptic.selection();
     onToggle();
   };
 
-  const iconName = (ICON_MAP[activity.icon] || "circle") as any;
-  const activityColor = activity.color || C.tint;
-  const selectedCount = (activity.selectedNiyyahIds ?? []).length;
+  const selectedCount = (activity.selectedNiyyahIds ?? []).filter(
+    (id) => !id.endsWith("_basic"),
+  ).length;
   const displayName = localize(activity.name);
   const displayNiyyah = activity.customNiyyah ?? localize(activity.niyyahText);
 
@@ -86,21 +66,9 @@ export default function NiyyahCard({
           },
         ]}
       >
-        {/* Color accent bar */}
-        {/* <View style={[styles.accentBar, { backgroundColor: activityColor }]} /> */}
-
         <View style={styles.content}>
-          {/* Icon */}
-          <View
-            style={[
-              styles.iconContainer,
-              { backgroundColor: activityColor + "18" },
-            ]}
-          >
-            <Feather name={iconName} size={18} color={activityColor} />
-          </View>
+          <View style={[styles.sidePill, { backgroundColor: C.tint }]} />
 
-          {/* Text */}
           <View style={styles.textContainer}>
             <View style={styles.nameRow}>
               <AppText
@@ -135,26 +103,43 @@ export default function NiyyahCard({
             <AppText
               weight='Regular'
               style={[styles.niyyahPreview, { color: C.textSecondary }]}
-              numberOfLines={1}
+              numberOfLines={2}
             >
               {displayNiyyah}
             </AppText>
+            {activity.hadithRef && (
+              <AppText
+                weight='Regular'
+                style={[styles.hadithFootnote, { color: C.textMuted }]}
+              >
+                {localize(activity.hadithRef)}
+              </AppText>
+            )}
           </View>
 
-          {/* Check Button */}
-          <AnimatedPressable
-            onPress={handleCheckPress}
-            style={[
-              styles.checkButton,
-              {
-                backgroundColor: completed ? C.tint : "transparent",
-                borderColor: completed ? C.tint : C.border,
-                borderWidth: 2,
-              },
-            ]}
-          >
-            {completed && <Feather name='check' size={14} color='#FFF' />}
-          </AnimatedPressable>
+          <View style={styles.checkWrapper}>
+            <AnimatedPressable
+              onPress={handleCheckPress}
+              style={[
+                styles.checkButton,
+                {
+                  backgroundColor: completed ? C.tint : "transparent",
+                  borderColor: completed ? C.tint : C.border,
+                  borderWidth: 1.5,
+                },
+              ]}
+            >
+              {completed && <Feather name='check' size={11} color='#FFF' />}
+            </AnimatedPressable>
+            {!completed && (
+              <View
+                style={[
+                  styles.checkDot,
+                  { backgroundColor: C.tint, borderColor: C.backgroundCard },
+                ]}
+              />
+            )}
+          </View>
         </View>
       </AnimatedPressable>
     </Animated.View>
@@ -176,12 +161,10 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 12,
   },
-  iconContainer: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
+  hadithFootnote: {
+    fontSize: 10,
+    marginTop: 2,
+    opacity: 0.8,
   },
   textContainer: { flex: 1, gap: 3 },
   nameRow: { flexDirection: "row", alignItems: "center", gap: 6 },
@@ -193,12 +176,33 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   countText: { fontSize: 11 },
-  niyyahPreview: { fontSize: 12, lineHeight: 16 },
+  niyyahPreview: { fontSize: 13, lineHeight: 18, fontStyle: "italic" },
   checkButton: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 22,
+    height: 22,
+    borderRadius: 6,
     alignItems: "center",
     justifyContent: "center",
+  },
+  checkWrapper: {
+    position: "relative",
+  },
+  checkDot: {
+    position: "absolute",
+    bottom: -2.5,
+    right: -2.5,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    borderWidth: 2,
+  },
+  sidePill: {
+    position: "absolute",
+    left: 0,
+    top: 14,
+    width: 3.5,
+    height: 24,
+    borderTopRightRadius: 2,
+    borderBottomRightRadius: 2,
   },
 });

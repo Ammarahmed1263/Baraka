@@ -66,7 +66,10 @@ export default function ActivityDetailScreen() {
     (n) => n.level === "advanced",
   );
 
-  const activitySelectedIds: string[] = activity?.selectedNiyyahIds ?? [];
+  const activitySelectedIds = useMemo(() => {
+    const ids = activity?.selectedNiyyahIds ?? [];
+    return ids.filter((id) => !id.endsWith("_basic"));
+  }, [activity?.selectedNiyyahIds]);
 
   const [step, setStep] = useState<Step>("view");
   const [localSelected, setLocalSelected] =
@@ -92,7 +95,6 @@ export default function ActivityDetailScreen() {
   }
 
   const completed = isCompletedToday(activity.id);
-  const activityColor = activity.color || C.tint;
   const activityName = localize(activity.name);
   const customOptions: NiyyahOption[] = (
     activity.customNiyyahOptions || []
@@ -106,18 +108,15 @@ export default function ActivityDetailScreen() {
   };
 
   const handleSaveAndRenew = async () => {
-    await Haptic.success();
-    const finalSelected =
-      localSelected.length === 0 && basicNiyyah
-        ? [basicNiyyah.id]
-        : localSelected;
+    Haptic.success();
+    const finalSelected = localSelected.filter((id) => !id.endsWith("_basic"));
     updateActivity(activity.id, { selectedNiyyahIds: finalSelected });
     markComplete(activity.id, finalSelected);
     setStep("reflect");
   };
 
   const handleUnmark = async () => {
-    await Haptic.lightTap();
+    Haptic.lightTap();
     unmarkComplete(activity.id);
   };
 
@@ -128,7 +127,7 @@ export default function ActivityDetailScreen() {
         activityName: activity.name,
         date: getTodayString(),
         note: reflectionNote.trim(),
-        selectedNiyyahCount: localSelected.length || 1,
+        selectedNiyyahCount: localSelected.filter((id) => !id.endsWith("_basic")).length + 1,
         impactfulNiyyah: impactfulNiyyah || undefined,
       });
     }
@@ -162,13 +161,15 @@ export default function ActivityDetailScreen() {
   };
 
   const getImpactPrompt = () => {
-    const count = localSelected.length || 1;
+    const cleanSelected = localSelected.filter((id) => !id.endsWith("_basic"));
+    const count = cleanSelected.length + 1;
     if (count === 1) return t("activity.reflectPromptSingle");
     return t("activity.reflectPromptMulti", { count });
   };
 
   const getImpactPromptAr = () => {
-    const count = localSelected.length || 1;
+    const cleanSelected = localSelected.filter((id) => !id.endsWith("_basic"));
+    const count = cleanSelected.length + 1;
     if (count === 1) return t("activity.reflectPromptSingle", { lng: "ar" });
     return t("activity.reflectPromptMulti", { lng: "ar", count });
   };
@@ -211,11 +212,11 @@ export default function ActivityDetailScreen() {
             <AppText weight='Regular' style={styles.reflectSub}>
               {activityName}
             </AppText>
-            {localSelected.length > 1 && (
+            {localSelected.filter((id) => !id.endsWith("_basic")).length > 0 && (
               <View style={styles.multiplierBadge}>
                 <AppText weight='Bold' style={styles.multiplierText}>
                   {t("activity.multiplierBadge", {
-                    count: localSelected.length,
+                    count: localSelected.filter((id) => !id.endsWith("_basic")).length + 1,
                   })}
                 </AppText>
               </View>
@@ -285,7 +286,7 @@ export default function ActivityDetailScreen() {
               placeholder={t("activity.reflectionPlaceholder")}
             />
 
-            {localSelected.length > 1 && (
+            {localSelected.filter((id) => !id.endsWith("_basic")).length > 0 && (
               <>
                 <AppText
                   weight='Medium'
@@ -393,7 +394,7 @@ export default function ActivityDetailScreen() {
 
         {/* Activity Hero */}
         <LinearGradient
-          colors={[activityColor + "DD", activityColor + "99"]}
+          colors={[C.tint, C.tintDark]}
           style={styles.activityHeader}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -459,16 +460,13 @@ export default function ActivityDetailScreen() {
                 weight='Regular'
                 style={[styles.niyyahText, { color: C.text }]}
               >
-                {activity.customNiyyah ??
-                  (basicNiyyah
-                    ? localize(basicNiyyah.text)
-                    : localize(activity.niyyahText))}
+                {activity.customNiyyah ?? localize(activity.niyyahText)}
               </AppText>
-              {showBilingual && (
+              {showBilingual && !activity.customNiyyah && (
                 <AppText
                   style={[styles.arabicText, { color: C.textSecondary }]}
                 >
-                  {basicNiyyah ? basicNiyyah.text.ar : activity.niyyahText.ar}
+                  {activity.niyyahText.ar}
                 </AppText>
               )}
               {basicNiyyah?.source && (

@@ -71,18 +71,7 @@ export default function CategorySection({
         {categoryActivities.map((activity, index) => (
           <View key={activity.id}>
             <View style={styles.activityRow}>
-              <View
-                style={[
-                  styles.activityIconWrapper,
-                  { backgroundColor: (activity.color || C.tint) + "18" },
-                ]}
-              >
-                <AppIcon
-                  name={(activity.icon as any) || "circle"}
-                  size={16}
-                  color={activity.color || C.tint}
-                />
-              </View>
+
               <View style={styles.activityInfo}>
                 <AppText
                   weight='Medium'
@@ -90,14 +79,14 @@ export default function CategorySection({
                 >
                   {localize(activity.name)}
                 </AppText>
-                {activity.hadithRef && (
+                {/* {activity.hadithRef && (
                   <AppText
                     weight='Regular'
                     style={[styles.activityRef, { color: C.textMuted }]}
                   >
                     {localize(activity.hadithRef)}
                   </AppText>
-                )}
+                )} */}
               </View>
               <Switch
                 value={activity.enabled}
@@ -140,15 +129,9 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 12,
   },
-  activityIconWrapper: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   activityInfo: { flex: 1, gap: 2 },
   activityName: { fontSize: 15 },
   activityRef: { fontSize: 11 },
-  divider: { height: 1, marginLeft: 62 },
+  divider: { height: 1, marginLeft: 14 },
 });

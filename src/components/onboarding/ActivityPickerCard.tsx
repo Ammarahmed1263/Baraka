@@ -30,26 +30,11 @@ export function ActivityPickerCard({
         },
       ]}
     >
-      <View style={styles.iconRow}>
-        <View
-          style={[
-            styles.iconCircle,
-            { backgroundColor: activity.color + "20" },
-          ]}
-        >
-          <Feather
-            name={activity.icon as any}
-            size={22}
-            color={activity.color}
-          />
+      {selected && (
+        <View style={[styles.checkBadge, { backgroundColor: C.gold }]}>
+          <Feather name="check" size={12} color="#FFFFFF" />
         </View>
-
-        {selected && (
-          <View style={[styles.checkBadge, { backgroundColor: C.gold }]}>
-            <Feather name="check" size={12} color="#FFFFFF" />
-          </View>
-        )}
-      </View>
+      )}
 
       <AppText
         weight="Medium"
@@ -72,26 +57,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
   },
-  iconRow: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "center",
-    position: "relative",
-  },
-  iconCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   checkBadge: {
     position: "absolute",
-    top: -4,
-    right: 0,
-    width: 22,
-    height: 22,
-    borderRadius: 11,
+    top: 8,
+    right: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
   },

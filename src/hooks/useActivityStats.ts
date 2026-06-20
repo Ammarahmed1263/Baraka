@@ -15,10 +15,12 @@ export function useActivityStats() {
   const getAjrMultiplier = () => {
     const acts = todayLogs.length;
     if (acts === 0) return { acts: 0, avgNiyyahs: 0, total: 0 };
-    const totalNiyyahs = todayLogs.reduce(
-      (sum, l) => sum + Math.max(1, (l.selectedNiyyahIds ?? []).length),
-      0
-    );
+    const totalNiyyahs = todayLogs.reduce((sum, l) => {
+      const cleanIds = (l.selectedNiyyahIds ?? []).filter(
+        (id) => !id.endsWith("_basic")
+      );
+      return sum + cleanIds.length + 1;
+    }, 0);
     const avgNiyyahs = Math.round((totalNiyyahs / acts) * 10) / 10;
     return { acts, avgNiyyahs, total: acts * avgNiyyahs };
   };

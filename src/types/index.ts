@@ -6,14 +6,12 @@ export type Activity = {
   id: string;
   /** Bilingual display name */
   name: LocalizedString;
-  icon: string;
   /** Category key used for grouping (e.g. "worship", "daily") */
   category: string;
   /** Default niyyah text shown before user selects specific options */
   niyyahText: LocalizedString;
   hadithRef?: LocalizedString;
   defaultTime?: string;
-  color: string;
 };
 
 export type NiyyahOption = {

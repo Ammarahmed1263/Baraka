@@ -37,18 +37,7 @@ export default function ActivityCard({
       ]}
     >
       <View style={styles.content}>
-        <View
-          style={[
-            styles.iconWrapper,
-            { backgroundColor: (activity.color || C.tint) + "12" },
-          ]}
-        >
-          <Feather
-            name={(activity.icon as any) || "circle"}
-            size={20}
-            color={activity.color || C.tint}
-          />
-        </View>
+
 
         <View style={styles.info}>
           <AppText weight='Bold' style={[styles.name, { color: C.text }]}>
@@ -101,13 +90,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 16,
   },
-  iconWrapper: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   info: {
     flex: 1,
     gap: 2,

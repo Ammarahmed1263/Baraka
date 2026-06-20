@@ -1,25 +1,24 @@
-import * as Sentry from '@sentry/react-native';
-import { Feather } from "@expo/vector-icons";
-import { Haptic } from "@utils/haptics";
-import { router } from "expo-router";
-import { useCallback, useState, useEffect } from "react";
-import { Button, Platform, ScrollView, StyleSheet, View } from "react-native";
-import { AppButton } from "@components/UI/AppButton";
-import { useTranslation } from "react-i18next";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTheme } from "@context/ThemeContext";
-import { type UserActivity } from "@types";
-import { useActivitiesStore, useLogsStore } from "@store";
-import { useTodayLogs } from "@hooks/useTodayLogs";
-import { useActivityStats } from "@hooks/useActivityStats";
-import { useLanguage } from "@i18n";
+import DashboardStats from "@components/Home/DashboardStats";
+import HadithCard from "@components/Home/HadithCard";
 import NiyyahCard from "@components/NiyyahCard";
 import StreakBadge from "@components/StreakBadge";
+import { AppButton } from "@components/UI/AppButton";
 import { AppText } from "@components/UI/AppText";
-import HadithCard from "@components/Home/HadithCard";
-import DashboardStats from "@components/Home/DashboardStats";
 import { Skeleton } from "@components/UI/Skeleton";
+import { useTheme } from "@context/ThemeContext";
+import { Feather } from "@expo/vector-icons";
+import { useActivityStats } from "@hooks/useActivityStats";
+import { useTodayLogs } from "@hooks/useTodayLogs";
+import { useLanguage } from "@i18n";
+import { useActivitiesStore, useLogsStore } from "@store";
+import { type UserActivity } from "@types";
+import { Haptic } from "@utils/haptics";
+import { router } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TodayScreen() {
   const { t } = useTranslation();
@@ -231,7 +230,6 @@ export default function TodayScreen() {
                 <Animated.View
                   key={activity.id}
                   entering={FadeInDown.delay(index * 50).duration(250)}
-                  style={{ marginBottom: 12 }}
                 >
                   <NiyyahCard
                     activity={activity}
