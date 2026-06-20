@@ -271,7 +271,7 @@ export default function SettingsScreen() {
       });
 
       if (status === "granted") {
-        await Haptic.success();
+        Haptic.success();
         await scheduleDailyNotification(
           settings.reminderTime || "08:00",
           localize,

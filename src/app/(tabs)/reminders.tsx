@@ -33,8 +33,8 @@ export default function RemindersScreen() {
 
   const categories = [...new Set(activities.map((a) => a.category))];
 
-  const handleToggle = async (activity: UserActivity) => {
-    await Haptic.selection();
+  const handleToggle = (activity: UserActivity) => {
+    Haptic.selection();
     toggleActivity(activity.id);
   };
 
