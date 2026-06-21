@@ -61,7 +61,7 @@ export default function ActivityDetailScreen() {
     [activity?.id, profileTags],
   );
 
-  const basicNiyyah = predefinedNiyyahs.find((n) => n.level === "basic");
+  // const basicNiyyah = predefinedNiyyahs.find((n) => n.level === "basic");
   const advancedNiyyahs = predefinedNiyyahs.filter(
     (n) => n.level === "advanced",
   );
@@ -469,7 +469,7 @@ export default function ActivityDetailScreen() {
                   {activity.niyyahText.ar}
                 </AppText>
               )}
-              {basicNiyyah?.source && (
+              {/* {basicNiyyah?.source && (
                 <View style={styles.sourceRow}>
                   <Feather name='book-open' size={12} color={C.tintLight} />
                   <AppText
@@ -479,7 +479,7 @@ export default function ActivityDetailScreen() {
                     {localize(basicNiyyah.source)}
                   </AppText>
                 </View>
-              )}
+              )} */}
             </>
           )}
         </View>
@@ -592,14 +592,14 @@ export default function ActivityDetailScreen() {
                         {option.text.ar}
                       </AppText>
                     )}
-                    {option.source && (
+                    {/* {option.source && (
                       <AppText
                         weight='Regular'
                         style={[styles.optionSource, { color: C.tintLight }]}
                       >
                         {localize(option.source)}
                       </AppText>
-                    )}
+                    )} */}
                   </View>
                 </AnimatedPressable>
               );

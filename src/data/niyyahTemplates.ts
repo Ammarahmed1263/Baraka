@@ -1,151 +1,88 @@
 import type { NiyyahOption } from "@types";
 
 export const NIYYAH_OPTIONS: NiyyahOption[] = [
-  // ── Eating & Drinking ──
+  // ── Eating & Drinking (Breakfast) ──
   {
-    id: "eat_basic",
+    id: "breakfast_basic",
     activityId: "breakfast",
     level: "basic",
-    text: { en: "Gain strength for ibadah", ar: "اكتساب القوة للعبادة" },
-    source: { en: "Muslim 2013", ar: "مسلم ٢٠١٣" },
+    text: { en: "Eat this to gain strength for ibadah.", ar: "كُل هذا لتكتسب القوة للعبادة." }
   },
   {
-    id: "eat_1",
+    id: "breakfast_1",
     activityId: "breakfast",
     level: "advanced",
-    text: { en: "Follow Sunnah manners (Bismillah, right hand, sitting)", ar: "اتباع آداب السنة (بسم الله، باليد اليمنى، جلوساً)" },
-    source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
+    text: { en: "Say Bismillah and eat with your right hand. Follow the Sunnah in how you eat.", ar: "قل بسم الله وكل بيمينك. اتبع السنة في طريقة أكلك." }
   },
   {
-    id: "eat_2",
+    id: "breakfast_2",
     activityId: "breakfast",
     level: "advanced",
-    text: { en: "Recharge body for the next prayer", ar: "تجديد طاقة الجسم للصلاة القادمة" },
+    text: { en: "Eat this meal to recharge your body for the next prayer.", ar: "كُل هذه الوجبة لتجدد طاقة جسمك للصلاة القادمة." }
   },
   {
-    id: "eat_3",
+    id: "breakfast_3",
     activityId: "breakfast",
     level: "advanced",
-    text: { en: "Express gratitude to Allah for His rizq", ar: "التعبير عن الشكر لله على رزقه" },
-    source: { en: "Quran 14:7", ar: "القرآن ١٤:٧" },
+    text: { en: "Thank Allah as you eat. This rizq is from Him alone.", ar: "اشكر الله وأنت تأكل. هذا الرزق منه وحده." }
   },
   {
-    id: "eat_4",
+    id: "breakfast_4",
     activityId: "breakfast",
     level: "advanced",
-    text: { en: "Eat moderately to avoid heedlessness", ar: "الأكل باعتدال لتجنب الغفلة" },
-    source: { en: "Ibn Majah 3349", ar: "ابن ماجه ٣٣٤٩" },
+    text: { en: "Eat in moderation. A full stomach dulls the heart.", ar: "كُل باعتدال. البطن الممتلئة تُغفل القلب." }
   },
+
+  // ── Lunch ──
   {
     id: "lunch_basic",
     activityId: "lunch",
     level: "basic",
-    text: { en: "Sustain the body as Allah's trust", ar: "إدامة الجسم أمانةً من الله" },
+    text: { en: "Eat this to sustain your body as Allah's trust.", ar: "كُل هذا لتُديم جسمك أمانةً من الله." }
   },
   {
     id: "lunch_1",
     activityId: "lunch",
     level: "advanced",
-    text: { en: "Follow Sunnah manners (Bismillah, right hand)", ar: "اتباع آداب السنة (بسم الله، اليد اليمنى)" },
-    source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
+    text: { en: "Say Bismillah and eat with your right hand, even mid-day.", ar: "قل بسم الله وكل بيمينك، حتى في منتصف اليوم." }
   },
   {
     id: "lunch_2",
     activityId: "lunch",
     level: "advanced",
-    text: { en: "Recharge for Asr prayer and afternoon duties", ar: "تجديد الطاقة لصلاة العصر وواجبات بعد الظهر" },
+    text: { en: "Eat now to recharge for Asr and the rest of your afternoon.", ar: "كُل الآن لتجدد طاقتك لصلاة العصر وما تبقى من يومك." }
   },
   {
     id: "lunch_3",
     activityId: "lunch",
     level: "advanced",
-    text: { en: "Thank Allah for continued provision and health", ar: "شكر الله على استمرار الرزق والصحة" },
+    text: { en: "Thank Allah for provision and health that's carried you this far today.", ar: "اشكر الله على الرزق والصحة التي رافقتك حتى الآن اليوم." }
   },
+
+  // ── Dinner ──
   {
     id: "dinner_basic",
     activityId: "dinner",
     level: "basic",
-    text: { en: "Gather with family in Allah's name", ar: "التجمع مع العائلة باسم الله" },
+    text: { en: "Gather for this meal in Allah's name.", ar: "اجتمعوا على هذه الوجبة باسم الله." }
   },
   {
     id: "dinner_1",
     activityId: "dinner",
     level: "advanced",
-    text: { en: "Follow Sunnah manners (Bismillah, right hand)", ar: "اتباع آداب السنة (بسم الله، اليد اليمنى)" },
-    source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
+    text: { en: "Say Bismillah and eat with your right hand, even at the end of the day.", ar: "قل بسم الله وكل بيمينك، حتى في آخر اليوم." }
   },
   {
     id: "dinner_2",
     activityId: "dinner",
     level: "advanced",
-    text: { en: "Strengthen family bonds as an act of worship", ar: "تعزيز روابط الأسرة كعبادة" },
-    source: { en: "Tirmidhi 1897", ar: "الترمذي ١٨٩٧" },
+    text: { en: "Share this meal with family. It strengthens your bond, and it's worship too.", ar: "شارك هذه الوجبة مع عائلتك. تقوّي الرابط، وهي عبادة أيضاً." }
   },
   {
     id: "dinner_3",
     activityId: "dinner",
     level: "advanced",
-    text: { en: "End the day with gratitude before Isha", ar: "ختام اليوم بالشكر قبل صلاة العشاء" },
-  },
-
-  // ── Work / Earning ──
-  {
-    id: "work_basic",
-    activityId: "work",
-    level: "basic",
-    text: { en: "Earn halal provision for myself and family", ar: "كسب الرزق الحلال لنفسي وعائلتي" },
-    source: { en: "Tabarani", ar: "الطبراني" },
-  },
-  {
-    id: "work_1",
-    activityId: "work",
-    level: "advanced",
-    text: { en: "Providing for family as a form of sadaqah", ar: "الإنفاق على الأسرة كصدقة" },
-    source: { en: "Muslim 994", ar: "مسلم ٩٩٤" },
-  },
-  {
-    id: "work_2",
-    activityId: "work",
-    level: "advanced",
-    text: { en: "Avoid dependence on others and preserve dignity", ar: "تجنب التعلق بالآخرين والحفاظ على الكرامة" },
-    source: { en: "Bukhari 1470", ar: "البخاري ١٤٧٠" },
-  },
-  {
-    id: "work_3",
-    activityId: "work",
-    level: "advanced",
-    text: { en: "Use future earnings for zakat and good causes", ar: "استخدام الأرباح المستقبلية للزكاة والأعمال الخيرية" },
-    source: { en: "Quran 2:177", ar: "القرآن ٢:١٧٧" },
-  },
-  {
-    id: "work_4",
-    activityId: "work",
-    level: "advanced",
-    text: { en: "Benefit society and leave a positive legacy", ar: "إفادة المجتمع وترك إرث إيجابي" },
-  },
-  {
-    id: "work_professional_1",
-    activityId: "work",
-    level: "advanced",
-    text: { en: "Work with honesty and excellence as an act of worship", ar: "العمل بأمانة وإتقان كعبادة" },
-    source: { en: "Tabarani", ar: "الطبراني" },
-    profileTag: "professional",
-  },
-  {
-    id: "work_professional_2",
-    activityId: "work",
-    level: "advanced",
-    text: { en: "Use earnings in Allah's path through zakat and sadaqah", ar: "إنفاق الكسب في سبيل الله بالزكاة والصدقة" },
-    source: { en: "Quran 2:261", ar: "القرآن ٢:٢٦١" },
-    profileTag: "professional",
-  },
-  {
-    id: "work_professional_3",
-    activityId: "work",
-    level: "advanced",
-    text: { en: "Earn halal provision as sadaqah for the family", ar: "كسب الرزق الحلال كصدقة على العائلة" },
-    source: { en: "Muslim 994", ar: "مسلم ٩٩٤" },
-    profileTag: "professional",
+    text: { en: "Close your day with gratitude, before Isha calls you to pray.", ar: "اختم يومك بالشكر، قبل أن يدعوك العشاء للصلاة." }
   },
 
   // ── Exercise ──
@@ -153,34 +90,93 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     id: "exercise_basic",
     activityId: "exercise",
     level: "basic",
-    text: { en: "Care for the body as Allah's amanah", ar: "الاعتناء بالجسم أمانةً من الله" },
-    source: { en: "Muslim 2664", ar: "مسلم ٢٦٦٤" },
+    text: { en: "Move your body. It's an amanah from Allah, sustain it.", ar: "حرّك جسمك. إنه أمانة من الله، فحافظ عليه." }
   },
   {
     id: "exercise_1",
     activityId: "exercise",
     level: "advanced",
-    text: { en: "Build strength for longer salah and fasting", ar: "بناء القوة لصلاة أطول وصيام أفضل" },
+    text: { en: "Follow the Sunnah manners while you eat or recover. Bismillah, right hand.", ar: "اتبع آداب السنة في الأكل أثناء التعافي. بسم الله، باليد اليمنى." }
   },
   {
     id: "exercise_2",
     activityId: "exercise",
     level: "advanced",
-    text: { en: "Better serve family and community with strong health", ar: "خدمة العائلة والمجتمع بصحة أفضل" },
-    source: { en: "Tirmidhi 1897", ar: "الترمذي ١٨٩٧" },
+    text: { en: "Train today so you're recharged for Asr and what comes after.", ar: "تدرّب اليوم لتجدد طاقتك لصلاة العصر وما بعدها." }
   },
   {
     id: "exercise_3",
     activityId: "exercise",
     level: "advanced",
-    text: { en: "Follow the Sunnah of the strong believer", ar: "اتباع سنة المؤمن القوي" },
-    source: { en: "Muslim 2664", ar: "مسلم ٢٦٦٤" },
+    text: { en: "Thank Allah for the health and strength to do this.", ar: "اشكر الله على الصحة والقوة لفعل هذا." }
   },
   {
     id: "exercise_4",
     activityId: "exercise",
     level: "advanced",
-    text: { en: "Maintain energy for night prayers (Tahajjud)", ar: "الحفاظ على الطاقة لصلاة الليل (التهجد)" },
+    text: { en: "Train to build strength for longer salah and a stronger fast.", ar: "تدرّب لتبني قوة تكفي لصلاة أطول وصيام أفضل." }
+  },
+  {
+    id: "exercise_5",
+    activityId: "exercise",
+    level: "advanced",
+    text: { en: "Stay strong so you can serve your family and community better.", ar: "ابقَ قوياً لتخدم عائلتك ومجتمعك بشكل أفضل." }
+  },
+  {
+    id: "exercise_6",
+    activityId: "exercise",
+    level: "advanced",
+    text: { en: "Train today and follow the example of the strong believer.", ar: "تدرّب اليوم واقتدِ بسنة المؤمن القوي." }
+  },
+  {
+    id: "exercise_7",
+    activityId: "exercise",
+    level: "advanced",
+    text: { en: "Keep your energy up. You'll need it for Tahajjud tonight.", ar: "حافظ على طاقتك. ستحتاجها لقيام الليل الليلة." }
+  },
+
+  // ── Work ──
+  {
+    id: "work_basic",
+    activityId: "work",
+    level: "basic",
+    text: { en: "Work today to earn halal provision for yourself and your family.", ar: "اعمل اليوم لتكسب رزقاً حلالاً لنفسك ولعائلتك." }
+  },
+  {
+    id: "work_1",
+    activityId: "work",
+    level: "advanced",
+    text: { en: "Work knowing what you provide for your family is counted as sadaqah.", ar: "اعمل وأنت تعلم أن ما تنفقه على عائلتك يُحتسب صدقة." }
+  },
+  {
+    id: "work_2",
+    activityId: "work",
+    level: "advanced",
+    text: { en: "Work to stay independent. Don't lean on others, keep your dignity.", ar: "اعمل لتبقى مستقلاً. لا تتكل على غيرك، واحفظ كرامتك." }
+  },
+  {
+    id: "work_3",
+    activityId: "work",
+    level: "advanced",
+    text: { en: "Set some of today's earnings aside for zakat and good causes.", ar: "خصّص جزءاً من كسب اليوم للزكاة والأعمال الخيرية." }
+  },
+  {
+    id: "work_4",
+    activityId: "work",
+    level: "advanced",
+    text: { en: "Work in a way that benefits others, not just yourself.", ar: "اعمل بطريقة تفيد غيرك، لا نفسك فقط." }
+  },
+  {
+    id: "work_5",
+    activityId: "work",
+    level: "advanced",
+    text: { en: "Work with honesty and excellence. Treat it as worship.", ar: "اعمل بأمانة وإتقان. اعتبره عبادة." }
+  },
+  {
+    id: "work_6",
+    activityId: "work",
+    level: "advanced",
+    text: { en: "Spend part of what you earn in Allah's path, through zakat and sadaqah.", ar: "أنفق جزءاً مما تكسبه في سبيل الله، بالزكاة والصدقة." }
   },
 
   // ── Cooking ──
@@ -188,351 +184,313 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     id: "cooking_basic",
     activityId: "cooking",
     level: "basic",
-    text: { en: "Prepare nourishing food for the household", ar: "تحضير طعام مغذٍ للأسرة" },
+    text: { en: "Prepare this meal to nourish your household.", ar: "حضّر هذه الوجبة لتغذية أسرتك." }
   },
   {
     id: "cooking_1",
     activityId: "cooking",
     level: "advanced",
-    text: { en: "Feed family as an act of charity and love", ar: "إطعام العائلة كصدقة ومحبة" },
-    source: { en: "Muslim 994", ar: "مسلم ٩٩٤" },
+    text: { en: "Feed your family today. It's an act of charity and love.", ar: "أطعم عائلتك اليوم. إنه عمل من الصدقة والمحبة." }
   },
   {
     id: "cooking_2",
     activityId: "cooking",
     level: "advanced",
-    text: { en: "Serve spouse and household — a marital Sunnah", ar: "خدمة الزوج والأسرة — سنة زوجية" },
-    source: { en: "Tirmidhi 1162", ar: "الترمذي ١١٦٢" },
-    profileTag: "homemaker",
+    text: { en: "Spend on your household. Every bit of it is counted as charity.", ar: "أنفق على أسرتك. كل ما تقدّمه يُحتسب صدقة." }
   },
   {
     id: "cooking_3",
     activityId: "cooking",
     level: "advanced",
-    text: { en: "Maintain household health for worship", ar: "صون صحة الأسرة للعبادة" },
+    text: { en: "Cook with care. A healthy household can worship better.", ar: "اطبخ باهتمام. الأسرة السليمة تقدر على العبادة أكثر." }
   },
   {
     id: "cooking_4",
     activityId: "cooking",
     level: "advanced",
-    text: { en: "Say Bismillah with mindfulness at every step", ar: "قول بسم الله بوعي في كل خطوة" },
-    source: { en: "Bukhari 5376", ar: "البخاري ٥٣٧٦" },
+    text: { en: "Say Bismillah at every step, even while preparing the food.", ar: "قل بسم الله في كل خطوة، حتى وأنت تحضّر الطعام." }
   },
   {
-    id: "cooking_homemaker_1",
+    id: "cooking_5",
     activityId: "cooking",
     level: "advanced",
-    text: { en: "Make the home a place of blessing and warmth", ar: "جعل البيت مكانًا من البركة والدفء" },
-    profileTag: "homemaker",
+    text: { en: "Cook to make this home a place of warmth and blessing.", ar: "اطبخ لتجعل هذا البيت مكاناً من الدفء والبركة." }
   },
   {
-    id: "cooking_homemaker_2",
+    id: "cooking_6",
     activityId: "cooking",
     level: "advanced",
-    text: { en: "Obey household duties as a form of worship", ar: "أداء الواجبات المنزلية كعبادة" },
-    profileTag: "homemaker",
-  },
-  {
-    id: "cooking_parent_1",
-    activityId: "cooking",
-    level: "advanced",
-    text: { en: "Raise righteous children through nourishing food", ar: "تربية أطفال صالحين من خلال الطعام المغذي" },
-    profileTag: "parent",
+    text: { en: "Feed your children well. Good food helps raise righteous kids.", ar: "أطعم أطفالك جيداً. الطعام الجيد يساعد على تربية أبناء صالحين." }
   },
 
-  // ── Cleaning / Chores ──
+  // ── Cleaning ──
   {
     id: "cleaning_basic",
     activityId: "cleaning",
     level: "basic",
-    text: { en: "Maintain a clean home following Sunnah of cleanliness", ar: "الحفاظ على نظافة البيت اتباعاً لسنة النظافة" },
-    source: { en: "Muslim 223", ar: "مسلم ٢٢٣" },
+    text: { en: "Clean your home, following the Sunnah of cleanliness.", ar: "نظّف بيتك، اتباعاً لسنة النظافة." }
   },
   {
     id: "cleaning_1",
     activityId: "cleaning",
     level: "advanced",
-    text: { en: "Create a peaceful space conducive to worship", ar: "خلق مساحة هادئة مواتية للعبادة" },
+    text: { en: "Clean this space so it's ready for worship.", ar: "نظّف هذا المكان ليكون جاهزاً للعبادة." }
   },
   {
     id: "cleaning_2",
     activityId: "cleaning",
     level: "advanced",
-    text: { en: "Serve family with kindness and sincerity", ar: "خدمة العائلة بطيب نفس وإخلاص" },
-    profileTag: "homemaker",
+    text: { en: "Clean with kindness and sincerity, as a service to your family.", ar: "نظّف بطيب نفس وإخلاص، كخدمة لعائلتك." }
   },
   {
     id: "cleaning_3",
     activityId: "cleaning",
     level: "advanced",
-    text: { en: "Embody that 'cleanliness is half of faith'", ar: "تجسيد أن النظافة نصف الإيمان" },
-    source: { en: "Muslim 223", ar: "مسلم ٢٢٣" },
+    text: { en: "Clean today. Purity is half of faith.", ar: "نظّف اليوم. الطهور شطر الإيمان." }
   },
   {
     id: "cleaning_4",
     activityId: "cleaning",
     level: "advanced",
-    text: { en: "Teach children the value of order and cleanliness", ar: "تعليم الأطفال قيمة النظام والنظافة" },
-    profileTag: "parent",
+    text: { en: "Clean alongside your children. Teach them order as you go.", ar: "نظّف مع أطفالك. علّمهم النظام وأنت تفعل ذلك." }
   },
   {
-    id: "cleaning_homemaker_1",
+    id: "cleaning_5",
     activityId: "cleaning",
     level: "advanced",
-    text: { en: "Maintain the home as a blessed place of worship", ar: "صون البيت كمكان مبارك للعبادة" },
-    profileTag: "homemaker",
+    text: { en: "Keep this home as a blessed place fit for worship.", ar: "حافظ على هذا البيت مكاناً مباركاً يليق بالعبادة." }
   },
   {
-    id: "cleaning_parent_1",
+    id: "cleaning_6",
     activityId: "cleaning",
     level: "advanced",
-    text: { en: "Raise children who appreciate order and purity", ar: "تربية أطفال يقدّرون النظام والطهارة" },
-    profileTag: "parent",
+    text: { en: "Clean today and raise children who value order and purity.", ar: "نظّف اليوم وربِّ أطفالاً يقدّرون النظام والطهارة." }
   },
 
-  // ── Sleeping ──
+  // ── Sleep ──
   {
     id: "sleep_basic",
     activityId: "sleep",
     level: "basic",
-    text: { en: "Rest the body to recharge for worship", ar: "إراحة الجسم لتجديد طاقته للعبادة" },
-    source: { en: "Bukhari 247", ar: "البخاري ٢٤٧" },
+    text: { en: "Rest now to recharge for tomorrow's worship.", ar: "ارتح الآن لتجدد طاقتك لعبادة الغد." }
   },
   {
     id: "sleep_1",
     activityId: "sleep",
     level: "advanced",
-    text: { en: "Wake for Tahajjud — set the intention now", ar: "الاستيقاظ للتهجد — اعقد النية الآن" },
-    source: { en: "Bukhari 1145", ar: "البخاري ١١٤٥" },
+    text: { en: "Set your intention now to wake for Tahajjud.", ar: "اعقد نيتك الآن على الاستيقاظ لصلاة التهجد." }
   },
   {
     id: "sleep_2",
     activityId: "sleep",
     level: "advanced",
-    text: { en: "Preserve health as a trust from Allah", ar: "صون الصحة أمانةً من الله" },
+    text: { en: "Sleep tonight knowing your health is a trust from Allah.", ar: "نم الليلة وأنت تعلم أن صحتك أمانة من الله." }
   },
   {
     id: "sleep_3",
     activityId: "sleep",
     level: "advanced",
-    text: { en: "Follow Sunnah sleep du'a and right-side posture", ar: "اتباع دعاء النوم السني والنوم على الجانب الأيمن" },
-    source: { en: "Bukhari 247", ar: "البخاري ٢٤٧" },
+    text: { en: "Make wudu, lie on your right side, and say the Sunnah dua before you sleep.", ar: "توضأ، واضطجع على شقك الأيمن، وقل دعاء النوم السني قبل أن تنام." }
   },
   {
     id: "sleep_4",
     activityId: "sleep",
     level: "advanced",
-    text: { en: "Rest as counted reward — like a night of worship", ar: "الراحة كأجر محتسب — كليلة من العبادة" },
-    source: { en: "Abu Dawud 5056", ar: "أبو داود ٥٠٥٦" },
+    text: { en: "Sleep with this intention. The reward is counted like a night of worship.", ar: "نم بهذه النية. الأجر يُحتسب كليلة من العبادة." }
   },
 
-  // ── Prayers ──
+  // ── Fajr ──
   {
     id: "fajr_basic",
     activityId: "fajr",
     level: "basic",
-    text: { en: "Obey Allah's command for Fajr prayer", ar: "طاعة أمر الله في صلاة الفجر" },
-    source: { en: "Quran 17:78", ar: "القرآن ١٧:٧٨" },
+    text: { en: "Pray Fajr now. Allah commanded it.", ar: "صلِّ الفجر الآن. أمر الله بها." }
   },
   {
     id: "fajr_1",
     activityId: "fajr",
     level: "advanced",
-    text: { en: "Start the day under Allah's protection", ar: "بدء اليوم تحت حماية الله" },
-    source: { en: "Abu Dawud 5082", ar: "أبو داود ٥٠٨٢" },
+    text: { en: "Pray Fajr now and start your day under Allah's protection.", ar: "صلِّ الفجر الآن وابدأ يومك في حفظ الله." }
   },
   {
     id: "fajr_2",
     activityId: "fajr",
     level: "advanced",
-    text: { en: "Witness the dawn — a moment witnessed by angels", ar: "شهود الفجر — لحظة يشهدها الملائكة" },
-    source: { en: "Quran 17:78", ar: "القرآن ١٧:٧٨" },
+    text: { en: "Pray now. The dawn prayer is a moment the angels themselves witness.", ar: "صلِّ الآن. صلاة الفجر لحظة يشهدها الملائكة أنفسهم." }
   },
   {
     id: "fajr_3",
     activityId: "fajr",
     level: "advanced",
-    text: { en: "Earn the reward greater than the world and all it contains", ar: "كسب الأجر الأعظم من الدنيا وما فيها" },
-    source: { en: "Muslim 725", ar: "مسلم ٧٢٥" },
+    text: { en: "Pray its two sunnah rak'ahs too. They outweigh this entire world.", ar: "صلِّ ركعتي سنتها أيضاً. هما خيرٌ من الدنيا كلها." }
   },
+
+  // ── Dhuhur ──
   {
     id: "dhuhur_basic",
     activityId: "dhuhur",
     level: "basic",
-    text: { en: "Pause from work to remember Allah", ar: "التوقف عن العمل لذكر الله" },
+    text: { en: "Pause from work and pray. This is the time Allah commanded.", ar: "توقف عن العمل وصلِّ. هذا الوقت أمر الله به." }
   },
   {
     id: "dhuhur_1",
     activityId: "dhuhur",
     level: "advanced",
-    text: { en: "Seek forgiveness for the morning's shortcomings", ar: "طلب المغفرة عن قصور الصباح" },
+    text: { en: "Pause now and ask forgiveness for any shortcomings since the morning.", ar: "توقف الآن واستغفر عن أي تقصير منذ الصباح." }
   },
   {
     id: "dhuhur_2",
     activityId: "dhuhur",
     level: "advanced",
-    text: { en: "Renew gratitude for a productive morning", ar: "تجديد الشكر على صباح مثمر" },
+    text: { en: "Pray now and renew your gratitude for a productive morning.", ar: "صلِّ الآن وجدد شكرك على صباح مثمر." }
   },
+
+  // ── Asr ──
   {
     id: "asr_basic",
     activityId: "asr",
     level: "basic",
-    text: { en: "Guard the middle prayer as commanded", ar: "حفظ الصلاة الوسطى كما أُمرنا" },
-    source: { en: "Quran 2:238", ar: "القرآن ٢:٢٣٨" },
+    text: { en: "Pray Asr now. Guard this prayer, it was singled out by name.", ar: "صلِّ العصر الآن. احفظ هذه الصلاة، فقد خُصت بالذكر." }
   },
   {
     id: "asr_1",
     activityId: "asr",
     level: "advanced",
-    text: { en: "Close the work-day chapter with Allah's remembrance", ar: "إغلاق فصل يوم العمل بذكر الله" },
+    text: { en: "Pray Asr now and close this chapter of your work-day with Allah's remembrance.", ar: "صلِّ العصر الآن واختم فصل عملك اليوم بذكر الله." }
   },
   {
     id: "asr_2",
     activityId: "asr",
     level: "advanced",
-    text: { en: "Protect from the warning for missing Asr", ar: "الحماية من التحذير لمن يفوته العصر" },
-    source: { en: "Bukhari 552", ar: "البخاري ٥٥٢" },
+    text: { en: "Pray on time. Missing Asr is described as losing your family and wealth.", ar: "صلِّ في وقتها. من فاتته العصر فكأنما خسر أهله وماله." }
   },
+
+  // ── Maghrib ──
   {
     id: "maghrib_basic",
     activityId: "maghrib",
     level: "basic",
-    text: { en: "Thank Allah for completing another day", ar: "شكر الله على إتمام يوم آخر" },
+    text: { en: "Pray Maghrib now and thank Allah for completing another day.", ar: "صلِّ المغرب الآن واشكر الله على إتمام يوم آخر." }
   },
   {
     id: "maghrib_1",
     activityId: "maghrib",
     level: "advanced",
-    text: { en: "Seek Maghrib's special time of du'a acceptance", ar: "الحرص على وقت إجابة الدعاء عند المغرب" },
+    text: { en: "Pray two rak'ahs before it. A small gift the Prophet ﷺ recommended.", ar: "صلِّ ركعتين قبلها. هدية صغيرة أوصى بها النبي ﷺ." }
   },
   {
     id: "maghrib_2",
     activityId: "maghrib",
     level: "advanced",
-    text: { en: "Gather family for prayer and togetherness", ar: "جمع الأسرة للصلاة والتوحد" },
+    text: { en: "Gather your family for this prayer. Pray together if you can.", ar: "اجمع عائلتك لهذه الصلاة. صلوا معاً إن استطعتم." }
   },
+
+  // ── Isha ──
   {
     id: "isha_basic",
     activityId: "isha",
     level: "basic",
-    text: { en: "End the day in submission to Allah", ar: "ختام اليوم بالخضوع لله" },
-    source: { en: "Muslim 657", ar: "مسلم ٦٥٧" },
+    text: { en: "Pray Isha now and end your day in submission to Allah.", ar: "صلِّ العشاء الآن واختم يومك بالخضوع لله." }
   },
   {
     id: "isha_1",
     activityId: "isha",
     level: "advanced",
-    text: { en: "Guard Isha for its exceptional reward", ar: "الحفاظ على العشاء لأجرها الاستثنائي" },
-    source: { en: "Muslim 656", ar: "مسلم ٦٥٦" },
+    text: { en: "Pray it in congregation. It counts as half a night of standing in prayer.", ar: "صلِّها في جماعة. تُحتسب كقيام نصف ليلة." }
   },
   {
     id: "isha_2",
     activityId: "isha",
     level: "advanced",
-    text: { en: "Prepare the heart for peaceful, grateful sleep", ar: "تهيئة القلب للنوم المسالم الشاكر" },
+    text: { en: "Pray now, then prepare your heart for peaceful, grateful sleep.", ar: "صلِّ الآن، ثم هيّئ قلبك لنوم مسالم شاكر." }
   },
 
-  // ── Reading / Learning ──
+  // ── Reading ──
   {
     id: "reading_basic",
     activityId: "reading",
     level: "basic",
-    text: { en: "Seek knowledge as a religious obligation", ar: "طلب العلم واجب ديني" },
-    source: { en: "Ibn Majah 224", ar: "ابن ماجه ٢٢٤" },
+    text: { en: "Read now. Seeking knowledge is a religious obligation.", ar: "اقرأ الآن. طلب العلم واجب ديني." }
   },
   {
     id: "reading_1",
     activityId: "reading",
     level: "advanced",
-    text: { en: "Improve skills to earn better halal income", ar: "تطوير المهارات لكسب دخل حلال أفضل" },
-    profileTag: "professional",
+    text: { en: "Build a skill today that earns you better halal income.", ar: "طوّر مهارة اليوم تكسب بها دخلاً حلالاً أفضل." }
   },
   {
     id: "reading_2",
     activityId: "reading",
     level: "advanced",
-    text: { en: "Share knowledge as ongoing sadaqah jariyah", ar: "نشر العلم كصدقة جارية" },
-    source: { en: "Muslim 1631", ar: "مسلم ١٦٣١" },
+    text: { en: "Learn something today and share it. Knowledge passed on is ongoing sadaqah.", ar: "تعلّم شيئاً اليوم وانشره. العلم الذي يُنقل صدقة جارية." }
   },
   {
     id: "reading_3",
     activityId: "reading",
     level: "advanced",
-    text: { en: "Deepen understanding of deen and world", ar: "تعميق فهم الدين والدنيا" },
+    text: { en: "Read to deepen your understanding, of your deen and your world.", ar: "اقرأ لتعمّق فهمك، لدينك ودنياك." }
   },
   {
-    id: "reading_student_1",
+    id: "reading_4",
     activityId: "reading",
     level: "advanced",
-    text: { en: "Seek knowledge for Allah's sake alone", ar: "طلب العلم لوجه الله وحده" },
-    source: { en: "Ibn Majah 224", ar: "ابن ماجه ٢٢٤" },
-    profileTag: "student",
+    text: { en: "Seek this knowledge for Allah's sake alone.", ar: "اطلب هذا العلم لوجه الله وحده." }
   },
   {
-    id: "reading_student_2",
+    id: "reading_5",
     activityId: "reading",
     level: "advanced",
-    text: { en: "Apply learning in dawah and service to others", ar: "تطبيق العلم في الدعوة وخدمة الآخرين" },
-    profileTag: "student",
+    text: { en: "Learn this so you can put it to use in dawah and serving others.", ar: "تعلّم هذا لتستخدمه في الدعوة وخدمة الآخرين." }
   },
   {
-    id: "reading_student_3",
+    id: "reading_6",
     activityId: "reading",
     level: "advanced",
-    text: { en: "Strengthen the mind for better ibadah", ar: "تقوية العقل لعبادة أفضل" },
-    profileTag: "student",
+    text: { en: "Read today to strengthen your mind for better ibadah.", ar: "اقرأ اليوم لتقوي عقلك لعبادة أفضل." }
   },
 
-  // ── Family Time ──
+  // ── Family ──
   {
     id: "family_basic",
     activityId: "family",
     level: "basic",
-    text: { en: "Fulfill rights of family as an act of worship", ar: "أداء حقوق العائلة كعبادة" },
-    source: { en: "Tirmidhi 1897", ar: "الترمذي ١٨٩٧" },
+    text: { en: "Spend this time with family. Fulfill their rights.", ar: "اقضِ هذا الوقت مع العائلة. أدِّ حقوقهم." }
   },
   {
     id: "family_1",
     activityId: "family",
     level: "advanced",
-    text: { en: "Strengthen blood ties that Allah commanded", ar: "تقوية صلة الرحم التي أوجبها الله" },
-    source: { en: "Bukhari 5988", ar: "البخاري ٥٩٨٨" },
+    text: { en: "Strengthen your family ties today. Allah commanded keeping them strong.", ar: "قوِّ صلة رحمك اليوم. أوجب الله الحفاظ عليها." }
   },
   {
     id: "family_2",
     activityId: "family",
     level: "advanced",
-    text: { en: "Model Islamic character for children", ar: "نمذجة الأخلاق الإسلامية للأطفال" },
-    profileTag: "parent",
+    text: { en: "Show your children good character. They learn it from watching you.", ar: "أرِ أطفالك حسن الخلق. يتعلمونه من مراقبتك." }
   },
   {
     id: "family_3",
     activityId: "family",
     level: "advanced",
-    text: { en: "Be among the best to my spouse", ar: "أن أكون من أفضل الناس لزوجي" },
-    source: { en: "Tirmidhi 3895", ar: "الترمذي ٣٨٩٥" },
+    text: { en: "Be good to your spouse today. Aim to be among the best to them.", ar: "أحسن إلى زوجك اليوم. اسعَ لتكون من أفضل الناس له." }
   },
   {
-    id: "family_parent_1",
+    id: "family_4",
     activityId: "family",
     level: "advanced",
-    text: { en: "Raise righteous children who will make du'a for me", ar: "تربية أطفال صالحين يدعون لي" },
-    source: { en: "Muslim 1631", ar: "مسلم ١٦٣١" },
-    profileTag: "parent",
+    text: { en: "Raise your children well. A righteous child keeps making du'a for you, even after you're gone.", ar: "ربِّ أطفالك جيداً. الولد الصالح يدعو لك، حتى بعد رحيلك." }
   },
   {
-    id: "family_parent_2",
+    id: "family_5",
     activityId: "family",
     level: "advanced",
-    text: { en: "Show kindness and patience with children as worship", ar: "معاملة الأطفال بلطف وصبر كعبادة" },
-    profileTag: "parent",
+    text: { en: "Be patient and kind with your children. Treat it as worship.", ar: "كن لطيفاً وصبوراً مع أطفالك. اعتبره عبادة." }
   },
   {
-    id: "family_parent_3",
+    id: "family_6",
     activityId: "family",
     level: "advanced",
-    text: { en: "Teach the children their deen through daily example", ar: "تعليم الأطفال دينهم من خلال المثال اليومي" },
-    profileTag: "parent",
+    text: { en: "Teach your children their deen today, through how you live, not just what you say.", ar: "علّم أطفالك دينهم اليوم، من خلال سلوكك لا كلامك فقط." }
   },
 
   // ── Charity ──
@@ -540,29 +498,25 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     id: "charity_basic",
     activityId: "charity",
     level: "basic",
-    text: { en: "Give purely for Allah's sake alone", ar: "العطاء خالصاً لوجه الله" },
-    source: { en: "Bukhari 1419", ar: "البخاري ١٤١٩" },
+    text: { en: "Give today, purely for Allah's sake.", ar: "تصدّق اليوم، خالصاً لوجه الله." }
   },
   {
     id: "charity_1",
     activityId: "charity",
     level: "advanced",
-    text: { en: "Purify my wealth through giving", ar: "تطهير مالي من خلال العطاء" },
-    source: { en: "Quran 9:103", ar: "القرآن ٩:١٠٣" },
+    text: { en: "Give something today. It purifies the rest of your wealth.", ar: "تصدّق بشيء اليوم. إنه يطهّر بقية مالك." }
   },
   {
     id: "charity_2",
     activityId: "charity",
     level: "advanced",
-    text: { en: "Seek the sevenfold multiplication Allah promises", ar: "السعي للمضاعفة السبعينية التي وعد الله بها" },
-    source: { en: "Quran 2:261", ar: "القرآن ٢:٢٦١" },
+    text: { en: "Give now. Allah promises to multiply it sevenfold and more.", ar: "تصدّق الآن. وعد الله بمضاعفتها سبع مرات وأكثر." }
   },
   {
     id: "charity_3",
     activityId: "charity",
     level: "advanced",
-    text: { en: "Protect my wealth from loss through sadaqah", ar: "حماية مالي من الضياع بالصدقة" },
-    source: { en: "Muslim 2588", ar: "مسلم ٢٥٨٨" },
+    text: { en: "Give now, while you still want to keep it. That's the charity with the greatest reward.", ar: "تصدّق الآن، وأنت لا تزال تريد إمساكه. هذه هي الصدقة الأعظم أجراً." }
   },
 
   // ── Commute ──
@@ -570,31 +524,28 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     id: "commute_basic",
     activityId: "commute",
     level: "basic",
-    text: { en: "Travel under Allah's protection", ar: "السفر تحت حماية الله" },
+    text: { en: "Set off now, under Allah's protection.", ar: "انطلق الآن، في حفظ الله." }
   },
   {
     id: "commute_1",
     activityId: "commute",
     level: "advanced",
-    text: { en: "Fill the journey with dhikr and Quran", ar: "ملء الرحلة بالذكر والقرآن" },
-    source: { en: "Bukhari 6682", ar: "البخاري ٦٦٨٢" },
+    text: { en: "Fill this journey with dhikr or a bit of Quran.", ar: "ملء هذه الرحلة بالذكر أو شيء من القرآن." }
   },
   {
     id: "commute_2",
     activityId: "commute",
     level: "advanced",
-    text: { en: "Recite the travel du'a as prophetic Sunnah", ar: "قراءة دعاء السفر اتباعاً للسنة النبوية" },
-    source: { en: "Abu Dawud 2602", ar: "أبو داود ٢٦٠٢" },
+    text: { en: "Say this before you set off. It's the Prophet's ﷺ own dua for any journey.", ar: "قل هذا قبل أن تتحرك. هذا دعاء النبي ﷺ نفسه لأي رحلة." }
   },
   {
     id: "commute_3",
     activityId: "commute",
     level: "advanced",
-    text: { en: "Arrive at destination with fresh gratitude", ar: "الوصول إلى الوجهة بامتنان متجدد" },
-  },
+    text: { en: "Ask Allah to bring you back with fresh gratitude when you arrive.", ar: "اسأل الله أن يردّك بامتنان متجدد عند وصولك." }
+  }
 ];
 
-/** Returns niyyah options for a given activityId, filtered by profile tags */
 export function getNiyyahOptions(
   activityId: string,
   profileTags: string[] = []
