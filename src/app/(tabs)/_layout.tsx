@@ -5,11 +5,13 @@ import { useTranslation } from "react-i18next";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@context/ThemeContext";
+import { useLanguage } from "@/i18n";
 
 export default function TabLayout() {
   const { t } = useTranslation();
   const { colors: C } = useTheme();
   const insets = useSafeAreaInsets();
+  const { language } = useLanguage();
   const isIOS = Platform.OS === "ios";
   const isWeb = Platform.OS === "web";
 
@@ -32,7 +34,7 @@ export default function TabLayout() {
           alignItems: 'center',
         },
         tabBarLabelStyle: {
-          fontFamily: "Tajawal-Medium",
+          fontFamily: language === "ar" ? "Tajawal" : "SourceSerif4-Medium",
           fontSize: 12,
         },
       }}

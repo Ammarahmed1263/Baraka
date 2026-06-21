@@ -8,6 +8,7 @@ import {
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
 import { Feather } from "@expo/vector-icons";
+import { useLanguage } from "@i18n";
 
 interface AppTextInputProps extends TextInputProps {
   label?: string;
@@ -25,6 +26,7 @@ export function AppTextInput({
   ...props
 }: AppTextInputProps) {
   const { colors: C } = useTheme();
+  const { language } = useLanguage();
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = (e: any) => {
@@ -55,6 +57,7 @@ export function AppTextInput({
               color: C.text,
               backgroundColor: C.backgroundSubtle,
               borderColor: isFocused ? C.tint : C.border,
+              fontFamily: `${language === "ar" ? "Tajawal" : "SourceSerif4"}-Regular`,
               letterSpacing: 0,
             },
             props.multiline && styles.multiline,
@@ -103,7 +106,6 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     paddingHorizontal: 16,
     fontSize: 14,
-    fontFamily: "Tajawal-Regular",
   },
   leftIcon: {
     position: "absolute",

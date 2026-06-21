@@ -48,7 +48,11 @@
             "./assets/fonts/Tajawal-Bold.ttf",
             "./assets/fonts/Tajawal-Light.ttf",
             "./assets/fonts/Tajawal-Medium.ttf",
-            "./assets/fonts/Tajawal-Regular.ttf"
+            "./assets/fonts/Tajawal-Regular.ttf",
+            "./assets/fonts/SourceSerif4-Bold.ttf",
+            "./assets/fonts/SourceSerif4-Light.ttf",
+            "./assets/fonts/SourceSerif4-Medium.ttf",
+            "./assets/fonts/SourceSerif4-Regular.ttf"
           ]
         }
       ],
