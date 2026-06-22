@@ -327,7 +327,10 @@ export default function SettingsScreen() {
           pointerEvents='none'
         >
           <Feather name='unlock' size={16} color='#C9A84C' />
-          <AppText weight='Medium' style={styles.toastText}>
+          <AppText
+            weight='Medium'
+            style={[styles.toastText, { color: C.text }]}
+          >
             {toastMessage}
           </AppText>
         </Animated.View>
@@ -572,7 +575,7 @@ export default function SettingsScreen() {
               </View>
             </View>
             <Feather
-              name="chevron-right"
+              name='chevron-right'
               size={18}
               color={C.textMuted}
               flipRTL
@@ -606,7 +609,7 @@ export default function SettingsScreen() {
               </View>
             </View>
             <Feather
-              name="chevron-right"
+              name='chevron-right'
               size={18}
               color={C.textMuted}
               flipRTL
@@ -822,7 +825,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 8,
   },
-  toastText: { color: "#FFF", fontSize: 14, flex: 1 },
+  toastText: { fontSize: 14, flex: 1 },
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
