@@ -1,15 +1,16 @@
-import {
-  StyleSheet,
-  ActivityIndicator,
-  View,
-} from "react-native";
+import { StyleSheet, ActivityIndicator, View } from "react-native";
 import { AnimatedPressable, AnimatedPressableProps } from "./AnimatedPressable";
 import { Feather } from "@expo/vector-icons";
 import { Haptic } from "@utils/haptics";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
 
-type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "destructive";
 
 interface AppButtonProps extends AnimatedPressableProps {
   label: string;
@@ -33,13 +34,25 @@ export function AppButton({
 
   const handlePress = (e: any) => {
     if (haptic) {
-      switch(haptic) {
-        case "light": Haptic.lightTap(); break;
-        case "selection": Haptic.selection(); break;
-        case "success": Haptic.success(); break;
-        case "warning": Haptic.warning(); break;
-        case "error": Haptic.error(); break;
-        default: Haptic.lightTap(); break;
+      switch (haptic) {
+        case "light":
+          Haptic.lightTap();
+          break;
+        case "selection":
+          Haptic.selection();
+          break;
+        case "success":
+          Haptic.success();
+          break;
+        case "warning":
+          Haptic.warning();
+          break;
+        case "error":
+          Haptic.error();
+          break;
+        default:
+          Haptic.lightTap();
+          break;
       }
     }
     if (props.onPress) props.onPress(e);
@@ -55,13 +68,17 @@ export function AppButton({
         };
       case "secondary":
         return {
-          container: { backgroundColor: C.backgroundSubtle },
-          text: { color: C.text },
-          icon: C.text,
+          container: { backgroundColor: C.gold },
+          text: { color: C.textOnTint },
+          icon: C.textOnTint,
         };
       case "outline":
         return {
-          container: { backgroundColor: "transparent", borderWidth: 1, borderColor: C.border },
+          container: {
+            backgroundColor: "transparent",
+            borderWidth: 1,
+            borderColor: C.border,
+          },
           text: { color: C.textSecondary },
           icon: C.textSecondary,
         };
@@ -73,7 +90,11 @@ export function AppButton({
         };
       case "destructive":
         return {
-          container: { backgroundColor: C.error + "20", borderWidth: 1, borderColor: C.error },
+          container: {
+            backgroundColor: C.error + "20",
+            borderWidth: 1,
+            borderColor: C.error,
+          },
           text: { color: C.error },
           icon: C.error,
         };
@@ -98,11 +119,13 @@ export function AppButton({
       {...props}
     >
       {loading ? (
-        <ActivityIndicator color={v.icon} size="small" />
+        <ActivityIndicator color={v.icon} size='small' />
       ) : (
         <View style={styles.content}>
-          {icon && <Feather name={icon} size={18} color={v.icon} style={styles.icon} />}
-          <AppText weight="Bold" style={[styles.label, v.text]}>
+          {icon && (
+            <Feather name={icon} size={18} color={v.icon} style={styles.icon} />
+          )}
+          <AppText weight='Bold' style={[styles.label, v.text]}>
             {label}
           </AppText>
         </View>
