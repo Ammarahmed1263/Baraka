@@ -20,7 +20,7 @@ export type NiyyahOption = {
   level: "basic" | "advanced";
   text: LocalizedString;
   source?: LocalizedString;
-  profileTag?: "homemaker" | "student" | "professional" | "parent";
+  profileTags?: ("homemaker" | "student" | "professional" | "parent")[];
 };
 
 export type EducationEntry = {

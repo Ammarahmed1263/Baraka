@@ -558,31 +558,32 @@ export default function ActivityDetailScreen() {
                       >
                         {localize(option.text)}
                       </AppText>
-                      {option.profileTag && (
+                      {option.profileTags && option.profileTags.map((tag) => (
                         <View
+                          key={tag}
                           style={[
                             styles.roleBadge,
                             {
                               backgroundColor:
-                                ROLE_META[option.profileTag].color + "20",
+                                ROLE_META[tag].color + "20",
                             },
                           ]}
                         >
                           <Feather
-                            name={ROLE_META[option.profileTag].icon as any}
+                            name={ROLE_META[tag].icon as any}
                             size={10}
-                            color={ROLE_META[option.profileTag].color}
+                            color={ROLE_META[tag].color}
                           />
                           <AppText
                             style={[
                               styles.roleBadgeText,
-                              { color: ROLE_META[option.profileTag].color },
+                              { color: ROLE_META[tag].color },
                             ]}
                           >
-                            {t(`settings.profile.${option.profileTag}`)}
+                            {t(`settings.profile.${tag}`)}
                           </AppText>
                         </View>
-                      )}
+                      ))}
                     </View>
                     {showBilingual && (
                       <AppText
