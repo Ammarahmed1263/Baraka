@@ -6,8 +6,8 @@ export const DEFAULT_ACTIVITIES: Activity[] = [
     name: { en: "Fajr Prayer", ar: "صلاة الفجر" },
     category: "worship",
     niyyahText: {
-      en: "Pray Fajr now. It's one of the two prayers hardest on a weak heart, so its reward is the greatest.",
-      ar: "صلِّ الفجر الآن. من أثقل صلاتين على القلب الضعيف، فأجرها الأعظم.",
+      en: "Pray Fajr now. It's one of the two prayers hardest on hypocrites, so its reward is the greatest.",
+      ar: "صلِّ الفجر الآن. من أثقل صلاتين على القلب المنافقين، فأجرها الأعظم.",
     },
     hadithRef: { en: "Bukhari 657", ar: "البخاري ٦٥٧" },
     defaultTime: "05:00",
