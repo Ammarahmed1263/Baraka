@@ -15,7 +15,7 @@ export async function registerForPushNotificationsAsync(): Promise<NotificationP
     await Notifications.setNotificationChannelAsync("default", {
       name: "default",
       importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250], // [delay, vibrate, pause, vibrate, pause, ..]
+      vibrationPattern: [0, 400, 200, 400], // [delay, vibrate, pause, vibrate, pause, ..]
       lightColor: "#D4AF37",
     });
   }
@@ -54,29 +54,108 @@ export async function registerForPushNotificationsAsync(): Promise<NotificationP
   return status as NotificationPermissionStatus;
 }
 
-export async function scheduleDailyNotification(
+const NOTIFICATION_IDENTIFIER_PREFIX = "daily-reminder";
+const MAX_SCHEDULED = 64;
+const RESCHEDULE_THRESHOLD = 30;
+
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function buildMessageSequence(count: number) {
+  const sequence: Array<typeof DAILY_NOTIFICATIONS[0]> = [];
+  while (sequence.length < count) {
+    sequence.push(...shuffleArray(DAILY_NOTIFICATIONS));
+  }
+  return sequence.slice(0, count);
+}
+
+export async function scheduleDailyNotifications(
   time: string,
   localize: (key: LocalizedString) => string,
 ) {
   await Notifications.cancelAllScheduledNotificationsAsync();
-  const randomMessage =
-    DAILY_NOTIFICATIONS[Math.floor(Math.random() * DAILY_NOTIFICATIONS.length)];
 
-  await Notifications.scheduleNotificationAsync({
-    identifier: "daily-reminder",
-    content: {
-      title: localize(randomMessage.title),
-      body: localize(randomMessage.body),
-      sound: true,
-      data: { screen: "/(tabs)" },
-    },
-    trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.DAILY,
-      ...parseReminderTime(time),
-    },
-  });
+  const { hour, minute } = parseReminderTime(time);
+  const messages = buildMessageSequence(MAX_SCHEDULED);
+
+  const now = new Date();
+
+  const startDate = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    hour,
+    minute
+  );
+
+  const todayTrigger = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    hour,
+    minute
+  );
+
+  const baseDate = todayTrigger > now ? todayTrigger : startDate;
+  for (let i = 0; i < MAX_SCHEDULED; i++) {
+    const triggerDate = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate() + i,
+      hour,
+      minute
+    );
+
+    const msg = messages[i];
+
+    await Notifications.scheduleNotificationAsync({
+      identifier: `${NOTIFICATION_IDENTIFIER_PREFIX}-${i}`,
+      content: {
+        title: localize(msg.title),
+        body: localize(msg.body),
+        sound: true,
+        data: { screen: "/(tabs)" },
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        date: triggerDate,
+      },
+    });
+  }
 }
 
-export async function cancelDailyNotification() {
-  await Notifications.cancelScheduledNotificationAsync("daily-reminder");
+export async function cancelDailyNotifications() {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  const ours = scheduled.filter((n) =>
+    n.identifier.startsWith(NOTIFICATION_IDENTIFIER_PREFIX),
+  );
+  await Promise.all(
+    ours.map((n) =>
+      Notifications.cancelScheduledNotificationAsync(n.identifier),
+    ),
+  );
+}
+
+// Call this on app launch — tops up the queue if running low
+export async function recheckAndRescheduleIfNeeded(
+  time: string,
+  localize: (key: LocalizedString) => string,
+  notificationsEnabled: boolean,
+) {
+  if (!notificationsEnabled) return;
+
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  const ours = scheduled.filter((n) =>
+    n.identifier.startsWith(NOTIFICATION_IDENTIFIER_PREFIX),
+  );
+
+  if (ours.length < RESCHEDULE_THRESHOLD) {
+    await scheduleDailyNotifications(time, localize);
+  }
 }

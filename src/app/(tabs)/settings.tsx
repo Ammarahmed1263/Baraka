@@ -39,9 +39,9 @@ import { useLanguage } from "@i18n";
 import SettingRow from "@components/Settings/SettingRow";
 import UserStatsCard from "@components/Settings/UserStatsCard";
 import {
-  cancelDailyNotification,
+  cancelDailyNotifications,
   registerForPushNotificationsAsync,
-  scheduleDailyNotification,
+  scheduleDailyNotifications,
 } from "@/services/notifications";
 import { useLocalize } from "@hooks/useLocalize";
 
@@ -162,7 +162,7 @@ export default function SettingsScreen() {
         settings.notificationsEnabled &&
         settings.notificationsStatus === "granted"
       ) {
-        await scheduleDailyNotification(timeStr, localize);
+        await scheduleDailyNotifications(timeStr, localize);
       }
     }
   };
@@ -176,6 +176,16 @@ export default function SettingsScreen() {
   const handleLanguageToggle = async () => {
     const nextLanguage = lang === "en" ? "ar" : "en";
     await changeLanguage(nextLanguage);
+
+    if (
+      settings.notificationsEnabled &&
+      settings.notificationsStatus === "granted"
+    ) {
+      await scheduleDailyNotifications(
+        settings.reminderTime || "08:00",
+        localize,
+      );
+    }
   };
 
   // const handleBilingualToggle = () => {
@@ -272,7 +282,7 @@ export default function SettingsScreen() {
 
       if (status === "granted") {
         Haptic.success();
-        await scheduleDailyNotification(
+        await scheduleDailyNotifications(
           settings.reminderTime || "08:00",
           localize,
         );
@@ -290,7 +300,7 @@ export default function SettingsScreen() {
         );
       }
     } else {
-      await cancelDailyNotification();
+      await cancelDailyNotifications();
       updateSettings({ notificationsEnabled: false });
     }
   };

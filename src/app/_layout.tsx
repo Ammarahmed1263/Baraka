@@ -11,6 +11,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { useNotifications } from "@/hooks/useNotifications";
 import { ErrorBoundary } from "@components/ErrorBoundary";
 import { useSettingsStore } from "@store/settingsStore";
+import { recheckAndRescheduleIfNeeded } from "@/services/notifications";
+import { useLocalize } from "@hooks/useLocalize";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -65,6 +67,8 @@ function App() {
   // const ref = useNavigationContainerRef();
   const [i18nReady, setI18nReady] = useState(false);
   const isLoading = useSettingsStore((s) => s.isLoading);
+  const settings = useSettingsStore((s) => s.settings);
+  const localize = useLocalize();
   useNotifications();
 
   // useEffect(() => {
@@ -88,6 +92,11 @@ function App() {
   useEffect(() => {
     if (i18nReady && !isLoading) {
       SplashScreen.hideAsync();
+      recheckAndRescheduleIfNeeded(
+        settings.reminderTime || "08:00",
+        localize,
+        settings.notificationsEnabled,
+      );
     }
   }, [i18nReady, isLoading]);
 
