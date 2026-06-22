@@ -1,10 +1,5 @@
 import { useRef, useState, useCallback } from "react";
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  useWindowDimensions,
-} from "react-native";
+import { View, FlatList, StyleSheet, useWindowDimensions } from "react-native";
 import { AppButton } from "@components/UI/AppButton";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -61,6 +56,11 @@ export default function OnboardingPager() {
             >
               <Feather name={item.icon as any} size={48} color={C.gold} />
             </View>
+            {index === 0 && (
+              <View style={styles.languagePickerInline}>
+                <LanguagePicker />
+              </View>
+            )}
             <AppText weight='Bold' style={[styles.title, { color: C.text }]}>
               {localize(item.title)}
             </AppText>
@@ -76,16 +76,6 @@ export default function OnboardingPager() {
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
-      {currentIndex === 0 && (
-        <View
-          style={[
-            styles.languageRow,
-            { top: insets.top + 12 },
-          ]}
-        >
-          <LanguagePicker />
-        </View>
-      )}
       <FlatList
         ref={flatListRef}
         data={ONBOARDING_SLIDES}
@@ -102,7 +92,6 @@ export default function OnboardingPager() {
         })}
       />
 
-      {/* Bottom controls */}
       <View
         style={[styles.bottomSection, { paddingBottom: insets.bottom + 24 }]}
       >
@@ -116,17 +105,19 @@ export default function OnboardingPager() {
         >
           {currentIndex > 0 && (
             <AppButton
-              variant="ghost"
+              variant='ghost'
               label={t("onboarding.skip")}
               onPress={goToActivityPicker}
             />
           )}
 
           <AppButton
-            variant="primary"
-            label={isLastSlide ? t("onboarding.getStarted") : t("onboarding.next")}
+            variant='secondary'
+            label={
+              isLastSlide ? t("onboarding.getStarted") : t("onboarding.next")
+            }
             onPress={goNext}
-            style={{ backgroundColor: C.gold, paddingHorizontal: 32 }}
+            style={{ paddingHorizontal: 40 }}
           />
         </View>
       </View>
@@ -138,10 +129,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  languageRow: {
-    position: "absolute",
-    start: 20,
-    zIndex: 10,
+  languagePickerInline: {
+    alignItems: "center",
+    marginBottom: -8,
   },
   slide: {
     flex: 1,
@@ -184,17 +174,5 @@ const styles = StyleSheet.create({
   },
   buttonRowEnd: {
     justifyContent: "flex-end",
-  },
-  skipText: {
-    fontSize: 15,
-  },
-  nextButton: {
-    paddingHorizontal: 28,
-    paddingVertical: 14,
-    borderRadius: 14,
-  },
-  nextText: {
-    fontSize: 15,
-    color: "#FFFFFF",
   },
 });
