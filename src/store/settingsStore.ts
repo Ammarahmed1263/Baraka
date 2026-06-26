@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storageAdapter } from "@lib/storage";
 import type { AppSettings } from "@types";
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -51,7 +51,7 @@ export const useSettingsStore = create<SettingsStore>()(
     }),
     {
       name: "@niyyah_settings",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => storageAdapter),
       merge: (persistedState: any, currentState) => {
         if (!persistedState) return currentState;
         const mergedSettings = {

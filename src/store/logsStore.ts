@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storageAdapter } from "@lib/storage";
 import { format, subDays } from "date-fns";
 import type { DailyLog } from "@types";
 
@@ -57,7 +57,7 @@ export const useLogsStore = create<LogsStore>()(
     }),
     {
       name: "@niyyah_daily_logs",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => storageAdapter),
     }
   )
 );

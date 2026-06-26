@@ -1,6 +1,6 @@
 import "intl-pluralrules";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storage } from "@lib/storage";
 import { getLocales } from "expo-localization";
 import * as Updates from "expo-updates";
 import i18n from "i18next";
@@ -53,7 +53,7 @@ const reloadApp = async () => {
 
 async function syncInitialRTL() {
   try {
-    const savedLang = await AsyncStorage.getItem(LANG_KEY);
+    const savedLang = storage.getString(LANG_KEY);
     if (savedLang) {
       applyRTL(normalizeLanguage(savedLang));
       return;
@@ -70,7 +70,7 @@ const languageDetector = {
 
   detect: async (callback: (lang: string) => void) => {
     try {
-      const savedLang = await AsyncStorage.getItem(LANG_KEY);
+      const savedLang = storage.getString(LANG_KEY);
 
       if (savedLang && SUPPORTED.includes(savedLang as AppLanguage)) {
         return callback(savedLang);
@@ -87,7 +87,7 @@ const languageDetector = {
 
   cacheUserLanguage: async (lang: string) => {
     if (SUPPORTED.includes(lang as AppLanguage)) {
-      await AsyncStorage.setItem(LANG_KEY, lang);
+      storage.set(LANG_KEY, lang);
     }
   },
 };

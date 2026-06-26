@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storageAdapter } from "@lib/storage";
 import { DEFAULT_ACTIVITIES } from "@data/activities";
 import type { UserActivity } from "@types";
 
@@ -46,7 +46,7 @@ export const useActivitiesStore = create<ActivitiesStore>()(
     }),
     {
       name: "@niyyah_activities",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => storageAdapter),
     }
   )
 );
