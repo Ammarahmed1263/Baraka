@@ -34,7 +34,6 @@ import {
   useLogsStore,
   useJournalStore,
 } from "@store";
-import { APP_STORAGE_KEYS } from "@lib/constants";
 import { useLanguage } from "@i18n";
 import SettingRow from "@components/Settings/SettingRow";
 import UserStatsCard from "@components/Settings/UserStatsCard";
@@ -44,6 +43,7 @@ import {
   scheduleDailyNotifications,
 } from "@/services/notifications";
 import { useLocalize } from "@hooks/useLocalize";
+import { storage } from "@lib/storage";
 
 type ProfileKey = "isHomemaker" | "isParent" | "isStudent" | "isProfessional";
 
@@ -257,11 +257,8 @@ export default function SettingsScreen() {
         {
           text: t("settings.clear"),
           style: "destructive",
-          onPress: async () => {
-            const AsyncStorage = (
-              await import("@react-native-async-storage/async-storage")
-            ).default;
-            await AsyncStorage.multiRemove([...APP_STORAGE_KEYS]);
+          onPress: () => {
+            storage.clearAll();
             Alert.alert(
               t("settings.clearedTitle"),
               t("settings.clearedMessage"),
@@ -300,8 +297,8 @@ export default function SettingsScreen() {
         );
       }
     } else {
-      await cancelDailyNotifications();
       updateSettings({ notificationsEnabled: false });
+      await cancelDailyNotifications();
     }
   };
 

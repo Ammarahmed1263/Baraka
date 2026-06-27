@@ -79,7 +79,7 @@ export async function scheduleDailyNotifications(
   time: string,
   localize: (key: LocalizedString) => string,
 ) {
-  await Notifications.cancelAllScheduledNotificationsAsync();
+  await cancelDailyNotifications();
 
   const { hour, minute } = parseReminderTime(time);
   const messages = buildMessageSequence(MAX_SCHEDULED);
@@ -142,7 +142,6 @@ export async function cancelDailyNotifications() {
   );
 }
 
-// Call this on app launch — tops up the queue if running low
 export async function recheckAndRescheduleIfNeeded(
   time: string,
   localize: (key: LocalizedString) => string,
