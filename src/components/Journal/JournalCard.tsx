@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
 import { AppText } from "@components/UI/AppText";
 import { NIYYAH_OPTIONS } from "@data/niyyahTemplates";
@@ -9,9 +9,10 @@ import { useTheme } from "@context/ThemeContext";
 
 interface JournalCardProps {
   entry: JournalEntry;
+  onOptions?: (entry: JournalEntry) => void;
 }
 
-export default function JournalCard({ entry }: JournalCardProps) {
+export default function JournalCard({ entry, onOptions }: JournalCardProps) {
   const { colors: C } = useTheme();
   const localize = useLocalize();
   const { i18n } = useTranslation();
@@ -58,7 +59,10 @@ export default function JournalCard({ entry }: JournalCardProps) {
             <View
               style={[
                 styles.countChip,
-                { backgroundColor: C.gold + "22", borderColor: C.gold + "55" },
+                {
+                  backgroundColor: C.gold + "22",
+                  borderColor: C.gold + "55",
+                },
               ]}
             >
               <Feather name='star' size={10} color={C.gold} />
@@ -71,19 +75,28 @@ export default function JournalCard({ entry }: JournalCardProps) {
             </View>
           )}
         </View>
-        <View style={styles.dateInfo}>
-          <AppText
-            weight='Regular'
-            style={[styles.dateText, { color: C.textMuted }]}
+        <View style={styles.headerRight}>
+          <View style={styles.dateInfo}>
+            <AppText
+              weight='Regular'
+              style={[styles.dateText, { color: C.textMuted }]}
+            >
+              {formattedDate}
+            </AppText>
+            <AppText
+              weight='Regular'
+              style={[styles.timeText, { color: C.textMuted }]}
+            >
+              {formattedTime}
+            </AppText>
+          </View>
+          <Pressable
+            onPress={() => onOptions?.(entry)}
+            hitSlop={8}
+            style={styles.menuButton}
           >
-            {formattedDate}
-          </AppText>
-          <AppText
-            weight='Regular'
-            style={[styles.timeText, { color: C.textMuted }]}
-          >
-            {formattedTime}
-          </AppText>
+            <Feather name='more-vertical' size={18} color={C.textMuted} />
+          </Pressable>
         </View>
       </View>
       <AppText weight='Regular' style={[styles.noteText, { color: C.text }]}>
@@ -112,15 +125,19 @@ export default function JournalCard({ entry }: JournalCardProps) {
 const styles = StyleSheet.create({
   journalCard: {
     borderRadius: 14,
-    padding: 16,
+    padding: 14,
     borderWidth: 1,
-    marginBottom: 10,
     gap: 10,
   },
   cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
+  },
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 8,
   },
   cardChips: {
     flexDirection: "row",
@@ -145,9 +162,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   countChipText: { fontSize: 11 },
-  dateInfo: { alignItems: "flex-end", gap: 2, marginLeft: 8 },
+  dateInfo: { alignItems: "flex-end", gap: 2 },
   dateText: { fontSize: 12 },
   timeText: { fontSize: 11 },
+  menuButton: {
+    paddingTop: 2,
+  },
   noteText: { fontSize: 15, lineHeight: 24 },
   impactRow: {
     flexDirection: "row",

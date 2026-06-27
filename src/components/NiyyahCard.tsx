@@ -120,6 +120,7 @@ export default function NiyyahCard({
           <View style={styles.checkWrapper}>
             <AnimatedPressable
               onPress={handleCheckPress}
+              hitSlop={8}
               style={[
                 styles.checkButton,
                 {
@@ -178,8 +179,8 @@ const styles = StyleSheet.create({
   countText: { fontSize: 11 },
   niyyahPreview: { fontSize: 13, lineHeight: 18, fontStyle: "italic" },
   checkButton: {
-    width: 22,
-    height: 22,
+    width: 24,
+    height: 24,
     borderRadius: 6,
     alignItems: "center",
     justifyContent: "center",
@@ -191,9 +192,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: -2.5,
     right: -2.5,
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
     borderWidth: 2,
   },
   sidePill: {

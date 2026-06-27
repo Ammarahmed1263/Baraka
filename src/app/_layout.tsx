@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { ThemeProvider } from "@/context/ThemeContext";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useNotifications } from "@/hooks/useNotifications";
 import { ErrorBoundary } from "@components/ErrorBoundary";
 import { useSettingsStore } from "@store/settingsStore";
@@ -106,11 +107,13 @@ function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeProvider>
-          <ErrorBoundary>
-            <I18nextProvider i18n={i18n}>
-              <RootLayoutNav />
-            </I18nextProvider>
-          </ErrorBoundary>
+          <BottomSheetModalProvider>
+            <ErrorBoundary>
+              <I18nextProvider i18n={i18n}>
+                <RootLayoutNav />
+              </I18nextProvider>
+            </ErrorBoundary>
+          </BottomSheetModalProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

@@ -70,7 +70,7 @@ export const DEFAULT_ACTIVITIES: Activity[] = [
   },
   {
     id: "visiting_sick",
-    name: { en: "Visiting the Sick", ar: "عيادة المريض" },
+    name: { en: "Visiting the Sick", ar: "زيارة المريض" },
     category: "relationships",
     niyyahText: {
       en: "Visit someone who's sick. Every moment you stay is rewarded like picking fruit in Paradise.",
