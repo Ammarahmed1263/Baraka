@@ -3,6 +3,7 @@ import { LocalizedString, NotificationPermissionStatus } from "@/types";
 import { parseReminderTime } from "@/utils/parseReminderTime";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
+import * as Sentry from "@sentry/react-native";
 
 function handleRegistrationError(errorMessage: string) {
   // alert(errorMessage);
@@ -55,8 +56,8 @@ export async function registerForPushNotificationsAsync(): Promise<NotificationP
 }
 
 const NOTIFICATION_IDENTIFIER_PREFIX = "daily-reminder";
-const MAX_SCHEDULED = 64;
-const RESCHEDULE_THRESHOLD = 30;
+const MAX_SCHEDULED = 30;
+const RESCHEDULE_THRESHOLD = 14;
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -79,54 +80,62 @@ export async function scheduleDailyNotifications(
   time: string,
   localize: (key: LocalizedString) => string,
 ) {
-  await cancelDailyNotifications();
+  try {
+    await cancelDailyNotifications();
 
-  const { hour, minute } = parseReminderTime(time);
-  const messages = buildMessageSequence(MAX_SCHEDULED);
+    const { hour, minute } = parseReminderTime(time);
+    const messages = buildMessageSequence(MAX_SCHEDULED);
 
-  const now = new Date();
+    const now = new Date();
 
-  const startDate = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1,
-    hour,
-    minute
-  );
-
-  const todayTrigger = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    hour,
-    minute
-  );
-
-  const baseDate = todayTrigger > now ? todayTrigger : startDate;
-  for (let i = 0; i < MAX_SCHEDULED; i++) {
-    const triggerDate = new Date(
-      baseDate.getFullYear(),
-      baseDate.getMonth(),
-      baseDate.getDate() + i,
+    const startDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() + 1,
       hour,
       minute
     );
 
-    const msg = messages[i];
+    const todayTrigger = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hour,
+      minute
+    );
 
-    await Notifications.scheduleNotificationAsync({
-      identifier: `${NOTIFICATION_IDENTIFIER_PREFIX}-${i}`,
-      content: {
-        title: localize(msg.title),
-        body: localize(msg.body),
-        sound: true,
-        data: { screen: "/(tabs)" },
-      },
-      trigger: {
-        type: Notifications.SchedulableTriggerInputTypes.DATE,
-        date: triggerDate,
-      },
+    const baseDate = todayTrigger > now ? todayTrigger : startDate;
+    for (let i = 0; i < MAX_SCHEDULED; i++) {
+      const triggerDate = new Date(
+        baseDate.getFullYear(),
+        baseDate.getMonth(),
+        baseDate.getDate() + i,
+        hour,
+        minute
+      );
+
+      const msg = messages[i];
+
+      await Notifications.scheduleNotificationAsync({
+        identifier: `${NOTIFICATION_IDENTIFIER_PREFIX}-${i}`,
+        content: {
+          title: localize(msg.title),
+          body: localize(msg.body),
+          sound: true,
+          data: { screen: "/(tabs)" },
+        },
+        trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.DATE,
+          date: triggerDate,
+        },
+      });
+    }
+  } catch (error) {
+    Sentry.captureException(error, {
+      tags: { feature: 'notifications' },
+      extra: { phase: 'scheduleDailyNotifications', reminderTime: time },
     });
+    console.error("Failed to schedule daily notifications:", error);
   }
 }
 
@@ -149,12 +158,20 @@ export async function recheckAndRescheduleIfNeeded(
 ) {
   if (!notificationsEnabled) return;
 
-  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-  const ours = scheduled.filter((n) =>
-    n.identifier.startsWith(NOTIFICATION_IDENTIFIER_PREFIX),
-  );
+  try {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    const ours = scheduled.filter((n) =>
+      n.identifier.startsWith(NOTIFICATION_IDENTIFIER_PREFIX),
+    );
 
-  if (ours.length < RESCHEDULE_THRESHOLD) {
-    await scheduleDailyNotifications(time, localize);
+    if (ours.length < RESCHEDULE_THRESHOLD) {
+      await scheduleDailyNotifications(time, localize);
+    }
+  } catch (error) {
+    Sentry.captureException(error, {
+      tags: { feature: 'notifications' },
+      extra: { phase: 'recheckAndRescheduleIfNeeded' },
+    });
+    console.error("Failed to recheck notifications:", error);
   }
 }

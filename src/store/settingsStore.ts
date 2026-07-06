@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { storageAdapter } from "@lib/storage";
@@ -73,11 +74,25 @@ export const useSettingsStore = create<SettingsStore>()(
           try {
             const current = useSettingsStore.getState();
             if (current && current.isLoading) {
-              console.warn("Settings store hydration timed out. Forcing isLoading to false.");
+              console.warn(
+                "Settings store hydration timed out. Forcing isLoading to false.",
+              );
+
+              Sentry.captureMessage(
+                "Store hydration safety timeout fired",
+                "warning",
+              );
+
               current.setLoading();
             }
           } catch (e) {
             console.error("Error in settings store hydration timeout:", e);
+
+            Sentry.captureException(e, {
+              tags: { feature: "store_hydration" },
+              extra: { phase: "timeout_callback" },
+            });
+
             if (state) {
               state.setLoading();
             }
@@ -88,6 +103,11 @@ export const useSettingsStore = create<SettingsStore>()(
           clearTimeout(timeoutId);
           if (error) {
             console.error("Error during settings store hydration:", error);
+
+            Sentry.captureException(error, {
+              tags: { feature: "store_hydration" },
+              extra: { phase: "onRehydrateStorage_callback" },
+            });
           }
           if (stateAfter) {
             stateAfter.updateSettings({});

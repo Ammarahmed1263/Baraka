@@ -1,5 +1,5 @@
 import i18n from "@i18n";
-import * as Sentry from '@sentry/react-native';
+import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
@@ -14,6 +14,8 @@ import { ErrorBoundary } from "@components/ErrorBoundary";
 import { useSettingsStore } from "@store/settingsStore";
 import { recheckAndRescheduleIfNeeded } from "@/services/notifications";
 import { useLocalize } from "@hooks/useLocalize";
+import { getAnonymousUserId } from "@/utils/device";
+import { Platform } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -78,7 +80,6 @@ function App() {
   //   }
   // }, [ref]);
 
-
   useEffect(() => {
     if (i18n.isInitialized) {
       setI18nReady(true);
@@ -98,6 +99,20 @@ function App() {
         localize,
         settings.notificationsEnabled,
       );
+
+      Sentry.setUser({
+        id: getAnonymousUserId(),
+      });
+
+      Sentry.setTag("language", i18n.language);
+      Sentry.setTag("platform", Platform.OS);
+
+      Sentry.setContext("app_config", {
+        onboardingComplete: settings.onboardingComplete,
+        notificationsEnabled: settings.notificationsEnabled,
+        notificationsStatus: settings.notificationsStatus,
+        reminderTime: settings.reminderTime,
+      });
     }
   }, [i18nReady, isLoading]);
 

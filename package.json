@@ -8,10 +8,11 @@
     "android": "expo run:android",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "ios": "expo run:ios",
-    "clean": "bunx expo prebuild --clean"
+    "clean": "bunx expo prebuild --clean",
+    "android:release": "bunx expo run:android --variant release"
   },
   "dependencies": {
-    "@expo/vector-icons": "^15.0.3",
+    "@expo/vector-icons": "^15.0.3", 
     "@gorhom/bottom-sheet": "^5.2.14",
     "@react-native-community/datetimepicker": "8.4.4",
     "@sentry/react-native": "^8.15.1",

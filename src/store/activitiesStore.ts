@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { storageAdapter } from "@lib/storage";
@@ -19,15 +20,25 @@ const DEFAULT_USER_ACTIVITIES: UserActivity[] = DEFAULT_ACTIVITIES.map((a) => ({
 
 export const useActivitiesStore = create<ActivitiesStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       activities: DEFAULT_USER_ACTIVITIES,
 
-      toggleActivity: (activityId) =>
+      toggleActivity: (activityId) => {
+        const currentActivity = get().activities.find((a) => a.id === activityId);
+        if (currentActivity) {
+          Sentry.addBreadcrumb({
+            category: "store",
+            message: "Activity toggled",
+            data: { activityId, enabled: !currentActivity.enabled },
+            level: "info",
+          });
+        }
         set((state) => ({
           activities: state.activities.map((a) =>
             a.id === activityId ? { ...a, enabled: !a.enabled } : a
           ),
-        })),
+        }));
+      },
 
       addCustomActivity: (activity) =>
         set((state) => ({

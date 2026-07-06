@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { storageAdapter } from "@lib/storage";
@@ -25,10 +26,22 @@ export const useJournalStore = create<JournalStore>()(
           id: generateId(),
           createdAt: new Date().toISOString(),
         };
+        Sentry.addBreadcrumb({
+          category: "store",
+          message: "Journal entry added",
+          data: { activityId: entry.activityId },
+          level: "info",
+        });
         set({ journalEntries: [newEntry, ...get().journalEntries] });
       },
 
       updateJournalEntry: (id, updates) => {
+        Sentry.addBreadcrumb({
+          category: "store",
+          message: "Journal entry updated",
+          data: { entryId: id },
+          level: "info",
+        });
         set({
           journalEntries: get().journalEntries.map((entry) =>
             entry.id === id ? { ...entry, ...updates } : entry
@@ -37,6 +50,12 @@ export const useJournalStore = create<JournalStore>()(
       },
 
       deleteJournalEntry: (id) => {
+        Sentry.addBreadcrumb({
+          category: "store",
+          message: "Journal entry deleted",
+          data: { entryId: id },
+          level: "info",
+        });
         set({
           journalEntries: get().journalEntries.filter((entry) => entry.id !== id),
         });
