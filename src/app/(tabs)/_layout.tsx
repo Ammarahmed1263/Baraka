@@ -6,6 +6,7 @@ import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@context/ThemeContext";
 import { useLanguage } from "@/i18n";
+import * as Sentry from "@sentry/react-native";
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -17,6 +18,18 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      screenListeners={{
+        state: (e) => {
+          const routeName = e.data.state?.routes[e.data.state.index]?.name;
+          if (routeName) {
+            Sentry.addBreadcrumb({
+              category: "navigation",
+              message: `Navigated to tab: ${routeName}`,
+              level: "info",
+            });
+          }
+        },
+      }}
       screenOptions={{
         tabBarActiveTintColor: C.gold,
         tabBarInactiveTintColor: C.tabIconDefault,

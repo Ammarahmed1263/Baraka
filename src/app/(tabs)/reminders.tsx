@@ -1,18 +1,17 @@
-import { Feather } from "@expo/vector-icons";
-import { Haptic } from "@utils/haptics";
-import { useState, useEffect } from "react";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
-import { useTheme } from "@context/ThemeContext";
-import { AppText } from "@components/UI/AppText";
-import { useTranslation } from "react-i18next";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { type UserActivity } from "@types";
-import { useActivitiesStore } from "@store";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
+import { AppText } from "@components/UI/AppText";
+import { useTheme } from "@context/ThemeContext";
+import { Feather } from "@expo/vector-icons";
+import { useActivitiesStore } from "@store";
+import { type UserActivity } from "@types";
+import { Haptic } from "@utils/haptics";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AddActivityForm from "@components/Reminders/AddActivityForm";
 import CategorySection from "@components/Reminders/CategorySection";
-import { Skeleton } from "@components/UI/Skeleton";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 export default function RemindersScreen() {
@@ -24,12 +23,13 @@ export default function RemindersScreen() {
   const activities = useActivitiesStore((s) => s.activities);
   const toggleActivity = useActivitiesStore((s) => s.toggleActivity);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
+  // TODO: re-enable when data source changes to API/Realm
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setLoading(false), 800);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const categories = [...new Set(activities.map((a) => a.category))];
 
@@ -79,7 +79,7 @@ export default function RemindersScreen() {
           <AddActivityForm onClose={() => setShowAddForm(false)} />
         )}
 
-        {loading ? (
+        {/* {loading ? (
           <View style={{ gap: 20 }}>
             <View style={{ gap: 8 }}>
               <Skeleton width={100} height={12} style={{ marginLeft: 4 }} />
@@ -90,7 +90,7 @@ export default function RemindersScreen() {
               <Skeleton height={190} borderRadius={14} />
             </View>
           </View>
-        ) : (
+        ) : ( */}
           <>
             {/* Activity List by Category */}
             {categories.map((category, index) => {
@@ -112,7 +112,7 @@ export default function RemindersScreen() {
               );
             })}
           </>
-        )}
+        {/* )} */}
       </ScrollView>
     </View>
   );

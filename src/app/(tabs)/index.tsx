@@ -4,7 +4,6 @@ import NiyyahCard from "@components/NiyyahCard";
 import StreakBadge from "@components/StreakBadge";
 import { AppButton } from "@components/UI/AppButton";
 import { AppText } from "@components/UI/AppText";
-import { Skeleton } from "@components/UI/Skeleton";
 import { useTheme } from "@context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
 import { useActivityStats } from "@hooks/useActivityStats";
@@ -14,7 +13,7 @@ import { useActivitiesStore, useLogsStore } from "@store";
 import { type UserActivity } from "@types";
 import { Haptic } from "@utils/haptics";
 import { router } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -27,12 +26,14 @@ export default function TodayScreen() {
   const isWeb = Platform.OS === "web";
 
   const activities = useActivitiesStore((s) => s.activities);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
+  // TODO: re-enable when data source changes to API/Realm
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setLoading(false), 800);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
   const streak = useLogsStore((s) => s.streak);
   const markComplete = useLogsStore((s) => s.markComplete);
   const unmarkComplete = useLogsStore((s) => s.unmarkComplete);
@@ -109,22 +110,19 @@ export default function TodayScreen() {
           </AppText>
         </View>
 
-        {loading ? (
+        {/* {loading ? (
           <>
-            {/* Hadith Skeleton */}
             <Skeleton
               height={140}
               borderRadius={16}
               style={{ marginBottom: 16 }}
             />
 
-            {/* Stats Row Skeleton */}
             <View style={{ flexDirection: "row", gap: 12, marginBottom: 24 }}>
               <Skeleton height={80} borderRadius={20} style={{ flex: 1 }} />
               <Skeleton height={80} borderRadius={20} style={{ flex: 1 }} />
             </View>
 
-            {/* Activities Section Header Skeleton */}
             <View style={styles.sectionHeader}>
               <AppText
                 weight='Bold'
@@ -134,114 +132,113 @@ export default function TodayScreen() {
               </AppText>
             </View>
 
-            {/* Activities Skeletons */}
             <View style={{ gap: 12 }}>
               <Skeleton height={90} borderRadius={24} />
               <Skeleton height={90} borderRadius={24} />
               <Skeleton height={90} borderRadius={24} />
             </View>
           </>
-        ) : (
-          <>
-            <Animated.View entering={FadeInDown.duration(300)}>
-              {/* Hadith Card */}
-              <HadithCard />
-            </Animated.View>
+        ) : ( */}
+        <>
+          <Animated.View entering={FadeInDown.duration(300)}>
+            {/* Hadith Card */}
+            <HadithCard />
+          </Animated.View>
 
-            <Animated.View entering={FadeInDown.duration(300).delay(50)}>
-              {/* Progress + Ajr Row */}
-              <DashboardStats
-                completionRate={completionRate}
-                completedCount={completedCount}
-                totalActivities={enabledActivities.length}
-                ajr={ajr}
-              />
-            </Animated.View>
+          <Animated.View entering={FadeInDown.duration(300).delay(50)}>
+            {/* Progress + Ajr Row */}
+            <DashboardStats
+              completionRate={completionRate}
+              completedCount={completedCount}
+              totalActivities={enabledActivities.length}
+              ajr={ajr}
+            />
+          </Animated.View>
 
-            {/* Activities Section Header */}
-            <View style={styles.sectionHeader}>
-              <AppText
-                weight='Bold'
-                style={[styles.sectionTitle, { color: C.gold }]}
+          {/* Activities Section Header */}
+          <View style={styles.sectionHeader}>
+            <AppText
+              weight='Bold'
+              style={[styles.sectionTitle, { color: C.gold }]}
+            >
+              {t("dashboard.yourIntentions")}
+            </AppText>
+            {enabledActivities.length > 0 && (
+              <View
+                style={[
+                  styles.countBadge,
+                  {
+                    backgroundColor: C.gold + "15",
+                    borderColor: C.gold + "30",
+                  },
+                ]}
               >
-                {t("dashboard.yourIntentions")}
-              </AppText>
-              {enabledActivities.length > 0 && (
-                <View
-                  style={[
-                    styles.countBadge,
-                    {
-                      backgroundColor: C.gold + "15",
-                      borderColor: C.gold + "30",
-                    },
-                  ]}
+                <AppText
+                  weight='Bold'
+                  style={[styles.countBadgeText, { color: C.gold }]}
                 >
-                  <AppText
-                    weight='Bold'
-                    style={[styles.countBadgeText, { color: C.gold }]}
-                  >
-                    {completedCount}/{enabledActivities.length}
-                  </AppText>
-                </View>
-              )}
-            </View>
-
-            {enabledActivities.length === 0 ? (
-              <Animated.View entering={FadeInDown.duration(300).delay(100)}>
-                <View
-                  style={[
-                    styles.emptyState,
-                    {
-                      backgroundColor: C.backgroundCard,
-                      borderColor: C.border,
-                    },
-                  ]}
-                >
-                  <View
-                    style={[
-                      styles.emptyIconContainer,
-                      { backgroundColor: C.tint + "10" },
-                    ]}
-                  >
-                    <Feather name='plus-circle' size={38} color={C.tint} />
-                  </View>
-                  <AppText
-                    weight='Medium'
-                    style={[styles.emptyTitle, { color: C.text }]}
-                  >
-                    {t("common.noActivities", "Ready to start?")}
-                  </AppText>
-                  <AppText
-                    weight='Regular'
-                    style={[styles.emptyText, { color: C.textSecondary }]}
-                  >
-                    {t("dashboard.emptyActivities")}
-                  </AppText>
-                  <AppButton
-                    variant='primary'
-                    label={t("dashboard.addActivities")}
-                    onPress={() => router.push("/(tabs)/reminders")}
-                    style={{ marginTop: 20 }}
-                  />
-                </View>
-              </Animated.View>
-            ) : (
-              enabledActivities.map((activity, index) => (
-                <Animated.View
-                  key={activity.id}
-                  entering={FadeInDown.delay(index * 50).duration(250)}
-                >
-                  <NiyyahCard
-                    activity={activity}
-                    completed={isCompletedToday(activity.id)}
-                    onToggle={() => handleToggle(activity)}
-                    onPress={() => handleCardPress(activity)}
-                  />
-                </Animated.View>
-              ))
+                  {completedCount}/{enabledActivities.length}
+                </AppText>
+              </View>
             )}
-          </>
-        )}
+          </View>
+
+          {enabledActivities.length === 0 ? (
+            <Animated.View entering={FadeInDown.duration(300).delay(100)}>
+              <View
+                style={[
+                  styles.emptyState,
+                  {
+                    backgroundColor: C.backgroundCard,
+                    borderColor: C.border,
+                  },
+                ]}
+              >
+                <View
+                  style={[
+                    styles.emptyIconContainer,
+                    { backgroundColor: C.tint + "10" },
+                  ]}
+                >
+                  <Feather name='plus-circle' size={38} color={C.tint} />
+                </View>
+                <AppText
+                  weight='Medium'
+                  style={[styles.emptyTitle, { color: C.text }]}
+                >
+                  {t("common.noActivities", "Ready to start?")}
+                </AppText>
+                <AppText
+                  weight='Regular'
+                  style={[styles.emptyText, { color: C.textSecondary }]}
+                >
+                  {t("dashboard.emptyActivities")}
+                </AppText>
+                <AppButton
+                  variant='primary'
+                  label={t("dashboard.addActivities")}
+                  onPress={() => router.push("/(tabs)/reminders")}
+                  style={{ marginTop: 20 }}
+                />
+              </View>
+            </Animated.View>
+          ) : (
+            enabledActivities.map((activity, index) => (
+              <Animated.View
+                key={activity.id}
+                entering={FadeInDown.delay(index * 50).duration(250)}
+              >
+                <NiyyahCard
+                  activity={activity}
+                  completed={isCompletedToday(activity.id)}
+                  onToggle={() => handleToggle(activity)}
+                  onPress={() => handleCardPress(activity)}
+                />
+              </Animated.View>
+            ))
+          )}
+        </>
+        {/* )} */}
 
         {/* Ajr explanation footer */}
         {ajr.acts > 0 && (

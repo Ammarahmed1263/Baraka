@@ -1,10 +1,16 @@
-import { type EducationEntry } from "@types";
 import { EDUCATION_ENTRIES } from "@data/learnContent";
+import { type EducationEntry } from "@types";
 
-import { useSettingsStore } from "@store";
+import EducationCard from "@components/Learn/EducationCard";
+import EducationDetail from "@components/Learn/EducationDetail";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
+import { AppText } from "@components/UI/AppText";
+import { AppTextInput } from "@components/UI/AppTextInput";
+import { useTheme } from "@context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
+import { useSettingsStore } from "@store";
 import { Haptic } from "@utils/haptics";
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BackHandler,
@@ -13,15 +19,8 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { AppTextInput } from "@components/UI/AppTextInput";
-import { AnimatedPressable } from "@components/UI/AnimatedPressable";
-import { useTheme } from "@context/ThemeContext";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { AppText } from "@components/UI/AppText";
-import EducationCard from "@components/Learn/EducationCard";
-import EducationDetail from "@components/Learn/EducationDetail";
-import { Skeleton } from "@components/UI/Skeleton";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const CATEGORIES = [
   "All",
@@ -46,12 +45,13 @@ export default function LearnScreen() {
   const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(
     null,
   );
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
+  // TODO: re-enable when data source changes to API/Realm
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setLoading(false), 800);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
     if (!selectedEntry) return;
@@ -197,19 +197,17 @@ export default function LearnScreen() {
           ))}
         </ScrollView>
 
-        {loading ? (
+        {/* {loading ? (
           <>
-            {/* Count Skeleton */}
             <Skeleton width={80} height={14} style={{ marginBottom: 16 }} />
 
-            {/* Entries Skeletons */}
             <View style={{ gap: 12 }}>
               <Skeleton height={140} borderRadius={14} />
               <Skeleton height={140} borderRadius={14} />
               <Skeleton height={140} borderRadius={14} />
             </View>
           </>
-        ) : (
+        ) : ( */}
           <>
             {/* Count */}
             <AppText
@@ -251,7 +249,7 @@ export default function LearnScreen() {
               ))
             )}
           </>
-        )}
+        {/* )} */}
       </ScrollView>
     </View>
   );

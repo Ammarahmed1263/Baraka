@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useMemo } from "react";
 import { useColorScheme } from "react-native";
+import {
+  ThemeProvider as NavThemeProvider,
+  DarkTheme,
+  DefaultTheme,
+} from "@react-navigation/native";
 import Colors from "@constants/colors";
 import { useSettingsStore } from "@store/settingsStore";
 import { type AppSettings } from "@/types";
@@ -36,8 +41,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     [theme],
   );
 
+  const navTheme = theme === "dark" ? DarkTheme : DefaultTheme;
+  navTheme.colors.background = value.colors.background;
+  navTheme.colors.card = value.colors.backgroundCard;
+
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      <NavThemeProvider value={navTheme}>{children}</NavThemeProvider>
+    </ThemeContext.Provider>
   );
 };
 

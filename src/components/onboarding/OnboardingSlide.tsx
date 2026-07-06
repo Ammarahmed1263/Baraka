@@ -1,36 +1,61 @@
-import { useEffect } from "react";
+import { ONBOARDING_SLIDES } from "@/data/onboardingSlides";
+import { I18nManager } from "react-native";
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
-  withTiming,
+  interpolate,
+  Extrapolation,
+  SharedValue,
 } from "react-native-reanimated";
 
 interface OnboardingSlideProps {
   children: React.ReactNode;
-  isActive: boolean;
+  index: number;
+  scrollX: SharedValue<number>;
+  width: number;
 }
 
-export function OnboardingSlide({ children, isActive }: OnboardingSlideProps) {
-  const opacity = useSharedValue(0);
-  const translateY = useSharedValue(16);
+export function OnboardingSlide({
+  children,
+  index,
+  scrollX,
+  width,
+}: OnboardingSlideProps) {
+  const animatedStyle = useAnimatedStyle(() => {
+    const isRTL = I18nManager.isRTL;
+    const normalizedIndex = isRTL
+      ? ONBOARDING_SLIDES.length - 1 - index
+      : index;
+    const position = scrollX.value / width - normalizedIndex;
 
-  useEffect(() => {
-    if (isActive) {
-      opacity.value = withTiming(1, { duration: 300 });
-      translateY.value = withTiming(0, { duration: 300 });
-    } else {
-      // Reset instantly so re-entry re-animates
-      opacity.value = 0;
-      translateY.value = 16;
-    }
-  }, [isActive]);
+    const opacity = interpolate(
+      position,
+      [-1, 0, 1],
+      [0, 1, 0],
+      Extrapolation.CLAMP,
+    );
+    const translateY = interpolate(
+      position,
+      [-1, 0, 1],
+      [32, 0, 32],
+      Extrapolation.CLAMP,
+    );
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-    transform: [{ translateY: translateY.value }],
-  }));
+    const scale = interpolate(
+      position,
+      [-1, 0, 1],
+      [0.92, 1, 0.92],
+      Extrapolation.CLAMP,
+    );
+
+    return {
+      transform: [{ translateY }, { scale }],
+      opacity,
+    };
+  });
 
   return (
-    <Animated.View style={[{ flex: 1 }, animatedStyle]}>{children}</Animated.View>
+    <Animated.View style={[{ flex: 1 }, animatedStyle]}>
+      {children}
+    </Animated.View>
   );
 }

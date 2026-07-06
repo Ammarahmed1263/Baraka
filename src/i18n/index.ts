@@ -48,7 +48,7 @@ const reloadApp = async () => {
     } else {
       await Updates.reloadAsync();
     }
-  } catch { }
+  } catch {}
 };
 
 async function syncInitialRTL() {
@@ -58,7 +58,7 @@ async function syncInitialRTL() {
       applyRTL(normalizeLanguage(savedLang));
       return;
     }
-  } catch { }
+  } catch {}
 
   const deviceLang = getLocales()[0]?.languageCode;
   applyRTL(normalizeLanguage(deviceLang));
@@ -83,7 +83,7 @@ const languageDetector = {
     }
   },
 
-  init: () => { },
+  init: () => {},
 
   cacheUserLanguage: async (lang: string) => {
     if (SUPPORTED.includes(lang as AppLanguage)) {
@@ -112,6 +112,7 @@ async function initI18n() {
 
     if (I18nManager.isRTL !== isRTL) {
       applyRTL(lng);
+
       await reloadApp();
     }
   });
@@ -122,19 +123,24 @@ initI18n();
 export function useLanguage() {
   const { i18n: instance } = useTranslation();
 
-  const language: AppLanguage = instance.language.startsWith('ar') ? 'ar' : 'en';
+  const language: AppLanguage = instance.language.startsWith("ar")
+    ? "ar"
+    : "en";
 
-  const changeLanguage = useCallback(async (lang: AppLanguage) => {
-    if (!SUPPORTED.includes(lang)) return;
-    await instance.changeLanguage(lang);
-  }, [instance]);
+  const changeLanguage = useCallback(
+    async (lang: AppLanguage) => {
+      if (!SUPPORTED.includes(lang)) return;
+      await instance.changeLanguage(lang);
+    },
+    [instance],
+  );
 
   return useMemo(
     () => ({
       language,
       changeLanguage,
     }),
-    [language]
+    [language],
   );
 }
 

@@ -24,8 +24,8 @@ export const ONBOARDING_SLIDES: OnboardingSlide[] = [
       ar: "جدّد نيتك",
     },
     body: {
-      en: "Even the most repeated acts of worship gain fresh reward when your heart leads. Renewing your intention takes only seconds, but its blessing has no end.",
-      ar: "حتى أكثر العبادات تكرارًا تكتسب أجرًا جديدًا حين تتقدمها النية. تجديد النية يأخذ ثوانٍ ولكن بركتها لا تنتهي.",
+      en: "These intentions are a reminder for your heart. Read them with your eyes, and feel them in your heart, and let the niyyah settle before you begin. Verbalizing the niyyah was not the practice of the Prophet ﷺ or his companions.\n\n— Ibn Taymiyyah, Majmu' al-Fatawa",
+      ar: "هذه النيات تذكرة لقلبك. اقرأها بعينك، واستشعرها بقلبك، ودع النية تستقر قبل أن تبدأ. التلفظ بالنية لم يكن من هدي النبي ﷺ ولا أصحابه.\n\n— ابن تيمية، مجموع الفتاوى",
     },
     icon: "refresh-cw",
   },

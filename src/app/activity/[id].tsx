@@ -658,7 +658,20 @@ export default function ActivityDetailScreen() {
           </View>
         )}
 
-        {/* Ajr preview */}
+        <View
+          style={[
+            styles.disclaimerBanner,
+            { backgroundColor: C.backgroundSubtle, borderColor: C.border },
+          ]}
+        >
+          <Feather name='heart' size={14} color={C.textMuted} style={{ marginTop: 2 }} />
+          <AppText
+            style={[styles.disclaimerText, { color: C.textSecondary }]}
+          >
+            {t("activity.niyyahDisclaimer")}
+          </AppText>
+        </View>
+
         {localSelected.length > 0 && (
           <View
             style={[
@@ -676,7 +689,6 @@ export default function ActivityDetailScreen() {
           </View>
         )}
 
-        {/* Hadith source */}
         {activity.hadithRef && (
           <View
             style={[
@@ -694,7 +706,6 @@ export default function ActivityDetailScreen() {
           </View>
         )}
 
-        {/* CTA */}
         {completed ? (
           <View style={{ gap: 10 }}>
             <View
@@ -883,6 +894,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   editBtnText: { fontSize: 14 },
+  disclaimerBanner: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 10,
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    marginBottom: 12,
+  },
+  disclaimerText: { flex: 1, fontSize: 13, lineHeight: 18 },
   ajrPreview: {
     flexDirection: "row",
     alignItems: "center",

@@ -1,18 +1,30 @@
-import { useRef, useState, useCallback } from "react";
-import { View, FlatList, StyleSheet, useWindowDimensions } from "react-native";
 import { AppButton } from "@components/UI/AppButton";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  FlatList,
+  ListRenderItemInfo,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  ViewToken
+} from "react-native";
+import Animated, {
+  useAnimatedRef,
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useTheme } from "@context/ThemeContext";
-import { useLocalize } from "@hooks/useLocalize";
 import { AppText } from "@components/UI/AppText";
-import { OnboardingSlide } from "@components/onboarding/OnboardingSlide";
-import { OnboardingDots } from "@components/onboarding/OnboardingDots";
 import { LanguagePicker } from "@components/onboarding/LanguagePicker";
+import { OnboardingDots } from "@components/onboarding/OnboardingDots";
+import { OnboardingSlide } from "@components/onboarding/OnboardingSlide";
+import { useTheme } from "@context/ThemeContext";
 import { ONBOARDING_SLIDES } from "@data/onboardingSlides";
+import { useLocalize } from "@hooks/useLocalize";
 
 export default function OnboardingPager() {
   const { colors: C } = useTheme();
@@ -22,7 +34,24 @@ export default function OnboardingPager() {
   const { width } = useWindowDimensions();
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef =
+    useAnimatedRef<FlatList<(typeof ONBOARDING_SLIDES)[number]>>();
+  const scrollX = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollX.value = event.contentOffset.x;
+    },
+  });
+
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      if (viewableItems[0] && viewableItems[0].index !== null) {
+        setCurrentIndex(viewableItems[0].index);
+      }
+    },
+    [],
+  );
 
   const isLastSlide = currentIndex === ONBOARDING_SLIDES.length - 1;
 
@@ -44,12 +73,9 @@ export default function OnboardingPager() {
     ({
       item,
       index,
-    }: {
-      item: (typeof ONBOARDING_SLIDES)[number];
-      index: number;
-    }) => (
+    }: ListRenderItemInfo<(typeof ONBOARDING_SLIDES)[number]>) => (
       <View style={[styles.slide, { width }]}>
-        <OnboardingSlide isActive={index === currentIndex}>
+        <OnboardingSlide index={index} scrollX={scrollX} width={width}>
           <View style={styles.slideContent}>
             <View
               style={[styles.iconCircle, { backgroundColor: C.gold + "18" }]}
@@ -71,20 +97,23 @@ export default function OnboardingPager() {
         </OnboardingSlide>
       </View>
     ),
-    [currentIndex, width, C, localize],
+    [scrollX, width, C, localize],
   );
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
-      <FlatList
+      <Animated.FlatList
         ref={flatListRef}
         data={ONBOARDING_SLIDES}
         renderItem={renderSlide}
         keyExtractor={(_, i) => String(i)}
         horizontal
         pagingEnabled
-        scrollEnabled={false}
         showsHorizontalScrollIndicator={false}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
         getItemLayout={(_, index) => ({
           length: width,
           offset: width * index,
@@ -96,7 +125,7 @@ export default function OnboardingPager() {
         style={[styles.bottomSection, { paddingBottom: insets.bottom + 24 }]}
       >
         <OnboardingDots
-          total={ONBOARDING_SLIDES.length + 1}
+          total={ONBOARDING_SLIDES.length}
           currentIndex={currentIndex}
         />
 

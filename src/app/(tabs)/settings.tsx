@@ -1,6 +1,30 @@
+import {
+  cancelDailyNotifications,
+  registerForPushNotificationsAsync,
+  scheduleDailyNotifications,
+} from "@/services/notifications";
+import { AppBottomSheet } from "@components/UI/AppBottomSheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import SettingRow from "@components/Settings/SettingRow";
+import UserStatsCard from "@components/Settings/UserStatsCard";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
+import { AppText } from "@components/UI/AppText";
+import { useTheme } from "@context/ThemeContext";
+import { useLocalize } from "@hooks/useLocalize";
+import { useLanguage } from "@i18n";
+import { storage } from "@lib/storage";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import {
+  useActivitiesStore,
+  useJournalStore,
+  useLogsStore,
+  useSettingsStore,
+} from "@store";
 import { Haptic } from "@utils/haptics";
+import { parseReminderTime } from "@utils/parseReminderTime";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   Linking,
@@ -14,36 +38,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { parseReminderTime } from "@utils/parseReminderTime";
-import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
+  useSharedValue,
+  withDelay,
   withSequence,
   withTiming,
-  withDelay,
 } from "react-native-reanimated";
-import { useTheme } from "@context/ThemeContext";
-import { AppText } from "@components/UI/AppText";
-import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  useSettingsStore,
-  useActivitiesStore,
-  useLogsStore,
-  useJournalStore,
-} from "@store";
-import { useLanguage } from "@i18n";
-import SettingRow from "@components/Settings/SettingRow";
-import UserStatsCard from "@components/Settings/UserStatsCard";
-import {
-  cancelDailyNotifications,
-  registerForPushNotificationsAsync,
-  scheduleDailyNotifications,
-} from "@/services/notifications";
-import { useLocalize } from "@hooks/useLocalize";
-import { storage } from "@lib/storage";
 
 type ProfileKey = "isHomemaker" | "isParent" | "isStudent" | "isProfessional";
 
@@ -107,6 +109,9 @@ export default function SettingsScreen() {
   const journalEntries = useJournalStore((s) => s.journalEntries);
   const { language: lang, changeLanguage } = useLanguage();
   const localize = useLocalize();
+
+  // Language sheet ref
+  const langSheetRef = useRef<BottomSheetModal>(null);
 
   // Toast state
   const [toastMessage, setToastMessage] = useState("");
@@ -173,19 +178,22 @@ export default function SettingsScreen() {
     };
   }, []);
 
-  const handleLanguageToggle = async () => {
-    const nextLanguage = lang === "en" ? "ar" : "en";
-    await changeLanguage(nextLanguage);
+  const handleLanguageSelect = async (nextLanguage: "en" | "ar") => {
+    if (lang === nextLanguage) {
+      langSheetRef.current?.dismiss();
+      return;
+    }
+
+    langSheetRef.current?.dismiss();
 
     if (
       settings.notificationsEnabled &&
       settings.notificationsStatus === "granted"
     ) {
-      await scheduleDailyNotifications(
-        settings.reminderTime || "08:00",
-        localize,
-      );
+      await cancelDailyNotifications();
     }
+
+    await changeLanguage(nextLanguage);
   };
 
   // const handleBilingualToggle = () => {
@@ -405,20 +413,31 @@ export default function SettingsScreen() {
             { backgroundColor: C.backgroundCard, borderColor: C.border },
           ]}
         >
-          <SettingRow
-            icon='globe'
-            label={t("settings.language")}
-            desc={lang === "en" ? t("settings.english") : t("settings.arabic")}
-            right={
-              <Switch
-                value={lang === "ar"}
-                onValueChange={handleLanguageToggle}
-                trackColor={{ false: C.border, true: C.tint + "80" }}
-                thumbColor={lang === "ar" ? C.tint : C.textMuted}
-                ios_backgroundColor={C.border}
-              />
-            }
-          />
+          <AnimatedPressable onPress={() => langSheetRef.current?.present()}>
+            <SettingRow
+              icon='globe'
+              label={t("settings.language")}
+              desc={
+                lang === "en" ? t("settings.english") : t("settings.arabic")
+              }
+              right={
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <AppText
+                    weight='Medium'
+                    style={{ color: C.textSecondary, marginRight: 4 }}
+                  >
+                    {lang === "en" ? "English" : "عربي"}
+                  </AppText>
+                  <Feather
+                    name='chevron-right'
+                    size={18}
+                    color={C.textMuted}
+                    flipRTL
+                  />
+                </View>
+              }
+            />
+          </AnimatedPressable>
           {/* <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
           <SettingRow
             icon="layers"
@@ -722,6 +741,70 @@ export default function SettingsScreen() {
           onChange={handleTimeChange}
         />
       )}
+
+      <AppBottomSheet
+        ref={langSheetRef}
+        snapPoints={["35%"]}
+        enablePanDownToClose
+      >
+        <AppText weight='Bold' style={[styles.sheetTitle, { color: C.text }]}>
+          {t("settings.selectLanguage", "Select Language")}
+        </AppText>
+        <AppText
+          weight='Regular'
+          style={[styles.sheetDesc, { color: C.textMuted }]}
+        >
+          {t(
+            "settings.selectLanguageDesc",
+            "Choose your preferred language for the app interface.",
+          )}
+        </AppText>
+
+        <View style={styles.sheetOptions}>
+          <AnimatedPressable
+            style={[
+              styles.langOption,
+              {
+                backgroundColor:
+                  lang === "en" ? C.tint + "15" : C.border + "50",
+              },
+              lang === "en" && { borderColor: C.tint, borderWidth: 1 },
+            ]}
+            onPress={() => handleLanguageSelect("en")}
+          >
+            <AppText
+              weight='Medium'
+              style={{ color: lang === "en" ? C.tint : C.text }}
+            >
+              English
+            </AppText>
+            {lang === "en" && <Feather name='check' size={20} color={C.tint} />}
+          </AnimatedPressable>
+
+          <AnimatedPressable
+            style={[
+              styles.langOption,
+              {
+                backgroundColor:
+                  lang === "ar" ? C.tint + "15" : C.border + "50",
+              },
+              lang === "ar" && { borderColor: C.tint, borderWidth: 1 },
+            ]}
+            onPress={() => handleLanguageSelect("ar")}
+          >
+            <AppText
+              weight='Medium'
+              style={{
+                color: lang === "ar" ? C.tint : C.text,
+                fontFamily: "Tajawal",
+              }}
+            >
+              عربي
+            </AppText>
+            {lang === "ar" && <Feather name='check' size={20} color={C.tint} />}
+          </AnimatedPressable>
+        </View>
+      </AppBottomSheet>
     </View>
   );
 }
@@ -838,5 +921,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 16,
+  },
+  sheetTitle: { fontSize: 20, marginBottom: 8 },
+  sheetDesc: { fontSize: 14, marginBottom: 24, lineHeight: 20 },
+  sheetOptions: { gap: 12, marginBottom: 28 },
+  langOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "transparent",
   },
 });

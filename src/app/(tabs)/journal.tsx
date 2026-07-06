@@ -1,26 +1,25 @@
-import { Feather } from "@expo/vector-icons";
-import { useTheme } from "@context/ThemeContext";
-import { AppText } from "@components/UI/AppText";
+import JournalCard from "@components/Journal/JournalCard";
+import { JournalEntryForm } from "@components/Journal/JournalEntryForm";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
+import { AppBottomSheet } from "@components/UI/AppBottomSheet";
+import { AppButton } from "@components/UI/AppButton";
+import { AppText } from "@components/UI/AppText";
 import { AppTextInput } from "@components/UI/AppTextInput";
 import { ChipSelector } from "@components/UI/ChipSelector";
 import { EmptyState } from "@components/UI/EmptyState";
-import { AppButton } from "@components/UI/AppButton";
-import JournalCard from "@components/Journal/JournalCard";
-import { JournalEntryForm } from "@components/Journal/JournalEntryForm";
-import { Skeleton } from "@components/UI/Skeleton";
-import { AppBottomSheet } from "@components/UI/AppBottomSheet";
+import { useTheme } from "@context/ThemeContext";
+import { Feather } from "@expo/vector-icons";
 
-import { useFilteredJournal } from "@hooks/useFilteredJournal";
-import { useJournalStore } from "@store";
-import { useState, useEffect, useRef } from "react";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTranslation } from "react-i18next";
-import Animated, { FadeInDown } from "react-native-reanimated";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { type JournalEntry } from "@types";
+import { useFilteredJournal } from "@hooks/useFilteredJournal";
 import { useLocalize } from "@hooks/useLocalize";
+import { useJournalStore } from "@store";
+import { type JournalEntry } from "@types";
+import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function JournalScreen() {
   const localize = useLocalize();
@@ -45,7 +44,7 @@ export default function JournalScreen() {
   const updateJournalEntry = useJournalStore((s) => s.updateJournalEntry);
   const deleteJournalEntry = useJournalStore((s) => s.deleteJournalEntry);
 
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [editingEntry, setEditingEntry] = useState<JournalEntry | undefined>(
     undefined,
@@ -61,9 +60,6 @@ export default function JournalScreen() {
   //   const timer = setTimeout(() => setLoading(false), 800);
   //   return () => clearTimeout(timer);
   // }, []);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   const handleSave = (data: {
     activityId: string;
@@ -208,7 +204,7 @@ export default function JournalScreen() {
           />
         )}
 
-        {loading ? (
+        {/* {loading ? (
           <View style={styles.dateGroup}>
             <Skeleton width={100} height={14} style={{ marginBottom: 10 }} />
             <View style={{ gap: 10 }}>
@@ -216,7 +212,7 @@ export default function JournalScreen() {
               <Skeleton height={110} borderRadius={14} />
             </View>
           </View>
-        ) : (
+        ) : ( */}
           <>
             {Object.entries(groupedLocalized).map(
               ([date, entries], outerIndex) => (
@@ -253,7 +249,7 @@ export default function JournalScreen() {
               />
             )}
           </>
-        )}
+        {/* )} */}
       </ScrollView>
 
       <AppBottomSheet

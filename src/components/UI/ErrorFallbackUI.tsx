@@ -1,8 +1,11 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { useTheme } from '@context/ThemeContext';
-import { AppText } from './AppText';
-import { AppButton } from './AppButton';
+import { useMemo } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@context/ThemeContext";
+import { AppText } from "./AppText";
+import { AppButton } from "./AppButton";
+import Colors from "@constants/colors";
 
 interface ErrorFallbackUIProps {
   error: Error | null;
@@ -20,87 +23,32 @@ export function ErrorFallbackUI({
   showDetailsInProd,
 }: ErrorFallbackUIProps) {
   const { colors: C } = useTheme();
+  const { t } = useTranslation();
   const showDetails = __DEV__ || showDetailsInProd === true;
 
-  const dynamicStyles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 28,
-      backgroundColor: C.background,
-    },
-    title: {
-      fontSize: 28,
-      color: C.text,
-      marginBottom: 12,
-      textAlign: 'center',
-      writingDirection: 'rtl' as const,
-    },
-    subtitle: {
-      fontSize: 16,
-      color: C.tintLight,
-      marginBottom: 32,
-      lineHeight: 24,
-      textAlign: 'center',
-      writingDirection: 'rtl' as const,
-    },
-    errorDetails: {
-      width: '100%',
-      backgroundColor: C.backgroundSubtle,
-      borderRadius: 16,
-      padding: 16,
-      marginBottom: 32,
-      borderWidth: 1,
-      borderColor: C.tintDark + '80',
-    },
-    errorLabel: {
-      fontSize: 14,
-      color: C.error,
-      marginBottom: 8,
-      writingDirection: 'rtl' as const,
-    },
-    errorMessage: {
-      fontSize: 13,
-      color: C.text,
-      marginBottom: 8,
-      writingDirection: 'rtl' as const,
-    },
-    errorStackContainer: {
-      maxHeight: 180,
-    },
-    errorStack: {
-      fontSize: 11,
-      color: C.tintLight,
-      fontFamily: 'monospace',
-    },
-    buttonContainer: {
-      width: '100%',
-    },
-  });
+  const dynamicStyles = useMemo(() => createStyles(C), [C]);
 
   return (
     <View style={dynamicStyles.container}>
-      <Ionicons
-        name="book-outline"
+      <Feather
+        name='alert-triangle'
         size={80}
         color={C.error}
         style={{ marginBottom: 24 }}
       />
 
-      <AppText weight="Bold" style={dynamicStyles.title}>
-        {title || 'عذراً، حدث انقطاع بسيط'}
+      <AppText weight='Bold' style={dynamicStyles.title}>
+        {title || t("error.title")}
       </AppText>
 
       <AppText style={dynamicStyles.subtitle}>
-        {subtitle ||
-          'واجهنا مشكلة تقنية تعيق عرض الصفحة. يرجى إعادة المحاولة للمتابعة.'}
+        {subtitle || t("error.message")}
       </AppText>
 
       {showDetails && error && (
         <View style={dynamicStyles.errorDetails}>
-          <AppText weight="Medium" style={dynamicStyles.errorLabel}>
-            تفاصيل الخطأ:
+          <AppText weight='Medium' style={dynamicStyles.errorLabel}>
+            {t("error.details")}:
           </AppText>
           <AppText style={dynamicStyles.errorMessage}>{error.message}</AppText>
           {error.stack && (
@@ -113,13 +61,70 @@ export function ErrorFallbackUI({
 
       <View style={dynamicStyles.buttonContainer}>
         <AppButton
-          label="إعادة المحاولة"
-          variant="primary"
-          icon="refresh-cw"
+          label={t("error.tryAgain")}
+          variant='primary'
+          icon='refresh-cw'
           onPress={onReset}
-          accessibilityLabel="إعادة المحاولة"
+          accessibilityLabel={t("error.tryAgain")}
         />
       </View>
     </View>
   );
 }
+
+const createStyles = (C: typeof Colors.light) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 28,
+      backgroundColor: C.background,
+    },
+    title: {
+      fontSize: 28,
+      color: C.text,
+      marginBottom: 12,
+      textAlign: "center",
+    },
+    subtitle: {
+      fontSize: 16,
+      color: C.textSecondary,
+      marginBottom: 32,
+      lineHeight: 24,
+      textAlign: "center",
+    },
+    errorDetails: {
+      width: "100%",
+      backgroundColor: C.backgroundSubtle,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 32,
+      borderWidth: 1,
+      borderColor: C.border,
+    },
+    errorLabel: {
+      fontSize: 14,
+      color: C.error,
+      marginBottom: 8,
+      textAlign: "left",
+    },
+    errorMessage: {
+      fontSize: 13,
+      color: C.text,
+      marginBottom: 8,
+      textAlign: "left",
+    },
+    errorStackContainer: {
+      maxHeight: 180,
+    },
+    errorStack: {
+      fontSize: 11,
+      color: C.textMuted,
+      fontFamily: "monospace",
+      textAlign: "left",
+    },
+    buttonContainer: {
+      width: "100%",
+    },
+  });
