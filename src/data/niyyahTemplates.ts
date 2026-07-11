@@ -7,8 +7,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "basic",
     text: {
-      en: "Eat this to gain strength for ibadah.",
-      ar: "كُل هذا لتكتسب القوة للعبادة.",
+      en: "Say Bismillah and eat with your right hand. This is exactly what the Prophet ﷺ taught.",
+      ar: "سمِّ الله، وكُل بيمينك، فهذه من هدي النبي ﷺ.",
     },
   },
   {
@@ -16,8 +16,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Say Bismillah and eat with your right hand. Follow the Sunnah in how you eat.",
-      ar: "قل بسم الله وكل بيمينك. اتبع السنة في طريقة أكلك.",
+      en: "Say Bismillah and eat with your right hand. This is exactly what the Prophet ﷺ taught.",
+      ar: "ابدأ طعامك ببسم الله، وكُل بيمينك؛ اقتداءً بسنة النبي ﷺ.",
     },
   },
   {
@@ -25,8 +25,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Eat this meal to recharge your body for the next prayer.",
-      ar: "كُل هذه الوجبة لتجدد طاقة جسمك للصلاة القادمة.",
+      en: "Eat this to provide for yourself and those you love. Every bite you place for your family is counted as sadaqah.",
+      ar: "انوِ بهذا الطعام أن تتقوّى على النفقة على نفسك وأهلك، فما تُطعمه لأهلك يُكتب لك به أجرٌ وصدقة.",
     },
   },
   {
@@ -34,8 +34,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Thank Allah as you eat. This rizq is from Him alone.",
-      ar: "اشكر الله وأنت تأكل. هذا الرزق منه وحده.",
+      en: "Praise Allah when you finish. A single meal eaten with gratitude earns His pleasure.",
+      ar: "اختم طعامك بحمد الله، فإن الله يرضى عن العبد إذا أكل الأكلة فحمده عليها.",
     },
   },
   {
@@ -43,8 +43,17 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Eat in moderation. A full stomach dulls the heart.",
-      ar: "كُل باعتدال. البطن الممتلئة تُغفل القلب.",
+      en: "Eat enough to keep you going, no more. A third for food, a third for drink, a third for air.",
+      ar: "كُل بقدر حاجتك، ولا تُسرف؛ فثلثٌ للطعام، وثلثٌ للشراب، وثلثٌ للنَّفَس.",
+    },
+  },
+  {
+    id: "breakfast_5",
+    activityId: "breakfast",
+    level: "advanced",
+    text: {
+      en: "Gather your family around this table if you can. Eating together brings blessing to the meal.",
+      ar: "اجمع أهلك على المائدة إن استطعت، فإن الاجتماع على الطعام سببٌ لحلول البركة.",
     },
   },
 
@@ -130,8 +139,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "basic",
     text: {
-      en: "Move your body. It's an amanah from Allah, sustain it.",
-      ar: "حرّك جسمك. إنه أمانة من الله، فحافظ عليه.",
+      en: "Train today to worship better tomorrow. A strong body is a stronger servant of Allah.",
+      ar: "تدرَّب اليوم لتكون اكثر قدرة على عبادة الله غدًا. فالجسم القوي اكثر قدرة على طاعة الله.",
     },
   },
   {
@@ -139,8 +148,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "Follow the Sunnah manners while you eat or recover. Bismillah, right hand.",
-      ar: "اتبع آداب السنة في الأكل أثناء التعافي. بسم الله، باليد اليمنى.",
+      en: "Train your body to stand longer in prayer, fast without fatigue, and make Hajj with ease.",
+      ar: "درِّب جسدك ليعينك على إطالة القيام في الصلاة، والصيام بقوة، وأداء الحج بيسر.",
     },
   },
   {
@@ -148,8 +157,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "Train today so you're recharged for Asr and what comes after.",
-      ar: "تدرّب اليوم لتجدد طاقتك لصلاة العصر وما بعدها.",
+      en: "This body is Allah's trust in your hands. Moving it is how you say thank you.",
+      ar: "جسدك أمانةٌ من الله بين يديك، والمحافظة عليه وتقويته من شكر هذه النعمة.",
     },
   },
   {
@@ -157,8 +166,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "Thank Allah for the health and strength to do this.",
-      ar: "اشكر الله على الصحة والقوة لفعل هذا.",
+      en: "The Prophet ﷺ said the strong believer is more beloved to Allah. Train to be that believer.",
+      ar: "قال رسول الله ﷺ: «المؤمن القوي خيرٌ وأحبُّ إلى الله من المؤمن الضعيف». فتدرَّب لتكون من المؤمنين الأقوياء.",
     },
   },
   {
@@ -166,35 +175,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "Train to build strength for longer salah and a stronger fast.",
-      ar: "تدرّب لتبني قوة تكفي لصلاة أطول وصيام أفضل.",
-    },
-  },
-  {
-    id: "exercise_5",
-    activityId: "exercise",
-    level: "advanced",
-    text: {
-      en: "Stay strong so you can serve your family and community better.",
-      ar: "ابقَ قوياً لتخدم عائلتك ومجتمعك بشكل أفضل.",
-    },
-  },
-  {
-    id: "exercise_6",
-    activityId: "exercise",
-    level: "advanced",
-    text: {
-      en: "Train today and follow the example of the strong believer.",
-      ar: "تدرّب اليوم واقتدِ بسنة المؤمن القوي.",
-    },
-  },
-  {
-    id: "exercise_7",
-    activityId: "exercise",
-    level: "advanced",
-    text: {
-      en: "Keep your energy up. You'll need it for Tahajjud tonight.",
-      ar: "حافظ على طاقتك. ستحتاجها لقيام الليل الليلة.",
+      en: "Clear your mind and renew your energy. Then go back to your work and worship with full presence.",
+      ar: "جدِّد نشاطك وصفِّ ذهنك، ثم عُد إلى عملك وعبادتك بقلبٍ حاضرٍ وهمَّةٍ متجددة.",
     },
   },
 
@@ -542,8 +524,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "basic",
     text: {
-      en: "Pray Asr now. Guard this prayer, it was singled out by name.",
-      ar: "صلِّ العصر الآن. احفظ هذه الصلاة، فقد خُصت بالذكر.",
+      en: "Pray Asr now. Guard the middle prayer, Allah named it specifically.",
+      ar: "صلِّ العصر الآن. حافظ على الصلاة الوسطى، الله خصّها بالذكر.",
     },
   },
   {
@@ -551,8 +533,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "advanced",
     text: {
-      en: "Pray Asr now and close this chapter of your work-day with Allah's remembrance.",
-      ar: "صلِّ العصر الآن واختم فصل عملك اليوم بذكر الله.",
+      en: "Don't delay Asr. The angels of the day shift are about to ascend, let them find you praying.",
+      ar: "لا تؤخر صلاة العصر. ملائكة النهار على وشك الصعود، دعهم يجدونك تصلي.",
     },
   },
   {
@@ -560,8 +542,26 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "advanced",
     text: {
-      en: "Pray on time. Missing Asr is described as losing your family and wealth.",
-      ar: "صلِّ في وقتها. من فاتته العصر فكأنما خسر أهله وماله.",
+      en: "Because nations before us were given this prayer and wasted it so you earn twice: once for praying it, once for guarding what they lost.",
+      ar: "لأن أمم قبلنا أُعطيت هذه الصلاة فضيّعوها فلك أجران: مرة على صلاتك، ومرة على حفظ ما ضيّعوه.",
+    },
+  },
+  {
+    id: "asr_3",
+    activityId: "asr",
+    level: "advanced",
+    text: {
+      en: "Whoever misses it, it's as if he lost his family and everything he owns.",
+      ar: "من فاتته فكأنما خسر أهله وماله.",
+    },
+  },
+  {
+    id: "asr_4",
+    activityId: "asr",
+    level: "advanced",
+    text: {
+      en: "Leaving it wipes out your deeds, so be early, not late.",
+      ar: "تركها يُحبط العمل، فبادر قبل أن يفوت الوقت.",
     },
   },
 
@@ -805,7 +805,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "basic",
     text: {
       en: "Set off now, under Allah's protection.",
-      ar: "انطلق الآن، في حفظ الله.",
+      ar: "استودِع الله نفسك، وانطلق مستعينًا به.",
     },
   },
   {
@@ -814,7 +814,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     text: {
       en: "Fill this journey with dhikr or a bit of Quran.",
-      ar: "املأ هذه الرحلة بالذكر أو شيء من القرآن.",
+      ar: "اجعل رحلتك عامرةً بذكر الله أو بتلاوة شيءٍ من القرآن.",
     },
   },
   {
@@ -822,8 +822,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "commute",
     level: "advanced",
     text: {
-      en: "Say this before you set off. It's the Prophet's ﷺ own dua for any journey.",
-      ar: "قل هذا قبل أن تتحرك. هذا دعاء النبي ﷺ نفسه لأي رحلة.",
+      en: "Intend by this journey to seek lawful provision or beneficial knowledge for the sake of Allah.",
+      ar: "انوِ بهذه الرحلة طلبَ الرزق الحلال أو العلم النافع ابتغاءَ مرضاة الله.",
     },
   },
   {
@@ -831,8 +831,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "commute",
     level: "advanced",
     text: {
-      en: "Ask Allah to bring you back with fresh gratitude when you arrive.",
-      ar: "اسأل الله أن يردّك بامتنان متجدد عند وصولك.",
+      en: "Ask Allah to make this journey easy and return you safely.",
+      ar: "سلِ الله أن ييسِّر لك رحلتك، وأن يردَّك سالمًا غانمًا.",
     },
   },
 ];
