@@ -1,0 +1,11 @@
+import { storage } from "@/lib/storage";
+
+export function getAnonymousUserId(): string {
+  const existing = storage.getString("@niyyah_anonymous_user_id");
+
+  if (existing) return existing;
+
+  const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+  storage.set("@niyyah_anonymous_user_id", id);
+  return id;
+}
