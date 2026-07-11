@@ -685,12 +685,34 @@ export default function SettingsScreen() {
           ]}
         >
           <Feather name='shield' size={16} color={C.tint} />
-          <AppText
-            weight='Regular'
-            style={[styles.privacyText, { color: C.tint }]}
-          >
-            {t("settings.privacy")}
-          </AppText>
+          <View style={{ flex: 1 }}>
+            <AppText
+              weight='Regular'
+              style={[styles.privacyText, { color: C.tint }]}
+            >
+              {t("settings.privacy")}
+            </AppText>
+            <AnimatedPressable
+              onPress={() =>
+                Linking.openURL(
+                  "https://pr-checklist.notion.site/Privacy-Policy-for-Baraka-39a68938c5b98013985cd36103ad3102",
+                )
+              }
+              hitSlop={20}
+              // style={{ marginTop: 8 }}
+            >
+              <AppText
+                weight='Medium'
+                style={{
+                  color: C.gold,
+                  textDecorationLine: "underline",
+                  fontSize: 13,
+                }}
+              >
+                {t("settings.privacyPolicy")}
+              </AppText>
+            </AnimatedPressable>
+          </View>
         </View>
       </ScrollView>
 
