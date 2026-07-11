@@ -120,12 +120,12 @@ export default function NiyyahCard({
           <View style={styles.checkWrapper}>
             <AnimatedPressable
               onPress={handleCheckPress}
-              hitSlop={8}
+              hitSlop={20}
               style={[
                 styles.checkButton,
                 {
-                  backgroundColor: completed ? C.tint : "transparent",
-                  borderColor: completed ? C.tint : C.border,
+                  backgroundColor: completed ? C.gold : "transparent",
+                  borderColor: completed ? C.gold : C.border,
                   borderWidth: 1.5,
                 },
               ]}
