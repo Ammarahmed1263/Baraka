@@ -12,8 +12,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#0D1F17"
+        "foregroundImage": "./assets/images/icon-foreground.png",
+        "monochromeImage": "./assets/images/icon-foreground.png",
+        "backgroundColor": "#13271F"
       },
       "package": "com.ammar_001.barakaniyyah"
     },
@@ -25,21 +26,21 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/images/adaptive-icon.png",
-          "color": "#0D1F17"
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#13271F"
         }
       ],
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F8FAF9",
-          "image": "./assets/images/splash-icon.png",
+          "backgroundColor": "#FCFAF5",
+          "image": "./assets/images/splash-icon-light.png",
           "dark": {
-            "backgroundColor": "#0D1F17",
-            "image": "./assets/images/splash-icon.png"
+            "backgroundColor": "#13271F",
+            "image": "./assets/images/splash-icon-dark.png"
           },
           "imageWidth": 200,
-          "resizeMode": "cover"
+          "resizeMode": "contain"
         }
       ],
       [
