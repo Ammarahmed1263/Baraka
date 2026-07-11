@@ -156,7 +156,10 @@ export async function recheckAndRescheduleIfNeeded(
   localize: (key: LocalizedString) => string,
   notificationsEnabled: boolean,
 ) {
-  if (!notificationsEnabled) return;
+  if (!notificationsEnabled) {
+    await cancelDailyNotifications();
+    return;
+  }
 
   try {
     const scheduled = await Notifications.getAllScheduledNotificationsAsync();
