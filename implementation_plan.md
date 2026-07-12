@@ -79,7 +79,7 @@ This document outlines the phased roadmap for upgrading the Baraka app's archite
 
 ---
 
-## Phase 5b: Niyyah Authenticity Disclaimer 🔴 [CRITICAL — Pre-MVP]
+## Phase 5b: Niyyah Authenticity Disclaimer ✅ [COMPLETED]
 
 **Goal**: Ensure users understand that Niyyah is formed in the heart, not spoken aloud, to preserve the Islamic authenticity of the app.
 
@@ -90,48 +90,20 @@ This document outlines the phased roadmap for upgrading the Baraka app's archite
 
 The entire premise of the app is to help users renew their intentions. If a user reads Niyyah text in the app and thinks they must _say_ it out loud, it introduces a bid'ah (innovation) and directly contradicts the scholarly consensus. This disclaimer is not optional — it protects the app's authenticity and the user's practice.
 
-### Placement Recommendation
+### Implementation
 
-There are **two mandatory placements** and one optional one:
+There are **two mandatory placements** that have been successfully integrated:
 
-#### 1. 🟥 Primary — Onboarding Slide (Mandatory)
+- [x] **1. Primary — Onboarding Slide**
+      Added directly into the body text of Slide 2 ("Renew Your Niyyah") in [`onboardingSlides.ts`](./src/data/onboardingSlides.ts). This ensures users learn this concept immediately during their first experience with the app, reinforced by a quote from Ibn Taymiyyah.
 
-Add a dedicated slide **between the current Slide 2 ("Renew Your Niyyah") and the activity picker**, OR modify Slide 2's body text to include it prominently.
+- [x] **2. Secondary — Activity Detail Screen**
+      Added as a subtle, persistent subtitle translated via `i18n` on the Niyyah selection screen (`src/app/activity/[id].tsx`). This serves as a contextual reminder right at the moment of use.
 
-**Why here**: This is the highest-attention moment. The user is being introduced to the concept of Niyyah for the first time. They need to know _before_ they ever see a Niyyah text that it is not meant to be recited.
-
-**Recommended approach**: Add a short, visually distinct callout block at the bottom of Slide 2 (the "Renew Your Niyyah" slide), styled with a gold border and a `قلب` (heart) icon:
-
-```
-💛 النية مكانها في القلب وليست منطوقة
-   Intention is formed in the heart — not recited aloud.
-```
-
-**Files to modify**:
-
-- [`onboardingSlides.ts`](./src/data/onboardingSlides.ts) — add disclaimer field to Slide 2
-- [`OnboardingSlide.tsx`](./src/components/onboarding/OnboardingSlide.tsx) — render a styled disclaimer block if the field is present
-
-#### 2. 🟥 Secondary — Activity Detail Screen (Mandatory)
-
-A subtle, persistent subtitle or footnote **on the Niyyah selection/renewal screen** (`src/app/activity/[id].tsx`), rendered just above or below the list of Niyyah options.
-
-**Why here**: This is the moment of use — right before the user taps a Niyyah. The reminder is contextual and reinforces the correct understanding at the precise moment it matters.
-
-**Files to modify**:
-
-- [`activity/[id].tsx`](./src/app/activity/%5Bid%5D.tsx)
-- `en.json` / `ar.json` — add i18n keys
-
-#### 3. 🟡 Optional — Settings "About" Section
-
-A one-liner in the existing About card in Settings. Lower priority since it's not in the user's active flow.
-
-### i18n Keys to Add
+### i18n Keys Added
 
 ```json
-"niyyahDisclaimer": "Intention is formed in the heart — it is not spoken aloud.",
-"niyyahDisclaimerAr": "النية مكانها في القلب وليست منطوقة"
+"activity.niyyahDisclaimer": "Read it with your eyes, and feel it with your heart. The intention resides in the heart, not the tongue."
 ```
 
 ---
@@ -238,18 +210,20 @@ A one-liner in the existing About card in Settings. Lower priority since it's no
 
 ### Quota Budget Summary
 
-| Feature                              | Consumption         | Status      |
-| ------------------------------------ | ------------------- | ----------- |
-| `captureException` (crashes)         | 1 event/crash       | ✅ Active   |
-| `captureMessage` (hydration warning) | Rare                | ✅ Active   |
-| `addBreadcrumb`                      | **Free** (no quota) | ✅ Active   |
-| `setUser / setTag / setContext`      | **Free** (no quota) | ✅ Active   |
-| Performance tracing                  | 10k spans/month     | 🔒 Hold     |
+| Feature                              | Consumption         | Status    |
+| ------------------------------------ | ------------------- | --------- |
+| `captureException` (crashes)         | 1 event/crash       | ✅ Active |
+| `captureMessage` (hydration warning) | Rare                | ✅ Active |
+| `addBreadcrumb`                      | **Free** (no quota) | ✅ Active |
+| `setUser / setTag / setContext`      | **Free** (no quota) | ✅ Active |
+| Performance tracing                  | 10k spans/month     | 🔒 Hold   |
 
 ---
 
 ## Phase 10: Local Release Builds & Distribution ✅ [COMPLETED]
+
 **Goal**: Package the app into an installable APK for internal testing.
+
 - [x] **Sentry Local Build Bypassing**: Enabled `SENTRY_DISABLE_AUTO_UPLOAD=true` to skip sourcemap uploads during local builds, bypassing Sentry credentials requirements.
 - [x] **Watchman Conflict Resolution**: Terminated hung `watchman.exe` processes on Windows to let the Metro bundler fall back to the reliable Node file crawler.
 - [x] **Release APK Compilation**: Successfully compiled the release APK using Gradle assembly (`.\android\gradlew.bat -p android assembleRelease`). The output is located at [android/app/build/outputs/apk/release/app-release.apk](file:///d:/Projects/Baraka/android/app/build/outputs/apk/release/app-release.apk).

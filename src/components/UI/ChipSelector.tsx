@@ -57,7 +57,7 @@ export function ChipSelector({
               <Feather
                 name={item.leftIcon}
                 size={14}
-                color={isSelected ? "#FFF" : C.textSecondary}
+                color={isSelected ? C.textOnTint : C.textSecondary}
                 style={{ marginRight: 6 }}
               />
             )}
@@ -67,7 +67,7 @@ export function ChipSelector({
               style={[
                 styles.text,
                 {
-                  color: isSelected ? "#FFF" : C.textSecondary,
+                  color: isSelected ? C.textOnTint : C.textSecondary,
                 },
               ]}
             >

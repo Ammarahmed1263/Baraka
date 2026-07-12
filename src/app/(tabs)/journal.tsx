@@ -44,7 +44,6 @@ export default function JournalScreen() {
   const updateJournalEntry = useJournalStore((s) => s.updateJournalEntry);
   const deleteJournalEntry = useJournalStore((s) => s.deleteJournalEntry);
 
-  // const [loading, setLoading] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [editingEntry, setEditingEntry] = useState<JournalEntry | undefined>(
     undefined,
@@ -52,14 +51,7 @@ export default function JournalScreen() {
   const [selectedEntry, setSelectedEntry] = useState<JournalEntry | undefined>(
     undefined,
   );
-
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-
-  // TODO: re-enable when data source changes to API/Realm
-  // useEffect(() => {
-  //   const timer = setTimeout(() => setLoading(false), 800);
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   const handleSave = (data: {
     activityId: string;
@@ -204,16 +196,6 @@ export default function JournalScreen() {
           />
         )}
 
-        {/* {loading ? (
-          <View style={styles.dateGroup}>
-            <Skeleton width={100} height={14} style={{ marginBottom: 10 }} />
-            <View style={{ gap: 10 }}>
-              <Skeleton height={110} borderRadius={14} />
-              <Skeleton height={110} borderRadius={14} />
-            </View>
-          </View>
-        ) : ( */}
-          <>
             {Object.entries(groupedLocalized).map(
               ([date, entries], outerIndex) => (
                 <View key={date} style={styles.dateGroup}>
@@ -248,8 +230,6 @@ export default function JournalScreen() {
                 message={t("journal.noFilterResults")}
               />
             )}
-          </>
-        {/* )} */}
       </ScrollView>
 
       <AppBottomSheet

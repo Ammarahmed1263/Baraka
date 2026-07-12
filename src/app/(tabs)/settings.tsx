@@ -47,53 +47,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-type ProfileKey = "isHomemaker" | "isParent" | "isStudent" | "isProfessional";
-
-const PROFILE_OPTIONS: Array<{ key: ProfileKey; icon: string; color: string }> =
-  [
-    {
-      key: "isHomemaker",
-      icon: "home",
-      color: "#EC4899",
-    },
-    {
-      key: "isParent",
-      icon: "users",
-      color: "#F97316",
-    },
-    {
-      key: "isStudent",
-      icon: "book",
-      color: "#8B5CF6",
-    },
-    {
-      key: "isProfessional",
-      icon: "briefcase",
-      color: "#3B82F6",
-    },
-  ];
-
-const ROLE_TRANSLATION_KEYS: Record<
-  ProfileKey,
-  { label: string; desc: string }
-> = {
-  isHomemaker: {
-    label: "settings.role.homemaker",
-    desc: "settings.roleDesc.homemaker",
-  },
-  isParent: {
-    label: "settings.role.parent",
-    desc: "settings.roleDesc.parent",
-  },
-  isStudent: {
-    label: "settings.role.student",
-    desc: "settings.roleDesc.student",
-  },
-  isProfessional: {
-    label: "settings.role.professional",
-    desc: "settings.roleDesc.professional",
-  },
-};
+import { ROLES, type RoleKey } from "@utils/roleHelpers";
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
@@ -200,7 +154,7 @@ export default function SettingsScreen() {
   //   updateSettings({ showBilingual: !settings.showBilingual });
   // };
 
-  const ROLE_UNLOCK_MESSAGES: Record<ProfileKey, { en: string; ar: string }> = {
+  const ROLE_UNLOCK_MESSAGES: Record<RoleKey, { en: string; ar: string }> = {
     isHomemaker: {
       en: t("settings.roleToast.homemaker", { lng: "en" }),
       ar: t("settings.roleToast.homemaker", { lng: "ar" }),
@@ -219,7 +173,7 @@ export default function SettingsScreen() {
     },
   };
 
-  const handleProfileToggle = (key: ProfileKey) => {
+  const handleProfileToggle = (key: RoleKey) => {
     const newValue = !settings.profile[key];
     updateSettings({ profile: { ...settings.profile, [key]: newValue } });
     if (newValue) {
@@ -374,9 +328,9 @@ export default function SettingsScreen() {
             { backgroundColor: C.backgroundCard, borderColor: C.border },
           ]}
         >
-          {PROFILE_OPTIONS.map((opt, idx) => (
+          {ROLES.map((opt, idx) => (
             <React.Fragment key={opt.key}>
-              {idx > 0 && (
+               {idx > 0 && (
                 <View
                   style={[styles.divider, { backgroundColor: C.borderLight }]}
                 />
@@ -385,8 +339,8 @@ export default function SettingsScreen() {
                 icon={opt.icon}
                 iconColor={opt.color}
                 iconBg={opt.color + "18"}
-                label={t(ROLE_TRANSLATION_KEYS[opt.key].label)}
-                desc={t(ROLE_TRANSLATION_KEYS[opt.key].desc)}
+                label={t(opt.labelKey)}
+                desc={t(opt.descKey)}
                 right={
                   <Switch
                     value={settings.profile[opt.key]}

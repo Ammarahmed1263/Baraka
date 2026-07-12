@@ -26,13 +26,6 @@ export default function TodayScreen() {
   const isWeb = Platform.OS === "web";
 
   const activities = useActivitiesStore((s) => s.activities);
-  // const [loading, setLoading] = useState(false);
-
-  // TODO: re-enable when data source changes to API/Realm
-  // useEffect(() => {
-  //   const timer = setTimeout(() => setLoading(false), 800);
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   const streak = useLogsStore((s) => s.streak);
   const markComplete = useLogsStore((s) => s.markComplete);
@@ -110,36 +103,6 @@ export default function TodayScreen() {
           </AppText>
         </View>
 
-        {/* {loading ? (
-          <>
-            <Skeleton
-              height={140}
-              borderRadius={16}
-              style={{ marginBottom: 16 }}
-            />
-
-            <View style={{ flexDirection: "row", gap: 12, marginBottom: 24 }}>
-              <Skeleton height={80} borderRadius={20} style={{ flex: 1 }} />
-              <Skeleton height={80} borderRadius={20} style={{ flex: 1 }} />
-            </View>
-
-            <View style={styles.sectionHeader}>
-              <AppText
-                weight='Bold'
-                style={[styles.sectionTitle, { color: C.gold }]}
-              >
-                {t("dashboard.yourIntentions")}
-              </AppText>
-            </View>
-
-            <View style={{ gap: 12 }}>
-              <Skeleton height={90} borderRadius={24} />
-              <Skeleton height={90} borderRadius={24} />
-              <Skeleton height={90} borderRadius={24} />
-            </View>
-          </>
-        ) : ( */}
-        <>
           <Animated.View entering={FadeInDown.duration(300)}>
             {/* Hadith Card */}
             <HadithCard />
@@ -182,7 +145,6 @@ export default function TodayScreen() {
               </View>
             )}
           </View>
-
           {enabledActivities.length === 0 ? (
             <Animated.View entering={FadeInDown.duration(300).delay(100)}>
               <View
@@ -237,8 +199,6 @@ export default function TodayScreen() {
               </Animated.View>
             ))
           )}
-        </>
-        {/* )} */}
 
         {/* Ajr explanation footer */}
         {ajr.acts > 0 && (

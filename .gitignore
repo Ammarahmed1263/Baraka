@@ -42,3 +42,9 @@ yarn-error.*
 .env.local
 
 .env.local
+
+
+# docs
+*.md
+ExcelToJson.js
+assets/images/old

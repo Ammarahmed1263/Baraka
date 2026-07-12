@@ -6,6 +6,7 @@ export interface RoleInfo {
   key: RoleKey;
   tag: string;
   labelKey: string;
+  descKey: string;
   icon: string;
   color: string;
 }
@@ -15,6 +16,7 @@ export const ROLES: RoleInfo[] = [
     key: "isHomemaker",
     tag: "homemaker",
     labelKey: "settings.role.homemaker",
+    descKey: "settings.roleDesc.homemaker",
     icon: "home",
     color: "#EC4899",
   },
@@ -22,6 +24,7 @@ export const ROLES: RoleInfo[] = [
     key: "isParent",
     tag: "parent",
     labelKey: "settings.role.parent",
+    descKey: "settings.roleDesc.parent",
     icon: "users",
     color: "#F97316",
   },
@@ -29,6 +32,7 @@ export const ROLES: RoleInfo[] = [
     key: "isStudent",
     tag: "student",
     labelKey: "settings.role.student",
+    descKey: "settings.roleDesc.student",
     icon: "book",
     color: "#8B5CF6",
   },
@@ -36,6 +40,7 @@ export const ROLES: RoleInfo[] = [
     key: "isProfessional",
     tag: "professional",
     labelKey: "settings.role.professional",
+    descKey: "settings.roleDesc.professional",
     icon: "briefcase",
     color: "#3B82F6",
   },

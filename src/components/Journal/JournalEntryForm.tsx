@@ -86,7 +86,7 @@ export function JournalEntryForm({
       ]}
     >
       <LinearGradient
-        colors={isDark ? ["#1A3326", "#0D2E1F"] : ["#EDF7F0", "#F0FAF4"]}
+        colors={isDark ? [C.backgroundSubtle, C.background] : [C.border, C.successLight]}
         style={styles.formGradient}
       >
         <AppText weight='Bold' style={[styles.formTitle, { color: C.text }]}>

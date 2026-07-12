@@ -32,8 +32,8 @@ export default function DashboardStats({
         style={[
           styles.statCard,
           {
-            backgroundColor: isDark ? "#0D2E1F" : "#F0FDF4",
-            borderColor: isDark ? C.gold + "33" : C.tint + "22",
+            backgroundColor: C.successLight,
+            borderColor: C.border,
           },
         ]}
       >
@@ -70,8 +70,8 @@ export default function DashboardStats({
         style={[
           styles.statCard,
           {
-            backgroundColor: isDark ? "#2D2610" : "#FFFBEB",
-            borderColor: C.gold + "33",
+            backgroundColor: C.goldLight,
+            borderColor: C.border,
           },
         ]}
       >

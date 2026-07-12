@@ -27,7 +27,7 @@ export default function NiyyahCard({
   onToggle,
   onPress,
 }: Props) {
-  const { colors: C, isDark } = useTheme();
+  const { colors: C } = useTheme();
   const checkScale = useSharedValue(1);
   const localize = useLocalize();
 
@@ -58,9 +58,7 @@ export default function NiyyahCard({
           styles.card,
           {
             backgroundColor: completed
-              ? isDark
-                ? C.successLight
-                : "#F0FDF4"
+              ? C.successLight
               : C.backgroundCard,
             borderColor: completed ? C.tint + "40" : C.border,
           },
