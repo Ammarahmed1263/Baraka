@@ -18,7 +18,6 @@ import { type NiyyahOption } from "@types";
 type Step = "view" | "reflect";
 
 export function useActivityDetail(id: string) {
-  const { t } = useTranslation();
   const localize = useLocalize();
   const { language: lang } = useTranslation().i18n;
 

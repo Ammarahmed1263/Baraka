@@ -24,7 +24,6 @@ interface ActivityReflectStepProps {
   cleanSelectedCount: number;
   ajrCount: number;
   localize: (text: any) => string;
-  lang: string;
 }
 
 export const ActivityReflectStep = React.memo(
@@ -40,7 +39,6 @@ export const ActivityReflectStep = React.memo(
     cleanSelectedCount,
     ajrCount,
     localize,
-    lang,
   }: ActivityReflectStepProps) => {
     const { t } = useTranslation();
     const { colors: C, isDark } = useTheme();

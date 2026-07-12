@@ -31,7 +31,6 @@ export default function ActivityDetailScreen() {
           cleanSelectedCount={state.cleanSelectedCount}
           ajrCount={state.ajrCount}
           localize={state.localize}
-          lang={state.lang}
         />
       ) : (
         <ActivityViewStep
@@ -51,7 +50,6 @@ export default function ActivityDetailScreen() {
           onSaveAndRenew={state.handleSaveAndRenew}
           onUnmark={state.handleUnmark}
           localize={state.localize}
-          lang={state.lang}
         />
       )}
     </View>

@@ -30,7 +30,6 @@ interface ActivityViewStepProps {
   onSaveAndRenew: () => void;
   onUnmark: () => void;
   localize: (text: any) => string;
-  lang: string;
 }
 
 export const ActivityViewStep = React.memo(
