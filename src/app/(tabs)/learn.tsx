@@ -1,73 +1,27 @@
-import { EDUCATION_ENTRIES } from "@data/learnContent";
-import { type EducationEntry } from "@types";
+import { EDUCATION_ENTRIES, LEARN_CATEGORIES } from "@data/learnContent";
 
 import EducationCard from "@components/Learn/EducationCard";
-import EducationDetail from "@components/Learn/EducationDetail";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppText } from "@components/UI/AppText";
 import { AppTextInput } from "@components/UI/AppTextInput";
 import { useTheme } from "@context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
-import { useSettingsStore } from "@store";
 import { Haptic } from "@utils/haptics";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  BackHandler,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-const CATEGORIES = [
-  "All",
-  "Foundations",
-  "Work",
-  "Health",
-  "Daily Life",
-  "Worship",
-  "Relationships",
-  "Learning",
-];
+import { router } from "expo-router";
 
 export default function LearnScreen() {
   const { t } = useTranslation();
   const { colors: C } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
-  const settings = useSettingsStore((s) => s.settings);
 
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedEntry, setSelectedEntry] = useState<EducationEntry | null>(
-    null,
-  );
-  // const [loading, setLoading] = useState(true);
-
-  // TODO: re-enable when data source changes to API/Realm
-  // useEffect(() => {
-  //   const timer = setTimeout(() => setLoading(false), 800);
-  //   return () => clearTimeout(timer);
-  // }, []);
-
-  useEffect(() => {
-    if (!selectedEntry) return;
-
-    const backAction = () => {
-      setSelectedEntry(null);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, [selectedEntry]);
 
   const filtered = useMemo(() => {
     return EDUCATION_ENTRIES.filter((e) => {
@@ -85,40 +39,6 @@ export default function LearnScreen() {
     });
   }, [search, activeCategory]);
 
-  const mapCategoryLabel = (category: string) => {
-    switch (category) {
-      case "All":
-        return t("learn.category.all");
-      case "Foundations":
-        return t("learn.category.foundations");
-      case "Work":
-        return t("reminders.category.productivity");
-      case "Health":
-        return t("reminders.category.health");
-      case "Daily Life":
-        return t("reminders.category.daily");
-      case "Worship":
-        return t("reminders.category.worship");
-      case "Relationships":
-        return t("reminders.category.relationships");
-      case "Learning":
-        return t("reminders.category.learning");
-      default:
-        return category;
-    }
-  };
-
-  if (selectedEntry) {
-    return (
-      <EducationDetail
-        entry={selectedEntry}
-        showBilingual={settings.showBilingual}
-        mapCategoryLabel={mapCategoryLabel}
-        onClose={() => setSelectedEntry(null)}
-      />
-    );
-  }
-
   const topPadding = isWeb ? 67 : insets.top;
 
   return (
@@ -130,7 +50,6 @@ export default function LearnScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
         <AppText weight='Bold' style={[styles.title, { color: C.gold }]}>
           {t("learn.title")}
         </AppText>
@@ -141,7 +60,6 @@ export default function LearnScreen() {
           {t("learn.subtitle")}
         </AppText>
 
-        {/* Search */}
         <View style={{ marginBottom: 14 }}>
           <AppTextInput
             value={search}
@@ -158,14 +76,13 @@ export default function LearnScreen() {
           />
         </View>
 
-        {/* Category Filter */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           style={styles.filterScroll}
           contentContainerStyle={styles.filterContent}
         >
-          {CATEGORIES.map((cat) => (
+          {LEARN_CATEGORIES.map((cat) => (
             <AnimatedPressable
               key={cat}
               scaleDownTo={0.94}
@@ -187,69 +104,58 @@ export default function LearnScreen() {
                 style={[
                   styles.filterText,
                   {
-                    color: activeCategory === cat ? "#FFF" : C.textSecondary,
+                    color:
+                      activeCategory === cat ? C.textOnTint : C.textSecondary,
                   },
                 ]}
               >
-                {mapCategoryLabel(cat)}
+                {t("category." + cat)}
               </AppText>
             </AnimatedPressable>
           ))}
         </ScrollView>
 
-        {/* {loading ? (
-          <>
-            <Skeleton width={80} height={14} style={{ marginBottom: 16 }} />
+        <AppText
+          weight='Regular'
+          style={[styles.count, { color: C.textMuted }]}
+        >
+          {t(
+            filtered.length === 1
+              ? "learn.entryCount.one"
+              : "learn.entryCount.other",
+            { count: filtered.length },
+          )}
+        </AppText>
 
-            <View style={{ gap: 12 }}>
-              <Skeleton height={140} borderRadius={14} />
-              <Skeleton height={140} borderRadius={14} />
-              <Skeleton height={140} borderRadius={14} />
-            </View>
-          </>
-        ) : ( */}
-          <>
-            {/* Count */}
+        {filtered.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Feather name='book-open' size={32} color={C.textMuted} />
             <AppText
               weight='Regular'
-              style={[styles.count, { color: C.textMuted }]}
+              style={[styles.emptyText, { color: C.textSecondary }]}
             >
-              {t(
-                filtered.length === 1
-                  ? "learn.entryCount.one"
-                  : "learn.entryCount.other",
-                { count: filtered.length },
-              )}
+              {t("learn.noResults")}
             </AppText>
-
-            {/* Entries */}
-            {filtered.length === 0 ? (
-              <View style={styles.emptyState}>
-                <Feather name='book-open' size={32} color={C.textMuted} />
-                <AppText
-                  weight='Regular'
-                  style={[styles.emptyText, { color: C.textSecondary }]}
-                >
-                  {t("learn.noResults")}
-                </AppText>
-              </View>
-            ) : (
-              filtered.map((entry, index) => (
-                <Animated.View
-                  key={entry.id}
-                  entering={FadeInDown.delay(index * 50).duration(250)}
-                  style={{ marginBottom: 12 }}
-                >
-                  <EducationCard
-                    entry={entry}
-                    mapCategoryLabel={mapCategoryLabel}
-                    onPress={() => setSelectedEntry(entry)}
-                  />
-                </Animated.View>
-              ))
-            )}
-          </>
-        {/* )} */}
+          </View>
+        ) : (
+          filtered.map((entry, index) => (
+            <Animated.View
+              key={entry.id}
+              entering={FadeInDown.delay(index * 50).duration(250)}
+              style={{ marginBottom: 12 }}
+            >
+              <EducationCard
+                entry={entry}
+                onPress={() =>
+                  router.push({
+                    pathname: "/learn/[id]",
+                    params: { id: entry.id },
+                  })
+                }
+              />
+            </Animated.View>
+          ))
+        )}
       </ScrollView>
     </View>
   );

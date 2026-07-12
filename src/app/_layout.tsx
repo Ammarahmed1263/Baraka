@@ -57,6 +57,10 @@ function RootLayoutNav() {
           name='activity/[id]'
           options={{ presentation: "modal" }}
         />
+        <Stack.Screen
+          name='learn/[id]'
+          options={{ presentation: "card" }}
+        />
       </Stack.Protected>
 
       <Stack.Protected guard={!onboardingComplete}>

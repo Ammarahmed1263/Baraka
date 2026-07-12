@@ -5,30 +5,44 @@ import { useLocalize } from "@hooks/useLocalize";
 import { type EducationEntry } from "@types";
 import { Pressable, StyleSheet, View } from "react-native";
 
+import { categoryColors as themeCategoryColors } from "@constants/colors";
+
+import { useTranslation } from "react-i18next";
+
 interface EducationCardProps {
   entry: EducationEntry;
-  mapCategoryLabel: (category: string) => string;
   onPress: () => void;
 }
 
 export default function EducationCard({
   entry,
-  mapCategoryLabel,
   onPress,
 }: EducationCardProps) {
   const { colors: C } = useTheme();
   const localize = useLocalize();
+  const { t } = useTranslation();
 
-  const categoryColors: Record<string, string> = {
-    Foundations: "#C9A84C",
-    Work: "#3B82F6",
-    Health: "#EF4444",
-    "Daily Life": "#2D7A4F",
-    Worship: "#8B5CF6",
-    Relationships: "#EC4899",
-    Learning: "#059669",
+  const getCatColor = () => {
+    switch (entry.category) {
+      case "Foundations":
+        return themeCategoryColors.Foundations;
+      case "Work":
+        return themeCategoryColors.Work;
+      case "Health":
+        return themeCategoryColors.Health;
+      case "Worship":
+        return themeCategoryColors.Worship;
+      case "Relationships":
+        return themeCategoryColors.Family;
+      case "Learning":
+        return themeCategoryColors.Knowledge;
+      case "Daily Life":
+      default:
+        return C.tint;
+    }
   };
-  const catColor = categoryColors[entry.category] || C.tint;
+
+  const catColor = getCatColor();
 
   return (
     <Pressable
@@ -49,7 +63,7 @@ export default function EducationCard({
           weight='Bold'
           style={[styles.categoryBadgeText, { color: catColor }]}
         >
-          {mapCategoryLabel(entry.category)}
+          {t("category." + entry.category)}
         </AppText>
       </View>
       <AppText

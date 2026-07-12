@@ -58,7 +58,7 @@ export default function EducationDetail({
         </AnimatedPressable>
 
         <LinearGradient
-          colors={isDark ? ["#1A3326", "#0D2E1F"] : ["#2D7A4F", "#1A5C38"]}
+          colors={isDark ? [C.backgroundSubtle, C.background] : [C.tint, C.tintDark]}
           style={styles.detailHeader}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}

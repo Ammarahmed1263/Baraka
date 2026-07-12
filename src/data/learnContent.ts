@@ -212,3 +212,14 @@ export const EDUCATION_ENTRIES: EducationEntry[] = [
     keywords: ["consistency", "niyyah", "reward", "illness", "travel"],
   },
 ];
+
+export const LEARN_CATEGORIES = [
+  "All",
+  "Foundations",
+  "Work",
+  "Health",
+  "Daily Life",
+  "Worship",
+  "Relationships",
+  "Learning",
+];
