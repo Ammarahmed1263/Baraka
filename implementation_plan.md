@@ -21,7 +21,7 @@ This document outlines the phased roadmap for upgrading the Baraka app's archite
 
 - [x] **Role Indicators**: Add visual badges/icons to Niyyah options in the Activity detail view.
 - [x] **Dynamic Filtering**: Ensure `getNiyyahOptions` properly filters based on the `settingsStore` profile.
-- [ ] **Unlock Nudges**: Implement UI hints in settings when certain roles are disabled. Also add UI nudges on the Activity detail screen when there are role-specific intentions that are locked.
+- [~~ ] ~~**Unlock Nudges**: Implement UI hints in settings when certain roles are disabled. Also add UI nudges on the Activity detail screen when there are role-specific intentions that are locked.~~ (Cancelled to keep UI clean and calm)
 
 ---
 
