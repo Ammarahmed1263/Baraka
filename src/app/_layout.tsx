@@ -53,7 +53,7 @@ function RootLayoutNav() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={onboardingComplete}>
-        <Stack.Screen name='(tabs)' />
+        <Stack.Screen name='(tabs)' options={{ animation: "none" }} />
         <Stack.Screen
           name='activity/[id]'
           options={{ presentation: "modal" }}

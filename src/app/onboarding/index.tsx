@@ -1,7 +1,7 @@
 import { AppButton } from "@components/UI/AppButton";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -38,6 +38,12 @@ export default function OnboardingPager() {
     useAnimatedRef<FlatList<(typeof ONBOARDING_SLIDES)[number]>>();
   const scrollX = useSharedValue(0);
 
+  // const resetToFirstSlide = useCallback(() => {
+  //   scrollX.value = 0;
+  //   flatListRef.current?.scrollToIndex({ index: 0, animated: false });
+  //   setCurrentIndex(0);
+  // }, [scrollX]);
+
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       scrollX.value = event.contentOffset.x;
@@ -66,15 +72,16 @@ export default function OnboardingPager() {
     }
     const nextIndex = currentIndex + 1;
     flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
-    setCurrentIndex(nextIndex);
   }, [currentIndex, isLastSlide, goToActivityPicker]);
+
+  const slideStyle = React.useMemo(() => [styles.slide, { width }], [width]);
 
   const renderSlide = useCallback(
     ({
       item,
       index,
     }: ListRenderItemInfo<(typeof ONBOARDING_SLIDES)[number]>) => (
-      <View style={[styles.slide, { width }]}>
+      <View style={slideStyle}>
         <OnboardingSlide index={index} scrollX={scrollX} width={width}>
           <View style={styles.slideContent}>
             <View

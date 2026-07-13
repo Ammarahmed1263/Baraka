@@ -10,7 +10,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useTheme } from "@context/ThemeContext";
 import { useLanguage } from "@i18n";
 import { AppText } from "@components/UI/AppText";
@@ -65,9 +65,14 @@ function LanguageOption({
   );
 }
 
-export function LanguagePicker() {
+export function LanguagePicker({ onLanguageChange }: { onLanguageChange?: () => void }) {
   const { colors: C } = useTheme();
   const { language, changeLanguage } = useLanguage();
+
+  const handleChange = useCallback(async (lang: "en" | "ar") => {
+    await changeLanguage(lang);
+    onLanguageChange?.();
+  }, [changeLanguage, onLanguageChange]);
 
   return (
     <View
@@ -79,7 +84,7 @@ export function LanguagePicker() {
       <LanguageOption
         label='EN'
         isActive={language === "en"}
-        onPress={() => changeLanguage("en")}
+        onPress={() => handleChange("en")}
         labelStyle={{
           fontFamily:
             language === "en" ? "SourceSerif4-Bold" : "SourceSerif4-Medium",
@@ -88,7 +93,7 @@ export function LanguagePicker() {
       <LanguageOption
         label='عربي'
         isActive={language === "ar"}
-        onPress={() => changeLanguage("ar")}
+        onPress={() => handleChange("ar")}
         labelStyle={{
           fontFamily: language === "ar" ? "Tajawal-Medium" : "Tajawal-Regular",
         }}

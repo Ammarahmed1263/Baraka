@@ -16,7 +16,7 @@ import { OnboardingDots } from "@components/onboarding/OnboardingDots";
 import { ONBOARDING_SLIDES } from "@data/onboardingSlides";
 import type { Activity } from "@types";
 
-const MAX_SELECTION = 3;
+const MAX_SELECTION = 5;
 
 export default function ActivityPickerScreen() {
   const { colors: C } = useTheme();
