@@ -1,4 +1,10 @@
-import { Pressable, View, StyleSheet } from "react-native";
+import {
+  Pressable,
+  View,
+  StyleSheet,
+  StyleProp,
+  TextStyle,
+} from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -13,10 +19,12 @@ function LanguageOption({
   label,
   isActive,
   onPress,
+  labelStyle,
 }: {
   label: string;
   isActive: boolean;
   onPress: () => void;
+  labelStyle?: StyleProp<TextStyle>;
 }) {
   const { colors: C } = useTheme();
   const scale = useSharedValue(1);
@@ -27,8 +35,7 @@ function LanguageOption({
   }, [isActive]);
 
   const animatedPill = useAnimatedStyle(() => ({
-    backgroundColor:
-      bg.value > 0.5 ? C.gold : "transparent",
+    backgroundColor: bg.value > 0.5 ? C.gold : "transparent",
     transform: [{ scale: scale.value }],
   }));
 
@@ -47,6 +54,7 @@ function LanguageOption({
           weight={isActive ? "Bold" : "Medium"}
           style={[
             styles.pillLabel,
+            labelStyle,
             { color: isActive ? C.textOnTint : C.textMuted },
           ]}
         >
@@ -62,16 +70,28 @@ export function LanguagePicker() {
   const { language, changeLanguage } = useLanguage();
 
   return (
-    <View style={[styles.track, { backgroundColor: C.backgroundCard, borderColor: C.border }]}>
+    <View
+      style={[
+        styles.track,
+        { backgroundColor: C.backgroundCard, borderColor: C.border },
+      ]}
+    >
       <LanguageOption
-        label="EN"
+        label='EN'
         isActive={language === "en"}
         onPress={() => changeLanguage("en")}
+        labelStyle={{
+          fontFamily:
+            language === "en" ? "SourceSerif4-Bold" : "SourceSerif4-Medium",
+        }}
       />
       <LanguageOption
-        label="عربي"
+        label='عربي'
         isActive={language === "ar"}
         onPress={() => changeLanguage("ar")}
+        labelStyle={{
+          fontFamily: language === "ar" ? "Tajawal-Medium" : "Tajawal-Regular",
+        }}
       />
     </View>
   );

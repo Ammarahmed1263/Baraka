@@ -47,7 +47,7 @@ export default function TabLayout() {
           alignItems: 'center',
         },
         tabBarLabelStyle: {
-          fontFamily: language === "ar" ? "Tajawal" : "SourceSerif4-Medium",
+          fontFamily: language === "ar" ? "Tajawal-Medium" : "SourceSerif4-Medium",
           fontSize: 12,
         },
       }}

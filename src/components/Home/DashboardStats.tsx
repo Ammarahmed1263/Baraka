@@ -149,6 +149,5 @@ const styles = StyleSheet.create({
   },
   statDetail: {
     fontSize: 10,
-    fontWeight: "500",
   },
 });

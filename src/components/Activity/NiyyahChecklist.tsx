@@ -53,17 +53,20 @@ export const NiyyahChecklist = React.memo(
       >
         <View style={styles.cardHeader}>
           <AppText
-            weight="Medium"
+            weight='Medium'
             style={[styles.sectionLabel, { color: C.gold }]}
           >
             {t("activity.multiplyIntentions")}
           </AppText>
-          <AppText weight="Bold" style={[styles.selectedCount, { color: C.tint }]}>
+          <AppText
+            weight='Bold'
+            style={[styles.selectedCount, { color: C.tint }]}
+          >
             {t("activity.selectedCount", { count: localSelected.length })}
           </AppText>
         </View>
         <AppText
-          weight="Regular"
+          weight='Regular'
           style={[styles.multiHint, { color: C.textMuted }]}
         >
           {t("activity.multiHint")}
@@ -78,9 +81,7 @@ export const NiyyahChecklist = React.memo(
               style={[
                 styles.niyyahOption,
                 {
-                  backgroundColor: checked
-                    ? C.tint + "15"
-                    : C.backgroundSubtle,
+                  backgroundColor: checked ? C.tint + "15" : C.backgroundSubtle,
                   borderColor: checked ? C.tint + "88" : C.border,
                 },
               ]}
@@ -96,7 +97,7 @@ export const NiyyahChecklist = React.memo(
                 ]}
               >
                 {checked && (
-                  <Feather name="check" size={12} color={C.background} />
+                  <Feather name='check' size={12} color={C.background} />
                 )}
               </View>
               <View style={{ flex: 1 }}>
@@ -123,12 +124,14 @@ export const NiyyahChecklist = React.memo(
                             { backgroundColor: roleColor + "20" },
                           ]}
                         >
-                          <Feather name={roleIcon} size={10} color={roleColor} />
+                          <Feather
+                            name={roleIcon}
+                            size={10}
+                            color={roleColor}
+                          />
                           <AppText
-                            style={[
-                              styles.roleBadgeText,
-                              { color: roleColor },
-                            ]}
+                            weight='Medium'
+                            style={[styles.roleBadgeText, { color: roleColor }]}
                           >
                             {t(`settings.profile.${tag}`)}
                           </AppText>
@@ -138,7 +141,7 @@ export const NiyyahChecklist = React.memo(
                 </View>
                 {showBilingual && (
                   <AppText
-                    weight="Regular"
+                    weight='Regular'
                     style={[styles.optionTextAr, { color: C.textMuted }]}
                   >
                     {option.text.ar}
@@ -154,9 +157,9 @@ export const NiyyahChecklist = React.memo(
             onPress={() => setShowAddCustom(true)}
             style={[styles.addCustomBtn, { borderColor: C.tint + "66" }]}
           >
-            <Feather name="plus" size={14} color={C.tintLight} />
+            <Feather name='plus' size={14} color={C.tintLight} />
             <AppText
-              weight="Medium"
+              weight='Medium'
               style={[styles.addCustomText, { color: C.tintLight }]}
             >
               {t("activity.addCustomIntention")}
@@ -181,16 +184,16 @@ export const NiyyahChecklist = React.memo(
               value={customTextAr}
               onChangeText={setCustomTextAr}
               placeholder={t("activity.customArPlaceholder")}
-              textAlign="right"
+              textAlign='right'
             />
             <View style={styles.editActions}>
               <AppButton
-                variant="ghost"
+                variant='ghost'
                 label={t("common.cancel")}
                 onPress={() => setShowAddCustom(false)}
               />
               <AppButton
-                variant="primary"
+                variant='primary'
                 label={t("common.add")}
                 onPress={handleAdd}
               />
@@ -199,7 +202,7 @@ export const NiyyahChecklist = React.memo(
         )}
       </View>
     );
-  }
+  },
 );
 
 const styles = StyleSheet.create({
@@ -258,7 +261,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginTop: 2,
   },
-  roleBadgeText: { fontSize: 10, fontWeight: "600" },
+  roleBadgeText: { fontSize: 10 },
   optionTextAr: {
     fontSize: 13,
     textAlign: "right",

@@ -34,7 +34,7 @@ export function JournalEntryForm({
   onCancel,
 }: JournalEntryFormProps) {
   const { t } = useTranslation();
-  const { colors: C, isDark } = useTheme();
+  const { colors: C } = useTheme();
   const localize = useLocalize();
 
   const [note, setNote] = useState("");
@@ -86,7 +86,7 @@ export function JournalEntryForm({
       ]}
     >
       <LinearGradient
-        colors={isDark ? [C.backgroundSubtle, C.background] : [C.border, C.successLight]}
+        colors={C.cardGradient}
         style={styles.formGradient}
       >
         <AppText weight='Bold' style={[styles.formTitle, { color: C.text }]}>

@@ -73,7 +73,7 @@ export const LanguageSheet = React.forwardRef<BottomSheetModal, LanguageSheetPro
               weight="Medium"
               style={{
                 color: currentLang === "ar" ? C.tint : C.text,
-                fontFamily: "Tajawal",
+                fontFamily: "Tajawal-Medium",
               }}
             >
               عربي
