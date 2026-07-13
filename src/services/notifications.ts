@@ -12,47 +12,57 @@ function handleRegistrationError(errorMessage: string) {
 }
 
 export async function registerForPushNotificationsAsync(): Promise<NotificationPermissionStatus> {
-  if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 400, 200, 400], // [delay, vibrate, pause, vibrate, pause, ..]
-      lightColor: "#D4AF37",
+  try {
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 400, 200, 400], // [delay, vibrate, pause, vibrate, pause, ..]
+        lightColor: "#D4AF37",
+      });
+    }
+
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+
+    if (existingStatus === "granted") return "granted";
+    if (existingStatus === "denied" && Platform.OS === "ios") return "denied";
+
+    const { status } = await Notifications.requestPermissionsAsync();
+
+    if (status !== "granted") {
+      handleRegistrationError("Permission not granted for push notifications.");
+    }
+
+    //  TODO: uncomment to enable Expo server (remote) push notifications
+    // if (status === "granted") {
+    //   const projectId =
+    //     Constants?.expoConfig?.extra?.eas?.projectId ??
+    //     Constants?.easConfig?.projectId;
+    //   if (!projectId) {
+    //     handleRegistrationError("Project ID not found");
+    //     return status as NotificationPermissionStatus;
+    //   }
+    //   try {
+    //     const pushTokenString = (
+    //       await Notifications.getExpoPushTokenAsync({ projectId })
+    //     ).data;
+    //     console.log("Expo push token:", pushTokenString);
+    //     // TODO: send pushTokenString to your backend here
+    //   } catch (e: unknown) {
+    //     handleRegistrationError(`Failed to get push token: ${e}`);
+    //   }
+    // }
+
+    return status as NotificationPermissionStatus;
+  } catch (error) {
+    Sentry.captureException(error, {
+      tags: { feature: "notifications" },
+      extra: { phase: "registerForPushNotificationsAsync" },
     });
+    console.error("Failed to register for push notifications:", error);
+    return "denied";
   }
-
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-
-  if (existingStatus === "granted") return "granted";
-  if (existingStatus === "denied" && Platform.OS === "ios") return "denied";
-
-  const { status } = await Notifications.requestPermissionsAsync();
-
-  if (status !== "granted") {
-    handleRegistrationError("Permission not granted for push notifications.");
-  }
-
-  //  TODO: uncomment to enable Expo server (remote) push notifications
-  // if (status === "granted") {
-  //   const projectId =
-  //     Constants?.expoConfig?.extra?.eas?.projectId ??
-  //     Constants?.easConfig?.projectId;
-  //   if (!projectId) {
-  //     handleRegistrationError("Project ID not found");
-  //     return status as NotificationPermissionStatus;
-  //   }
-  //   try {
-  //     const pushTokenString = (
-  //       await Notifications.getExpoPushTokenAsync({ projectId })
-  //     ).data;
-  //     console.log("Expo push token:", pushTokenString);
-  //     // TODO: send pushTokenString to your backend here
-  //   } catch (e: unknown) {
-  //     handleRegistrationError(`Failed to get push token: ${e}`);
-  //   }
-  // }
-
-  return status as NotificationPermissionStatus;
 }
 
 const NOTIFICATION_IDENTIFIER_PREFIX = "daily-reminder";
@@ -69,7 +79,7 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 function buildMessageSequence(count: number) {
-  const sequence: Array<typeof DAILY_NOTIFICATIONS[0]> = [];
+  const sequence: Array<(typeof DAILY_NOTIFICATIONS)[0]> = [];
   while (sequence.length < count) {
     sequence.push(...shuffleArray(DAILY_NOTIFICATIONS));
   }
@@ -93,7 +103,7 @@ export async function scheduleDailyNotifications(
       now.getMonth(),
       now.getDate() + 1,
       hour,
-      minute
+      minute,
     );
 
     const todayTrigger = new Date(
@@ -101,39 +111,44 @@ export async function scheduleDailyNotifications(
       now.getMonth(),
       now.getDate(),
       hour,
-      minute
+      minute,
     );
 
     const baseDate = todayTrigger > now ? todayTrigger : startDate;
+    const promises = [];
     for (let i = 0; i < MAX_SCHEDULED; i++) {
       const triggerDate = new Date(
         baseDate.getFullYear(),
         baseDate.getMonth(),
         baseDate.getDate() + i,
         hour,
-        minute
+        minute,
       );
 
       const msg = messages[i];
 
-      await Notifications.scheduleNotificationAsync({
-        identifier: `${NOTIFICATION_IDENTIFIER_PREFIX}-${i}`,
-        content: {
-          title: localize(msg.title),
-          body: localize(msg.body),
-          sound: true,
-          data: { screen: "/(tabs)" },
-        },
-        trigger: {
-          type: Notifications.SchedulableTriggerInputTypes.DATE,
-          date: triggerDate,
-        },
-      });
+      promises.push(
+        Notifications.scheduleNotificationAsync({
+          identifier: `${NOTIFICATION_IDENTIFIER_PREFIX}-${i}`,
+          content: {
+            title: localize(msg.title),
+            body: localize(msg.body),
+            sound: true,
+            data: { screen: "/(tabs)" },
+          },
+          trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.DATE,
+            date: triggerDate,
+          },
+        }),
+      );
     }
+
+    await Promise.all(promises);
   } catch (error) {
     Sentry.captureException(error, {
-      tags: { feature: 'notifications' },
-      extra: { phase: 'scheduleDailyNotifications', reminderTime: time },
+      tags: { feature: "notifications" },
+      extra: { phase: "scheduleDailyNotifications", reminderTime: time },
     });
     console.error("Failed to schedule daily notifications:", error);
   }
@@ -172,8 +187,8 @@ export async function recheckAndRescheduleIfNeeded(
     }
   } catch (error) {
     Sentry.captureException(error, {
-      tags: { feature: 'notifications' },
-      extra: { phase: 'recheckAndRescheduleIfNeeded' },
+      tags: { feature: "notifications" },
+      extra: { phase: "recheckAndRescheduleIfNeeded" },
     });
     console.error("Failed to recheck notifications:", error);
   }
