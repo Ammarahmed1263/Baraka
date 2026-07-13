@@ -1,6 +1,6 @@
 import { forwardRef, useCallback } from "react";
 import { StyleSheet } from "react-native";
-import { BottomSheetModal, BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetBackdrop, BottomSheetView, BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
 import { useTheme } from "@context/ThemeContext";
 
 interface AppBottomSheetProps {
@@ -18,7 +18,7 @@ export const AppBottomSheet = forwardRef<BottomSheetModal, AppBottomSheetProps>(
     const { colors: C } = useTheme();
 
     const renderBackdrop = useCallback(
-      (props: any) => (
+      (props: BottomSheetBackdropProps) => (
         <BottomSheetBackdrop
           {...props}
           disappearsOnIndex={-1}

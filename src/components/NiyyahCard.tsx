@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   countText: { fontSize: 11 },
-  niyyahPreview: { fontSize: 13, lineHeight: 18, fontStyle: "italic" },
+  niyyahPreview: { fontSize: 13, lineHeight: 18},
   checkButton: {
     width: 24,
     height: 24,

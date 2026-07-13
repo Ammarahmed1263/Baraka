@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   TextInput,
   TextInputProps,
@@ -29,15 +29,24 @@ export function AppTextInput({
   const { language } = useLanguage();
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleFocus = (e: any) => {
+  const handleFocus: TextInputProps["onFocus"] = (e) => {
     setIsFocused(true);
     if (onFocus) onFocus(e);
   };
 
-  const handleBlur = (e: any) => {
+  const handleBlur: TextInputProps["onBlur"] = (e) => {
     setIsFocused(false);
     if (onBlur) onBlur(e);
   };
+
+  const fontFamily = language === "ar" ? "Tajawal-Regular" : "SourceSerif4-Regular";
+  const dynamicStyle = useMemo(() => ({
+    color: C.text,
+    backgroundColor: C.backgroundSubtle,
+    borderColor: isFocused ? C.tint : C.border,
+    fontFamily,
+    letterSpacing: 0,
+  }), [C, isFocused, fontFamily]);
 
   return (
     <View style={styles.container}>
@@ -53,16 +62,10 @@ export function AppTextInput({
         <TextInput
           style={[
             styles.input,
-            {
-              color: C.text,
-              backgroundColor: C.backgroundSubtle,
-              borderColor: isFocused ? C.tint : C.border,
-              fontFamily: `${language === "ar" ? "Tajawal" : "SourceSerif4"}-Regular`,
-              letterSpacing: 0,
-            },
+            dynamicStyle,
             props.multiline && styles.multiline,
-            props.leftIcon ? { paddingStart: 42 } : undefined,
-            props.rightIcon ? { paddingEnd: 42 } : undefined,
+            props.leftIcon ? styles.withLeftIcon : undefined,
+            props.rightIcon ? styles.withRightIcon : undefined,
             style,
           ]}
           placeholderTextColor={C.textMuted}
@@ -127,4 +130,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginLeft: 4,
   },
+  withLeftIcon: { paddingStart: 42 },
+  withRightIcon: { paddingEnd: 42 },
 });

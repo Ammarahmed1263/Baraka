@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { StyleSheet, ActivityIndicator, View } from "react-native";
 import { AnimatedPressable, AnimatedPressableProps } from "./AnimatedPressable";
 import { Feather } from "@expo/vector-icons";
@@ -58,7 +59,7 @@ export function AppButton({
     if (props.onPress) props.onPress(e);
   };
 
-  const getVariantStyles = () => {
+  const v = useMemo(() => {
     switch (variant) {
       case "primary":
         return {
@@ -101,9 +102,7 @@ export function AppButton({
       default:
         return { container: {}, text: {}, icon: C.text };
     }
-  };
-
-  const v = getVariantStyles();
+  }, [variant, C]);
 
   return (
     <AnimatedPressable

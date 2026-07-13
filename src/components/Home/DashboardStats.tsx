@@ -71,7 +71,7 @@ export default function DashboardStats({
           styles.statCard,
           {
             backgroundColor: C.goldLight,
-            borderColor: C.border,
+            borderColor: C.gold,
           },
         ]}
       >
