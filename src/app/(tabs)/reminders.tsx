@@ -23,13 +23,6 @@ export default function RemindersScreen() {
   const activities = useActivitiesStore((s) => s.activities);
   const toggleActivity = useActivitiesStore((s) => s.toggleActivity);
   const [showAddForm, setShowAddForm] = useState(false);
-  // const [loading, setLoading] = useState(true);
-
-  // TODO: re-enable when data source changes to API/Realm
-  // useEffect(() => {
-  //   const timer = setTimeout(() => setLoading(false), 800);
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   const categoryGroups = useMemo(() => {
     const cats = [...new Set(activities.map((a) => a.category))];
@@ -39,10 +32,13 @@ export default function RemindersScreen() {
     }));
   }, [activities]);
 
-  const handleToggle = useCallback((activity: UserActivity) => {
-    Haptic.selection();
-    toggleActivity(activity.id);
-  }, [toggleActivity]);
+  const handleToggle = useCallback(
+    (activity: UserActivity) => {
+      Haptic.selection();
+      toggleActivity(activity.id);
+    },
+    [toggleActivity],
+  );
 
   const topPadding = isWeb ? 67 : insets.top;
 
@@ -80,42 +76,25 @@ export default function RemindersScreen() {
           </AnimatedPressable>
         </View>
 
-        {/* Add Form */}
         {showAddForm && (
           <AddActivityForm onClose={() => setShowAddForm(false)} />
         )}
 
-        {/* {loading ? (
-          <View style={{ gap: 20 }}>
-            <View style={{ gap: 8 }}>
-              <Skeleton width={100} height={12} style={{ marginLeft: 4 }} />
-              <Skeleton height={140} borderRadius={14} />
-            </View>
-            <View style={{ gap: 8 }}>
-              <Skeleton width={120} height={12} style={{ marginLeft: 4 }} />
-              <Skeleton height={190} borderRadius={14} />
-            </View>
-          </View>
-        ) : ( */}
-          <>
-            {/* Activity List by Category */}
-            {categoryGroups.map((group, index) => {
-              return (
-                <Animated.View
-                  key={group.category}
-                  entering={FadeInDown.delay(index * 50).duration(250)}
-                  style={{ marginBottom: 20 }}
-                >
-                  <CategorySection
-                    category={group.category}
-                    categoryActivities={group.activities}
-                    onToggleActivity={handleToggle}
-                  />
-                </Animated.View>
-              );
-            })}
-          </>
-        {/* )} */}
+        {categoryGroups.map((group, index) => {
+          return (
+            <Animated.View
+              key={group.category}
+              entering={FadeInDown.delay(index * 50).duration(250)}
+              style={{ marginBottom: 20 }}
+            >
+              <CategorySection
+                category={group.category}
+                categoryActivities={group.activities}
+                onToggleActivity={handleToggle}
+              />
+            </Animated.View>
+          );
+        })}
       </ScrollView>
     </View>
   );
