@@ -16,6 +16,7 @@ import { recheckAndRescheduleIfNeeded } from "@/services/notifications";
 import { useLocalize } from "@hooks/useLocalize";
 import { getAnonymousUserId } from "@/utils/device";
 import { Platform } from "react-native";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -125,15 +126,17 @@ function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ThemeProvider>
-          <BottomSheetModalProvider>
-            <ErrorBoundary>
-              <I18nextProvider i18n={i18n}>
-                <RootLayoutNav />
-              </I18nextProvider>
-            </ErrorBoundary>
-          </BottomSheetModalProvider>
-        </ThemeProvider>
+        <KeyboardProvider>
+          <ThemeProvider>
+            <BottomSheetModalProvider>
+              <ErrorBoundary>
+                <I18nextProvider i18n={i18n}>
+                  <RootLayoutNav />
+                </I18nextProvider>
+              </ErrorBoundary>
+            </BottomSheetModalProvider>
+          </ThemeProvider>
+        </KeyboardProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

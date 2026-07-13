@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, Platform } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { AppText } from "@components/UI/AppText";
 import { AppTextInput } from "@components/UI/AppTextInput";
 import { AppButton } from "@components/UI/AppButton";
@@ -11,6 +11,7 @@ import { useTheme } from "@context/ThemeContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { type NiyyahOption } from "@types";
+import { KeyboardAwareScrollViewCompat } from "@components/KeyboardAwareScrollViewCompat";
 
 interface ActivityReflectStepProps {
   activityName: string;
@@ -51,7 +52,7 @@ export const ActivityReflectStep = React.memo(
       .slice(0, 4);
 
     return (
-      <ScrollView
+      <KeyboardAwareScrollViewCompat
         contentContainerStyle={[
           styles.scrollContent,
           { paddingTop: topPadding + 8, paddingBottom: isWeb ? 34 + 40 : 60 },
@@ -71,18 +72,20 @@ export const ActivityReflectStep = React.memo(
         </View>
 
         <LinearGradient
-          colors={
-            isDark
-              ? [C.backgroundSubtle, C.background]
-              : [C.tint, C.tintDark]
-          }
-          style={styles.reflectBanner}
+          colors={C.cardGradient}
+          style={[styles.reflectBanner, {
+            shadowColor: isDark ? "transparent" : "#000",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: isDark ? 0 : 0.08,
+            shadowRadius: 4,
+            elevation: isDark ? 0 : 2,
+          }]}
         >
-          <Feather name="check-circle" size={28} color={C.gold} />
-          <AppText weight="Bold" style={styles.reflectTitle}>
+          <Feather name="check-circle" size={28} color={isDark ? C.gold : C.tint} />
+          <AppText weight="Bold" style={[styles.reflectTitle, { color: isDark ? "#FFF" : C.text }]}>
             {t("activity.renewed")}
           </AppText>
-          <AppText weight="Regular" style={styles.reflectSub}>
+          <AppText weight="Regular" style={[styles.reflectSub, { color: isDark ? "rgba(255,255,255,0.8)" : C.textSecondary }]}>
             {activityName}
           </AppText>
           {cleanSelectedCount > 0 && (
@@ -219,7 +222,7 @@ export const ActivityReflectStep = React.memo(
             style={{ flex: 2 }}
           />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollViewCompat>
     );
   }
 );

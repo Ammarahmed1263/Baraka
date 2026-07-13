@@ -17,9 +17,10 @@ import { useJournalStore } from "@store";
 import { type JournalEntry } from "@types";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { KeyboardAwareScrollViewCompat } from "@components/KeyboardAwareScrollViewCompat";
 
 export default function JournalScreen() {
   const localize = useLocalize();
@@ -104,7 +105,7 @@ export default function JournalScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
-      <ScrollView
+      <KeyboardAwareScrollViewCompat
         contentContainerStyle={[
           styles.scrollContent,
           { paddingTop: topPadding + 16, paddingBottom: isWeb ? 34 + 84 : 100 },
@@ -230,7 +231,7 @@ export default function JournalScreen() {
                 message={t("journal.noFilterResults")}
               />
             )}
-      </ScrollView>
+      </KeyboardAwareScrollViewCompat>
 
       <AppBottomSheet
         ref={bottomSheetRef}
@@ -242,7 +243,7 @@ export default function JournalScreen() {
         <View style={[styles.sheetContent, { paddingBottom: 32 }]}>
           <AppButton
             variant='outline'
-            label={t("journal.edit", "Edit reflection")}
+            label={t("journal.editReflection", "Edit reflection")}
             icon='edit-3'
             onPress={() => {
               bottomSheetRef.current?.dismiss();
