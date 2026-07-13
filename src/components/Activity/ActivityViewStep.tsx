@@ -52,7 +52,7 @@ export const ActivityViewStep = React.memo(
     localize,
   }: ActivityViewStepProps) => {
     const { t } = useTranslation();
-    const { colors: C } = useTheme();
+    const { colors: C, isDark } = useTheme();
     const insets = useSafeAreaInsets();
     const isWeb = Platform.OS === "web";
     const topPadding = isWeb ? 67 : insets.top;
@@ -91,16 +91,22 @@ export const ActivityViewStep = React.memo(
         </View>
 
         <LinearGradient
-          colors={[C.tint, C.tintDark]}
-          style={styles.activityHeader}
+          colors={C.cardGradient}
+          style={[styles.activityHeader, {
+            shadowColor: isDark ? "transparent" : "#000",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: isDark ? 0 : 0.08,
+            shadowRadius: 4,
+            elevation: isDark ? 0 : 2,
+          }]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <AppText weight="Bold" style={styles.activityName}>
+          <AppText weight="Bold" style={[styles.activityName, { color: isDark ? "#FFF" : C.text }]}>
             {activityName}
           </AppText>
           {showBilingual && (
-            <AppText weight="Regular" style={styles.activityNameAr}>
+            <AppText weight="Regular" style={[styles.activityNameAr, { color: isDark ? "rgba(255,255,255,0.8)" : C.textSecondary }]}>
               {activity.name.ar}
             </AppText>
           )}

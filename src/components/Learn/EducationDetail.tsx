@@ -58,21 +58,27 @@ export default function EducationDetail({
         </AnimatedPressable>
 
         <LinearGradient
-          colors={isDark ? [C.backgroundSubtle, C.background] : [C.tint, C.tintDark]}
-          style={styles.detailHeader}
+          colors={C.cardGradient}
+          style={[styles.detailHeader, {
+            shadowColor: isDark ? "transparent" : "#000",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: isDark ? 0 : 0.08,
+            shadowRadius: 4,
+            elevation: isDark ? 0 : 2,
+          }]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <View style={[styles.detailCategoryBadge]}>
-            <AppText weight='Medium' style={styles.detailCategoryText}>
+          <View style={[styles.detailCategoryBadge, { backgroundColor: isDark ? "rgba(255,255,255,0.2)" : C.backgroundSubtle }]}>
+            <AppText weight='Medium' style={[styles.detailCategoryText, { color: isDark ? "rgba(255,255,255,0.9)" : C.textSecondary }]}>
               {mapCategoryLabel(entry.category)}
             </AppText>
           </View>
-          <AppText weight='Bold' style={styles.detailTitle}>
+          <AppText weight='Bold' style={[styles.detailTitle, { color: isDark ? "#FFF" : C.text }]}>
             {localize(entry.title)}
           </AppText>
           {showBilingual && (
-            <AppText weight='Regular' style={styles.detailTitleAr}>
+            <AppText weight='Regular' style={[styles.detailTitleAr, { color: isDark ? "rgba(255,255,255,0.75)" : C.textSecondary }]}>
               {entry.title.ar}
             </AppText>
           )}

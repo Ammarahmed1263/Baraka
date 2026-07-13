@@ -13,8 +13,14 @@ export default function HadithCard() {
 
   return (
     <LinearGradient
-      colors={isDark ? [C.backgroundSubtle, C.background] : [C.tint, C.tintDark]}
-      style={styles.hadithCard}
+      colors={C.cardGradient}
+      style={[styles.hadithCard, {
+        shadowColor: isDark ? "transparent" : "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: isDark ? 0 : 0.08,
+        shadowRadius: 4,
+        elevation: isDark ? 0 : 2,
+      }]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
@@ -24,15 +30,15 @@ export default function HadithCard() {
 
       {showBilingual ? (
         <View style={styles.bilingualContainer}>
-          <AppText weight="Bold" style={[styles.hadithText, styles.arabicText]}>
+          <AppText weight="Bold" style={[styles.hadithText, styles.arabicText, { color: isDark ? "rgba(255,255,255,0.95)" : C.text }]}>
             {HADITH_OPENER.text.ar}
           </AppText>
-          <AppText weight="Medium" style={[styles.hadithText, styles.englishText]}>
+          <AppText weight="Medium" style={[styles.hadithText, styles.englishText, { color: isDark ? "rgba(255,255,255,0.85)" : C.textSecondary }]}>
             {HADITH_OPENER.text.en}
           </AppText>
         </View>
       ) : (
-        <AppText weight="Bold" style={styles.hadithText}>
+        <AppText weight="Bold" style={[styles.hadithText, { color: isDark ? "rgba(255,255,255,0.95)" : C.text }]}>
           {lang === "ar" ? HADITH_OPENER.text.ar : HADITH_OPENER.text.en}
         </AppText>
       )}

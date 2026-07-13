@@ -151,6 +151,11 @@ export default {
 
     accentLight: green100,
     accentSubtle: green50,
+
+    // --------------------------------------------------------
+    // GRADIENTS (as array of colors)
+    // --------------------------------------------------------
+    cardGradient: [green100, green50] as readonly [string, string],
   },
 
   dark: {
@@ -237,5 +242,10 @@ export default {
 
     accentLight: green500,
     accentSubtle: "#173126",
+
+    // --------------------------------------------------------
+    // GRADIENTS (as array of colors)
+    // --------------------------------------------------------
+    cardGradient: ["#173126", "#0D1511"] as readonly [string, string],
   },
 };

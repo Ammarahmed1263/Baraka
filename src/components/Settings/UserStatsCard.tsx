@@ -21,8 +21,14 @@ export default function UserStatsCard({
 
   return (
     <LinearGradient
-      colors={isDark ? [C.backgroundSubtle, C.background] : [C.tint, C.tintDark]}
-      style={styles.statsCard}
+      colors={C.cardGradient}
+      style={[styles.statsCard, {
+        shadowColor: isDark ? "transparent" : "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: isDark ? 0 : 0.08,
+        shadowRadius: 4,
+        elevation: isDark ? 0 : 2,
+      }]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
@@ -33,39 +39,39 @@ export default function UserStatsCard({
       <View style={styles.statsRow}>
         {/* Streak */}
         <View style={styles.statItem}>
-          <View style={[styles.iconBox, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
+          <View style={[styles.iconBox, { backgroundColor: isDark ? "rgba(255,255,255,0.1)" : C.backgroundSubtle }]}>
             <Feather name="zap" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {streak}
           </AppText>
-          <AppText weight="Regular" style={styles.statLabel}>
+          <AppText weight="Regular" style={[styles.statLabel, { color: isDark ? "rgba(255,255,255,0.6)" : C.textSecondary }]}>
             {t("settings.stats.streak_label")}
           </AppText>
         </View>
 
         {/* Total Completed */}
         <View style={styles.statItem}>
-          <View style={[styles.iconBox, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
+          <View style={[styles.iconBox, { backgroundColor: isDark ? "rgba(255,255,255,0.1)" : C.backgroundSubtle }]}>
             <Feather name="check-circle" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {totalCompleted}
           </AppText>
-          <AppText weight="Regular" style={styles.statLabel}>
+          <AppText weight="Regular" style={[styles.statLabel, { color: isDark ? "rgba(255,255,255,0.6)" : C.textSecondary }]}>
             {t("settings.stats.renewed_label")}
           </AppText>
         </View>
 
         {/* Journal Entries */}
         <View style={styles.statItem}>
-          <View style={[styles.iconBox, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
+          <View style={[styles.iconBox, { backgroundColor: isDark ? "rgba(255,255,255,0.1)" : C.backgroundSubtle }]}>
             <Feather name="book-open" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {totalJournal}
           </AppText>
-          <AppText weight="Regular" style={styles.statLabel}>
+          <AppText weight="Regular" style={[styles.statLabel, { color: isDark ? "rgba(255,255,255,0.6)" : C.textSecondary }]}>
             {t("settings.stats.journal_label")}
           </AppText>
         </View>
