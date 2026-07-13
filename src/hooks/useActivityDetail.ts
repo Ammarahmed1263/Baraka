@@ -36,9 +36,10 @@ export function useActivityDetail(id: string) {
   const completed = isCompletedToday(id);
   const activityName = activity ? localize(activity.name) : "";
 
+  const profileTagsKey = profileTags.join(',');
   const predefinedNiyyahs = useMemo(
     () => (activity ? getNiyyahOptions(activity.id, profileTags) : []),
-    [activity?.id, profileTags]
+    [activity?.id, profileTagsKey]
   );
 
   const advancedNiyyahs = useMemo(
@@ -117,7 +118,7 @@ export function useActivityDetail(id: string) {
           Date.now().toString() +
           Math.random().toString(36).substr(2, 5),
         text: {
-          en: text.trim(),
+          en: text.trim() || textAr.trim(),
           ar: textAr.trim() || text.trim(),
         },
       };

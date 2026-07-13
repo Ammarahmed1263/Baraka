@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
@@ -14,7 +15,16 @@ interface EducationCardProps {
   onPress: () => void;
 }
 
-export default function EducationCard({
+const categoryColorMap: Record<string, string> = {
+  Foundations: themeCategoryColors.Foundations,
+  Work: themeCategoryColors.Work,
+  Health: themeCategoryColors.Health,
+  Worship: themeCategoryColors.Worship,
+  Relationships: themeCategoryColors.Family,
+  Learning: themeCategoryColors.Knowledge,
+};
+
+export default memo(function EducationCard({
   entry,
   onPress,
 }: EducationCardProps) {
@@ -22,27 +32,7 @@ export default function EducationCard({
   const localize = useLocalize();
   const { t } = useTranslation();
 
-  const getCatColor = () => {
-    switch (entry.category) {
-      case "Foundations":
-        return themeCategoryColors.Foundations;
-      case "Work":
-        return themeCategoryColors.Work;
-      case "Health":
-        return themeCategoryColors.Health;
-      case "Worship":
-        return themeCategoryColors.Worship;
-      case "Relationships":
-        return themeCategoryColors.Family;
-      case "Learning":
-        return themeCategoryColors.Knowledge;
-      case "Daily Life":
-      default:
-        return C.tint;
-    }
-  };
-
-  const catColor = getCatColor();
+  const catColor = categoryColorMap[entry.category] || C.tint;
 
   return (
     <Pressable
@@ -94,7 +84,7 @@ export default function EducationCard({
       </View>
     </Pressable>
   );
-}
+});
 
 const styles = StyleSheet.create({
   eduCard: {

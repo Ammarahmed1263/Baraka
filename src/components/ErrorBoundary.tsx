@@ -1,6 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { DevSettings } from 'react-native';
-import * as Updates from 'expo-updates';
+import { reloadApp } from '@utils/device';
 import { logError } from '@utils/errorLogger';
 import { ErrorFallbackUI } from './UI/ErrorFallbackUI';
 
@@ -38,15 +37,7 @@ export class ErrorBoundary extends Component<
 
   resetError = async (): Promise<void> => {
     this.setState({ hasError: false, error: null });
-    try {
-      if (__DEV__) {
-        DevSettings.reload();
-      } else {
-        await Updates.reloadAsync();
-      }
-    } catch (err) {
-      console.warn('Failed to reload app:', err);
-    }
+    await reloadApp();
   };
 
   render(): ReactNode {

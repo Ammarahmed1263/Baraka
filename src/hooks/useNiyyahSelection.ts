@@ -1,7 +1,11 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 
 export function useNiyyahSelection(initialIds: string[]) {
   const [localSelected, setLocalSelected] = useState<string[]>(initialIds);
+
+  useEffect(() => {
+    setLocalSelected(initialIds);
+  }, [initialIds]);
 
   const toggleNiyyah = useCallback((id: string) => {
     setLocalSelected((prev) =>
