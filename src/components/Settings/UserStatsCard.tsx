@@ -23,11 +23,11 @@ export default function UserStatsCard({
     <LinearGradient
       colors={C.cardGradient}
       style={[styles.statsCard, {
-        shadowColor: isDark ? "transparent" : "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: isDark ? 0 : 0.08,
-        shadowRadius: 4,
-        elevation: isDark ? 0 : 2,
+        shadowColor: C.shadowColor,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: isDark ? 0 : 0.1,
+        shadowRadius: 10,
+        elevation: isDark ? 0 : 4,
       }]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
@@ -39,39 +39,39 @@ export default function UserStatsCard({
       <View style={styles.statsRow}>
         {/* Streak */}
         <View style={styles.statItem}>
-          <View style={[styles.iconBox, { backgroundColor: isDark ? "rgba(255,255,255,0.1)" : C.backgroundSubtle }]}>
+          <View style={[styles.iconBox, { backgroundColor: C.backgroundSubtle }]}>
             <Feather name="zap" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {streak}
           </AppText>
-          <AppText weight="Regular" style={[styles.statLabel, { color: isDark ? "rgba(255,255,255,0.6)" : C.textSecondary }]}>
+          <AppText weight="Regular" style={[styles.statLabel, { color: C.textSecondary }]}>
             {t("settings.stats.streak_label")}
           </AppText>
         </View>
 
         {/* Total Completed */}
         <View style={styles.statItem}>
-          <View style={[styles.iconBox, { backgroundColor: isDark ? "rgba(255,255,255,0.1)" : C.backgroundSubtle }]}>
+          <View style={[styles.iconBox, { backgroundColor: C.backgroundSubtle }]}>
             <Feather name="check-circle" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {totalCompleted}
           </AppText>
-          <AppText weight="Regular" style={[styles.statLabel, { color: isDark ? "rgba(255,255,255,0.6)" : C.textSecondary }]}>
+          <AppText weight="Regular" style={[styles.statLabel, { color: C.textSecondary }]}>
             {t("settings.stats.renewed_label")}
           </AppText>
         </View>
 
         {/* Journal Entries */}
         <View style={styles.statItem}>
-          <View style={[styles.iconBox, { backgroundColor: isDark ? "rgba(255,255,255,0.1)" : C.backgroundSubtle }]}>
+          <View style={[styles.iconBox, { backgroundColor: C.backgroundSubtle }]}>
             <Feather name="book-open" size={24} color={C.gold} />
           </View>
           <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
             {totalJournal}
           </AppText>
-          <AppText weight="Regular" style={[styles.statLabel, { color: isDark ? "rgba(255,255,255,0.6)" : C.textSecondary }]}>
+          <AppText weight="Regular" style={[styles.statLabel, { color: C.textSecondary }]}>
             {t("settings.stats.journal_label")}
           </AppText>
         </View>
@@ -82,16 +82,11 @@ export default function UserStatsCard({
 
 const styles = StyleSheet.create({
   statsCard: {
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: 16,
+    padding: 16,
     marginBottom: 24,
     gap: 20,
     overflow: "hidden",
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
   },
   statsTitle: {
     fontSize: 14,
@@ -122,8 +117,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
   statLabel: {
-    fontSize: 10,
-    color: "rgba(255,255,255,0.6)",
+    fontSize: 12,
     textAlign: "center",
     textTransform: "uppercase",
     letterSpacing: 0.5,

@@ -34,7 +34,7 @@ export const PreferencesSection = React.memo(
 
     return (
       <>
-        <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
+        <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.preferences")}
         </AppText>
         <View
@@ -45,7 +45,7 @@ export const PreferencesSection = React.memo(
         >
           <AnimatedPressable onPress={onLanguageOpen}>
             <SettingRow
-              icon="globe"
+              icon='globe'
               label={t("settings.language")}
               desc={
                 lang === "en" ? t("settings.english") : t("settings.arabic")
@@ -53,13 +53,13 @@ export const PreferencesSection = React.memo(
               right={
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <AppText
-                    weight="Medium"
+                    weight='Medium'
                     style={{ color: C.textSecondary, marginRight: 4 }}
                   >
                     {lang === "en" ? "English" : "عربي"}
                   </AppText>
                   <Feather
-                    name="chevron-right"
+                    name='chevron-right'
                     size={18}
                     color={C.textMuted}
                     flipRTL
@@ -72,9 +72,9 @@ export const PreferencesSection = React.memo(
           <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
 
           <SettingRow
-            icon="bell"
-            iconColor="#8B5CF6"
-            iconBg="#8B5CF620"
+            icon='bell'
+            iconColor='#8B5CF6'
+            iconBg='#8B5CF620'
             label={t("settings.notifications")}
             desc={t("settings.notificationsDesc")}
             right={
@@ -94,9 +94,9 @@ export const PreferencesSection = React.memo(
                 style={[styles.divider, { backgroundColor: C.borderLight }]}
               />
               <SettingRow
-                icon="clock"
-                iconColor="#10B981"
-                iconBg="#10B98120"
+                icon='clock'
+                iconColor='#10B981'
+                iconBg='#10B98120'
                 label={t("settings.reminderTimeLabel")}
                 desc={formattedReminderTime}
                 right={
@@ -110,8 +110,8 @@ export const PreferencesSection = React.memo(
                     ]}
                   >
                     <AppText
-                      weight="Medium"
-                      style={{ color: C.textSecondary, fontSize: 13 }}
+                      weight='Medium'
+                      style={{ color: C.textSecondary, fontSize: 14 }}
                     >
                       {t("settings.change")}
                     </AppText>
@@ -154,7 +154,11 @@ export const PreferencesSection = React.memo(
                             : "sun"
                       }
                       size={14}
-                      color={themePreference === mode ? "#FFF" : C.textSecondary}
+                      color={
+                        themePreference === mode
+                          ? C.textOnTint
+                          : C.textSecondary
+                      }
                     />
                   </AnimatedPressable>
                 ))}
@@ -164,7 +168,7 @@ export const PreferencesSection = React.memo(
         </View>
       </>
     );
-  }
+  },
 );
 
 const styles = StyleSheet.create({
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   settingsCard: {
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
     marginBottom: 24,
   },
@@ -194,7 +198,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 6,
     padding: 2,
-    borderRadius: 10,
+    borderRadius: 12,
   },
   themeOption: {
     width: 32,

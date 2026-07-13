@@ -72,12 +72,12 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   sectionSubLabel: {
-    fontSize: 13,
+    fontSize: 14,
     marginBottom: 12,
     marginLeft: 4,
   },
   settingsCard: {
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
     marginBottom: 24,
   },

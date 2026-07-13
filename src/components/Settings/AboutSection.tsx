@@ -1,18 +1,50 @@
-import React from "react";
-import { View, StyleSheet, Linking } from "react-native";
+import React, { useCallback } from "react";
+import { View, StyleSheet, Linking, Alert, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
+import SettingRow from "./SettingRow";
 
 export const AboutSection = React.memo(() => {
   const { t } = useTranslation();
   const { colors: C } = useTheme();
 
+  const handleEmailPress = useCallback(async () => {
+    const email = process.env.EXPO_PUBLIC_SUPPORT_EMAIL!;
+    const subject = encodeURIComponent("Baraka App Support");
+    const body = encodeURIComponent(`
+
+---
+Please describe your issue or feedback above.
+
+Device Info:
+OS: ${Platform.OS} ${Platform.Version}
+`);
+    try {
+      await Linking.openURL(`mailto:${email}?subject=${subject}&body=${body}`);
+      console.log("email sent");
+    } catch (error) {
+      console.log("url failed: ", error);
+      Alert.alert(
+        t("error.title"),
+        `${t("error.noEmailClient", "No email app found. Reach us at:")}\n\n${email}`,
+      );
+    }
+  }, [t]);
+
+  const handlePrivacyPress = useCallback(async () => {
+    try {
+      await Linking.openURL(process.env.EXPO_PUBLIC_PRIVACY_POLICY_URL!);
+    } catch (error) {
+      console.log("url failed: ", error);
+    }
+  }, []);
+
   return (
     <>
-      <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
+      <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
         {t("settings.about")}
       </AppText>
       <View
@@ -22,68 +54,118 @@ export const AboutSection = React.memo(() => {
         ]}
       >
         <View style={styles.aboutCard}>
-          <AppText
-            weight="Bold"
-            style={[styles.aboutTitle, { color: C.text }]}
-          >
+          <AppText weight='Bold' style={[styles.aboutTitle, { color: C.text }]}>
             {t("settings.aboutTitle")}
           </AppText>
           <AppText
-            weight="Regular"
+            weight='Regular'
             style={[styles.aboutDesc, { color: C.textSecondary }]}
           >
             {t("settings.aboutDesc")}
           </AppText>
           <AppText
-            weight="Regular"
+            weight='Regular'
             style={[styles.aboutQuote, { color: C.gold }]}
           >
             {t("settings.quote")}
           </AppText>
           <AppText
-            weight="Regular"
+            weight='Regular'
             style={[styles.aboutRef, { color: C.textMuted }]}
           >
             {t("settings.quoteRef")}
           </AppText>
-          <AppText
-            weight="Regular"
-            style={[styles.version, { color: C.textMuted }]}
-          >
-            {t("settings.version")}
-          </AppText>
         </View>
       </View>
 
-      {/* Privacy Note */}
+      <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
+        {t("settings.support")}
+      </AppText>
+      <View
+        style={[
+          styles.linksContainer,
+          { backgroundColor: C.backgroundCard, borderColor: C.border },
+        ]}
+      >
+        {/* 
+        <SettingRow
+          icon='help-circle'
+          iconColor='#3B82F6'
+          iconBg='#3B82F620'
+          label={t("settings.faq")}
+          desc={t("settings.faqDesc")}
+          right={
+            <Feather
+              name='chevron-right'
+              size={18}
+              color={C.textMuted}
+              flipRTL
+            />
+          }
+        />
+        <View style={[styles.divider, { backgroundColor: C.border }]} />
+        */}
+        <SettingRow
+          icon='mail'
+          iconColor='#10B981'
+          iconBg='#10B98120'
+          label={t("settings.contactSupport")}
+          desc={process.env.EXPO_PUBLIC_SUPPORT_EMAIL!}
+          right={
+            <AnimatedPressable
+              onPress={handleEmailPress}
+              style={[
+                styles.actionButton,
+                { backgroundColor: C.backgroundSubtle },
+              ]}
+            >
+              <AppText
+                weight='Medium'
+                style={{ color: C.textSecondary, fontSize: 14 }}
+              >
+                {t("settings.emailUs")}
+              </AppText>
+            </AnimatedPressable>
+          }
+        />
+      </View>
+
+      <View style={styles.footerInfo}>
+        <AppText
+          weight='Regular'
+          style={[styles.versionText, { color: C.textMuted }]}
+        >
+          {t("settings.version")}
+        </AppText>
+        <AppText
+          weight='Regular'
+          style={[styles.madeWithText, { color: C.textMuted }]}
+        >
+          {t("settings.madeWithLove")}
+        </AppText>
+      </View>
+
       <View
         style={[
           styles.privacyNote,
           { backgroundColor: C.successLight, borderColor: C.tint + "30" },
         ]}
       >
-        <Feather name="shield" size={16} color={C.tint} />
+        <Feather name='shield' size={16} color={C.tint} />
         <View style={{ flex: 1 }}>
           <AppText
-            weight="Regular"
+            weight='Regular'
             style={[styles.privacyText, { color: C.tint }]}
           >
             {t("settings.privacy")}
           </AppText>
-          <AnimatedPressable
-            onPress={() =>
-              Linking.openURL(
-                "https://pr-checklist.notion.site/Privacy-Policy-for-Baraka-39a68938c5b98013985cd36103ad3102"
-              )
-            }
-            hitSlop={20}
-          >
+          <AnimatedPressable onPress={handlePrivacyPress} hitSlop={20}>
             <AppText
-              weight="Medium"
+              weight='Medium'
               style={{
                 color: C.gold,
                 textDecorationLine: "underline",
-                fontSize: 13,
+                fontSize: 14,
                 marginTop: 4,
               }}
             >
@@ -106,11 +188,39 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   settingsCard: {
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
     paddingHorizontal: 16,
     paddingVertical: 8,
     marginBottom: 24,
+  },
+  linksContainer: {
+    borderRadius: 16,
+    borderWidth: 1,
+    marginBottom: 24,
+    paddingVertical: 8,
+  },
+  divider: {
+    height: 1,
+    marginVertical: 4,
+    marginHorizontal: 16,
+  },
+  footerInfo: {
+    alignItems: "center",
+    paddingVertical: 16,
+    marginBottom: 32,
+  },
+  versionText: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  madeWithText: {
+    fontSize: 12,
+  },
+  actionButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
   },
   aboutCard: {
     paddingVertical: 8,
@@ -124,7 +234,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   aboutQuote: {
-    fontSize: 15,
+    fontSize: 16,
     fontStyle: "italic",
     textAlign: "center",
     marginTop: 12,
@@ -136,7 +246,7 @@ const styles = StyleSheet.create({
     marginTop: -2,
   },
   version: {
-    fontSize: 11,
+    fontSize: 12,
     textAlign: "center",
     marginTop: 16,
   },
@@ -150,7 +260,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   privacyText: {
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: 18,
   },
 });

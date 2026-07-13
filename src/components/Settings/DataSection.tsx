@@ -69,14 +69,14 @@ export const DataSection = React.memo(({ onExport, onClear }: DataSectionProps) 
         >
           <View style={styles.settingLeft}>
             <View
-              style={[styles.settingIcon, { backgroundColor: "#EF444420" }]}
+              style={[styles.settingIcon, { backgroundColor: C.error + "20" }]}
             >
-              <Feather name="trash-2" size={16} color="#EF4444" />
+              <Feather name="trash-2" size={16} color={C.error} />
             </View>
             <View>
               <AppText
                 weight="Medium"
-                style={[styles.settingName, { color: "#EF4444" }]}
+                style={[styles.settingName, { color: C.error }]}
               >
                 {t("settings.clearData")}
               </AppText>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   settingsCard: {
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -131,16 +131,16 @@ const styles = StyleSheet.create({
   settingIcon: {
     width: 36,
     height: 36,
-    borderRadius: 10,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
   },
   settingName: {
-    fontSize: 15,
+    fontSize: 16,
     marginBottom: 2,
   },
   settingDesc: {
-    fontSize: 12,
+    fontSize: 14,
   },
   divider: {
     height: 1,

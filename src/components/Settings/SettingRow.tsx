@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
   settingIcon: {
     width: 36,
     height: 36,
-    borderRadius: 10,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
   },
-  settingName: { fontSize: 15 },
-  settingDesc: { fontSize: 12, marginTop: 2 },
+  settingName: { fontSize: 16 },
+  settingDesc: { fontSize: 14, marginTop: 2 },
 });
