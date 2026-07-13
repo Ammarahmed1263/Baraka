@@ -73,7 +73,10 @@ export const ActivityViewStep = React.memo(
         <View style={styles.header}>
           <AnimatedPressable
             onPress={() => router.back()}
-            style={[styles.backButton, { backgroundColor: C.backgroundSubtle }]}
+            style={[
+              styles.backButton,
+              { backgroundColor: C.backgroundSubtle, borderColor: C.border },
+            ]}
           >
             <Feather name='x' size={20} color={C.text} />
           </AnimatedPressable>
@@ -305,6 +308,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 1,
   },
   completedBadge: {
     flexDirection: "row",

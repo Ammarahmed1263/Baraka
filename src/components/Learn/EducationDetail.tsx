@@ -48,7 +48,10 @@ export default function EducationDetail({
       >
         <AnimatedPressable
           onPress={onClose}
-          style={[styles.closeButton, { backgroundColor: C.backgroundSubtle }]}
+          style={[
+            styles.closeButton,
+            { backgroundColor: C.backgroundSubtle, borderColor: C.border },
+          ]}
         >
           <Feather
             name={I18nManager.isRTL ? "arrow-right" : "arrow-left"}
@@ -178,6 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 16,
+    borderWidth: 1,
   },
   detailHeader: {
     borderRadius: 16,

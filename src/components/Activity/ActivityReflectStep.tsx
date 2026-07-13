@@ -64,7 +64,7 @@ export const ActivityReflectStep = React.memo(
             onPress={() => router.back()}
             style={[
               styles.backButton,
-              { backgroundColor: C.backgroundSubtle },
+              { backgroundColor: C.backgroundSubtle, borderColor: C.border },
             ]}
           >
             <Feather name="x" size={20} color={C.text} />
@@ -241,6 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 1,
   },
   reflectBanner: {
     borderRadius: 16,
