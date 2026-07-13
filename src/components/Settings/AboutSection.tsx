@@ -197,8 +197,6 @@ const styles = StyleSheet.create({
   linksContainer: {
     borderRadius: 16,
     borderWidth: 1,
-    marginBottom: 24,
-    paddingVertical: 8,
   },
   divider: {
     height: 1,
@@ -208,7 +206,6 @@ const styles = StyleSheet.create({
   footerInfo: {
     alignItems: "center",
     paddingVertical: 16,
-    marginBottom: 32,
   },
   versionText: {
     fontSize: 14,
