@@ -124,7 +124,7 @@ export default function JournalCard({ entry, onOptions }: JournalCardProps) {
 
 const styles = StyleSheet.create({
   journalCard: {
-    borderRadius: 14,
+    borderRadius: 16,
     padding: 14,
     borderWidth: 1,
     gap: 10,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   activityChip: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 20,
+    borderRadius: 8,
   },
   activityChipText: { fontSize: 12 },
   countChip: {
@@ -158,17 +158,17 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: 1,
   },
-  countChipText: { fontSize: 11 },
+  countChipText: { fontSize: 12 },
   dateInfo: { alignItems: "flex-end", gap: 2 },
   dateText: { fontSize: 12 },
-  timeText: { fontSize: 11 },
+  timeText: { fontSize: 12 },
   menuButton: {
     paddingTop: 2,
   },
-  noteText: { fontSize: 15, lineHeight: 24 },
+  noteText: { fontSize: 16, lineHeight: 24 },
   impactRow: {
     flexDirection: "row",
     alignItems: "flex-start",

@@ -59,26 +59,47 @@ export default function EducationDetail({
 
         <LinearGradient
           colors={C.cardGradient}
-          style={[styles.detailHeader, {
-            shadowColor: isDark ? "transparent" : "#000",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: isDark ? 0 : 0.08,
-            shadowRadius: 4,
-            elevation: isDark ? 0 : 2,
-          }]}
+          style={[
+            styles.detailHeader,
+            {
+              shadowColor: isDark ? "transparent" : C.shadowColor,
+              shadowOffset: { width: 0, height: 1 },
+              shadowOpacity: isDark ? 0 : 0.08,
+              shadowRadius: 4,
+              elevation: isDark ? 0 : 2,
+            },
+          ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <View style={[styles.detailCategoryBadge, { backgroundColor: isDark ? "rgba(255,255,255,0.2)" : C.backgroundSubtle }]}>
-            <AppText weight='Medium' style={[styles.detailCategoryText, { color: isDark ? "rgba(255,255,255,0.9)" : C.textSecondary }]}>
+          <View
+            style={[
+              styles.detailCategoryBadge,
+              {
+                backgroundColor: isDark
+                  ? "rgba(255,255,255,0.15)"
+                  : C.backgroundSubtle,
+              },
+            ]}
+          >
+            <AppText
+              weight='Medium'
+              style={[styles.detailCategoryText, { color: C.textSecondary }]}
+            >
               {mapCategoryLabel(entry.category)}
             </AppText>
           </View>
-          <AppText weight='Bold' style={[styles.detailTitle, { color: isDark ? "#FFF" : C.text }]}>
+          <AppText
+            weight='Bold'
+            style={[styles.detailTitle, { color: C.text }]}
+          >
             {localize(entry.title)}
           </AppText>
           {showBilingual && (
-            <AppText weight='Regular' style={[styles.detailTitleAr, { color: isDark ? "rgba(255,255,255,0.75)" : C.textSecondary }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.detailTitleAr, { color: C.textSecondary }]}
+            >
               {entry.title.ar}
             </AppText>
           )}
@@ -166,27 +187,25 @@ const styles = StyleSheet.create({
   },
   detailCategoryBadge: {
     alignSelf: "flex-start",
-    backgroundColor: "rgba(255,255,255,0.2)",
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 20,
+    borderRadius: 12,
   },
-  detailCategoryText: { fontSize: 12, color: "rgba(255,255,255,0.9)" },
-  detailTitle: { fontSize: 22, color: "#FFF", lineHeight: 30 },
+  detailCategoryText: { fontSize: 12 },
+  detailTitle: { fontSize: 24, lineHeight: 32 },
   detailTitleAr: {
-    fontSize: 15,
-    color: "rgba(255,255,255,0.75)",
+    fontSize: 16,
     textAlign: "right",
   },
   detailBody: {
-    borderRadius: 14,
+    borderRadius: 12,
     padding: 18,
     borderWidth: 1,
     marginBottom: 12,
   },
-  detailText: { fontSize: 15, lineHeight: 26 },
+  detailText: { fontSize: 16, lineHeight: 26 },
   arabicBody: {
-    borderRadius: 14,
+    borderRadius: 12,
     padding: 18,
     borderWidth: 1,
     marginBottom: 12,
