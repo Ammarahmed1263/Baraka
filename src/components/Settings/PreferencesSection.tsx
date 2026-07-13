@@ -9,6 +9,7 @@ import SettingRow from "./SettingRow";
 
 interface PreferencesSectionProps {
   lang: string;
+  themePreference: "light" | "auto" | "dark";
   notificationsActive: boolean;
   formattedReminderTime: string;
   onNotificationToggle: (v: boolean) => void;
@@ -20,6 +21,7 @@ interface PreferencesSectionProps {
 export const PreferencesSection = React.memo(
   ({
     lang,
+    themePreference,
     notificationsActive,
     formattedReminderTime,
     onNotificationToggle,
@@ -126,8 +128,8 @@ export const PreferencesSection = React.memo(
             iconColor={C.gold}
             iconBg={C.gold + "18"}
             label={t("settings.theme")}
-            desc={t(`settings.themeModes.${currentMode}`, {
-              defaultValue: currentMode,
+            desc={t(`settings.themeModes.${themePreference}`, {
+              defaultValue: themePreference,
             })}
             right={
               <View style={styles.themeSelector}>
@@ -139,7 +141,7 @@ export const PreferencesSection = React.memo(
                       styles.themeOption,
                       {
                         backgroundColor:
-                          currentMode === mode ? C.tint : C.border,
+                          themePreference === mode ? C.tint : C.border,
                       },
                     ]}
                   >
@@ -152,7 +154,7 @@ export const PreferencesSection = React.memo(
                             : "sun"
                       }
                       size={14}
-                      color={currentMode === mode ? "#FFF" : C.textSecondary}
+                      color={themePreference === mode ? "#FFF" : C.textSecondary}
                     />
                   </AnimatedPressable>
                 ))}

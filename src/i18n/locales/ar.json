@@ -150,7 +150,7 @@
   "settings.theme": "الوضع",
   "settings.themeModes.dark": "الداكن",
   "settings.themeModes.light": "الساطع",
-  "settings.themeModes.system": "النظام",
+  "settings.themeModes.auto": "النظام",
   "activity.notFound": "النشاط غير موجود.",
   "activity.renewed": "تم تجديد النية!",
   "activity.intentionsForAct": "نياتك لهذا العمل",

@@ -14,6 +14,7 @@ import { AboutSection } from "@components/Settings/AboutSection";
 import { SettingsToast } from "@components/Settings/SettingsToast";
 import { ReminderTimePicker } from "@components/Settings/ReminderTimePicker";
 import { LanguageSheet } from "@components/Settings/LanguageSheet";
+import { ClearDataSheet } from "@components/Settings/ClearDataSheet";
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
@@ -22,6 +23,7 @@ export default function SettingsScreen() {
   const isWeb = Platform.OS === "web";
 
   const langSheetRef = useRef<BottomSheetModal>(null);
+  const clearDataSheetRef = useRef<BottomSheetModal>(null);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const {
@@ -53,6 +55,11 @@ export default function SettingsScreen() {
       setShowTimePicker(false);
     }
     await handleTimeChange(event, selectedDate);
+  };
+
+  const confirmClearData = () => {
+    handleClearData();
+    clearDataSheetRef.current?.dismiss();
   };
 
   return (
@@ -90,6 +97,7 @@ export default function SettingsScreen() {
 
         <PreferencesSection
           lang={lang}
+          themePreference={settings.darkMode || "auto"}
           notificationsActive={notificationsActive}
           formattedReminderTime={formattedReminderTime}
           onNotificationToggle={handleNotificationToggle}
@@ -100,7 +108,7 @@ export default function SettingsScreen() {
 
         <DataSection
           onExport={handleExportData}
-          onClear={handleClearData}
+          onClear={() => clearDataSheetRef.current?.present()}
         />
 
         <AboutSection />
@@ -117,6 +125,12 @@ export default function SettingsScreen() {
         ref={langSheetRef}
         currentLang={lang}
         onSelect={handleLanguageSelectAndClose}
+      />
+
+      <ClearDataSheet
+        ref={clearDataSheetRef}
+        onConfirm={confirmClearData}
+        onCancel={() => clearDataSheetRef.current?.dismiss()}
       />
     </View>
   );

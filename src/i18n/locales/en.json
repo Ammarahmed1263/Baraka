@@ -150,7 +150,7 @@
   "settings.theme": "Theme",
   "settings.themeModes.dark": "Dark",
   "settings.themeModes.light": "Light",
-  "settings.themeModes.system": "System",
+  "settings.themeModes.auto": "System",
   "activity.notFound": "Activity not found.",
   "activity.renewed": "Niyyah Renewed!",
   "activity.intentionsForAct": "Your intentions for this act",

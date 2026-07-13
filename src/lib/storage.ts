@@ -23,3 +23,4 @@ export const storageAdapter: StateStorage = {
     return mmkv.remove(name);
   },
 };
+

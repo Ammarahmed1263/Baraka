@@ -2,10 +2,10 @@ import "intl-pluralrules";
 
 import { storage } from "@lib/storage";
 import { getLocales } from "expo-localization";
-import * as Updates from "expo-updates";
 import i18n from "i18next";
 import { initReactI18next, useTranslation } from "react-i18next";
-import { DevSettings, I18nManager } from "react-native";
+import { I18nManager } from "react-native";
+import { reloadApp } from "@utils/device";
 
 import en from "./locales/en.json";
 import ar from "./locales/ar.json";
@@ -36,20 +36,7 @@ const applyRTL = (lng: string) => {
   I18nManager.forceRTL(isRTL);
 };
 
-let isReloading = false;
 
-const reloadApp = async () => {
-  if (isReloading) return;
-  isReloading = true;
-
-  try {
-    if (__DEV__) {
-      DevSettings.reload();
-    } else {
-      await Updates.reloadAsync();
-    }
-  } catch {}
-};
 
 async function syncInitialRTL() {
   try {
@@ -119,6 +106,15 @@ async function initI18n() {
 }
 
 initI18n();
+
+export async function clearAppData(clearStorage: () => void) {
+  clearStorage();
+
+  I18nManager.allowRTL(false);
+  I18nManager.forceRTL(false);
+
+  await reloadApp();
+}
 
 export function useLanguage() {
   const { i18n: instance } = useTranslation();

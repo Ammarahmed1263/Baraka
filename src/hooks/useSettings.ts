@@ -2,6 +2,7 @@ import { useMemo, useCallback } from "react";
 import { Alert, Linking, Share } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@i18n";
+import { clearAppData } from "@i18n";
 import { useLocalize } from "@hooks/useLocalize";
 import { storage } from "@lib/storage";
 import { Haptic } from "@utils/haptics";
@@ -45,8 +46,10 @@ export function useSettings() {
 
   // Derived notification state
   const notificationsActive = useMemo(
-    () => settings.notificationsEnabled && settings.notificationsStatus === "granted",
-    [settings.notificationsEnabled, settings.notificationsStatus]
+    () =>
+      settings.notificationsEnabled &&
+      settings.notificationsStatus === "granted",
+    [settings.notificationsEnabled, settings.notificationsStatus],
   );
 
   // Formatting reminder time
@@ -70,7 +73,7 @@ export function useSettings() {
         showToast(t(ROLE_UNLOCK_MESSAGES[key]));
       }
     },
-    [settings.profile, updateSettings, showToast, t]
+    [settings.profile, updateSettings, showToast, t],
   );
 
   const handleNotificationToggle = useCallback(
@@ -86,7 +89,7 @@ export function useSettings() {
           Haptic.success();
           await scheduleDailyNotifications(
             settings.reminderTime || "08:00",
-            localize
+            localize,
           );
         } else {
           Alert.alert(
@@ -98,7 +101,7 @@ export function useSettings() {
                 text: t("settings.openSettings"),
                 onPress: () => Linking.openSettings(),
               },
-            ]
+            ],
           );
         }
       } else {
@@ -106,7 +109,7 @@ export function useSettings() {
         await cancelDailyNotifications();
       }
     },
-    [settings.reminderTime, updateSettings, localize, t]
+    [settings.reminderTime, updateSettings, localize, t],
   );
 
   const handleTimeChange = useCallback(
@@ -123,20 +126,24 @@ export function useSettings() {
         }
       }
     },
-    [notificationsActive, updateSettings, localize]
+    [notificationsActive, updateSettings, localize],
   );
 
   const handleLanguageSelect = useCallback(
     async (nextLanguage: "en" | "ar") => {
-      if (lang === nextLanguage) return;
+      try {
+        if (lang === nextLanguage) return;
 
-      if (notificationsActive) {
-        await cancelDailyNotifications();
+        if (notificationsActive) {
+          await cancelDailyNotifications();
+        }
+
+        await changeLanguage(nextLanguage);
+      } catch (error) {
+        console.error("Failed to change language:", error);
       }
-
-      await changeLanguage(nextLanguage);
     },
-    [lang, notificationsActive, changeLanguage]
+    [lang, notificationsActive, changeLanguage],
   );
 
   const handleExportData = useCallback(async () => {
@@ -161,28 +168,14 @@ export function useSettings() {
     } catch {
       Alert.alert(
         t("settings.exportFallbackTitle"),
-        t("settings.exportFallbackMessage")
+        t("settings.exportFallbackMessage"),
       );
     }
   }, [settings.profile, activities, dailyLogs, journalEntries, streak, t]);
 
-  const handleClearData = useCallback(() => {
-    Alert.alert(
-      t("settings.clearConfirmTitle"),
-      t("settings.clearConfirmMessage"),
-      [
-        { text: t("common.cancel"), style: "cancel" },
-        {
-          text: t("settings.clear"),
-          style: "destructive",
-          onPress: () => {
-            storage.clearAll();
-            Alert.alert(t("settings.clearedTitle"), t("settings.clearedMessage"));
-          },
-        },
-      ]
-    );
-  }, [t]);
+  const handleClearData = useCallback(async () => {
+    await clearAppData(() => storage.clearAll());
+  }, []);
 
   return {
     settings,
