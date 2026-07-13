@@ -14,13 +14,16 @@ export default function HadithCard() {
   return (
     <LinearGradient
       colors={C.cardGradient}
-      style={[styles.hadithCard, {
-        shadowColor: isDark ? "transparent" : "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: isDark ? 0 : 0.08,
-        shadowRadius: 4,
-        elevation: isDark ? 0 : 2,
-      }]}
+      style={[
+        styles.hadithCard,
+        {
+          shadowColor: isDark ? "transparent" : C.shadowColor,
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: isDark ? 0 : 0.08,
+          shadowRadius: 4,
+          elevation: isDark ? 0 : 2,
+        },
+      ]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
@@ -30,27 +33,37 @@ export default function HadithCard() {
 
       {showBilingual ? (
         <View style={styles.bilingualContainer}>
-          <AppText weight="Bold" style={[styles.hadithText, styles.arabicText, { color: isDark ? "rgba(255,255,255,0.95)" : C.text }]}>
+          <AppText
+            weight='Bold'
+            style={[styles.hadithText, styles.arabicText, { color: C.text }]}
+          >
             {HADITH_OPENER.text.ar}
           </AppText>
-          <AppText weight="Medium" style={[styles.hadithText, styles.englishText, { color: isDark ? "rgba(255,255,255,0.85)" : C.textSecondary }]}>
+          <AppText
+            weight='Medium'
+            style={[
+              styles.hadithText,
+              styles.englishText,
+              { color: C.textSecondary },
+            ]}
+          >
             {HADITH_OPENER.text.en}
           </AppText>
         </View>
       ) : (
-        <AppText weight="Bold" style={[styles.hadithText, { color: isDark ? "rgba(255,255,255,0.95)" : C.text }]}>
+        <AppText weight='Bold' style={[styles.hadithText, { color: C.text }]}>
           {lang === "ar" ? HADITH_OPENER.text.ar : HADITH_OPENER.text.en}
         </AppText>
       )}
 
       <View style={[styles.refAccent, { backgroundColor: C.gold }]} />
-      
-      <AppText weight="Regular" style={[styles.hadithRef, { color: C.gold }]}>
+
+      <AppText weight='Regular' style={[styles.hadithRef, { color: C.gold }]}>
         {showBilingual
           ? `${HADITH_OPENER.ref.ar} | ${HADITH_OPENER.ref.en}`
           : lang === "ar"
-          ? HADITH_OPENER.ref.ar
-          : HADITH_OPENER.ref.en}
+            ? HADITH_OPENER.ref.ar
+            : HADITH_OPENER.ref.en}
       </AppText>
     </LinearGradient>
   );
@@ -66,9 +79,8 @@ const styles = StyleSheet.create({
   hadithDecor: { marginBottom: 8 },
   hadithDecorText: { fontSize: 40, opacity: 0.3, marginBottom: -10 },
   hadithText: {
-    fontSize: 17,
+    fontSize: 16,
     lineHeight: 26,
-    color: "rgba(255,255,255,0.95)",
     marginBottom: 16,
   },
   bilingualContainer: {
@@ -76,22 +88,20 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   arabicText: {
-    fontSize: 19,
+    fontSize: 20,
     lineHeight: 30,
     marginBottom: 0,
   },
   englishText: {
-    fontSize: 15,
+    fontSize: 14,
     lineHeight: 22,
-    opacity: 0.85,
     marginBottom: 0,
   },
   refAccent: {
-    width: 30,
-    height: 3,
-    marginBottom: 8,
+    width: 24,
+    height: 1.5,
     borderRadius: 1.5,
+    marginBottom: 12,
   },
-  hadithRef: { fontSize: 13, letterSpacing: 0.2 },
+  hadithRef: { fontSize: 12, letterSpacing: 0.2 },
 });
-

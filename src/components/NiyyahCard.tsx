@@ -128,7 +128,7 @@ export default function NiyyahCard({
                 },
               ]}
             >
-              {completed && <Feather name='check' size={11} color='#FFF' />}
+              {completed && <Feather name='check' size={11} color={C.textOnTint} />}
             </AnimatedPressable>
             {!completed && (
               <View

@@ -21,7 +21,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TodayScreen() {
   const { t } = useTranslation();
-  const { colors: C } = useTheme();
+  const { colors: C, isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
 
@@ -202,7 +202,7 @@ export default function TodayScreen() {
 
         {/* Ajr explanation footer */}
         {ajr.acts > 0 && (
-          <View style={[styles.ajrFooter, { borderColor: C.border }]}>
+          <View style={[styles.ajrFooter, { borderColor: C.border, backgroundColor: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)" }]}>
             <Feather name='info' size={13} color={C.textMuted} />
             <AppText
               weight='Regular'
@@ -278,7 +278,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginTop: 8,
   },
-  emptyButtonText: { color: "#FFF", fontSize: 16 },
   ajrFooter: {
     flexDirection: "row",
     alignItems: "center",
@@ -286,7 +285,6 @@ const styles = StyleSheet.create({
     marginTop: 24,
     padding: 16,
     borderRadius: 16,
-    backgroundColor: "rgba(0,0,0,0.03)",
   },
   ajrFooterText: { flex: 1, fontSize: 12, lineHeight: 18 },
 });

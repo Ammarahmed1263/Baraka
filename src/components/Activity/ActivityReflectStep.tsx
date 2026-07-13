@@ -74,7 +74,7 @@ export const ActivityReflectStep = React.memo(
         <LinearGradient
           colors={C.cardGradient}
           style={[styles.reflectBanner, {
-            shadowColor: isDark ? "transparent" : "#000",
+            shadowColor: isDark ? "transparent" : C.shadowColor,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: isDark ? 0 : 0.08,
             shadowRadius: 4,
@@ -82,15 +82,15 @@ export const ActivityReflectStep = React.memo(
           }]}
         >
           <Feather name="check-circle" size={28} color={isDark ? C.gold : C.tint} />
-          <AppText weight="Bold" style={[styles.reflectTitle, { color: isDark ? "#FFF" : C.text }]}>
+          <AppText weight="Bold" style={[styles.reflectTitle, { color: C.text }]}>
             {t("activity.renewed")}
           </AppText>
-          <AppText weight="Regular" style={[styles.reflectSub, { color: isDark ? "rgba(255,255,255,0.8)" : C.textSecondary }]}>
+          <AppText weight="Regular" style={[styles.reflectSub, { color: C.textSecondary }]}>
             {activityName}
           </AppText>
           {cleanSelectedCount > 0 && (
-            <View style={styles.multiplierBadge}>
-              <AppText weight="Bold" style={styles.multiplierText}>
+            <View style={[styles.multiplierBadge, { backgroundColor: C.gold + "33", borderColor: C.gold + "88" }]}>
+              <AppText weight="Bold" style={[styles.multiplierText, { color: C.gold }]}>
                 {t("activity.multiplierBadge", { count: ajrCount })}
               </AppText>
             </View>
@@ -249,18 +249,16 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 16,
   },
-  reflectTitle: { fontSize: 22, color: "#FFF" },
-  reflectSub: { fontSize: 15, color: "rgba(255,255,255,0.8)" },
+  reflectTitle: { fontSize: 22 },
+  reflectSub: { fontSize: 15 },
   multiplierBadge: {
-    backgroundColor: "#C9A84C33",
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#C9A84C88",
     marginTop: 4,
   },
-  multiplierText: { color: "#C9A84C", fontSize: 14 },
+  multiplierText: { fontSize: 14 },
   reflectNiyyahList: {
     borderRadius: 14,
     padding: 16,

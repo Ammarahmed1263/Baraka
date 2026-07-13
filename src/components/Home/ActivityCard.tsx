@@ -33,12 +33,11 @@ export default function ActivityCard({
         {
           backgroundColor: C.backgroundCard,
           borderColor: completed ? C.tint + "44" : C.border,
+          shadowColor: C.shadowColor,
         },
       ]}
     >
       <View style={styles.content}>
-
-
         <View style={styles.info}>
           <AppText weight='Bold' style={[styles.name, { color: C.text }]}>
             {localize(activity.name)}
@@ -79,7 +78,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 16,
     marginBottom: 12,
-    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
@@ -99,12 +97,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   nameAr: {
-    fontSize: 15,
+    fontSize: 14,
   },
   checkbox: {
     width: 26,
     height: 26,
-    borderRadius: 13,
+    borderRadius: 12,
     borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",

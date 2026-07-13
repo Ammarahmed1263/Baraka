@@ -1,5 +1,10 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { AppText } from "@components/UI/AppText";
 import { AppTextInput } from "@components/UI/AppTextInput";
 import { AppButton } from "@components/UI/AppButton";
@@ -70,7 +75,7 @@ export const ActivityViewStep = React.memo(
             onPress={() => router.back()}
             style={[styles.backButton, { backgroundColor: C.backgroundSubtle }]}
           >
-            <Feather name="x" size={20} color={C.text} />
+            <Feather name='x' size={20} color={C.text} />
           </AnimatedPressable>
           {completed && (
             <View
@@ -79,9 +84,9 @@ export const ActivityViewStep = React.memo(
                 { backgroundColor: C.tint + "22", borderColor: C.tint + "55" },
               ]}
             >
-              <Feather name="check-circle" size={14} color={C.tint} />
+              <Feather name='check-circle' size={14} color={C.tint} />
               <AppText
-                weight="Medium"
+                weight='Medium'
                 style={[styles.completedBadgeText, { color: C.tint }]}
               >
                 {t("activity.completedToday")}
@@ -92,21 +97,30 @@ export const ActivityViewStep = React.memo(
 
         <LinearGradient
           colors={C.cardGradient}
-          style={[styles.activityHeader, {
-            shadowColor: isDark ? "transparent" : "#000",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: isDark ? 0 : 0.08,
-            shadowRadius: 4,
-            elevation: isDark ? 0 : 2,
-          }]}
+          style={[
+            styles.activityHeader,
+            {
+              shadowColor: isDark ? "transparent" : C.shadowColor,
+              shadowOffset: { width: 0, height: 1 },
+              shadowOpacity: isDark ? 0 : 0.08,
+              shadowRadius: 4,
+              elevation: isDark ? 0 : 2,
+            },
+          ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <AppText weight="Bold" style={[styles.activityName, { color: isDark ? "#FFF" : C.text }]}>
+          <AppText
+            weight='Bold'
+            style={[styles.activityName, { color: C.text }]}
+          >
             {activityName}
           </AppText>
           {showBilingual && (
-            <AppText weight="Regular" style={[styles.activityNameAr, { color: isDark ? "rgba(255,255,255,0.8)" : C.textSecondary }]}>
+            <AppText
+              weight='Regular'
+              style={[styles.activityNameAr, { color: C.textSecondary }]}
+            >
               {activity.name.ar}
             </AppText>
           )}
@@ -123,7 +137,7 @@ export const ActivityViewStep = React.memo(
               style={[styles.basicBadge, { backgroundColor: C.tint + "22" }]}
             >
               <AppText
-                weight="Bold"
+                weight='Bold'
                 style={[styles.basicBadgeText, { color: C.tint }]}
               >
                 {t("activity.coreIntention")}
@@ -132,7 +146,7 @@ export const ActivityViewStep = React.memo(
             <AnimatedPressable
               onPress={() => setShowEditNiyyah(!showEditNiyyah)}
             >
-              <Feather name="edit-2" size={16} color={C.tintLight} />
+              <Feather name='edit-2' size={16} color={C.tintLight} />
             </AnimatedPressable>
           </View>
 
@@ -145,12 +159,12 @@ export const ActivityViewStep = React.memo(
               />
               <View style={styles.editActions}>
                 <AppButton
-                  variant="ghost"
+                  variant='ghost'
                   label={t("common.cancel")}
                   onPress={() => setShowEditNiyyah(false)}
                 />
                 <AppButton
-                  variant="primary"
+                  variant='primary'
                   label={t("common.save")}
                   onPress={onSaveNiyyah}
                 />
@@ -159,7 +173,7 @@ export const ActivityViewStep = React.memo(
           ) : (
             <>
               <AppText
-                weight="Regular"
+                weight='Regular'
                 style={[styles.niyyahText, { color: C.text }]}
               >
                 {activity.customNiyyah ?? localize(activity.niyyahText)}
@@ -191,14 +205,12 @@ export const ActivityViewStep = React.memo(
           ]}
         >
           <Feather
-            name="heart"
+            name='heart'
             size={14}
             color={C.textMuted}
             style={{ marginTop: 2 }}
           />
-          <AppText
-            style={[styles.disclaimerText, { color: C.textSecondary }]}
-          >
+          <AppText style={[styles.disclaimerText, { color: C.textSecondary }]}>
             {t("activity.niyyahDisclaimer")}
           </AppText>
         </View>
@@ -210,9 +222,9 @@ export const ActivityViewStep = React.memo(
               { backgroundColor: C.gold + "22", borderColor: C.gold + "55" },
             ]}
           >
-            <Feather name="star" size={16} color={C.gold} />
+            <Feather name='star' size={16} color={C.gold} />
             <AppText
-              weight="Medium"
+              weight='Medium'
               style={[styles.ajrText, { color: C.gold }]}
             >
               {t("activity.ajrPreview", { count: localSelected.length + 1 })}
@@ -227,9 +239,9 @@ export const ActivityViewStep = React.memo(
               { backgroundColor: C.successLight, borderColor: C.tint + "30" },
             ]}
           >
-            <Feather name="book-open" size={14} color={C.tint} />
+            <Feather name='book-open' size={14} color={C.tint} />
             <AppText
-              weight="Medium"
+              weight='Medium'
               style={[styles.sourceText, { color: C.tint }]}
             >
               {localize(activity.hadithRef)}
@@ -249,16 +261,16 @@ export const ActivityViewStep = React.memo(
                 },
               ]}
             >
-              <Feather name="check-circle" size={20} color={C.tint} />
+              <Feather name='check-circle' size={20} color={C.tint} />
               <AppText
-                weight="Bold"
+                weight='Bold'
                 style={[styles.renewText, { color: C.tint }]}
               >
                 {t("activity.renewedButton")}
               </AppText>
             </View>
             <AppButton
-              variant="outline"
+              variant='outline'
               label={t("activity.unmark")}
               onPress={onUnmark}
               style={{ marginBottom: 10 }}
@@ -266,15 +278,17 @@ export const ActivityViewStep = React.memo(
           </View>
         ) : (
           <AppButton
-            variant="primary"
-            icon="refresh-cw"
-            label={t("activity.renewNiyyah", { count: localSelected.length + 1 })}
+            variant='primary'
+            icon='refresh-cw'
+            label={t("activity.renewNiyyah", {
+              count: localSelected.length + 1,
+            })}
             onPress={onSaveAndRenew}
           />
         )}
       </ScrollView>
     );
-  }
+  },
 );
 
 const styles = StyleSheet.create({
@@ -303,10 +317,9 @@ const styles = StyleSheet.create({
   },
   completedBadgeText: { fontSize: 13 },
   activityHeader: { borderRadius: 16, padding: 24, marginBottom: 16, gap: 6 },
-  activityName: { fontSize: 24, color: "#FFF" },
+  activityName: { fontSize: 24 },
   activityNameAr: {
     fontSize: 16,
-    color: "rgba(255,255,255,0.8)",
     textAlign: "right",
   },
   card: {
