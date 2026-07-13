@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { format } from "date-fns";
 import { useLogsStore } from "@store/logsStore";
+import { getTodayString } from "@utils/date";
 
 export function useTodayLogs() {
   const dailyLogs = useLogsStore((s) => s.dailyLogs);
-  const today = format(new Date(), "yyyy-MM-dd");
+  const today = getTodayString();
 
   const todayLogs = useMemo(
     () => dailyLogs.filter((l) => l.date === today),

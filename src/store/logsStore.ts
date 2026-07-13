@@ -1,11 +1,10 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { storageAdapter } from "@lib/storage";
-import { format, subDays } from "date-fns";
 import type { DailyLog } from "@types";
 
 import { generateId } from "@utils/id";
-import { getTodayString } from "@utils/date";
+import { getTodayString, toYMD } from "@utils/date";
 import { computeStreak } from "@utils/stats";
 
 type LogsStore = {
@@ -48,7 +47,9 @@ export const useLogsStore = create<LogsStore>()(
         let count = 0;
         const today = new Date();
         for (let i = 0; i < 365; i++) {
-          const dateStr = format(subDays(today, i), "yyyy-MM-dd");
+          const date = new Date(today);
+          date.setDate(today.getDate() - i);
+          const dateStr = toYMD(date);
           if (dailyLogs.some((l) => l.activityId === activityId && l.date === dateStr)) count++;
           else if (i > 0) break;
         }
