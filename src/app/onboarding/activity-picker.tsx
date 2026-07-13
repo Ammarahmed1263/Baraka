@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     lineHeight: 34,
   },
   subtitle: {
-    fontSize: 15,
+    fontSize: 14,
     lineHeight: 22,
   },
   grid: {
@@ -134,22 +134,8 @@ const styles = StyleSheet.create({
     gap: 14,
     alignItems: "center",
   },
-  doneButton: {
-    width: "100%",
-    paddingVertical: 16,
-    borderRadius: 16,
-    alignItems: "center",
-  },
-  doneText: {
-    fontSize: 16,
-    color: "#FFFFFF",
-  },
-  skipText: {
-    fontSize: 14,
-    paddingVertical: 4,
-  },
   confirm: {
     width: "100%",
-    height: 56,
+    height: 52,
   }
 });

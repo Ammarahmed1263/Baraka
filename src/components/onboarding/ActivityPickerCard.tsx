@@ -32,12 +32,12 @@ export function ActivityPickerCard({
     >
       {selected && (
         <View style={[styles.checkBadge, { backgroundColor: C.gold }]}>
-          <Feather name="check" size={12} color="#FFFFFF" />
+          <Feather name='check' size={12} color={C.textOnTint} />
         </View>
       )}
 
       <AppText
-        weight="Medium"
+        weight='Medium'
         numberOfLines={2}
         style={[styles.name, { color: C.text }]}
       >
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   name: {
-    fontSize: 13,
+    fontSize: 14,
     textAlign: "center",
   },
 });
