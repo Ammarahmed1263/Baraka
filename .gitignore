@@ -48,3 +48,4 @@ yarn-error.*
 *.md
 ExcelToJson.js
 assets/images/old
+.vscode
