@@ -5,7 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import { useActivitiesStore } from "@store";
 import { type UserActivity } from "@types";
 import { Haptic } from "@utils/haptics";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -31,12 +31,18 @@ export default function RemindersScreen() {
   //   return () => clearTimeout(timer);
   // }, []);
 
-  const categories = [...new Set(activities.map((a) => a.category))];
+  const categoryGroups = useMemo(() => {
+    const cats = [...new Set(activities.map((a) => a.category))];
+    return cats.map((category) => ({
+      category,
+      activities: activities.filter((a) => a.category === category),
+    }));
+  }, [activities]);
 
-  const handleToggle = (activity: UserActivity) => {
+  const handleToggle = useCallback((activity: UserActivity) => {
     Haptic.selection();
     toggleActivity(activity.id);
-  };
+  }, [toggleActivity]);
 
   const topPadding = isWeb ? 67 : insets.top;
 
@@ -93,19 +99,16 @@ export default function RemindersScreen() {
         ) : ( */}
           <>
             {/* Activity List by Category */}
-            {categories.map((category, index) => {
-              const categoryActivities = activities.filter(
-                (a) => a.category === category,
-              );
+            {categoryGroups.map((group, index) => {
               return (
                 <Animated.View
-                  key={category}
+                  key={group.category}
                   entering={FadeInDown.delay(index * 50).duration(250)}
                   style={{ marginBottom: 20 }}
                 >
                   <CategorySection
-                    category={category}
-                    categoryActivities={categoryActivities}
+                    category={group.category}
+                    categoryActivities={group.activities}
                     onToggleActivity={handleToggle}
                   />
                 </Animated.View>

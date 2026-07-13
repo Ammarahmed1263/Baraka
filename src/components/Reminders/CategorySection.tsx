@@ -1,3 +1,4 @@
+import { memo, useCallback } from "react";
 import { View, StyleSheet, Switch } from "react-native";
 import { AppIcon } from "@components/UI/AppIcon";
 import { useTranslation } from "react-i18next";
@@ -6,13 +7,68 @@ import { useLocalize } from "@hooks/useLocalize";
 import { type UserActivity } from "@types";
 import { useTheme } from "@context/ThemeContext";
 
+const CATEGORY_ICONS: Record<string, any> = {
+  worship: "star",
+  daily: "sun",
+  productivity: "briefcase",
+  health: "activity",
+  relationships: "heart",
+  learning: "book-open",
+};
+
+function getCategoryIcon(cat: string) {
+  return CATEGORY_ICONS[cat] || "circle";
+}
+
+function getCategoryLabel(cat: string, t: any) {
+  const labels: Record<string, string> = {
+    worship: t("reminders.category.worship"),
+    daily: t("reminders.category.daily"),
+    productivity: t("reminders.category.productivity"),
+    health: t("reminders.category.health"),
+    relationships: t("reminders.category.relationships"),
+    learning: t("reminders.category.learning"),
+  };
+  return labels[cat] || cat;
+}
+
+interface ActivityRowProps {
+  activity: UserActivity;
+  onToggle: (activity: UserActivity) => void;
+  localize: any;
+  colors: any;
+}
+
+const ActivityRow = memo(({ activity, onToggle, localize, colors: C }: ActivityRowProps) => {
+  const handleToggle = useCallback(() => {
+    onToggle(activity);
+  }, [activity, onToggle]);
+
+  return (
+    <View style={styles.activityRow}>
+      <View style={styles.activityInfo}>
+        <AppText weight='Medium' style={[styles.activityName, { color: C.text }]}>
+          {localize(activity.name)}
+        </AppText>
+      </View>
+      <Switch
+        value={activity.enabled}
+        onValueChange={handleToggle}
+        trackColor={{ false: C.border, true: C.tint + "80" }}
+        thumbColor={activity.enabled ? C.tint : C.textMuted}
+        ios_backgroundColor={C.border}
+      />
+    </View>
+  );
+});
+
 interface CategorySectionProps {
   category: string;
   categoryActivities: UserActivity[];
   onToggleActivity: (activity: UserActivity) => void;
 }
 
-export default function CategorySection({
+export default memo(function CategorySection({
   category,
   categoryActivities,
   onToggleActivity,
@@ -20,30 +76,6 @@ export default function CategorySection({
   const { t } = useTranslation();
   const { colors: C } = useTheme();
   const localize = useLocalize();
-
-  const getCategoryLabel = (cat: string) => {
-    const labels: Record<string, string> = {
-      worship: t("reminders.category.worship"),
-      daily: t("reminders.category.daily"),
-      productivity: t("reminders.category.productivity"),
-      health: t("reminders.category.health"),
-      relationships: t("reminders.category.relationships"),
-      learning: t("reminders.category.learning"),
-    };
-    return labels[cat] || cat;
-  };
-
-  const getCategoryIcon = (cat: string): any => {
-    const icons: Record<string, string> = {
-      worship: "star",
-      daily: "sun",
-      productivity: "briefcase",
-      health: "activity",
-      relationships: "heart",
-      learning: "book-open",
-    };
-    return icons[cat] || "circle";
-  };
 
   if (categoryActivities.length === 0) return null;
 
@@ -59,7 +91,7 @@ export default function CategorySection({
           weight='Bold'
           style={[styles.categoryLabel, { color: C.textSecondary }]}
         >
-          {getCategoryLabel(category)}
+          {getCategoryLabel(category, t)}
         </AppText>
       </View>
       <View
@@ -70,32 +102,12 @@ export default function CategorySection({
       >
         {categoryActivities.map((activity, index) => (
           <View key={activity.id}>
-            <View style={styles.activityRow}>
-
-              <View style={styles.activityInfo}>
-                <AppText
-                  weight='Medium'
-                  style={[styles.activityName, { color: C.text }]}
-                >
-                  {localize(activity.name)}
-                </AppText>
-                {/* {activity.hadithRef && (
-                  <AppText
-                    weight='Regular'
-                    style={[styles.activityRef, { color: C.textMuted }]}
-                  >
-                    {localize(activity.hadithRef)}
-                  </AppText>
-                )} */}
-              </View>
-              <Switch
-                value={activity.enabled}
-                onValueChange={() => onToggleActivity(activity)}
-                trackColor={{ false: C.border, true: C.tint + "80" }}
-                thumbColor={activity.enabled ? C.tint : C.textMuted}
-                ios_backgroundColor={C.border}
-              />
-            </View>
+            <ActivityRow
+              activity={activity}
+              onToggle={onToggleActivity}
+              localize={localize}
+              colors={C}
+            />
             {index < categoryActivities.length - 1 && (
               <View
                 style={[styles.divider, { backgroundColor: C.borderLight }]}
@@ -106,7 +118,7 @@ export default function CategorySection({
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   categorySection: { marginBottom: 20 },
