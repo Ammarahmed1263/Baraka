@@ -135,7 +135,7 @@ export function AppButton({
 
 const styles = StyleSheet.create({
   container: {
-    height: 48,
+    height: 52,
     borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",

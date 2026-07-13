@@ -54,9 +54,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
+    marginBottom: 8,
   },
   message: {
-    fontSize: 15,
+    fontSize: 14,
     textAlign: "center",
     lineHeight: 22,
     maxWidth: 300,

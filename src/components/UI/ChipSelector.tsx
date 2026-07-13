@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: 13,
+    fontSize: 14,
   },
 });

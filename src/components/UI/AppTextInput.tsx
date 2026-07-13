@@ -104,11 +104,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    height: 56,
+    height: 52,
     borderRadius: 16,
     borderWidth: 1.5,
     paddingHorizontal: 16,
-    fontSize: 14,
+    fontSize: 16,
   },
   leftIcon: {
     position: "absolute",

@@ -82,7 +82,7 @@ const createStyles = (C: typeof Colors.light) =>
       backgroundColor: C.background,
     },
     title: {
-      fontSize: 28,
+      fontSize: 24,
       color: C.text,
       marginBottom: 12,
       textAlign: "center",
@@ -110,7 +110,7 @@ const createStyles = (C: typeof Colors.light) =>
       textAlign: "left",
     },
     errorMessage: {
-      fontSize: 13,
+      fontSize: 14,
       color: C.text,
       marginBottom: 8,
       textAlign: "left",
@@ -119,7 +119,7 @@ const createStyles = (C: typeof Colors.light) =>
       maxHeight: 180,
     },
     errorStack: {
-      fontSize: 11,
+      fontSize: 12,
       color: C.textMuted,
       fontFamily: "monospace",
       textAlign: "left",
