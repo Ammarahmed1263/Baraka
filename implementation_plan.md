@@ -253,6 +253,51 @@ There are **two mandatory placements** that have been successfully integrated:
 
 ---
 
+## Phase 11: Personalizing Activities & Niyyah Templates (First-Person Perspective) ⏳ [IN PLANNING]
+
+**Goal**: Transform all default activity descriptions and niyyah templates from imperative commands ("Say Bismillah...", "Work honestly today...") to a personal first-person perspective ("I say Bismillah...", "I work honestly today..."). This reinforces Niyyah as a personal, internal act of the heart.
+
+### User Review Required
+
+We need the user to review the proposed wording shifts to ensure they meet the desired spiritual tone and style. Here are some examples:
+
+| Activity | Old (Command / Advisory) | Proposed New (First-Person) |
+| --- | --- | --- |
+| **Fajr Prayer (EN)** | "Pray Fajr now. It's one of the two prayers hardest on hypocrites, so its reward is the greatest." | "I pray Fajr now, seeking to make it the prayer that protects me from hypocrisy and brings me the greatest reward." |
+| **Fajr Prayer (AR)** | "صلِّ الفجر الآن. من أثقل صلاتين على القلب المنافقين، فأجرها الأعظم." | "أصلي الفجر الآن، مستحضراً أجرها العظيم وحفظ الله لي ووقايتي من النفاق." |
+| **Breakfast (EN)** | "Say Bismillah and eat with your right hand. This is exactly what the Prophet ﷺ taught." | "I say Bismillah and eat with my right hand, following the exact guidance of the Prophet ﷺ." |
+| **Breakfast (AR)** | "قل بسم الله وكل بيمينك. هذا ما علّمه النبي ﷺ بالضبط." | "أقول بسم الله وآكل بيميني، متبعاً لهدي النبي ﷺ." |
+| **Work (EN)** | "Work honestly today. No food is better than what you earn with your own hands." | "I work honestly today, knowing that no food is better than what I earn with my own hands." |
+| **Work (AR)** | "اعمل بأمانة اليوم. لا طعام خيرٌ مما تكسبه يداك." | "أعمل بأمانة اليوم، موقناً أنه ما أكل أحد طعاماً خيراً من أن يأكل من عمل يده." |
+
+### Open Questions
+
+> [!IMPORTANT]
+> 1. Should we also keep the hadith references/educational notes in the first person? (We recommend keeping Hadith explanations informative/factual, while rewriting only the niyyah intentions themselves.)
+> 2. Are there specific phrasing guidelines the user wants to enforce for the Arabic translations (e.g., using "أنوي..." vs "أفعل..." directly)?
+
+### Proposed Changes
+
+#### [MODIFY] [activities.ts](file:///d:/Projects/Baraka/src/data/activities.ts)
+- Update `niyyahText` for all 17 default activities to the first person in both English and Arabic.
+
+#### [MODIFY] [niyyahTemplates.ts](file:///d:/Projects/Baraka/src/data/niyyahTemplates.ts)
+- Update the `text` property of all 70+ default templates and sub-options to the first person in both English and Arabic.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run typecheck` to confirm TypeScript safety.
+- Run `npm run lint` if configured.
+
+### Manual Verification
+- Build and run the app to check readability in the Activity detail screen.
+- Verify that selected intentions display beautifully in the journal entry drafts and completed logs.
+
+---
+
 ## Post-MVP Polish (After Main Phases)
 
 - [ ] **Bottom Sheet Journal UX**: Replace the inline journal Add/Edit form with `@gorhom/bottom-sheet`. It runs on the UI thread via Reanimated, supports gesture-based dismissal, and integrates cleanly with the existing animation and haptics stack. Apply the same treatment to any future action confirmations that would otherwise use system `Alert.alert`.
