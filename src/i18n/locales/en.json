@@ -190,7 +190,7 @@
   "onboarding.skip": "Skip",
   "onboarding.next": "Next",
   "onboarding.getStarted": "Get Started",
-  "onboarding.pickTitle": "Pick your first 3 activities",
+  "onboarding.pickTitle": "Pick your first 5 activities",
   "onboarding.pickSubtext": "You can always add more later. ({{count}}/{{max}})",
   "onboarding.done": "Done",
   "onboarding.skipForNow": "Skip for now",

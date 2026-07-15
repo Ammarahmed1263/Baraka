@@ -8,8 +8,8 @@ type DailyNotifications = {
 export const DAILY_NOTIFICATIONS: DailyNotifications[] = [
   {
     title: {
-      en: "Begin with intention 🤲",
-      ar: "ابدأ بالنيّة 🤲",
+      en: "Begin with intention",
+      ar: "ابدأ بالنيّة",
     },
     body: {
       en: "Actions are by intentions. What will yours be today?",
@@ -18,8 +18,8 @@ export const DAILY_NOTIFICATIONS: DailyNotifications[] = [
   },
   {
     title: {
-      en: "A new day. A fresh niyyah 🌅",
-      ar: "يومٌ جديد. نيّةٌ جديدة 🌅",
+      en: "A new day. A fresh niyyah",
+      ar: "يومٌ جديد. نيّةٌ جديدة",
     },
     body: {
       en: "Every act done for Allah. Even the small ones. Count.",
@@ -28,8 +28,8 @@ export const DAILY_NOTIFICATIONS: DailyNotifications[] = [
   },
   {
     title: {
-      en: "Don't let today pass without intention 🌿",
-      ar: "لا تدع اليوم يمرّ بلا نيّة 🌿",
+      en: "Don't let today pass without intention",
+      ar: "لا تدع اليوم يمرّ بلا نيّة",
     },
     body: {
       en: "One sincere intention can turn your whole day into worship.",
@@ -38,8 +38,8 @@ export const DAILY_NOTIFICATIONS: DailyNotifications[] = [
   },
   {
     title: {
-      en: "Bismillah. Let's begin ✨",
-      ar: "بسم الله. نبدأ ✨",
+      en: "Bismillah. Let's begin",
+      ar: "بسم الله. نبدأ",
     },
     body: {
       en: "Set your intention now. Allah sees even what the heart conceals.",
@@ -48,8 +48,8 @@ export const DAILY_NOTIFICATIONS: DailyNotifications[] = [
   },
   {
     title: {
-      en: "Your routine can be worship 🌟",
-      ar: "روتينك يمكن أن يكون عبادة 🌟",
+      en: "Your routine can be worship",
+      ar: "روتينك يمكن أن يكون عبادة",
     },
     body: {
       en: "Work, rest, family. All of it counts with the right niyyah.",
@@ -98,8 +98,8 @@ export const DAILY_NOTIFICATIONS: DailyNotifications[] = [
   },
   {
     title: {
-      en: "Name one blessing 🌤",
-      ar: "سمِّ نعمةً واحدة 🌤",
+      en: "Name one blessing",
+      ar: "سمِّ نعمةً واحدة",
     },
     body: {
       en: "Before you begin. Just one. Watch how the rest of the day shifts.",

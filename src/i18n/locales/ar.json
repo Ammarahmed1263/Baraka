@@ -206,7 +206,7 @@
   "onboarding.skip": "تخطي",
   "onboarding.next": "التالي",
   "onboarding.getStarted": "ابدأ الآن",
-  "onboarding.pickTitle": "اختر أول ٣ أنشطة لك",
+  "onboarding.pickTitle": "اختر أول ٥ أنشطة لك",
   "onboarding.pickSubtext": "يمكنك إضافة المزيد لاحقاً. ({{count}}/{{max}})",
   "onboarding.done": "تم",
   "onboarding.skipForNow": "تخطي الآن",
