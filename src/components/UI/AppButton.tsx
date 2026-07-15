@@ -5,6 +5,8 @@ import { Feather } from "@expo/vector-icons";
 import { Haptic } from "@utils/haptics";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 type ButtonVariant =
   | "primary"
@@ -124,7 +126,7 @@ export function AppButton({
           {icon && (
             <Feather name={icon} size={18} color={v.icon} style={styles.icon} />
           )}
-          <AppText weight='Bold' style={[styles.label, v.text]}>
+          <AppText weight='Bold' variant='bodyLarge' style={v.text}>
             {label}
           </AppText>
         </View>
@@ -136,21 +138,18 @@ export function AppButton({
 const styles = StyleSheet.create({
   container: {
     height: 52,
-    borderRadius: 16,
+    borderRadius: radius.lg,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 28,
+    paddingHorizontal: spacing.xxl,
   },
   content: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
-  label: {
-    fontSize: 16,
-  },
   icon: {
-    marginRight: 10,
+    marginRight: spacing.sm,
   },
   disabled: {
     opacity: 0.5,

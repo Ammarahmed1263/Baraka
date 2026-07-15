@@ -1,9 +1,11 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { AnimatedPressable } from "./AnimatedPressable";
 import { AppText } from "./AppText";
 import { Feather } from "@expo/vector-icons";
 import { Haptic } from "@utils/haptics";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface ChipItem {
   label: string;
@@ -15,8 +17,8 @@ interface ChipSelectorProps {
   items: ChipItem[];
   selectedValue: string;
   onSelect: (value: string) => void;
-  style?: any;
-  contentContainerStyle?: any;
+  style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
 export function ChipSelector({
@@ -58,18 +60,16 @@ export function ChipSelector({
                 name={item.leftIcon}
                 size={14}
                 color={isSelected ? C.textOnTint : C.textSecondary}
-                style={{ marginRight: 6 }}
+                style={styles.icon}
               />
             )}
             <AppText
               weight='Medium'
+              variant='body'
               numberOfLines={1}
-              style={[
-                styles.text,
-                {
-                  color: isSelected ? C.textOnTint : C.textSecondary,
-                },
-              ]}
+              style={{
+                color: isSelected ? C.textOnTint : C.textSecondary,
+              }}
             >
               {item.label}
             </AppText>
@@ -82,23 +82,23 @@ export function ChipSelector({
 
 const styles = StyleSheet.create({
   scroll: {
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   content: {
-    gap: 8,
-    paddingHorizontal: 16,
+    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
   },
   chip: {
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 20,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.xl,
     borderWidth: 1,
     alignSelf: "flex-start",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
-  text: {
-    fontSize: 14,
+  icon: {
+    marginRight: spacing.sm,
   },
 });

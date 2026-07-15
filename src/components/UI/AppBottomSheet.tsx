@@ -2,6 +2,7 @@ import { forwardRef, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { BottomSheetModal, BottomSheetBackdrop, BottomSheetView, BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
 
 interface AppBottomSheetProps {
   children: React.ReactNode;
@@ -52,6 +53,6 @@ export const AppBottomSheet = forwardRef<BottomSheetModal, AppBottomSheetProps>(
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    padding: 24,
+    padding: spacing.xxl,
   },
 });
