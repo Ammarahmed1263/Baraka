@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
-import { useColorScheme } from "react-native";
+import { useColorScheme, StatusBar } from "react-native";
+
 import {
   ThemeProvider as NavThemeProvider,
   DarkTheme,
@@ -47,7 +48,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <ThemeContext.Provider value={value}>
-      <NavThemeProvider value={navTheme}>{children}</NavThemeProvider>
+      <NavThemeProvider value={navTheme}>
+        <StatusBar
+          barStyle={theme === "dark" ? "light-content" : "dark-content"}
+          translucent={true}
+          backgroundColor="transparent"
+          animated={true}
+        />
+        {children}
+      </NavThemeProvider>
     </ThemeContext.Provider>
   );
 };

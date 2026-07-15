@@ -40,7 +40,7 @@ export default function TabLayout() {
           borderTopWidth: isWeb ? 1 : 0,
           borderTopColor: C.border,
           elevation: 0,
-          height: isWeb ? 84 : 70 + insets.bottom,
+          height: isWeb ? 84 : 60 + insets.bottom,
         },
         tabBarItemStyle: {
           justifyContent: 'center',
