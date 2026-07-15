@@ -1,12 +1,15 @@
 import { memo } from "react";
 import { AppText } from "@components/UI/AppText";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { useTheme } from "@context/ThemeContext";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
 import { useLocalize } from "@hooks/useLocalize";
 import { type EducationEntry } from "@types";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { categoryColors as themeCategoryColors } from "@constants/colors";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 import { useTranslation } from "react-i18next";
 
@@ -35,29 +38,24 @@ export default memo(function EducationCard({
   const catColor = categoryColorMap[entry.category] || C.tint;
 
   return (
-    <Pressable
+    <AnimatedPressable
       onPress={onPress}
-      style={({ pressed }) => [
+      activeOpacity={0.94}
+      style={[
         styles.eduCard,
-        {
-          backgroundColor: C.backgroundCard,
-          borderColor: C.border,
-          opacity: pressed ? 0.94 : 1,
-        },
+        { backgroundColor: C.backgroundCard, borderColor: C.border },
       ]}
     >
       <View
         style={[styles.categoryBadge, { backgroundColor: catColor + "18" }]}
       >
-        <AppText
-          weight='Bold'
-          style={[styles.categoryBadgeText, { color: catColor }]}
-        >
+        <AppText weight='Bold' variant='caption' style={{ color: catColor }}>
           {t("category." + entry.category)}
         </AppText>
       </View>
       <AppText
         weight='Bold'
+        variant='bodyLarge'
         style={[styles.eduTitle, { color: C.text }]}
         numberOfLines={2}
       >
@@ -65,6 +63,7 @@ export default memo(function EducationCard({
       </AppText>
       <AppText
         weight='Regular'
+        variant='footnote'
         style={[styles.eduPreview, { color: C.textSecondary }]}
         numberOfLines={3}
       >
@@ -73,42 +72,37 @@ export default memo(function EducationCard({
       <View style={styles.eduFooter}>
         <View style={styles.sourceRow}>
           <Feather name='book-open' size={11} color={C.tint} />
-          <AppText
-            weight='Regular'
-            style={[styles.sourceText, { color: C.tint }]}
-          >
+          <AppText weight='Regular' variant='caption' style={{ color: C.tint }}>
             {localize(entry.source)}
           </AppText>
         </View>
         <Feather name="chevron-right" size={16} color={C.textMuted} flipRTL />
       </View>
-    </Pressable>
+    </AnimatedPressable>
   );
 });
 
 const styles = StyleSheet.create({
   eduCard: {
-    borderRadius: 14,
+    borderRadius: radius.md,
     borderWidth: 1,
-    padding: 16,
-    marginBottom: 12,
-    gap: 10,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
+    gap: spacing.sm,
   },
   categoryBadge: {
     alignSelf: "flex-start",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 20,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.xl,
   },
-  categoryBadgeText: { fontSize: 11 },
-  eduTitle: { fontSize: 16, lineHeight: 22 },
-  eduPreview: { fontSize: 13, lineHeight: 20 },
+  eduTitle: { lineHeight: 22 },
+  eduPreview: { lineHeight: 20 },
   eduFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 4,
+    marginTop: spacing.xs,
   },
-  sourceRow: { flexDirection: "row", alignItems: "center", gap: 5 },
-  sourceText: { fontSize: 11 },
+  sourceRow: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
 });

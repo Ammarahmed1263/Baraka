@@ -5,6 +5,8 @@ import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
 import { useLocalize } from "@hooks/useLocalize";
 import { type UserActivity } from "@types";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface ActivityCardProps {
   activity: UserActivity;
@@ -39,13 +41,14 @@ export default function ActivityCard({
     >
       <View style={styles.content}>
         <View style={styles.info}>
-          <AppText weight='Bold' style={[styles.name, { color: C.text }]}>
+          <AppText weight='Bold' variant='bodyLarge' style={{ color: C.text }}>
             {localize(activity.name)}
           </AppText>
           {showBilingual && (
             <AppText
               weight='Regular'
-              style={[styles.nameAr, { color: C.textSecondary }]}
+              variant='body'
+              style={{ color: C.textSecondary }}
             >
               {activity.name.ar}
             </AppText>
@@ -74,10 +77,10 @@ export default function ActivityCard({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    padding: 16,
-    marginBottom: 12,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
@@ -86,23 +89,17 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
+    gap: spacing.lg,
   },
 
   info: {
     flex: 1,
-    gap: 2,
-  },
-  name: {
-    fontSize: 16,
-  },
-  nameAr: {
-    fontSize: 14,
+    gap: spacing.xs,
   },
   checkbox: {
     width: 26,
     height: 26,
-    borderRadius: 12,
+    borderRadius: radius.md,
     borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",

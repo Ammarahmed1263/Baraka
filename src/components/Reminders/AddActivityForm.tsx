@@ -11,9 +11,8 @@ import { Haptic } from "@utils/haptics";
 import { AppText } from "@components/UI/AppText";
 import { useActivitiesStore } from "@store";
 import { useTheme } from "@context/ThemeContext";
-
-
-
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 
 import { generateCustomId } from "@utils/id";
@@ -66,7 +65,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
         { backgroundColor: C.backgroundCard, borderColor: C.border },
       ]}
     >
-      <AppText weight='Bold' style={[styles.formTitle, { color: C.text }]}>
+      <AppText weight='Bold' variant='subtitle' style={styles.formTitle}>
         {t("reminders.newActivity")}
       </AppText>
       <AppTextInput
@@ -89,7 +88,7 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
         label={t("reminders.addActivity")}
         onPress={handleAddActivity}
         variant="primary"
-        style={{ marginTop: 4 }}
+        style={{ marginTop: spacing.xs }}
       />
     </View>
   );
@@ -97,14 +96,11 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
 
 const styles = StyleSheet.create({
   addForm: {
-    borderRadius: 16,
-    padding: 18,
-    marginBottom: 24,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.xxl,
     borderWidth: 1,
-    gap: 12,
+    gap: spacing.md,
   },
-  formTitle: { fontSize: 17, marginBottom: 4 },
-  pickerLabel: { fontSize: 13 },
-
-
+  formTitle: { marginBottom: spacing.xs },
 });

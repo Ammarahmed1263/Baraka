@@ -9,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@context/ThemeContext";
 import { getRoleByTag } from "@utils/roleHelpers";
 import { type NiyyahOption } from "@types";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface NiyyahChecklistProps {
   allAdvanced: NiyyahOption[];
@@ -54,19 +56,18 @@ export const NiyyahChecklist = React.memo(
         <View style={styles.cardHeader}>
           <AppText
             weight='Medium'
+            variant='caption'
             style={[styles.sectionLabel, { color: C.gold }]}
           >
             {t("activity.multiplyIntentions")}
           </AppText>
-          <AppText
-            weight='Bold'
-            style={[styles.selectedCount, { color: C.tint }]}
-          >
+          <AppText weight='Bold' variant='caption' style={{ color: C.tint }}>
             {t("activity.selectedCount", { count: localSelected.length })}
           </AppText>
         </View>
         <AppText
           weight='Regular'
+          variant='footnote'
           style={[styles.multiHint, { color: C.textMuted }]}
         >
           {t("activity.multiHint")}
@@ -104,10 +105,8 @@ export const NiyyahChecklist = React.memo(
                 <View style={styles.optionHeader}>
                   <AppText
                     weight={checked ? "Medium" : "Regular"}
-                    style={[
-                      styles.optionText,
-                      { color: checked ? C.text : C.textSecondary },
-                    ]}
+                    variant='body'
+                    style={[styles.optionText, { color: checked ? C.text : C.textSecondary }]}
                   >
                     {localize(option.text)}
                   </AppText>
@@ -131,7 +130,8 @@ export const NiyyahChecklist = React.memo(
                           />
                           <AppText
                             weight='Medium'
-                            style={[styles.roleBadgeText, { color: roleColor }]}
+                            variant='caption'
+                            style={{ color: roleColor }}
                           >
                             {t(`settings.profile.${tag}`)}
                           </AppText>
@@ -142,6 +142,7 @@ export const NiyyahChecklist = React.memo(
                 {showBilingual && (
                   <AppText
                     weight='Regular'
+                    variant='footnote'
                     style={[styles.optionTextAr, { color: C.textMuted }]}
                   >
                     {option.text.ar}
@@ -158,10 +159,7 @@ export const NiyyahChecklist = React.memo(
             style={[styles.addCustomBtn, { borderColor: C.tint + "66" }]}
           >
             <Feather name='plus' size={14} color={C.tintLight} />
-            <AppText
-              weight='Medium'
-              style={[styles.addCustomText, { color: C.tintLight }]}
-            >
+            <AppText weight='Medium' variant='body' style={{ color: C.tintLight }}>
               {t("activity.addCustomIntention")}
             </AppText>
           </AnimatedPressable>
@@ -207,11 +205,11 @@ export const NiyyahChecklist = React.memo(
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 12,
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
     borderWidth: 1,
-    gap: 12,
+    gap: spacing.md,
   },
   cardHeader: {
     flexDirection: "row",
@@ -219,25 +217,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sectionLabel: {
-    fontSize: 12,
     textTransform: "uppercase",
     letterSpacing: 0.8,
   },
-  selectedCount: { fontSize: 12 },
-  multiHint: { fontSize: 13, lineHeight: 18, marginTop: -4 },
+  multiHint: { marginTop: -spacing.xs, lineHeight: 18 },
   niyyahOption: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 12,
-    padding: 12,
-    borderRadius: 10,
+    gap: spacing.md,
+    padding: spacing.md,
+    borderRadius: radius.sm,
     borderWidth: 1,
-    marginTop: 6,
+    marginTop: spacing.sm,
   },
   checkbox: {
     width: 22,
     height: 22,
-    borderRadius: 6,
+    borderRadius: radius.sm,
     borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",
@@ -248,48 +244,45 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    gap: 8,
+    gap: spacing.sm,
   },
-  optionText: { fontSize: 14, lineHeight: 20, flex: 1 },
+  optionText: { flex: 1, lineHeight: 20 },
   roleBadge: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6,
+    gap: spacing.xs,
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.sm,
     alignSelf: "flex-start",
-    marginTop: 2,
+    marginTop: spacing.xs,
   },
-  roleBadgeText: { fontSize: 10 },
   optionTextAr: {
-    fontSize: 13,
     textAlign: "right",
+    marginTop: spacing.xs,
     lineHeight: 20,
-    marginTop: 2,
   },
   addCustomBtn: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    padding: 12,
-    borderRadius: 10,
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderRadius: radius.sm,
     borderWidth: 1,
     borderStyle: "dashed",
-    marginTop: 6,
+    marginTop: spacing.sm,
   },
-  addCustomText: { fontSize: 14 },
   customInputCard: {
-    borderRadius: 10,
-    padding: 12,
+    borderRadius: radius.sm,
+    padding: spacing.md,
     borderWidth: 1,
-    gap: 8,
-    marginTop: 6,
+    gap: spacing.sm,
+    marginTop: spacing.sm,
   },
   editActions: {
     flexDirection: "row",
-    gap: 8,
-    marginTop: 4,
+    gap: spacing.sm,
+    marginTop: spacing.xs,
     justifyContent: "flex-end",
   },
 });

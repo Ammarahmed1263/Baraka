@@ -7,6 +7,8 @@ import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface LanguageSheetProps {
   currentLang: string;
@@ -24,11 +26,16 @@ export const LanguageSheet = React.forwardRef<BottomSheetModal, LanguageSheetPro
         snapPoints={["35%"]}
         enablePanDownToClose
       >
-        <AppText weight="Bold" style={[styles.sheetTitle, { color: C.text }]}>
+        <AppText
+          weight="Bold"
+          variant="subtitle"
+          style={[styles.sheetTitle, { color: C.text }]}
+        >
           {t("settings.selectLanguage", "Select Language")}
         </AppText>
         <AppText
           weight="Regular"
+          variant="body"
           style={[styles.sheetDesc, { color: C.textMuted }]}
         >
           {t(
@@ -51,6 +58,7 @@ export const LanguageSheet = React.forwardRef<BottomSheetModal, LanguageSheetPro
           >
             <AppText
               weight="Medium"
+              variant="body"
               style={{ color: currentLang === "en" ? C.tint : C.text }}
             >
               English
@@ -71,6 +79,7 @@ export const LanguageSheet = React.forwardRef<BottomSheetModal, LanguageSheetPro
           >
             <AppText
               weight="Medium"
+              variant="body"
               style={{
                 color: currentLang === "ar" ? C.tint : C.text,
                 fontFamily: "Tajawal-Medium",
@@ -88,24 +97,22 @@ export const LanguageSheet = React.forwardRef<BottomSheetModal, LanguageSheetPro
 
 const styles = StyleSheet.create({
   sheetTitle: {
-    fontSize: 18,
-    marginBottom: 8,
+    marginBottom: spacing.sm,
     textAlign: "center",
   },
   sheetDesc: {
-    fontSize: 14,
     textAlign: "center",
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    marginBottom: spacing.xl,
+    paddingHorizontal: spacing.md,
   },
   sheetOptions: {
-    gap: 12,
+    gap: spacing.md,
   },
   langOption: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
-    borderRadius: 12,
+    padding: spacing.lg,
+    borderRadius: radius.md,
   },
 });

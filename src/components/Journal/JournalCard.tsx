@@ -1,11 +1,14 @@
 import { Feather } from "@expo/vector-icons";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { AppText } from "@components/UI/AppText";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { NIYYAH_OPTIONS } from "@data/niyyahTemplates";
 import { useLocalize } from "@hooks/useLocalize";
 import { type JournalEntry } from "@types";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface JournalCardProps {
   entry: JournalEntry;
@@ -48,10 +51,7 @@ export default function JournalCard({ entry, onOptions }: JournalCardProps) {
           <View
             style={[styles.activityChip, { backgroundColor: C.tint + "18" }]}
           >
-            <AppText
-              weight='Bold'
-              style={[styles.activityChipText, { color: C.tint }]}
-            >
+            <AppText weight='Bold' variant='caption' style={{ color: C.tint }}>
               {activityDisplayName}
             </AppText>
           </View>
@@ -66,10 +66,7 @@ export default function JournalCard({ entry, onOptions }: JournalCardProps) {
               ]}
             >
               <Feather name='star' size={10} color={C.gold} />
-              <AppText
-                weight='Bold'
-                style={[styles.countChipText, { color: C.gold }]}
-              >
+              <AppText weight='Bold' variant='caption' style={{ color: C.gold }}>
                 ×{entry.selectedNiyyahCount}
               </AppText>
             </View>
@@ -77,29 +74,24 @@ export default function JournalCard({ entry, onOptions }: JournalCardProps) {
         </View>
         <View style={styles.headerRight}>
           <View style={styles.dateInfo}>
-            <AppText
-              weight='Regular'
-              style={[styles.dateText, { color: C.textMuted }]}
-            >
+            <AppText weight='Regular' variant='caption' style={{ color: C.textMuted }}>
               {formattedDate}
             </AppText>
-            <AppText
-              weight='Regular'
-              style={[styles.timeText, { color: C.textMuted }]}
-            >
+            <AppText weight='Regular' variant='caption' style={{ color: C.textMuted }}>
               {formattedTime}
             </AppText>
           </View>
-          <Pressable
+          <AnimatedPressable
             onPress={() => onOptions?.(entry)}
             hitSlop={8}
+            scaleDownTo={0.85}
             style={styles.menuButton}
           >
             <Feather name='more-vertical' size={18} color={C.textMuted} />
-          </Pressable>
+          </AnimatedPressable>
         </View>
       </View>
-      <AppText weight='Regular' style={[styles.noteText, { color: C.text }]}>
+      <AppText weight='Regular' variant='bodyLarge' style={[styles.noteText, { color: C.text }]}>
         {entry.note}
       </AppText>
       {impactfulOption && (
@@ -112,6 +104,7 @@ export default function JournalCard({ entry, onOptions }: JournalCardProps) {
           <Feather name='heart' size={12} color={C.gold} />
           <AppText
             weight='Regular'
+            variant='caption'
             style={[styles.impactText, { color: C.gold }]}
           >
             {localize(impactfulOption.text)}
@@ -124,10 +117,10 @@ export default function JournalCard({ entry, onOptions }: JournalCardProps) {
 
 const styles = StyleSheet.create({
   journalCard: {
-    borderRadius: 16,
-    padding: 14,
+    borderRadius: radius.lg,
+    padding: spacing.md,
     borderWidth: 1,
-    gap: 10,
+    gap: spacing.sm,
   },
   cardHeader: {
     flexDirection: "row",
@@ -137,46 +130,42 @@ const styles = StyleSheet.create({
   headerRight: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 8,
+    gap: spacing.sm,
   },
   cardChips: {
     flexDirection: "row",
-    gap: 6,
+    gap: spacing.xs,
     alignItems: "center",
     flexWrap: "wrap",
     flex: 1,
   },
   activityChip: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.sm,
   },
-  activityChipText: { fontSize: 12 },
   countChip: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 8,
+    gap: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.sm,
     borderWidth: 1,
   },
-  countChipText: { fontSize: 12 },
-  dateInfo: { alignItems: "flex-end", gap: 2 },
-  dateText: { fontSize: 12 },
-  timeText: { fontSize: 12 },
+  dateInfo: { alignItems: "flex-end", gap: spacing.xs },
   menuButton: {
-    paddingTop: 2,
+    paddingTop: spacing.xs,
   },
-  noteText: { fontSize: 16, lineHeight: 24 },
+  noteText: { lineHeight: 24 },
   impactRow: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 8,
-    padding: 10,
-    borderRadius: 8,
+    gap: spacing.sm,
+    padding: spacing.sm,
+    borderRadius: radius.sm,
     borderWidth: 1,
-    marginTop: 2,
+    marginTop: spacing.xs,
   },
-  impactText: { flex: 1, fontSize: 12 },
+  impactText: { flex: 1 },
 });

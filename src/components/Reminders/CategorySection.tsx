@@ -6,6 +6,8 @@ import { AppText } from "@components/UI/AppText";
 import { useLocalize } from "@hooks/useLocalize";
 import { type UserActivity } from "@types";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 const CATEGORY_ICONS: Record<string, any> = {
   worship: "star",
@@ -39,28 +41,34 @@ interface ActivityRowProps {
   colors: any;
 }
 
-const ActivityRow = memo(({ activity, onToggle, localize, colors: C }: ActivityRowProps) => {
-  const handleToggle = useCallback(() => {
-    onToggle(activity);
-  }, [activity, onToggle]);
+const ActivityRow = memo(
+  ({ activity, onToggle, localize, colors: C }: ActivityRowProps) => {
+    const handleToggle = useCallback(() => {
+      onToggle(activity);
+    }, [activity, onToggle]);
 
-  return (
-    <View style={styles.activityRow}>
-      <View style={styles.activityInfo}>
-        <AppText weight='Medium' style={[styles.activityName, { color: C.text }]}>
-          {localize(activity.name)}
-        </AppText>
+    return (
+      <View style={styles.activityRow}>
+        <View style={styles.activityInfo}>
+          <AppText
+            weight='Medium'
+            variant='bodyLarge'
+            style={{ color: C.text }}
+          >
+            {localize(activity.name)}
+          </AppText>
+        </View>
+        <Switch
+          value={activity.enabled}
+          onValueChange={handleToggle}
+          trackColor={{ false: C.border, true: C.tint + "80" }}
+          thumbColor={activity.enabled ? C.tint : C.textMuted}
+          ios_backgroundColor={C.border}
+        />
       </View>
-      <Switch
-        value={activity.enabled}
-        onValueChange={handleToggle}
-        trackColor={{ false: C.border, true: C.tint + "80" }}
-        thumbColor={activity.enabled ? C.tint : C.textMuted}
-        ios_backgroundColor={C.border}
-      />
-    </View>
-  );
-});
+    );
+  },
+);
 
 interface CategorySectionProps {
   category: string;
@@ -89,6 +97,7 @@ export default memo(function CategorySection({
         />
         <AppText
           weight='Bold'
+          variant='caption'
           style={[styles.categoryLabel, { color: C.textSecondary }]}
         >
           {getCategoryLabel(category, t)}
@@ -121,29 +130,27 @@ export default memo(function CategorySection({
 });
 
 const styles = StyleSheet.create({
-  categorySection: { marginBottom: 20 },
+  categorySection: { marginBottom: spacing.xl },
   categoryHeader: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    marginBottom: 8,
-    paddingLeft: 4,
+    gap: spacing.xs,
+    marginBottom: spacing.sm,
+    paddingLeft: spacing.xs,
   },
-  categoryLabel: { fontSize: 12, textTransform: "uppercase", letterSpacing: 1 },
+  categoryLabel: { textTransform: "uppercase", letterSpacing: 1 },
   categoryCard: {
-    borderRadius: 14,
+    borderRadius: radius.md,
     borderWidth: 1,
     overflow: "hidden",
   },
   activityRow: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 14,
-    gap: 12,
+    padding: spacing.md,
+    gap: spacing.md,
   },
 
-  activityInfo: { flex: 1, gap: 2 },
-  activityName: { fontSize: 15 },
-  activityRef: { fontSize: 11 },
-  divider: { height: 1, marginLeft: 14 },
+  activityInfo: { flex: 1, gap: spacing.xs },
+  divider: { height: 1, marginLeft: spacing.md },
 });

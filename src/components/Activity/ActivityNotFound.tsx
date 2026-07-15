@@ -2,6 +2,7 @@ import { View, StyleSheet } from "react-native";
 import { AppText } from "@components/UI/AppText";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
 
 export function ActivityNotFound() {
   const { t } = useTranslation();
@@ -9,7 +10,7 @@ export function ActivityNotFound() {
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
-      <AppText style={{ color: C.text, margin: 20 }}>
+      <AppText variant='body' style={{ color: C.text, margin: spacing.xl }}>
         {t("activity.notFound")}
       </AppText>
     </View>

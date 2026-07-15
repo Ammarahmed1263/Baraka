@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+﻿import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import {
@@ -14,6 +14,8 @@ import { AppText } from "@components/UI/AppText";
 import { type EducationEntry } from "@types";
 import { useLocalize } from "@hooks/useLocalize";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface EducationDetailProps {
   entry: EducationEntry;
@@ -40,8 +42,8 @@ export default function EducationDetail({
         contentContainerStyle={[
           styles.detailContent,
           {
-            paddingTop: (isWeb ? 67 : insets.top) + 16,
-            paddingBottom: isWeb ? 34 : insets.bottom + 24,
+            paddingTop: (isWeb ? 67 : insets.top) + spacing.lg,
+            paddingBottom: isWeb ? 34 : insets.bottom + spacing.xxl,
           },
         ]}
         showsVerticalScrollIndicator={false}
@@ -85,22 +87,17 @@ export default function EducationDetail({
               },
             ]}
           >
-            <AppText
-              weight='Medium'
-              style={[styles.detailCategoryText, { color: C.textSecondary }]}
-            >
+            <AppText weight='Medium' variant='caption' style={{ color: C.textSecondary }}>
               {mapCategoryLabel(entry.category)}
             </AppText>
           </View>
-          <AppText
-            weight='Bold'
-            style={[styles.detailTitle, { color: C.text }]}
-          >
+          <AppText weight='Bold' variant='titleLarge' style={[styles.detailTitle, { color: C.text }]}>
             {localize(entry.title)}
           </AppText>
           {showBilingual && (
             <AppText
               weight='Regular'
+              variant='bodyLarge'
               style={[styles.detailTitleAr, { color: C.textSecondary }]}
             >
               {entry.title.ar}
@@ -114,10 +111,7 @@ export default function EducationDetail({
             { backgroundColor: C.backgroundCard, borderColor: C.border },
           ]}
         >
-          <AppText
-            weight='Regular'
-            style={[styles.detailText, { color: C.text }]}
-          >
+          <AppText weight='Regular' variant='bodyLarge' style={[styles.detailText, { color: C.text }]}>
             {localize(entry.content)}
           </AppText>
         </View>
@@ -129,14 +123,12 @@ export default function EducationDetail({
               { backgroundColor: C.backgroundCard, borderColor: C.border },
             ]}
           >
-            <AppText
-              weight='Medium'
-              style={[styles.arabicLabel, { color: C.textSecondary }]}
-            >
+            <AppText weight='Medium' variant='caption' style={{ color: C.textSecondary }}>
               {t("learn.arabicSection")}
             </AppText>
             <AppText
               weight='Regular'
+              variant='bodyLarge'
               style={[styles.arabicBodyText, { color: C.text }]}
             >
               {entry.content.ar}
@@ -152,16 +144,10 @@ export default function EducationDetail({
         >
           <Feather name='book-open' size={16} color={C.tint} />
           <View style={{ flex: 1 }}>
-            <AppText
-              weight='Bold'
-              style={[styles.sourceLabel, { color: C.tint }]}
-            >
+            <AppText weight='Bold' variant='caption' style={{ color: C.tint }}>
               {t("common.source")}
             </AppText>
-            <AppText
-              weight='Regular'
-              style={[styles.sourceRef, { color: C.tint }]}
-            >
+            <AppText weight='Regular' variant='body' style={{ color: C.tint }}>
               {localize(entry.source)}
             </AppText>
           </View>
@@ -173,62 +159,56 @@ export default function EducationDetail({
 
 const styles = StyleSheet.create({
   detailContainer: { flex: 1 },
-  detailContent: { paddingHorizontal: 20 },
+  detailContent: { paddingHorizontal: spacing.xl },
   closeButton: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: radius.xl,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 16,
+    marginBottom: spacing.lg,
     borderWidth: 1,
   },
   detailHeader: {
-    borderRadius: 16,
-    padding: 24,
-    marginBottom: 16,
-    gap: 10,
+    borderRadius: radius.lg,
+    padding: spacing.xxl,
+    marginBottom: spacing.lg,
+    gap: spacing.sm,
   },
   detailCategoryBadge: {
     alignSelf: "flex-start",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.md,
   },
-  detailCategoryText: { fontSize: 12 },
-  detailTitle: { fontSize: 24, lineHeight: 32 },
+  detailTitle: { lineHeight: 32 },
   detailTitleAr: {
-    fontSize: 16,
     textAlign: "right",
   },
   detailBody: {
-    borderRadius: 12,
-    padding: 18,
+    borderRadius: radius.md,
+    padding: spacing.lg,
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
-  detailText: { fontSize: 16, lineHeight: 26 },
+  detailText: { lineHeight: 26 },
   arabicBody: {
-    borderRadius: 12,
-    padding: 18,
+    borderRadius: radius.md,
+    padding: spacing.lg,
     borderWidth: 1,
-    marginBottom: 12,
-    gap: 8,
+    marginBottom: spacing.md,
+    gap: spacing.sm,
   },
-  arabicLabel: { fontSize: 12 },
   arabicBodyText: {
-    fontSize: 16,
     textAlign: "right",
     lineHeight: 28,
   },
   sourceCard: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 12,
-    padding: 16,
-    borderRadius: 12,
+    gap: spacing.md,
+    padding: spacing.lg,
+    borderRadius: radius.md,
     borderWidth: 1,
   },
-  sourceLabel: { fontSize: 12 },
-  sourceRef: { fontSize: 14 },
 });

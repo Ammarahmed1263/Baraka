@@ -12,6 +12,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { type NiyyahOption } from "@types";
 import { KeyboardAwareScrollViewCompat } from "@components/KeyboardAwareScrollViewCompat";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface ActivityReflectStepProps {
   activityName: string;
@@ -55,7 +57,7 @@ export const ActivityReflectStep = React.memo(
       <KeyboardAwareScrollViewCompat
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: topPadding + 8, paddingBottom: isWeb ? 34 + 40 : 60 },
+          { paddingTop: topPadding + spacing.sm, paddingBottom: isWeb ? 34 + 40 : 60 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -82,15 +84,15 @@ export const ActivityReflectStep = React.memo(
           }]}
         >
           <Feather name="check-circle" size={28} color={isDark ? C.gold : C.tint} />
-          <AppText weight="Bold" style={[styles.reflectTitle, { color: C.text }]}>
+          <AppText weight="Bold" variant="title" style={{ color: C.text }}>
             {t("activity.renewed")}
           </AppText>
-          <AppText weight="Regular" style={[styles.reflectSub, { color: C.textSecondary }]}>
+          <AppText weight="Regular" variant="bodyLarge" style={{ color: C.textSecondary }}>
             {activityName}
           </AppText>
           {cleanSelectedCount > 0 && (
             <View style={[styles.multiplierBadge, { backgroundColor: C.gold + "33", borderColor: C.gold + "88" }]}>
-              <AppText weight="Bold" style={[styles.multiplierText, { color: C.gold }]}>
+              <AppText weight="Bold" variant="body" style={{ color: C.gold }}>
                 {t("activity.multiplierBadge", { count: ajrCount })}
               </AppText>
             </View>
@@ -106,6 +108,7 @@ export const ActivityReflectStep = React.memo(
           >
             <AppText
               weight="Medium"
+              variant="caption"
               style={[styles.sectionLabel, { color: C.textSecondary }]}
             >
               {t("activity.intentionsForAct")}
@@ -116,12 +119,9 @@ export const ActivityReflectStep = React.memo(
                   name="check"
                   size={14}
                   color={C.tint}
-                  style={{ marginTop: 2 }}
+                  style={styles.reflectNiyyahCheck}
                 />
-                <AppText
-                  weight="Regular"
-                  style={[styles.reflectNiyyahText, { color: C.text }]}
-                >
+                <AppText weight="Regular" variant="body" style={[styles.reflectNiyyahText, { color: C.text }]}>
                   {localize(n.text)}
                 </AppText>
               </View>
@@ -135,17 +135,15 @@ export const ActivityReflectStep = React.memo(
             { backgroundColor: C.backgroundCard, borderColor: C.border },
           ]}
         >
-          <AppText
-            weight="Bold"
-            style={[styles.reflectPromptLabel, { color: C.text }]}
-          >
+          <AppText weight="Bold" variant="bodyLarge" style={{ color: C.text }}>
             {t("activity.quickReflection")}{" "}
-            <AppText weight="Regular" style={{ color: C.textMuted, fontSize: 13 }}>
+            <AppText weight="Regular" variant="footnote" style={{ color: C.textMuted }}>
               ({t("common.optional")})
             </AppText>
           </AppText>
           <AppText
             weight="Regular"
+            variant="body"
             style={[styles.reflectPromptHint, { color: C.textSecondary }]}
           >
             {t("activity.reflectPrompt", { count: ajrCount })}
@@ -161,6 +159,7 @@ export const ActivityReflectStep = React.memo(
             <>
               <AppText
                 weight="Medium"
+                variant="footnote"
                 style={[styles.impactLabel, { color: C.textSecondary }]}
               >
                 {t("activity.impactQuestion")}
@@ -195,10 +194,7 @@ export const ActivityReflectStep = React.memo(
                         },
                       ]}
                     />
-                    <AppText
-                      weight="Regular"
-                      style={[styles.impactOptionText, { color: C.text }]}
-                    >
+                    <AppText weight="Regular" variant="footnote" style={[styles.impactOptionText, { color: C.text }]}>
                       {localize(n.text)}
                     </AppText>
                   </AnimatedPressable>
@@ -228,81 +224,77 @@ export const ActivityReflectStep = React.memo(
 );
 
 const styles = StyleSheet.create({
-  scrollContent: { paddingHorizontal: 20 },
+  scrollContent: { paddingHorizontal: spacing.xl },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   backButton: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: radius.xl,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
   },
   reflectBanner: {
-    borderRadius: 16,
-    padding: 24,
+    borderRadius: radius.lg,
+    padding: spacing.xxl,
     alignItems: "center",
-    gap: 8,
-    marginBottom: 16,
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
   },
-  reflectTitle: { fontSize: 22 },
-  reflectSub: { fontSize: 15 },
   multiplierBadge: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 20,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.xl,
     borderWidth: 1,
-    marginTop: 4,
+    marginTop: spacing.xs,
   },
-  multiplierText: { fontSize: 14 },
   reflectNiyyahList: {
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 12,
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
     borderWidth: 1,
-    gap: 10,
+    gap: spacing.sm,
   },
   reflectNiyyahItem: {
     flexDirection: "row",
-    gap: 10,
+    gap: spacing.sm,
     alignItems: "flex-start",
   },
-  reflectNiyyahText: { flex: 1, fontSize: 14, lineHeight: 20 },
+  reflectNiyyahCheck: { marginTop: spacing.xs },
+  reflectNiyyahText: { flex: 1, lineHeight: 20 },
   reflectCard: {
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 16,
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
     borderWidth: 1,
-    gap: 12,
+    gap: spacing.md,
   },
-  reflectPromptLabel: { fontSize: 16 },
-  reflectPromptHint: { fontSize: 14, lineHeight: 20, marginTop: -4 },
-  impactLabel: { fontSize: 13, textTransform: "uppercase", letterSpacing: 0.6 },
+  reflectPromptHint: { marginTop: -spacing.xs, lineHeight: 20 },
+  impactLabel: { textTransform: "uppercase", letterSpacing: 0.6 },
   impactOption: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    padding: 10,
-    borderRadius: 8,
+    gap: spacing.sm,
+    padding: spacing.sm,
+    borderRadius: radius.sm,
     borderWidth: 1,
-    marginTop: 6,
+    marginTop: spacing.sm,
   },
   impactDot: {
     width: 16,
     height: 16,
-    borderRadius: 8,
+    borderRadius: radius.sm,
     borderWidth: 2,
     flexShrink: 0,
   },
-  impactOptionText: { flex: 1, fontSize: 13, lineHeight: 18 },
-  reflectActions: { flexDirection: "row", gap: 10, marginTop: 4 },
+  impactOptionText: { flex: 1, lineHeight: 18 },
+  reflectActions: { flexDirection: "row", gap: spacing.sm, marginTop: spacing.xs },
   sectionLabel: {
-    fontSize: 12,
     textTransform: "uppercase",
     letterSpacing: 0.8,
   },

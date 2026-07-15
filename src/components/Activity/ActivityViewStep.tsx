@@ -17,6 +17,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { NiyyahChecklist } from "./NiyyahChecklist";
 import { type NiyyahOption, type UserActivity } from "@types";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface ActivityViewStepProps {
   activity: UserActivity;
@@ -66,7 +68,7 @@ export const ActivityViewStep = React.memo(
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: topPadding + 8, paddingBottom: isWeb ? 34 + 40 : 60 },
+          { paddingTop: topPadding + spacing.sm, paddingBottom: isWeb ? 34 + 40 : 60 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -88,10 +90,7 @@ export const ActivityViewStep = React.memo(
               ]}
             >
               <Feather name='check-circle' size={14} color={C.tint} />
-              <AppText
-                weight='Medium'
-                style={[styles.completedBadgeText, { color: C.tint }]}
-              >
+              <AppText weight='Medium' variant='footnote' style={{ color: C.tint }}>
                 {t("activity.completedToday")}
               </AppText>
             </View>
@@ -113,15 +112,13 @@ export const ActivityViewStep = React.memo(
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <AppText
-            weight='Bold'
-            style={[styles.activityName, { color: C.text }]}
-          >
+          <AppText weight='Bold' variant='titleLarge' style={{ color: C.text }}>
             {activityName}
           </AppText>
           {showBilingual && (
             <AppText
               weight='Regular'
+              variant='bodyLarge'
               style={[styles.activityNameAr, { color: C.textSecondary }]}
             >
               {activity.name.ar}
@@ -141,6 +138,7 @@ export const ActivityViewStep = React.memo(
             >
               <AppText
                 weight='Bold'
+                variant='caption'
                 style={[styles.basicBadgeText, { color: C.tint }]}
               >
                 {t("activity.coreIntention")}
@@ -175,14 +173,12 @@ export const ActivityViewStep = React.memo(
             </>
           ) : (
             <>
-              <AppText
-                weight='Regular'
-                style={[styles.niyyahText, { color: C.text }]}
-              >
+              <AppText weight='Regular' variant='bodyLarge' style={[styles.niyyahText, { color: C.text }]}>
                 {activity.customNiyyah ?? localize(activity.niyyahText)}
               </AppText>
               {showBilingual && !activity.customNiyyah && (
                 <AppText
+                  variant='bodyLarge'
                   style={[styles.arabicText, { color: C.textSecondary }]}
                 >
                   {activity.niyyahText.ar}
@@ -211,9 +207,9 @@ export const ActivityViewStep = React.memo(
             name='heart'
             size={14}
             color={C.textMuted}
-            style={{ marginTop: 2 }}
+            style={styles.disclaimerIcon}
           />
-          <AppText style={[styles.disclaimerText, { color: C.textSecondary }]}>
+          <AppText variant='footnote' style={[styles.disclaimerText, { color: C.textSecondary }]}>
             {t("activity.niyyahDisclaimer")}
           </AppText>
         </View>
@@ -228,6 +224,7 @@ export const ActivityViewStep = React.memo(
             <Feather name='star' size={16} color={C.gold} />
             <AppText
               weight='Medium'
+              variant='footnote'
               style={[styles.ajrText, { color: C.gold }]}
             >
               {t("activity.ajrPreview", { count: localSelected.length + 1 })}
@@ -243,17 +240,14 @@ export const ActivityViewStep = React.memo(
             ]}
           >
             <Feather name='book-open' size={14} color={C.tint} />
-            <AppText
-              weight='Medium'
-              style={[styles.sourceText, { color: C.tint }]}
-            >
+            <AppText weight='Medium' variant='caption' style={{ color: C.tint }}>
               {localize(activity.hadithRef)}
             </AppText>
           </View>
         )}
 
         {completed ? (
-          <View style={{ gap: 10 }}>
+          <View style={styles.completedActions}>
             <View
               style={[
                 styles.renewButton,
@@ -265,10 +259,7 @@ export const ActivityViewStep = React.memo(
               ]}
             >
               <Feather name='check-circle' size={20} color={C.tint} />
-              <AppText
-                weight='Bold'
-                style={[styles.renewText, { color: C.tint }]}
-              >
+              <AppText weight='Bold' variant='subtitle' style={{ color: C.tint }}>
                 {t("activity.renewedButton")}
               </AppText>
             </View>
@@ -276,7 +267,7 @@ export const ActivityViewStep = React.memo(
               variant='outline'
               label={t("activity.unmark")}
               onPress={onUnmark}
-              style={{ marginBottom: 10 }}
+              style={styles.unmarkButton}
             />
           </View>
         ) : (
@@ -295,17 +286,17 @@ export const ActivityViewStep = React.memo(
 );
 
 const styles = StyleSheet.create({
-  scrollContent: { paddingHorizontal: 20 },
+  scrollContent: { paddingHorizontal: spacing.xl },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   backButton: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: radius.xl,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
@@ -313,88 +304,93 @@ const styles = StyleSheet.create({
   completedBadge: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.xl,
     borderWidth: 1,
   },
-  completedBadgeText: { fontSize: 13 },
-  activityHeader: { borderRadius: 16, padding: 24, marginBottom: 16, gap: 6 },
-  activityName: { fontSize: 24 },
+  activityHeader: {
+    borderRadius: radius.lg,
+    padding: spacing.xxl,
+    marginBottom: spacing.lg,
+    gap: spacing.sm,
+  },
   activityNameAr: {
-    fontSize: 16,
     textAlign: "right",
   },
   card: {
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 12,
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
     borderWidth: 1,
-    gap: 12,
+    gap: spacing.md,
   },
   cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  basicBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
+  basicBadge: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.sm,
+  },
   basicBadgeText: {
-    fontSize: 12,
     textTransform: "uppercase",
     letterSpacing: 0.6,
   },
-  niyyahText: { fontSize: 15, lineHeight: 24 },
+  niyyahText: { lineHeight: 24 },
   arabicText: {
-    fontSize: 15,
     textAlign: "right",
+    marginTop: spacing.xs,
     lineHeight: 26,
-    marginTop: 4,
   },
   editActions: {
     flexDirection: "row",
-    gap: 8,
-    marginTop: 4,
+    gap: spacing.sm,
+    marginTop: spacing.xs,
     justifyContent: "flex-end",
   },
   disclaimerBanner: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 10,
-    padding: 12,
-    borderRadius: 10,
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderRadius: radius.sm,
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
-  disclaimerText: { flex: 1, fontSize: 13, lineHeight: 18 },
+  disclaimerIcon: { marginTop: spacing.xs },
+  disclaimerText: { flex: 1, lineHeight: 18 },
   ajrPreview: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    padding: 12,
-    borderRadius: 10,
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderRadius: radius.sm,
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
-  ajrText: { flex: 1, fontSize: 13, lineHeight: 18 },
+  ajrText: { flex: 1 },
   sourceSection: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    padding: 12,
-    borderRadius: 10,
-    marginBottom: 20,
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderRadius: radius.sm,
+    marginBottom: spacing.xl,
     borderWidth: 1,
   },
-  sourceText: { fontSize: 12 },
+  completedActions: { gap: spacing.sm },
   renewButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 10,
-    padding: 18,
-    borderRadius: 16,
-    marginBottom: 10,
+    gap: spacing.sm,
+    padding: spacing.lg,
+    borderRadius: radius.lg,
+    marginBottom: spacing.sm,
   },
-  renewText: { fontSize: 17 },
+  unmarkButton: { marginBottom: spacing.sm },
 });
