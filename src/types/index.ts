@@ -4,11 +4,8 @@ export type { LocalizedString };
 
 export type Activity = {
   id: string;
-  /** Bilingual display name */
   name: LocalizedString;
-  /** Category key used for grouping (e.g. "worship", "daily") */
   category: string;
-  /** Default niyyah text shown before user selects specific options */
   niyyahText: LocalizedString;
   hadithRef?: LocalizedString;
   defaultTime?: string;
@@ -26,7 +23,6 @@ export type NiyyahOption = {
 export type EducationEntry = {
   id: string;
   title: LocalizedString;
-  /** Category key used for filtering (e.g. "Foundations", "Work") */
   category: string;
   content: LocalizedString;
   source: LocalizedString;
@@ -36,7 +32,6 @@ export type EducationEntry = {
 export type UserActivity = Activity & {
   enabled: boolean;
   customTime?: string;
-  /** User-edited override for the default niyyah. Plain string (user language). */
   customNiyyah?: string;
   selectedNiyyahIds?: string[];
   customNiyyahOptions?: Array<{ id: string; text: LocalizedString }>;
@@ -54,7 +49,6 @@ export type DailyLog = {
 export type JournalEntry = {
   id: string;
   activityId: string;
-  /** Snapshot of the activity name at the time of logging */
   activityName: LocalizedString;
   date: string;
   createdAt: string;

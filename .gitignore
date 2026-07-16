@@ -49,3 +49,4 @@ yarn-error.*
 ExcelToJson.js
 assets/images/old
 .vscode
+assets/store/*
