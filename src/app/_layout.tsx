@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import * as Notifications from "expo-notifications";
 
 import { ThemeProvider } from "@/context/ThemeContext";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
@@ -24,24 +25,29 @@ SplashScreen.setOptions({
   fade: true,
 });
 
-// const navigationIntegration = Sentry.reactNavigationIntegration({
-//   enableTimeToInitialDisplay: !isRunningInExpoGo(),
-// });
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
   environment: __DEV__ ? "development" : "production",
 
-  sendDefaultPii: true,
+  sendDefaultPii: false,
 
   enableLogs: true,
 
-  // Performance Monitoring
-  // tracesSampleRate: __DEV__ ? 1.0 : 0.05, // Capture 100% of transactions (lower this in production)
-  // integrations: [navigationIntegration],
-  // enableNativeFramesTracking: !isRunningInExpoGo(),
+  replaysSessionSampleRate: __DEV__ ? 1.0 : 0.0,
+  replaysOnErrorSampleRate: __DEV__ ? 1.0 : 0.1,
+  integrations: [
+    Sentry.mobileReplayIntegration(),
+  ],
 
-  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
   spotlight: __DEV__,
 });
 
@@ -72,18 +78,11 @@ function RootLayoutNav() {
 }
 
 function App() {
-  // const ref = useNavigationContainerRef();
   const [i18nReady, setI18nReady] = useState(false);
   const isLoading = useSettingsStore((s) => s.isLoading);
   const settings = useSettingsStore((s) => s.settings);
   const localize = useLocalize();
   useNotifications();
-
-  // useEffect(() => {
-  //   if (ref) {
-  //     navigationIntegration.registerNavigationContainer(ref);
-  //   }
-  // }, [ref]);
 
   useEffect(() => {
     if (i18n.isInitialized) {
@@ -104,7 +103,11 @@ function App() {
         localize,
         settings.notificationsEnabled,
       );
+    }
+  }, [i18nReady, isLoading, settings.reminderTime, settings.notificationsEnabled, localize]);
 
+  useEffect(() => {
+    if (i18nReady && !isLoading) {
       Sentry.setUser({
         id: getAnonymousUserId(),
       });
@@ -120,8 +123,6 @@ function App() {
       });
     }
   }, [i18nReady, isLoading]);
-
-  if (!i18nReady || isLoading) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

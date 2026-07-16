@@ -1,46 +1,57 @@
 import * as Notifications from "expo-notifications";
-import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { router, useRootNavigationState, type Href } from "expo-router";
+import { useEffect, useRef } from "react";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+export function useNotifications(): void {
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  const rootNavigationState = useRootNavigationState();
+  const isNavigationReady = !!rootNavigationState?.key;
 
-export function useNotifications() {
-  // const [expoPushToken, setExpoPushToken] = useState<string | undefined>();
-  const [notification, setNotification] = useState<
-    Notifications.Notification | undefined
-  >();
+  const isNavigationReadyRef = useRef(isNavigationReady);
+  useEffect(() => {
+    isNavigationReadyRef.current = isNavigationReady;
+  }, [isNavigationReady]);
+  const handledResponseIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // registerForPushNotificationsAsync().then((token) => {
-    //   if (token) setExpoPushToken(token);
-    // });
+    if (
+      isNavigationReady &&
+      lastNotificationResponse?.notification &&
+      lastNotificationResponse.notification.request.identifier !==
+        handledResponseIdRef.current
+    ) {
+      handledResponseIdRef.current =
+        lastNotificationResponse.notification.request.identifier;
+      const screen = lastNotificationResponse.notification.request.content.data
+        ?.screen as Href | undefined;
 
+      if (screen) {
+        router.navigate(screen);
+      }
+    }
+  }, [lastNotificationResponse, isNavigationReady]);
+
+  useEffect(() => {
     const notificationListener = Notifications.addNotificationReceivedListener(
       (notification) => {
-        console.log("Notification received:", notification);
-        setNotification(notification);
+        if (__DEV__) {
+          console.log("Notification received:", notification);
+        }
       },
     );
 
-    const response = Notifications.getLastNotificationResponse();
-    if (response?.notification) {
-      const screen = response.notification.request.content.data?.screen;
-      if (screen) router.push(screen as any);
-    }
-
     const responseListener =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("User interacted with notification:", response);
+        if (__DEV__) {
+          console.log("User interacted with notification:", response);
+        }
 
-        const screen = response.notification.request.content.data?.screen;
-        if (screen) router.push(screen as any);
+        const screen = response.notification.request.content.data?.screen as
+          | Href
+          | undefined;
+        if (screen && isNavigationReadyRef.current) {
+          router.navigate(screen);
+        }
       });
 
     return () => {
@@ -48,9 +59,4 @@ export function useNotifications() {
       responseListener.remove();
     };
   }, []);
-
-  return {
-    // expoPushToken,
-    notification,
-  };
 }
