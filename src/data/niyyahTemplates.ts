@@ -7,8 +7,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "basic",
     text: {
-      en: "Say Bismillah and eat with your right hand. This is exactly what the Prophet ﷺ taught.",
-      ar: "سمِّ الله، وكُل بيمينك، فهذه من هدي النبي ﷺ.",
+      en: "I say Bismillah and eat with my right hand, exactly as the Prophet ﷺ taught.",
+      ar: "أسمي الله، وآكل بيميني، فهذا من هدي النبي ﷺ.",
     },
   },
   {
@@ -16,8 +16,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Say Bismillah and eat with your right hand. This is exactly what the Prophet ﷺ taught.",
-      ar: "ابدأ طعامك ببسم الله، وكُل بيمينك؛ اقتداءً بسنة النبي ﷺ.",
+      en: "I begin my meal with Bismillah and eat with my right hand, following the Sunnah of the Prophet ﷺ.",
+      ar: "أبدأ طعامي ببسم الله، وآكل بيميني؛ اقتداءً بسنة النبي ﷺ.",
     },
   },
   {
@@ -25,8 +25,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Eat this to provide for yourself and those you love. Every bite you place for your family is counted as sadaqah.",
-      ar: "انوِ بهذا الطعام أن تتقوّى على النفقة على نفسك وأهلك، فما تُطعمه لأهلك يُكتب لك به أجرٌ وصدقة.",
+      en: "I eat this to provide for myself and those I love, knowing every bite I place for my family is counted as sadaqah.",
+      ar: "آكل هذا الطعام لأتقوّى على النفقة على نفسي وأهلي، موقناً أن ما أُطعمه لأهلي يُكتب لي به أجرٌ وصدقة.",
     },
   },
   {
@@ -34,8 +34,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Praise Allah when you finish. A single meal eaten with gratitude earns His pleasure.",
-      ar: "اختم طعامك بحمد الله، فإن الله يرضى عن العبد إذا أكل الأكلة فحمده عليها.",
+      en: "I praise Allah when I finish, knowing a single meal eaten with gratitude earns His pleasure.",
+      ar: "أختم طعامي بحمد الله، موقناً أن الله يرضى عن العبد إذا أكل الأكلة فحمده عليها.",
     },
   },
   {
@@ -43,8 +43,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Eat enough to keep you going, no more. A third for food, a third for drink, a third for air.",
-      ar: "كُل بقدر حاجتك، ولا تُسرف؛ فثلثٌ للطعام، وثلثٌ للشراب، وثلثٌ للنَّفَس.",
+      en: "I eat enough to keep me going, no more, a third for food, a third for drink, a third for air.",
+      ar: "آكل بقدر حاجتي، ولا أُسرف؛ فثلثٌ للطعام، وثلثٌ للشراب، وثلثٌ للنَّفَس.",
     },
   },
   {
@@ -52,8 +52,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "breakfast",
     level: "advanced",
     text: {
-      en: "Gather your family around this table if you can. Eating together brings blessing to the meal.",
-      ar: "اجمع أهلك على المائدة إن استطعت، فإن الاجتماع على الطعام سببٌ لحلول البركة.",
+      en: "I gather my family around this table if I can, knowing eating together brings blessing to the meal.",
+      ar: "أجمع أهلي على المائدة إن استطعت، موقناً أن الاجتماع على الطعام سببٌ لحلول البركة.",
     },
   },
 
@@ -63,8 +63,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "lunch",
     level: "basic",
     text: {
-      en: "Eat this to sustain your body as Allah's trust.",
-      ar: "كُل هذا لتُديم جسمك أمانةً من الله.",
+      en: "I eat this to sustain my body, Allah's trust to me.",
+      ar: "آكل هذا لأُديم جسمي، أمانة الله عندي.",
     },
   },
   {
@@ -72,8 +72,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "lunch",
     level: "advanced",
     text: {
-      en: "Say Bismillah and eat with your right hand, even mid-day.",
-      ar: "قل بسم الله وكل بيمينك، حتى في منتصف اليوم.",
+      en: "I say Bismillah and eat with my right hand, even mid-day.",
+      ar: "أقول بسم الله وآكل بيميني، حتى في منتصف اليوم.",
     },
   },
   {
@@ -81,8 +81,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "lunch",
     level: "advanced",
     text: {
-      en: "Eat now to recharge for Asr and the rest of your afternoon.",
-      ar: "كُل الآن لتجدد طاقتك لصلاة العصر وما تبقى من يومك.",
+      en: "I eat now to recharge for Asr and the rest of my afternoon.",
+      ar: "آكل الآن لأجدد طاقتي لصلاة العصر وما تبقى من يومي.",
     },
   },
   {
@@ -90,8 +90,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "lunch",
     level: "advanced",
     text: {
-      en: "Thank Allah for provision and health that's carried you this far today.",
-      ar: "اشكر الله على الرزق والصحة التي رافقتك حتى الآن اليوم.",
+      en: "I thank Allah for the provision and health that's carried me this far today.",
+      ar: "أشكر الله على الرزق والصحة التي رافقتني حتى الآن اليوم.",
     },
   },
 
@@ -101,8 +101,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "dinner",
     level: "basic",
     text: {
-      en: "Gather for this meal in Allah's name.",
-      ar: "اجتمعوا على هذه الوجبة باسم الله.",
+      en: "I gather for this meal in Allah's name.",
+      ar: "أجتمع على هذه الوجبة باسم الله.",
     },
   },
   {
@@ -110,8 +110,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "dinner",
     level: "advanced",
     text: {
-      en: "Say Bismillah and eat with your right hand, even at the end of the day.",
-      ar: "قل بسم الله وكل بيمينك، حتى في آخر اليوم.",
+      en: "I say Bismillah and eat with my right hand, even at the end of the day.",
+      ar: "أقول بسم الله وآكل بيميني، حتى في آخر اليوم.",
     },
   },
   {
@@ -119,8 +119,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "dinner",
     level: "advanced",
     text: {
-      en: "Share this meal with family. It strengthens your bond, and it's worship too.",
-      ar: "شارك هذه الوجبة مع عائلتك. تقوّي الرابط، وهي عبادة أيضاً.",
+      en: "I share this meal with my family, knowing it strengthens our bond and counts as worship too.",
+      ar: "أشارك هذه الوجبة مع عائلتي، موقناً أنها تقوّي الرابط، وهي عبادة أيضاً.",
     },
   },
   {
@@ -128,8 +128,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "dinner",
     level: "advanced",
     text: {
-      en: "Close your day with gratitude, before Isha calls you to pray.",
-      ar: "اختم يومك بالشكر، قبل أن يدعوك العشاء للصلاة.",
+      en: "I close my day with gratitude, before Isha calls me to pray.",
+      ar: "أختم يومي بالشكر، قبل أن يدعوني العشاء للصلاة.",
     },
   },
 
@@ -139,8 +139,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "basic",
     text: {
-      en: "Train today to worship better tomorrow. A strong body is a stronger servant of Allah.",
-      ar: "تدرَّب اليوم لتكون اكثر قدرة على عبادة الله غدًا. فالجسم القوي اكثر قدرة على طاعة الله.",
+      en: "I train today to worship better tomorrow, knowing a strong body is a stronger servant of Allah.",
+      ar: "أتدرَّب اليوم لأكون أكثر قدرة على عبادة الله غداً، موقناً أن الجسم القوي أكثر قدرة على طاعة الله.",
     },
   },
   {
@@ -148,8 +148,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "Train your body to stand longer in prayer, fast without fatigue, and make Hajj with ease.",
-      ar: "درِّب جسدك ليعينك على إطالة القيام في الصلاة، والصيام بقوة، وأداء الحج بيسر.",
+      en: "I train my body so it helps me stand longer in prayer, fast without fatigue, and make Hajj with ease.",
+      ar: "أدرِّب جسدي ليعينني على إطالة القيام في الصلاة، والصيام بقوة، وأداء الحج بيسر.",
     },
   },
   {
@@ -157,8 +157,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "This body is Allah's trust in your hands. Moving it is how you say thank you.",
-      ar: "جسدك أمانةٌ من الله بين يديك، والمحافظة عليه وتقويته من شكر هذه النعمة.",
+      en: "This body is Allah's trust in my hands. Moving it is how I say thank You.",
+      ar: "جسدي أمانةٌ من الله بين يدي، ومحافظتي عليه وتقويته من شكر هذه النعمة.",
     },
   },
   {
@@ -166,8 +166,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "The Prophet ﷺ said the strong believer is more beloved to Allah. Train to be that believer.",
-      ar: "قال رسول الله ﷺ: «المؤمن القوي خيرٌ وأحبُّ إلى الله من المؤمن الضعيف». فتدرَّب لتكون من المؤمنين الأقوياء.",
+      en: "The Prophet ﷺ said the strong believer is more beloved to Allah, so I train to be counted among them.",
+      ar: "قال رسول الله ﷺ: «المؤمن القوي خيرٌ وأحبُّ إلى الله من المؤمن الضعيف». فأتدرَّب لأكون من المؤمنين الأقوياء.",
     },
   },
   {
@@ -175,8 +175,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "Clear your mind and renew your energy. Then go back to your work and worship with full presence.",
-      ar: "جدِّد نشاطك وصفِّ ذهنك، ثم عُد إلى عملك وعبادتك بقلبٍ حاضرٍ وهمَّةٍ متجددة.",
+      en: "I clear my mind and renew my energy, so I return to my work and worship with full presence.",
+      ar: "أجدِّد نشاطي وأصفِّي ذهني، ثم أعود إلى عملي وعبادتي بقلبٍ حاضرٍ وهمَّةٍ متجددة.",
     },
   },
 
@@ -186,8 +186,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "basic",
     text: {
-      en: "Work today to earn halal provision for yourself and your family.",
-      ar: "اعمل اليوم لتكسب رزقاً حلالاً لنفسك ولعائلتك.",
+      en: "I work today to earn halal provision for myself and my family.",
+      ar: "أعمل اليوم لأكسب رزقاً حلالاً لنفسي ولعائلتي.",
     },
   },
   {
@@ -195,8 +195,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "advanced",
     text: {
-      en: "Work knowing what you provide for your family is counted as sadaqah.",
-      ar: "اعمل وأنت تعلم أن ما تنفقه على عائلتك يُحتسب صدقة.",
+      en: "I work knowing what I provide for my family is counted as sadaqah.",
+      ar: "أعمل وأنا أعلم أن ما أنفقه على عائلتي يُحتسب صدقة.",
     },
   },
   {
@@ -204,8 +204,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "advanced",
     text: {
-      en: "Work to stay independent. Don't lean on others, keep your dignity.",
-      ar: "اعمل لتبقى مستقلاً. لا تتكل على غيرك، واحفظ كرامتك.",
+      en: "I work to stay independent, not leaning on others, keeping my dignity.",
+      ar: "أعمل لأبقى مستقلاً، لا أتكل على غيري، وأحفظ كرامتي.",
     },
   },
   {
@@ -213,8 +213,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "advanced",
     text: {
-      en: "Set some of today's earnings aside for zakat and good causes.",
-      ar: "خصّص جزءاً من كسب اليوم للزكاة والأعمال الخيرية.",
+      en: "I set some of today's earnings aside for zakat and good causes.",
+      ar: "أخصّص جزءاً من كسب اليوم للزكاة والأعمال الخيرية.",
     },
   },
   {
@@ -222,8 +222,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "work",
     level: "advanced",
     text: {
-      en: "Work in a way that benefits others, not just yourself.",
-      ar: "اعمل بطريقة تفيد غيرك، لا نفسك فقط.",
+      en: "I work in a way that benefits others, not just myself.",
+      ar: "أعمل بطريقة تفيد غيري، لا نفسي فقط.",
     },
   },
   {
@@ -232,8 +232,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["professional"],
     text: {
-      en: "Work with honesty and excellence. Treat it as worship.",
-      ar: "اعمل بأمانة وإتقان. اعتبره عبادة.",
+      en: "I work with honesty and excellence, treating it as worship.",
+      ar: "أعمل بأمانة وإتقان، وأعتبره عبادة.",
     },
   },
   {
@@ -242,8 +242,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["professional"],
     text: {
-      en: "Spend part of what you earn in Allah's path, through zakat and sadaqah.",
-      ar: "أنفق جزءاً مما تكسبه في سبيل الله، بالزكاة والصدقة.",
+      en: "I spend part of what I earn in Allah's path, through zakat and sadaqah.",
+      ar: "أنفق جزءاً مما أكسبه في سبيل الله، بالزكاة والصدقة.",
     },
   },
   {
@@ -252,8 +252,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["professional", "parent"],
     text: {
-      en: "Earn halal provision for your family. Every dirham you spend on them is sadaqah.",
-      ar: "اكسب الرزق الحلال لأسرتك. كل درهم تنفقه عليهم صدقة.",
+      en: "I earn halal provision for my family, knowing every dirham I spend on them is sadaqah.",
+      ar: "أكسب الرزق الحلال لأسرتي، موقناً أن كل درهم أنفقه عليهم صدقة.",
     },
   },
 
@@ -263,8 +263,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cooking",
     level: "basic",
     text: {
-      en: "Prepare this meal to nourish your household.",
-      ar: "حضّر هذه الوجبة لتغذية أسرتك.",
+      en: "I prepare this meal to nourish my household.",
+      ar: "أحضّر هذه الوجبة لتغذية أسرتي.",
     },
   },
   {
@@ -272,8 +272,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cooking",
     level: "advanced",
     text: {
-      en: "Feed your family today. It's an act of charity and love.",
-      ar: "أطعم عائلتك اليوم. إنه عمل من الصدقة والمحبة.",
+      en: "I feed my family today, an act of charity and love.",
+      ar: "أطعم عائلتي اليوم، عملاً من الصدقة والمحبة.",
     },
   },
   {
@@ -282,8 +282,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["homemaker", "parent"],
     text: {
-      en: "Spend on your household. Every bit of it is counted as charity.",
-      ar: "أنفق على أسرتك. كل ما تقدّمه يُحتسب صدقة.",
+      en: "I spend on my household, knowing every bit of it is counted as charity.",
+      ar: "أنفق على أسرتي، موقناً أن كل ما أقدّمه يُحتسب صدقة.",
     },
   },
   {
@@ -291,8 +291,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cooking",
     level: "advanced",
     text: {
-      en: "Cook with care. A healthy household can worship better.",
-      ar: "اطبخ باهتمام. الأسرة السليمة تقدر على العبادة أكثر.",
+      en: "I cook with care, knowing a healthy household can worship better.",
+      ar: "أطبخ باهتمام، موقناً أن الأسرة السليمة أقدر على العبادة.",
     },
   },
   {
@@ -300,8 +300,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cooking",
     level: "advanced",
     text: {
-      en: "Say Bismillah at every step, even while preparing the food.",
-      ar: "قل بسم الله في كل خطوة، حتى وأنت تحضّر الطعام.",
+      en: "I say Bismillah at every step, even while preparing the food.",
+      ar: "أقول بسم الله في كل خطوة، حتى وأنا أحضّر الطعام.",
     },
   },
   {
@@ -310,8 +310,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["homemaker"],
     text: {
-      en: "Cook to make this home a place of warmth and blessing.",
-      ar: "اطبخ لتجعل هذا البيت مكاناً من الدفء والبركة.",
+      en: "I cook to make this home a place of warmth and blessing.",
+      ar: "أطبخ لأجعل هذا البيت مكاناً من الدفء والبركة.",
     },
   },
   {
@@ -320,8 +320,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["homemaker"],
     text: {
-      en: "Taking care of your household is an act of worship. Treat it that way.",
-      ar: "الاعتناء بأسرتك عبادة. تعامل معه على هذا الأساس.",
+      en: "Taking care of my household is an act of worship, and I treat it that way.",
+      ar: "الاعتناء بأسرتي عبادة، وأتعامل معه على هذا الأساس.",
     },
   },
   {
@@ -330,8 +330,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["parent"],
     text: {
-      en: "Feed your children well. Good food helps raise righteous kids.",
-      ar: "أطعم أطفالك جيداً. الطعام الجيد يساعد على تربية أبناء صالحين.",
+      en: "I feed my children well, knowing good food helps raise righteous kids.",
+      ar: "أطعم أطفالي جيداً، موقناً أن الطعام الجيد يساعد على تربية أبناء صالحين.",
     },
   },
 
@@ -341,8 +341,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cleaning",
     level: "basic",
     text: {
-      en: "Clean your home, following the Sunnah of cleanliness.",
-      ar: "نظّف بيتك، اتباعاً لسنة النظافة.",
+      en: "I clean my home, following the Sunnah of cleanliness.",
+      ar: "أنظّف بيتي، اتباعاً لسنة النظافة.",
     },
   },
   {
@@ -350,8 +350,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cleaning",
     level: "advanced",
     text: {
-      en: "Clean this space so it's ready for worship.",
-      ar: "نظّف هذا المكان ليكون جاهزاً للعبادة.",
+      en: "I clean this space so it's ready for worship.",
+      ar: "أنظّف هذا المكان ليكون جاهزاً للعبادة.",
     },
   },
   {
@@ -360,8 +360,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["homemaker", "parent"],
     text: {
-      en: "Clean with kindness and sincerity, as a service to your family.",
-      ar: "نظّف بطيب نفس وإخلاص، كخدمة لعائلتك.",
+      en: "I clean with kindness and sincerity, as a service to my family.",
+      ar: "أنظّف بطيب نفس وإخلاص، كخدمة لعائلتي.",
     },
   },
   {
@@ -369,8 +369,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "cleaning",
     level: "advanced",
     text: {
-      en: "Clean today. Purity is half of faith.",
-      ar: "نظّف اليوم. الطهور شطر الإيمان.",
+      en: "I clean today, knowing purity is half of faith.",
+      ar: "أنظّف اليوم، موقناً أن الطهور شطر الإيمان.",
     },
   },
   {
@@ -379,8 +379,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["parent"],
     text: {
-      en: "Clean alongside your children. Teach them order as you go.",
-      ar: "نظّف مع أطفالك. علّمهم النظام وأنت تفعل ذلك.",
+      en: "I clean alongside my children, teaching them order as I go.",
+      ar: "أنظّف مع أطفالي، وأعلّمهم النظام وأنا أفعل ذلك.",
     },
   },
   {
@@ -389,8 +389,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["homemaker"],
     text: {
-      en: "Keep this home as a blessed place fit for worship.",
-      ar: "حافظ على هذا البيت مكاناً مباركاً يليق بالعبادة.",
+      en: "I keep this home a blessed place, fit for worship.",
+      ar: "أحافظ على هذا البيت مكاناً مباركاً يليق بالعبادة.",
     },
   },
   {
@@ -399,8 +399,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["parent"],
     text: {
-      en: "Clean today and raise children who value order and purity.",
-      ar: "نظّف اليوم وربِّ أطفالاً يقدّرون النظام والطهارة.",
+      en: "I clean today, raising children who value order and purity.",
+      ar: "أنظّف اليوم، وأربّي أطفالاً يقدّرون النظام والطهارة.",
     },
   },
 
@@ -410,8 +410,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "sleep",
     level: "basic",
     text: {
-      en: "Rest now to recharge for tomorrow's worship.",
-      ar: "ارتح الآن لتجدد طاقتك لعبادة الغد.",
+      en: "I rest now to recharge for tomorrow's worship.",
+      ar: "أرتاح الآن لأجدد طاقتي لعبادة الغد.",
     },
   },
   {
@@ -419,8 +419,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "sleep",
     level: "advanced",
     text: {
-      en: "Set your intention now to wake for Tahajjud.",
-      ar: "اعقد نيتك الآن على الاستيقاظ لصلاة التهجد.",
+      en: "I set my intention now to wake for Tahajjud.",
+      ar: "أعقد نيتي الآن على الاستيقاظ لصلاة التهجد.",
     },
   },
   {
@@ -428,8 +428,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "sleep",
     level: "advanced",
     text: {
-      en: "Sleep tonight knowing your health is a trust from Allah.",
-      ar: "نم الليلة وأنت تعلم أن صحتك أمانة من الله.",
+      en: "I sleep tonight knowing my health is a trust from Allah.",
+      ar: "أنام الليلة وأنا أعلم أن صحتي أمانة من الله.",
     },
   },
   {
@@ -437,8 +437,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "sleep",
     level: "advanced",
     text: {
-      en: "Make wudu, lie on your right side, and say the Sunnah dua before you sleep.",
-      ar: "توضأ، واضطجع على شقك الأيمن، وقل دعاء النوم السني قبل أن تنام.",
+      en: "I make wudu, lie on my right side, and say the Sunnah dua before I sleep.",
+      ar: "أتوضأ، وأضطجع على شقي الأيمن، وأقول دعاء النوم السني قبل أن أنام.",
     },
   },
   {
@@ -446,8 +446,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "sleep",
     level: "advanced",
     text: {
-      en: "Sleep with this intention. The reward is counted like a night of worship.",
-      ar: "نم بهذه النية. الأجر يُحتسب كليلة من العبادة.",
+      en: "I sleep with this intention, knowing the reward is counted like a night of worship.",
+      ar: "أنام بهذه النية، موقناً أن الأجر يُحتسب كليلة من العبادة.",
     },
   },
 
@@ -457,8 +457,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "fajr",
     level: "basic",
     text: {
-      en: "Pray Fajr now. Allah commanded it.",
-      ar: "صلِّ الفجر الآن. أمر الله بها.",
+      en: "I pray Fajr now, as Allah commanded.",
+      ar: "أصلي الفجر الآن، كما أمر الله بها.",
     },
   },
   {
@@ -466,8 +466,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "fajr",
     level: "advanced",
     text: {
-      en: "Pray Fajr now and start your day under Allah's protection.",
-      ar: "صلِّ الفجر الآن وابدأ يومك في حفظ الله.",
+      en: "I pray Fajr now and start my day under Allah's protection.",
+      ar: "أصلي الفجر الآن وأبدأ يومي في حفظ الله.",
     },
   },
   {
@@ -475,8 +475,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "fajr",
     level: "advanced",
     text: {
-      en: "Pray now. The dawn prayer is a moment the angels themselves witness.",
-      ar: "صلِّ الآن. صلاة الفجر لحظة يشهدها الملائكة أنفسهم.",
+      en: "I pray now, knowing the dawn prayer is a moment the angels themselves witness.",
+      ar: "أصلي الآن، موقناً أن صلاة الفجر لحظة يشهدها الملائكة أنفسهم.",
     },
   },
   {
@@ -484,8 +484,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "fajr",
     level: "advanced",
     text: {
-      en: "Don't forget the two Sunnah rak'ahs before Fajr. They outweigh everything in this world.",
-      ar: "لا تنسَ ركعتي سنة الفجر. هما خيرٌ من الدنيا وما فيها.",
+      en: "I don't skip the two Sunnah rak'ahs before Fajr. They outweigh everything in this world.",
+      ar: "لا أفوّت ركعتي سنة الفجر. هما خيرٌ من الدنيا وما فيها.",
     },
   },
 
@@ -495,8 +495,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "dhuhur",
     level: "basic",
     text: {
-      en: "Pause from work and pray. This is the time Allah commanded.",
-      ar: "توقف عن العمل وصلِّ. هذا الوقت أمر الله به.",
+      en: "I pause from work and pray, at the time Allah commanded.",
+      ar: "أتوقف عن العمل وأصلي، في الوقت الذي أمر الله به.",
     },
   },
   {
@@ -504,8 +504,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "dhuhur",
     level: "advanced",
     text: {
-      en: "Pause now and ask forgiveness for any shortcomings since the morning.",
-      ar: "توقف الآن واستغفر عن أي تقصير منذ الصباح.",
+      en: "I pause now and ask forgiveness for any shortcomings since the morning.",
+      ar: "أتوقف الآن وأستغفر عن أي تقصير منذ الصباح.",
     },
   },
   {
@@ -513,8 +513,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "dhuhur",
     level: "advanced",
     text: {
-      en: "Pray now and renew your gratitude for a productive morning.",
-      ar: "صلِّ الآن وجدد شكرك على صباح مثمر.",
+      en: "I pray now and renew my gratitude for a productive morning.",
+      ar: "أصلي الآن وأجدد شكري على صباح مثمر.",
     },
   },
 
@@ -524,8 +524,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "basic",
     text: {
-      en: "Pray Asr now. Guard the middle prayer, Allah named it specifically.",
-      ar: "صلِّ العصر الآن. حافظ على الصلاة الوسطى، الله خصّها بالذكر.",
+      en: "I pray Asr now, guarding the middle prayer that Allah named specifically.",
+      ar: "أصلي العصر الآن، أحافظ على الصلاة الوسطى التي خصّها الله بالذكر.",
     },
   },
   {
@@ -533,8 +533,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "advanced",
     text: {
-      en: "Don't delay Asr. The angels of the day shift are about to ascend, let them find you praying.",
-      ar: "لا تؤخر صلاة العصر. ملائكة النهار على وشك الصعود، دعهم يجدونك تصلي.",
+      en: "I don't delay Asr. The angels of the day shift are about to ascend, and I let them find me praying.",
+      ar: "لا أؤخر صلاة العصر. ملائكة النهار على وشك الصعود، فأدعهم يجدونني أصلي.",
     },
   },
   {
@@ -542,8 +542,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "advanced",
     text: {
-      en: "Because nations before us were given this prayer and wasted it so you earn twice: once for praying it, once for guarding what they lost.",
-      ar: "لأن أمم قبلنا أُعطيت هذه الصلاة فضيّعوها فلك أجران: مرة على صلاتك، ومرة على حفظ ما ضيّعوه.",
+      en: "Nations before us were given this prayer and wasted it, so I earn it twice: once for praying it, once for guarding what they lost.",
+      ar: "لأن أمماً قبلنا أُعطيت هذه الصلاة فضيّعوها، فلي أجران: مرة على صلاتي، ومرة على حفظ ما ضيّعوه.",
     },
   },
   {
@@ -551,8 +551,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "advanced",
     text: {
-      en: "Whoever misses it, it's as if he lost his family and everything he owns.",
-      ar: "من فاتته فكأنما خسر أهله وماله.",
+      en: "I pray it now, mindful that whoever misses it is as if he lost his family and everything he owns.",
+      ar: "أصليها الآن، مستحضراً أن من فاتته فكأنما خسر أهله وماله.",
     },
   },
   {
@@ -560,8 +560,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "asr",
     level: "advanced",
     text: {
-      en: "Leaving it wipes out your deeds, so be early, not late.",
-      ar: "تركها يُحبط العمل، فبادر قبل أن يفوت الوقت.",
+      en: "Leaving it wipes out one's deeds, so I hasten to pray before the time passes.",
+      ar: "تركها يُحبط العمل، فأبادر قبل أن يفوت الوقت.",
     },
   },
 
@@ -571,8 +571,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "maghrib",
     level: "basic",
     text: {
-      en: "Pray Maghrib now and thank Allah for completing another day.",
-      ar: "صلِّ المغرب الآن واشكر الله على إتمام يوم آخر.",
+      en: "I pray Maghrib now and thank Allah for completing another day.",
+      ar: "أصلي المغرب الآن وأشكر الله على إتمام يوم آخر.",
     },
   },
   {
@@ -580,8 +580,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "maghrib",
     level: "advanced",
     text: {
-      en: "Pray two rak'ahs before it. A small gift the Prophet ﷺ recommended.",
-      ar: "صلِّ ركعتين قبلها. هدية صغيرة أوصى بها النبي ﷺ.",
+      en: "I pray two rak'ahs before it, a small gift the Prophet ﷺ recommended.",
+      ar: "أصلي ركعتين قبلها، هدية صغيرة أوصى بها النبي ﷺ.",
     },
   },
   {
@@ -589,8 +589,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "maghrib",
     level: "advanced",
     text: {
-      en: "Gather your family for this prayer. Pray together if you can.",
-      ar: "اجمع عائلتك لهذه الصلاة. صلوا معاً إن استطعتم.",
+      en: "I gather my family for this prayer, praying together if we can.",
+      ar: "أجمع عائلتي لهذه الصلاة، نصلي معاً إن استطعنا.",
     },
   },
 
@@ -600,8 +600,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "isha",
     level: "basic",
     text: {
-      en: "Pray Isha now and end your day in submission to Allah.",
-      ar: "صلِّ العشاء الآن واختم يومك بالخضوع لله.",
+      en: "I pray Isha now and end my day in submission to Allah.",
+      ar: "أصلي العشاء الآن وأختم يومي بالخضوع لله.",
     },
   },
   {
@@ -609,8 +609,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "isha",
     level: "advanced",
     text: {
-      en: "Pray it in congregation. It counts as half a night of standing in prayer.",
-      ar: "صلِّها في جماعة. تُحتسب كقيام نصف ليلة.",
+      en: "I pray it in congregation, knowing it counts as half a night of standing in prayer.",
+      ar: "أصليها في جماعة، موقناً أنها تُحتسب كقيام نصف ليلة.",
     },
   },
   {
@@ -618,8 +618,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "isha",
     level: "advanced",
     text: {
-      en: "Pray now, then prepare your heart for peaceful, grateful sleep.",
-      ar: "صلِّ الآن، ثم هيّئ قلبك لنوم مسالم شاكر.",
+      en: "I pray now, then prepare my heart for peaceful, grateful sleep.",
+      ar: "أصلي الآن، ثم أهيّئ قلبي لنوم مسالم شاكر.",
     },
   },
 
@@ -629,8 +629,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "reading",
     level: "basic",
     text: {
-      en: "Read now. Seeking knowledge is a religious obligation.",
-      ar: "اقرأ الآن. طلب العلم واجب ديني.",
+      en: "I read now, knowing seeking knowledge is a religious obligation.",
+      ar: "أقرأ الآن، موقناً أن طلب العلم واجب ديني.",
     },
   },
   {
@@ -639,8 +639,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["professional"],
     text: {
-      en: "Build a skill today that earns you better halal income.",
-      ar: "طوّر مهارة اليوم تكسب بها دخلاً حلالاً أفضل.",
+      en: "I build a skill today that earns me better halal income.",
+      ar: "أطوّر مهارة اليوم أكسب بها دخلاً حلالاً أفضل.",
     },
   },
   {
@@ -648,8 +648,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "reading",
     level: "advanced",
     text: {
-      en: "Learn something today and share it. Knowledge passed on is ongoing sadaqah.",
-      ar: "تعلّم شيئاً اليوم وانشره. العلم الذي يُنقل صدقة جارية.",
+      en: "I learn something today and share it, knowing knowledge passed on is ongoing sadaqah.",
+      ar: "أتعلّم شيئاً اليوم وأنشره، موقناً أن العلم الذي يُنقل صدقة جارية.",
     },
   },
   {
@@ -657,8 +657,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "reading",
     level: "advanced",
     text: {
-      en: "Read to deepen your understanding, of your deen and your world.",
-      ar: "اقرأ لتعمّق فهمك، لدينك ودنياك.",
+      en: "I read to deepen my understanding, of my deen and my world.",
+      ar: "أقرأ لأعمّق فهمي، لديني ودنياي.",
     },
   },
   {
@@ -666,8 +666,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "reading",
     level: "advanced",
     text: {
-      en: "Seek this knowledge for Allah's sake alone.",
-      ar: "اطلب هذا العلم لوجه الله وحده.",
+      en: "I seek this knowledge for Allah's sake alone.",
+      ar: "أطلب هذا العلم لوجه الله وحده.",
     },
   },
   {
@@ -676,8 +676,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["student", "professional"],
     text: {
-      en: "Learn this so you can put it to use in dawah and serving others.",
-      ar: "تعلّم هذا لتستخدمه في الدعوة وخدمة الآخرين.",
+      en: "I learn this so I can put it to use in dawah and serving others.",
+      ar: "أتعلّم هذا لأستخدمه في الدعوة وخدمة الآخرين.",
     },
   },
   {
@@ -686,8 +686,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["student"],
     text: {
-      en: "Read today to strengthen your mind for better ibadah.",
-      ar: "اقرأ اليوم لتقوي عقلك لعبادة أفضل.",
+      en: "I read today to strengthen my mind for better ibadah.",
+      ar: "أقرأ اليوم لأقوي عقلي لعبادة أفضل.",
     },
   },
 
@@ -697,8 +697,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "family",
     level: "basic",
     text: {
-      en: "Spend this time with family. Fulfill their rights.",
-      ar: "اقضِ هذا الوقت مع العائلة. أدِّ حقوقهم.",
+      en: "I spend this time with my family, fulfilling their rights.",
+      ar: "أقضي هذا الوقت مع عائلتي، وأؤدي حقوقهم.",
     },
   },
   {
@@ -706,8 +706,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "family",
     level: "advanced",
     text: {
-      en: "Strengthen your family ties today. Allah commanded keeping them strong.",
-      ar: "قوِّ صلة رحمك اليوم. أوجب الله الحفاظ عليها.",
+      en: "I strengthen my family ties today, as Allah commanded me to keep them strong.",
+      ar: "أقوّي صلة رحمي اليوم، كما أوجب الله الحفاظ عليها.",
     },
   },
   {
@@ -716,8 +716,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["parent"],
     text: {
-      en: "Show your children good character. They learn it from watching you.",
-      ar: "أرِ أطفالك حسن الخلق. يتعلمونه من مراقبتك.",
+      en: "I show my children good character, knowing they learn it from watching me.",
+      ar: "أُري أطفالي حسن الخلق، موقناً أنهم يتعلمونه من مراقبتي.",
     },
   },
   {
@@ -725,8 +725,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "family",
     level: "advanced",
     text: {
-      en: "Be good to your spouse today. Aim to be among the best to them.",
-      ar: "أحسن إلى زوجك اليوم. اسعَ لتكون من أفضل الناس له.",
+      en: "I'm good to my spouse today, aiming to be among the best to them.",
+      ar: "أُحسن إلى زوجي اليوم، وأسعى لأكون من أفضل الناس له.",
     },
   },
   {
@@ -735,8 +735,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["parent"],
     text: {
-      en: "Raise your children well. A righteous child keeps making du'a for you, even after you're gone.",
-      ar: "ربِّ أطفالك جيداً. الولد الصالح يدعو لك، حتى بعد رحيلك.",
+      en: "I raise my children well, knowing a righteous child keeps making du'a for their parent, even after they're gone.",
+      ar: "أربّي أطفالي جيداً، موقناً أن الولد الصالح يدعو لوالده، حتى بعد رحيله.",
     },
   },
   {
@@ -745,8 +745,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["parent"],
     text: {
-      en: "Be patient and kind with your children. Treat it as worship.",
-      ar: "كن لطيفاً وصبوراً مع أطفالك. اعتبره عبادة.",
+      en: "I'm patient and kind with my children, treating it as worship.",
+      ar: "أكون لطيفاً وصبوراً مع أطفالي، وأعتبره عبادة.",
     },
   },
   {
@@ -755,8 +755,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     level: "advanced",
     profileTags: ["parent"],
     text: {
-      en: "Teach your children their deen today, through how you live, not just what you say.",
-      ar: "علّم أطفالك دينهم اليوم، من خلال سلوكك لا كلامك فقط.",
+      en: "I teach my children their deen today, through how I live, not just what I say.",
+      ar: "أعلّم أطفالي دينهم اليوم، من خلال سلوكي لا كلامي فقط.",
     },
   },
 
@@ -766,8 +766,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "charity",
     level: "basic",
     text: {
-      en: "Give today, purely for Allah's sake.",
-      ar: "تصدّق اليوم، خالصاً لوجه الله.",
+      en: "I give today, purely for Allah's sake.",
+      ar: "أتصدّق اليوم، خالصاً لوجه الله.",
     },
   },
   {
@@ -775,8 +775,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "charity",
     level: "advanced",
     text: {
-      en: "Give even a little today. Charity extinguishes sins as water extinguishes fire.",
-      ar: "تصدّق ولو بالقليل اليوم. فالصدقة تطفئ الخطيئة كما يطفئ الماء النار.",
+      en: "I give even a little today, knowing charity extinguishes sins as water extinguishes fire.",
+      ar: "أتصدّق ولو بالقليل اليوم، موقناً أن الصدقة تطفئ الخطيئة كما يطفئ الماء النار.",
     },
   },
   {
@@ -784,8 +784,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "charity",
     level: "advanced",
     text: {
-      en: "Give today. Allah multiplies the reward many times over for whomever He wills.",
-      ar: "تصدّق اليوم، فالله يضاعف الأجر أضعافاً لمن يشاء.",
+      en: "I give today, knowing Allah multiplies the reward many times over for whomever He wills.",
+      ar: "أتصدّق اليوم، موقناً أن الله يضاعف الأجر أضعافاً لمن يشاء.",
     },
   },
   {
@@ -793,8 +793,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "charity",
     level: "advanced",
     text: {
-      en: "The greatest reward in charity is when you give while you are healthy and attached to your wealth, fearing poverty.",
-      ar: "الصدقة الأعظم أجراً أن تتصدق وأنت صحيح شحيح تخشى الفقر.",
+      en: "I give now, while healthy and attached to my wealth, fearing poverty, knowing this is the charity with the greatest reward.",
+      ar: "أتصدّق الآن، وأنا صحيح شحيح أخشى الفقر، موقناً أن هذه هي الصدقة الأعظم أجراً.",
     },
   },
 
@@ -804,8 +804,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "commute",
     level: "basic",
     text: {
-      en: "Set off now, under Allah's protection.",
-      ar: "استودِع الله نفسك، وانطلق مستعينًا به.",
+      en: "I set off now, entrusting myself to Allah's protection.",
+      ar: "أستودِع الله نفسي، وأنطلق مستعيناً به.",
     },
   },
   {
@@ -813,8 +813,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "commute",
     level: "advanced",
     text: {
-      en: "Fill this journey with dhikr or a bit of Quran.",
-      ar: "اجعل رحلتك عامرةً بذكر الله أو بتلاوة شيءٍ من القرآن.",
+      en: "I fill this journey with dhikr or a bit of Quran.",
+      ar: "أجعل رحلتي عامرةً بذكر الله أو بتلاوة شيءٍ من القرآن.",
     },
   },
   {
@@ -822,8 +822,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "commute",
     level: "advanced",
     text: {
-      en: "Intend by this journey to seek lawful provision or beneficial knowledge for the sake of Allah.",
-      ar: "انوِ بهذه الرحلة طلبَ الرزق الحلال أو العلم النافع ابتغاءَ مرضاة الله.",
+      en: "I intend by this journey to seek lawful provision or beneficial knowledge, for the sake of Allah.",
+      ar: "أنوي بهذه الرحلة طلبَ الرزق الحلال أو العلم النافع ابتغاءَ مرضاة الله.",
     },
   },
   {
@@ -831,8 +831,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "commute",
     level: "advanced",
     text: {
-      en: "Ask Allah to make this journey easy and return you safely.",
-      ar: "سلِ الله أن ييسِّر لك رحلتك، وأن يردَّك سالمًا غانمًا.",
+      en: "I ask Allah to make this journey easy and bring me back safely.",
+      ar: "أسأل الله أن ييسِّر لي رحلتي، وأن يردَّني سالماً غانماً.",
     },
   },
 ];
