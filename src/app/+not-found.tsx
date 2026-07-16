@@ -7,6 +7,7 @@ import { Feather } from "@expo/vector-icons";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { AppButton } from "@components/UI/AppButton";
+import { spacing } from "@constants/spacing";
 
 export default function NotFoundScreen() {
   const { t } = useTranslation();
@@ -21,8 +22,8 @@ export default function NotFoundScreen() {
           styles.container,
           {
             backgroundColor: C.background,
-            paddingTop: insets.top + 24,
-            paddingBottom: insets.bottom + 24,
+            paddingTop: insets.top + spacing.xxl,
+            paddingBottom: insets.bottom + spacing.xxl,
           },
         ]}
       >
@@ -30,11 +31,11 @@ export default function NotFoundScreen() {
           <Feather name="compass" size={56} color={C.tint} />
         </View>
 
-        <AppText weight="Bold" style={[styles.title, { color: C.text }]}>
+        <AppText weight="Bold" variant='titleLarge' style={[styles.title, { color: C.text }]}>
           {t("notFound.title")}
         </AppText>
 
-        <AppText weight="Regular" style={[styles.message, { color: C.textSecondary }]}>
+        <AppText weight="Regular" variant='bodyLarge' style={[styles.message, { color: C.textSecondary }]}>
           {t("notFound.message")}
         </AppText>
 
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing.xxl,
   },
   iconContainer: {
     width: 112,
@@ -64,18 +65,16 @@ const styles = StyleSheet.create({
     borderRadius: 56,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: spacing.xxl,
   },
   title: {
-    fontSize: 28,
     textAlign: "center",
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   message: {
-    fontSize: 16,
     textAlign: "center",
     lineHeight: 24,
-    marginBottom: 36,
+    marginBottom: spacing.xxxl,
     maxWidth: 280,
   },
   button: {

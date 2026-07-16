@@ -65,7 +65,7 @@ export function ChipSelector({
             )}
             <AppText
               weight='Medium'
-              variant='body'
+              variant='footnote'
               numberOfLines={1}
               style={{
                 color: isSelected ? C.textOnTint : C.textSecondary,
@@ -82,11 +82,11 @@ export function ChipSelector({
 
 const styles = StyleSheet.create({
   scroll: {
-    marginBottom: spacing.lg,
+    marginBottom: spacing.md,
   },
   content: {
     gap: spacing.sm,
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.xl,
   },
   chip: {
     paddingHorizontal: spacing.md,
@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   icon: {
-    marginRight: spacing.sm,
+    marginRight: spacing.xs,
   },
 });

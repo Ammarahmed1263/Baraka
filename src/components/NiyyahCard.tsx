@@ -13,6 +13,8 @@ import type { UserActivity } from "@types";
 import { useLocalize } from "@hooks/useLocalize";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 type Props = {
   activity: UserActivity;
@@ -51,7 +53,7 @@ export default function NiyyahCard({
   }));
 
   return (
-    <Animated.View style={[animatedStyle, { marginBottom: 10 }]}>
+    <Animated.View style={[animatedStyle, { marginBottom: spacing.sm }]}>
       <AnimatedPressable
         onPress={onPress}
         style={[
@@ -71,10 +73,8 @@ export default function NiyyahCard({
             <View style={styles.nameRow}>
               <AppText
                 weight='Bold'
-                style={[
-                  styles.activityName,
-                  { color: completed ? C.tint : C.text },
-                ]}
+                variant='bodyLarge'
+                style={{ color: completed ? C.tint : C.text, flexShrink: 1 }}
                 numberOfLines={1}
               >
                 {displayName}
@@ -89,10 +89,7 @@ export default function NiyyahCard({
                     },
                   ]}
                 >
-                  <AppText
-                    weight='Bold'
-                    style={[styles.countText, { color: C.gold }]}
-                  >
+                  <AppText weight='Bold' variant='caption' style={{ color: C.gold }}>
                     ×{selectedCount + 1}
                   </AppText>
                 </View>
@@ -100,7 +97,8 @@ export default function NiyyahCard({
             </View>
             <AppText
               weight='Regular'
-              style={[styles.niyyahPreview, { color: C.textSecondary }]}
+              variant='footnote'
+              style={{ color: C.textSecondary }}
               numberOfLines={2}
             >
               {displayNiyyah}
@@ -108,6 +106,7 @@ export default function NiyyahCard({
             {activity.hadithRef && (
               <AppText
                 weight='Regular'
+                variant='caption'
                 style={[styles.hadithFootnote, { color: C.textMuted }]}
               >
                 {localize(activity.hadithRef)}
@@ -147,39 +146,34 @@ export default function NiyyahCard({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 14,
+    borderRadius: radius.md,
     borderWidth: 1,
     overflow: "hidden",
     flexDirection: "row",
   },
-  accentBar: { width: 4 },
   content: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    padding: 14,
-    gap: 12,
+    padding: spacing.md,
+    gap: spacing.md,
   },
   hadithFootnote: {
-    fontSize: 10,
-    marginTop: 2,
+    marginTop: spacing.xs,
     opacity: 0.8,
   },
   textContainer: { flex: 1, gap: 3 },
-  nameRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  activityName: { fontSize: 15, flexShrink: 1 },
+  nameRow: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
   countBadge: {
-    paddingHorizontal: 7,
+    paddingHorizontal: spacing.xs,
     paddingVertical: 2,
-    borderRadius: 8,
+    borderRadius: radius.sm,
     borderWidth: 1,
   },
-  countText: { fontSize: 11 },
-  niyyahPreview: { fontSize: 13, lineHeight: 18},
   checkButton: {
     width: 24,
     height: 24,
-    borderRadius: 6,
+    borderRadius: radius.sm,
     alignItems: "center",
     justifyContent: "center",
   },

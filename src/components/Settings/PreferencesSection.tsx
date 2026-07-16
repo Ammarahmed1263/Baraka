@@ -6,6 +6,8 @@ import { AppText } from "@components/UI/AppText";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
 import SettingRow from "./SettingRow";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface PreferencesSectionProps {
   lang: string;
@@ -34,7 +36,7 @@ export const PreferencesSection = React.memo(
 
     return (
       <>
-        <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
+        <AppText weight='Bold' variant='bodyLarge' style={[styles.sectionLabel, { color: C.gold }]}>
           {t("settings.preferences")}
         </AppText>
         <View
@@ -54,7 +56,8 @@ export const PreferencesSection = React.memo(
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <AppText
                     weight='Medium'
-                    style={{ color: C.textSecondary, marginRight: 4 }}
+                    variant='body'
+                    style={{ color: C.textSecondary, marginRight: spacing.xs }}
                   >
                     {lang === "en" ? "English" : "عربي"}
                   </AppText>
@@ -111,7 +114,8 @@ export const PreferencesSection = React.memo(
                   >
                     <AppText
                       weight='Medium'
-                      style={{ color: C.textSecondary, fontSize: 14 }}
+                      variant='body'
+                      style={{ color: C.textSecondary }}
                     >
                       {t("settings.change")}
                     </AppText>
@@ -173,37 +177,36 @@ export const PreferencesSection = React.memo(
 
 const styles = StyleSheet.create({
   sectionLabel: {
-    fontSize: 16,
     textTransform: "uppercase",
     letterSpacing: 1,
-    marginBottom: 8,
-    marginLeft: 4,
-    marginTop: 8,
+    marginBottom: spacing.sm,
+    marginLeft: spacing.xs,
+    marginTop: spacing.sm,
   },
   settingsCard: {
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    marginBottom: 24,
+    marginBottom: spacing.xxl,
   },
   divider: {
     height: 1,
-    marginVertical: 4,
+    marginVertical: spacing.xs,
   },
   timePickerButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.sm,
   },
   themeSelector: {
     flexDirection: "row",
-    gap: 6,
+    gap: spacing.xs,
     padding: 2,
-    borderRadius: 12,
+    borderRadius: radius.md,
   },
   themeOption: {
     width: 32,
     height: 32,
-    borderRadius: 8,
+    borderRadius: radius.sm,
     alignItems: "center",
     justifyContent: "center",
   },

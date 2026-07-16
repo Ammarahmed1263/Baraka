@@ -9,6 +9,8 @@ import { useTheme } from "@context/ThemeContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { type JournalEntry } from "@types";
 import { useLocalize } from "@hooks/useLocalize";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface ActivityOption {
   id: string;
@@ -89,7 +91,7 @@ export function JournalEntryForm({
         colors={C.cardGradient}
         style={styles.formGradient}
       >
-        <AppText weight='Bold' style={[styles.formTitle, { color: C.text }]}>
+        <AppText weight='Bold' variant='subtitle' style={{ color: C.text }}>
           {entry ? t("journal.editReflection") : t("journal.newReflection")}
         </AppText>
       </LinearGradient>
@@ -99,7 +101,7 @@ export function JournalEntryForm({
           items={activityChips}
           selectedValue={selectedActivityId}
           onSelect={(id) => setSelectedActivityId(selectedActivityId === id ? "" : id)}
-          style={{ marginBottom: 0, marginTop: 12 }}
+          style={{ marginBottom: 0, marginTop: spacing.md }}
         />
       )}
 
@@ -108,7 +110,7 @@ export function JournalEntryForm({
         onChangeText={setNote}
         placeholder={t("journal.notePlaceholder")}
         multiline
-        style={{ marginHorizontal: 16, marginTop: 12 }}
+        style={{ marginHorizontal: spacing.lg, marginTop: spacing.md }}
       />
       <View style={styles.formActions}>
         <AppButton
@@ -128,18 +130,17 @@ export function JournalEntryForm({
 
 const styles = StyleSheet.create({
   addForm: {
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: spacing.xl,
     overflow: "hidden",
   },
-  formGradient: { padding: 16 },
-  formTitle: { fontSize: 17 },
+  formGradient: { padding: spacing.lg },
   formActions: {
     flexDirection: "row",
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingBottom: 16,
+    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.lg,
     justifyContent: "flex-end",
   },
 });

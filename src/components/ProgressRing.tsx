@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
@@ -23,7 +23,7 @@ export default function ProgressRing({
   const circumference = 2 * Math.PI * radius;
   const progress = Math.round(
     Math.min(Math.max(percentage * (percentage < 1.1 ? 100 : 1), 0), 100),
-  ); // Adjusted to handle decimal percentages
+  );
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
@@ -54,17 +54,12 @@ export default function ProgressRing({
           strokeDasharray={`${circumference}`}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap='round'
-          rotation='-90'
-          origin={`${size / 2}, ${size / 2}`}
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
       </Svg>
-      <AppText weight='Bold' style={[styles.percentage, { color: ringColor }]}>
+      <AppText weight='Bold' variant='body' style={{ color: ringColor }}>
         {progress}%
       </AppText>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  percentage: { fontSize: 14 },
-});

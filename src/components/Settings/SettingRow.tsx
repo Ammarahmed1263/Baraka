@@ -3,6 +3,8 @@ import { View, StyleSheet } from "react-native";
 import { AppIcon as Feather, FeatherIconName } from "@components/UI/AppIcon";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface SettingRowProps {
   icon: FeatherIconName | string;
@@ -35,13 +37,15 @@ export default function SettingRow({
         <View style={{ flex: 1 }}>
           <AppText
             weight='Medium'
-            style={[styles.settingName, { color: C.text }]}
+            variant='bodyLarge'
+            style={{ color: C.text }}
           >
             {label}
           </AppText>
           {desc && (
             <AppText
               weight='Regular'
+              variant='body'
               style={[styles.settingDesc, { color: C.textMuted }]}
             >
               {desc}
@@ -59,16 +63,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 16,
+    padding: spacing.lg,
   },
-  settingLeft: { flexDirection: "row", alignItems: "center", gap: 12, flex: 1 },
+  settingLeft: { flexDirection: "row", alignItems: "center", gap: spacing.md, flex: 1 },
   settingIcon: {
     width: 36,
     height: 36,
-    borderRadius: 12,
+    borderRadius: radius.md,
     alignItems: "center",
     justifyContent: "center",
   },
-  settingName: { fontSize: 16 },
-  settingDesc: { fontSize: 14, marginTop: 2 },
+  settingDesc: { marginTop: spacing.xs },
 });

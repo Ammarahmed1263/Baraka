@@ -1,10 +1,13 @@
 
-import { Modal, Pressable, View, TouchableOpacity, StyleSheet } from "react-native";
+import { Modal, Pressable, View, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useTheme } from "@context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { AppText } from "@components/UI/AppText";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { ReminderTimePickerProps, getPickerDate } from "./ReminderTimePicker.types";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 export function ReminderTimePicker({ visible, value, onChange, onClose }: ReminderTimePickerProps) {
   const { colors: C } = useTheme();
@@ -20,16 +23,16 @@ export function ReminderTimePicker({ visible, value, onChange, onClose }: Remind
       <Pressable style={styles.modalOverlay} onPress={onClose}>
         <View style={[styles.modalSheet, { backgroundColor: C.backgroundCard }]}>
           <View style={styles.modalHeader}>
-            <TouchableOpacity onPress={onClose}>
-              <AppText weight="Medium" style={{ color: C.textMuted }}>
+            <AnimatedPressable onPress={onClose}>
+              <AppText weight="Medium" variant='bodyLarge' style={{ color: C.textMuted }}>
                 {t("common.cancel")}
               </AppText>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onClose}>
-              <AppText weight="Bold" style={{ color: C.tint }}>
+            </AnimatedPressable>
+            <AnimatedPressable onPress={onClose}>
+              <AppText weight="Bold" variant='bodyLarge' style={{ color: C.tint }}>
                 {t("onboarding.done")}
               </AppText>
-            </TouchableOpacity>
+            </AnimatedPressable>
           </View>
           <DateTimePicker
             value={getPickerDate(value)}
@@ -52,16 +55,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalSheet: {
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingTop: 16,
-    paddingBottom: 40,
-    paddingHorizontal: 20,
+    borderTopLeftRadius: radius.xl,
+    borderTopRightRadius: radius.xl,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.huge,
+    paddingHorizontal: spacing.xl,
   },
   modalHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: spacing.xl,
   },
 });

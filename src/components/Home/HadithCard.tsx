@@ -5,6 +5,9 @@ import { AppText } from "@components/UI/AppText";
 import { HADITH_OPENER } from "@data/uiConstants";
 import { useSettingsStore } from "@store";
 import { useLanguage } from "@i18n";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
+import { typography } from "@constants/typography";
 
 export default function HadithCard() {
   const { colors: C, isDark } = useTheme();
@@ -35,30 +38,26 @@ export default function HadithCard() {
         <View style={styles.bilingualContainer}>
           <AppText
             weight='Bold'
-            style={[styles.hadithText, styles.arabicText, { color: C.text }]}
+            style={[styles.arabicText, { color: C.text }]}
           >
             {HADITH_OPENER.text.ar}
           </AppText>
           <AppText
             weight='Medium'
-            style={[
-              styles.hadithText,
-              styles.englishText,
-              { color: C.textSecondary },
-            ]}
+            style={[styles.englishText, { color: C.textSecondary }]}
           >
             {HADITH_OPENER.text.en}
           </AppText>
         </View>
       ) : (
-        <AppText weight='Bold' style={[styles.hadithText, { color: C.text }]}>
+        <AppText weight='Bold' variant='bodyLarge' style={[styles.hadithText, { color: C.text }]}>
           {lang === "ar" ? HADITH_OPENER.text.ar : HADITH_OPENER.text.en}
         </AppText>
       )}
 
       <View style={[styles.refAccent, { backgroundColor: C.gold }]} />
 
-      <AppText weight='Regular' style={[styles.hadithRef, { color: C.gold }]}>
+      <AppText weight='Regular' variant='caption' style={{ color: C.gold, letterSpacing: 0.2 }}>
         {showBilingual
           ? `${HADITH_OPENER.ref.ar} | ${HADITH_OPENER.ref.en}`
           : lang === "ar"
@@ -71,37 +70,33 @@ export default function HadithCard() {
 
 const styles = StyleSheet.create({
   hadithCard: {
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
+    borderRadius: radius.lg,
+    padding: spacing.xl,
+    marginBottom: spacing.lg,
     overflow: "hidden",
   },
-  hadithDecor: { marginBottom: 8 },
+  hadithDecor: { marginBottom: spacing.sm },
   hadithDecorText: { fontSize: 40, opacity: 0.3, marginBottom: -10 },
   hadithText: {
-    fontSize: 16,
     lineHeight: 26,
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   bilingualContainer: {
-    gap: 12,
-    marginBottom: 16,
+    gap: spacing.md,
+    marginBottom: spacing.lg,
   },
   arabicText: {
-    fontSize: 20,
+    fontSize: typography.subtitle.ar.fontSize,
     lineHeight: 30,
-    marginBottom: 0,
   },
   englishText: {
-    fontSize: 14,
+    fontSize: typography.body.en.fontSize,
     lineHeight: 22,
-    marginBottom: 0,
   },
   refAccent: {
     width: 24,
     height: 1.5,
     borderRadius: 1.5,
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
-  hadithRef: { fontSize: 12, letterSpacing: 0.2 },
 });

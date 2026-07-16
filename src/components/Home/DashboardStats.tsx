@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { AppText } from "@components/UI/AppText";
 import ProgressRing from "@components/ProgressRing";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface DashboardStatsProps {
   completionRate: number;
@@ -46,19 +48,22 @@ export default function DashboardStats({
         <View style={styles.statInfo}>
           <AppText
             weight='Bold'
+            variant='title'
             style={[styles.statValue, { color: isDark ? C.gold : C.text }]}
           >
             {Math.round(completionRate)}%
           </AppText>
           <AppText
             weight='Medium'
+            variant='caption'
             style={[styles.statLabel, { color: C.textSecondary }]}
           >
             {t("dashboard.todayProgress")}
           </AppText>
           <AppText
             weight='Regular'
-            style={[styles.statDetail, { color: isDark ? C.gold + "AA" : C.tint }]}
+            variant='caption'
+            style={{ color: isDark ? C.gold + "AA" : C.tint }}
           >
             {completedCount}/{totalActivities} {t("dashboard.done")}
           </AppText>
@@ -84,18 +89,20 @@ export default function DashboardStats({
           <Feather name='zap' size={18} color={C.gold} />
         </View>
         <View style={styles.statInfo}>
-          <AppText weight='Bold' style={[styles.statValue, { color: C.gold }]}>
+          <AppText weight='Bold' variant='title' style={[styles.statValue, { color: C.gold }]}>
             ×{Math.round(ajr.total * 10) / 10}
           </AppText>
           <AppText
             weight='Medium'
+            variant='caption'
             style={[styles.statLabel, { color: C.textSecondary }]}
           >
             {t("dashboard.ajrMultiplier")}
           </AppText>
           <AppText
             weight='Regular'
-            style={[styles.statDetail, { color: isDark ? C.gold + "AA" : C.gold }]}
+            variant='caption'
+            style={{ color: isDark ? C.gold + "AA" : C.gold }}
           >
             +{ajr.acts} {t("dashboard.multiplierActs")}
           </AppText>
@@ -108,22 +115,22 @@ export default function DashboardStats({
 const styles = StyleSheet.create({
   statsRow: {
     flexDirection: "row",
-    gap: 12,
-    marginBottom: 24,
+    gap: spacing.md,
+    marginBottom: spacing.xxl,
   },
   statCard: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    padding: 14,
-    borderRadius: 16,
+    padding: spacing.md,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    gap: 12,
+    gap: spacing.md,
   },
   iconContainer: {
     width: 44,
     height: 44,
-    borderRadius: 12,
+    borderRadius: radius.md,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -132,17 +139,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   statValue: {
-    fontSize: 20,
     lineHeight: 24,
     marginBottom: 1,
   },
   statLabel: {
-    fontSize: 12,
     textTransform: "uppercase",
     letterSpacing: 0.5,
     marginBottom: 2,
-  },
-  statDetail: {
-    fontSize: 12,
   },
 });

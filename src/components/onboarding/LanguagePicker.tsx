@@ -14,6 +14,8 @@ import { useEffect, useCallback } from "react";
 import { useTheme } from "@context/ThemeContext";
 import { useLanguage } from "@i18n";
 import { AppText } from "@components/UI/AppText";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 function LanguageOption({
   label,
@@ -52,6 +54,7 @@ function LanguageOption({
       <Animated.View style={[styles.pill, animatedPill]}>
         <AppText
           weight={isActive ? "Bold" : "Medium"}
+          variant='body'
           style={[
             styles.pillLabel,
             labelStyle,
@@ -106,18 +109,17 @@ const styles = StyleSheet.create({
   track: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 999,
+    borderRadius: radius.full,
     borderWidth: 1,
     padding: 3,
     gap: 2,
   },
   pill: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 999,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.full,
   },
   pillLabel: {
-    fontSize: 14,
     letterSpacing: 0.3,
   },
 });

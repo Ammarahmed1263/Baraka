@@ -1,9 +1,12 @@
-import { Pressable, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useTheme } from "@context/ThemeContext";
 import { useLocalize } from "@hooks/useLocalize";
 import { AppText } from "@components/UI/AppText";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import type { Activity } from "@types";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface ActivityPickerCardProps {
   activity: Activity;
@@ -20,7 +23,7 @@ export function ActivityPickerCard({
   const localize = useLocalize();
 
   return (
-    <Pressable
+    <AnimatedPressable
       onPress={onPress}
       style={[
         styles.card,
@@ -38,29 +41,30 @@ export function ActivityPickerCard({
 
       <AppText
         weight='Medium'
+        variant='body'
         numberOfLines={2}
         style={[styles.name, { color: C.text }]}
       >
         {localize(activity.name)}
       </AppText>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1.5,
-    padding: 16,
-    margin: 6,
+    padding: spacing.lg,
+    margin: spacing.xs + 2,
     alignItems: "center",
-    gap: 12,
+    gap: spacing.md,
   },
   checkBadge: {
     position: "absolute",
-    top: 8,
-    right: 8,
+    top: spacing.sm,
+    right: spacing.sm,
     width: 20,
     height: 20,
     borderRadius: 10,
@@ -68,7 +72,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   name: {
-    fontSize: 14,
     textAlign: "center",
   },
 });

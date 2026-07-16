@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@context/ThemeContext";
 import { useLanguage } from "@/i18n";
 import * as Sentry from "@sentry/react-native";
+import { typography } from "@constants/typography";
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ export default function TabLayout() {
         },
         tabBarLabelStyle: {
           fontFamily: language === "ar" ? "Tajawal-Medium" : "SourceSerif4-Medium",
-          fontSize: 12,
+          fontSize: typography.caption[language === "ar" ? "ar" : "en"].fontSize,
         },
       }}
     >

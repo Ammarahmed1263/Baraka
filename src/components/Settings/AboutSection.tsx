@@ -6,6 +6,8 @@ import { AppText } from "@components/UI/AppText";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
 import SettingRow from "./SettingRow";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 export const AboutSection = React.memo(() => {
   const { t } = useTranslation();
@@ -44,7 +46,7 @@ OS: ${Platform.OS} ${Platform.Version}
 
   return (
     <>
-      <AppText weight='Bold' style={[styles.sectionLabel, { color: C.gold }]}>
+      <AppText weight='Bold' variant='bodyLarge' style={[styles.sectionLabel, { color: C.gold }]}>
         {t("settings.about")}
       </AppText>
       <View
@@ -54,23 +56,26 @@ OS: ${Platform.OS} ${Platform.Version}
         ]}
       >
         <View style={styles.aboutCard}>
-          <AppText weight='Bold' style={[styles.aboutTitle, { color: C.text }]}>
+          <AppText weight='Bold' variant='bodyLarge' style={{ color: C.text }}>
             {t("settings.aboutTitle")}
           </AppText>
           <AppText
             weight='Regular'
+            variant='body'
             style={[styles.aboutDesc, { color: C.textSecondary }]}
           >
             {t("settings.aboutDesc")}
           </AppText>
           <AppText
             weight='Regular'
+            variant='bodyLarge'
             style={[styles.aboutQuote, { color: C.gold }]}
           >
             {t("settings.quote")}
           </AppText>
           <AppText
             weight='Regular'
+            variant='caption'
             style={[styles.aboutRef, { color: C.textMuted }]}
           >
             {t("settings.quoteRef")}
@@ -121,7 +126,8 @@ OS: ${Platform.OS} ${Platform.Version}
             >
               <AppText
                 weight='Medium'
-                style={{ color: C.textSecondary, fontSize: 14 }}
+                variant='body'
+                style={{ color: C.textSecondary }}
               >
                 {t("settings.emailUs")}
               </AppText>
@@ -133,13 +139,15 @@ OS: ${Platform.OS} ${Platform.Version}
       <View style={styles.footerInfo}>
         <AppText
           weight='Regular'
+          variant='body'
           style={[styles.versionText, { color: C.textMuted }]}
         >
           {t("settings.version")}
         </AppText>
         <AppText
           weight='Regular'
-          style={[styles.madeWithText, { color: C.textMuted }]}
+          variant='caption'
+          style={{ color: C.textMuted }}
         >
           {t("settings.madeWithLove")}
         </AppText>
@@ -155,19 +163,19 @@ OS: ${Platform.OS} ${Platform.Version}
         <View style={{ flex: 1 }}>
           <AppText
             weight='Regular'
-            style={[styles.privacyText, { color: C.tint }]}
+            variant='body'
+            style={{ color: C.tint }}
           >
             {t("settings.privacy")}
           </AppText>
           <AnimatedPressable onPress={handlePrivacyPress} hitSlop={20}>
             <AppText
               weight='Medium'
-              style={{
-                color: C.gold,
-                textDecorationLine: "underline",
-                fontSize: 14,
-                marginTop: 4,
-              }}
+              variant='body'
+              style={[
+                styles.privacyLink,
+                { color: C.gold, textDecorationLine: "underline" },
+              ]}
             >
               {t("settings.privacyPolicy")}
             </AppText>
@@ -180,84 +188,62 @@ OS: ${Platform.OS} ${Platform.Version}
 
 const styles = StyleSheet.create({
   sectionLabel: {
-    fontSize: 16,
     textTransform: "uppercase",
     letterSpacing: 1,
-    marginBottom: 8,
-    marginLeft: 4,
-    marginTop: 8,
+    marginBottom: spacing.sm,
+    marginLeft: spacing.xs,
+    marginTop: spacing.sm,
   },
   settingsCard: {
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginBottom: 24,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    marginBottom: spacing.xxl,
   },
   linksContainer: {
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1,
-  },
-  divider: {
-    height: 1,
-    marginVertical: 4,
-    marginHorizontal: 16,
   },
   footerInfo: {
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: spacing.lg,
   },
   versionText: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  madeWithText: {
-    fontSize: 12,
+    marginBottom: spacing.xs,
   },
   actionButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.sm,
   },
   aboutCard: {
-    paddingVertical: 8,
-    gap: 8,
-  },
-  aboutTitle: {
-    fontSize: 16,
+    paddingVertical: spacing.sm,
+    gap: spacing.sm,
   },
   aboutDesc: {
-    fontSize: 14,
     lineHeight: 20,
   },
   aboutQuote: {
-    fontSize: 16,
     fontStyle: "italic",
     textAlign: "center",
-    marginTop: 12,
+    marginTop: spacing.md,
     lineHeight: 22,
   },
   aboutRef: {
-    fontSize: 12,
     textAlign: "center",
     marginTop: -2,
   },
-  version: {
-    fontSize: 12,
-    textAlign: "center",
-    marginTop: 16,
-  },
   privacyNote: {
     flexDirection: "row",
-    gap: 12,
-    padding: 16,
-    borderRadius: 16,
+    gap: spacing.md,
+    padding: spacing.lg,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    marginTop: 8,
-    marginBottom: 24,
+    marginTop: spacing.sm,
+    marginBottom: spacing.xxl,
   },
-  privacyText: {
-    fontSize: 14,
-    lineHeight: 18,
+  privacyLink: {
+    marginTop: spacing.xs,
   },
 });

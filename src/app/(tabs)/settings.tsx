@@ -15,6 +15,7 @@ import { SettingsToast } from "@components/Settings/SettingsToast";
 import { ReminderTimePicker } from "@components/Settings/ReminderTimePicker";
 import { LanguageSheet } from "@components/Settings/LanguageSheet";
 import { ClearDataSheet } from "@components/Settings/ClearDataSheet";
+import { spacing } from "@constants/spacing";
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
@@ -74,13 +75,13 @@ export default function SettingsScreen() {
         contentContainerStyle={[
           styles.scrollContent,
           {
-            paddingTop: (isWeb ? 67 : insets.top) + 16,
+            paddingTop: (isWeb ? 67 : insets.top) + spacing.lg,
             paddingBottom: isWeb ? 34 + 84 : 100,
           },
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <AppText weight="Bold" style={[styles.title, { color: C.gold }]}>
+        <AppText weight="Bold" variant='hero' style={[styles.title, { color: C.gold }]}>
           {t("settings.title")}
         </AppText>
 
@@ -138,6 +139,6 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  scrollContent: { paddingHorizontal: 20 },
-  title: { fontSize: 28, marginBottom: 20 },
+  scrollContent: { paddingHorizontal: spacing.xl },
+  title: { marginBottom: spacing.xl },
 });

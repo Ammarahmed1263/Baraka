@@ -5,6 +5,8 @@ import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import SettingRow from "./SettingRow";
 import { ROLES, type RoleKey } from "@utils/roleHelpers";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface ProfileSectionProps {
   profile: Record<RoleKey, boolean>;
@@ -17,11 +19,12 @@ export const ProfileSection = React.memo(({ profile, onToggle }: ProfileSectionP
 
   return (
     <>
-      <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
+      <AppText weight="Bold" variant='bodyLarge' style={[styles.sectionLabel, { color: C.gold }]}>
         {t("settings.myProfile")}
       </AppText>
       <AppText
         weight="Regular"
+        variant='body'
         style={[styles.sectionSubLabel, { color: C.textMuted }]}
       >
         {t("settings.profileHint")}
@@ -64,25 +67,23 @@ export const ProfileSection = React.memo(({ profile, onToggle }: ProfileSectionP
 
 const styles = StyleSheet.create({
   sectionLabel: {
-    fontSize: 16,
     textTransform: "uppercase",
     letterSpacing: 1,
-    marginBottom: 8,
-    marginLeft: 4,
-    marginTop: 24,
+    marginBottom: spacing.sm,
+    marginLeft: spacing.xs,
+    marginTop: spacing.xxl,
   },
   sectionSubLabel: {
-    fontSize: 14,
-    marginBottom: 12,
-    marginLeft: 4,
+    marginBottom: spacing.md,
+    marginLeft: spacing.xs,
   },
   settingsCard: {
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    marginBottom: 24,
+    marginBottom: spacing.xxl,
   },
   divider: {
     height: 1,
-    marginVertical: 4,
+    marginVertical: spacing.xs,
   },
 });

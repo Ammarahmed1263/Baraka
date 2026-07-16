@@ -6,6 +6,7 @@ import { AppText } from "@components/UI/AppText";
 import { AppButton } from "@components/UI/AppButton";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
 
 interface ClearDataSheetProps {
   onConfirm: () => void;
@@ -23,11 +24,12 @@ export const ClearDataSheet = React.forwardRef<BottomSheetModal, ClearDataSheetP
         snapPoints={["35%"]}
         enablePanDownToClose
       >
-        <AppText weight="Bold" style={[styles.sheetTitle, { color: C.error }]}>
+        <AppText weight="Bold" variant='title' style={[styles.sheetTitle, { color: C.error }]}>
           {t("settings.clearConfirmTitle")}
         </AppText>
         <AppText
           weight="Regular"
+          variant='bodyLarge'
           style={[styles.sheetDesc, { color: C.textSecondary }]}
         >
           {t("settings.clearConfirmMessage")}
@@ -56,21 +58,19 @@ export const ClearDataSheet = React.forwardRef<BottomSheetModal, ClearDataSheetP
 
 const styles = StyleSheet.create({
   sheetTitle: {
-    fontSize: 20,
-    marginBottom: 8,
+    marginBottom: spacing.sm,
     textAlign: "center",
   },
   sheetDesc: {
-    fontSize: 15,
     textAlign: "center",
-    marginBottom: 30,
-    paddingHorizontal: 20,
+    marginBottom: spacing.xxl,
+    paddingHorizontal: spacing.xl,
     lineHeight: 22,
   },
   buttonRow: {
     flexDirection: "row",
-    gap: 12,
-    paddingHorizontal: 16,
+    gap: spacing.md,
+    paddingHorizontal: spacing.lg,
   },
   buttonWrapper: {
     flex: 1,

@@ -25,6 +25,7 @@ import { OnboardingSlide } from "@components/onboarding/OnboardingSlide";
 import { useTheme } from "@context/ThemeContext";
 import { ONBOARDING_SLIDES } from "@data/onboardingSlides";
 import { useLocalize } from "@hooks/useLocalize";
+import { spacing } from "@constants/spacing";
 
 export default function OnboardingPager() {
   const { colors: C } = useTheme();
@@ -94,10 +95,10 @@ export default function OnboardingPager() {
                 <LanguagePicker />
               </View>
             )}
-            <AppText weight='Bold' style={[styles.title, { color: C.text }]}>
+            <AppText weight='Bold' variant='titleLarge' style={[styles.title, { color: C.text }]}>
               {localize(item.title)}
             </AppText>
-            <AppText style={[styles.body, { color: C.textSecondary }]}>
+            <AppText variant='bodyLarge' style={[styles.body, { color: C.textSecondary }]}>
               {localize(item.body)}
             </AppText>
           </View>
@@ -129,7 +130,7 @@ export default function OnboardingPager() {
       />
 
       <View
-        style={[styles.bottomSection, { paddingBottom: insets.bottom + 24 }]}
+        style={[styles.bottomSection, { paddingBottom: insets.bottom + spacing.xxl }]}
       >
         <OnboardingDots
           total={ONBOARDING_SLIDES.length}
@@ -153,7 +154,7 @@ export default function OnboardingPager() {
               isLastSlide ? t("onboarding.getStarted") : t("onboarding.next")
             }
             onPress={goNext}
-            style={{ paddingHorizontal: 40 }}
+            style={{ paddingHorizontal: spacing.huge }}
           />
         </View>
       </View>
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
   },
   languagePickerInline: {
     alignItems: "center",
-    marginBottom: -8,
+    marginBottom: -spacing.sm,
   },
   slide: {
     flex: 1,
@@ -177,8 +178,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 32,
-    gap: 24,
+    paddingHorizontal: spacing.xxxl,
+    gap: spacing.xxl,
   },
   iconCircle: {
     width: 100,
@@ -186,22 +187,20 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   title: {
-    fontSize: 28,
     textAlign: "center",
     lineHeight: 38,
   },
   body: {
-    fontSize: 16,
     textAlign: "center",
     lineHeight: 26,
-    paddingHorizontal: 8,
+    paddingHorizontal: spacing.sm,
   },
   bottomSection: {
-    paddingHorizontal: 24,
-    gap: 28,
+    paddingHorizontal: spacing.xxl,
+    gap: spacing.xxxl - 4,
   },
   buttonRow: {
     flexDirection: "row",

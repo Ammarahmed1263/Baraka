@@ -5,6 +5,8 @@ import { useTheme } from "@context/ThemeContext";
 import { AppText } from "@components/UI/AppText";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface DataSectionProps {
   onExport: () => void;
@@ -17,7 +19,7 @@ export const DataSection = React.memo(({ onExport, onClear }: DataSectionProps) 
 
   return (
     <>
-      <AppText weight="Bold" style={[styles.sectionLabel, { color: C.gold }]}>
+      <AppText weight="Bold" variant='bodyLarge' style={[styles.sectionLabel, { color: C.gold }]}>
         {t("settings.data")}
       </AppText>
       <View
@@ -40,13 +42,15 @@ export const DataSection = React.memo(({ onExport, onClear }: DataSectionProps) 
             <View>
               <AppText
                 weight="Medium"
+                variant='bodyLarge'
                 style={[styles.settingName, { color: C.text }]}
               >
                 {t("settings.exportData")}
               </AppText>
               <AppText
                 weight="Regular"
-                style={[styles.settingDesc, { color: C.textMuted }]}
+                variant='body'
+                style={{ color: C.textMuted }}
               >
                 {t("settings.exportDataDesc")}
               </AppText>
@@ -76,13 +80,15 @@ export const DataSection = React.memo(({ onExport, onClear }: DataSectionProps) 
             <View>
               <AppText
                 weight="Medium"
+                variant='bodyLarge'
                 style={[styles.settingName, { color: C.error }]}
               >
                 {t("settings.clearData")}
               </AppText>
               <AppText
                 weight="Regular"
-                style={[styles.settingDesc, { color: C.textMuted }]}
+                variant='body'
+                style={{ color: C.textMuted }}
               >
                 {t("settings.clearDataDesc")}
               </AppText>
@@ -102,48 +108,43 @@ export const DataSection = React.memo(({ onExport, onClear }: DataSectionProps) 
 
 const styles = StyleSheet.create({
   sectionLabel: {
-    fontSize: 16,
     textTransform: "uppercase",
     letterSpacing: 1,
-    marginBottom: 8,
-    marginLeft: 4,
-    marginTop: 8,
+    marginBottom: spacing.sm,
+    marginLeft: spacing.xs,
+    marginTop: spacing.sm,
   },
   settingsCard: {
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginBottom: 24,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    marginBottom: spacing.xxl,
   },
   settingRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: spacing.md,
   },
   settingLeft: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: spacing.md,
     flex: 1,
   },
   settingIcon: {
     width: 36,
     height: 36,
-    borderRadius: 12,
+    borderRadius: radius.md,
     alignItems: "center",
     justifyContent: "center",
   },
   settingName: {
-    fontSize: 16,
-    marginBottom: 2,
-  },
-  settingDesc: {
-    fontSize: 14,
+    marginBottom: spacing.xs,
   },
   divider: {
     height: 1,
-    marginVertical: 4,
+    marginVertical: spacing.xs,
   },
 });

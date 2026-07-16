@@ -15,6 +15,7 @@ import { DEFAULT_ACTIVITY_IDS } from "@data/onboardingDefaults";
 import { OnboardingDots } from "@components/onboarding/OnboardingDots";
 import { ONBOARDING_SLIDES } from "@data/onboardingSlides";
 import type { Activity } from "@types";
+import { spacing } from "@constants/spacing";
 
 const MAX_SELECTION = 5;
 
@@ -70,11 +71,11 @@ export default function ActivityPickerScreen() {
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
-        <AppText weight='Bold' style={[styles.title, { color: C.text }]}>
+      <View style={[styles.header, { paddingTop: insets.top + spacing.lg }]}>
+        <AppText weight='Bold' variant='titleLarge' style={{ color: C.text }}>
           {t("onboarding.pickTitle")}
         </AppText>
-        <AppText style={[styles.subtitle, { color: C.textSecondary }]}>
+        <AppText variant='body' style={{ color: C.textSecondary }}>
           {t("onboarding.pickSubtext", { count: selectedIds.length, max: MAX_SELECTION })}
         </AppText>
       </View>
@@ -90,8 +91,8 @@ export default function ActivityPickerScreen() {
       />
 
       {/* Footer */}
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 24 }]}>
-        <View style={{ paddingBottom: 16 }}>
+      <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.xxl }]}>
+        <View style={{ paddingBottom: spacing.lg }}>
           <OnboardingDots total={ONBOARDING_SLIDES.length + 1} currentIndex={ONBOARDING_SLIDES.length} />
         </View>
 
@@ -111,27 +112,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingHorizontal: 24,
-    paddingBottom: 8,
-    gap: 6,
-  },
-  title: {
-    fontSize: 24,
-    lineHeight: 34,
-  },
-  subtitle: {
-    fontSize: 14,
-    lineHeight: 22,
+    paddingHorizontal: spacing.xxl,
+    paddingBottom: spacing.sm,
+    gap: spacing.xs,
   },
   grid: {
-    paddingHorizontal: 14,
-    paddingTop: 8,
-    paddingBottom: 16,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.lg,
   },
   footer: {
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    gap: 14,
+    paddingHorizontal: spacing.xxl,
+    paddingTop: spacing.md,
+    gap: spacing.md,
     alignItems: "center",
   },
   confirm: {

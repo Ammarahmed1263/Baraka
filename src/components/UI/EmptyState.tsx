@@ -1,8 +1,9 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, StyleProp, ViewStyle } from "react-native";
 import { AppText } from "./AppText";
 import { AppButton } from "./AppButton";
 import { Feather } from "@expo/vector-icons";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
 
 interface EmptyStateProps {
   icon: keyof typeof Feather.glyphMap;
@@ -10,7 +11,7 @@ interface EmptyStateProps {
   message: string;
   actionLabel?: string;
   onAction?: () => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function EmptyState({
@@ -27,11 +28,11 @@ export function EmptyState({
     <View style={[styles.container, style]}>
       <Feather name={icon} size={40} color={C.textMuted} />
       {title && (
-        <AppText weight='Bold' style={[styles.title, { color: C.text }]}>
+        <AppText weight='Bold' variant='subtitle' style={styles.title}>
           {title}
         </AppText>
       )}
-      <AppText weight='Regular' style={[styles.message, { color: C.textSecondary }]}>
+      <AppText weight='Regular' variant='body' style={[styles.message, { color: C.textSecondary }]}>
         {message}
       </AppText>
       {actionLabel && onAction && (
@@ -49,20 +50,18 @@ export function EmptyState({
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    paddingVertical: 48,
-    gap: 12,
+    paddingVertical: spacing.xxxl + spacing.lg,
+    gap: spacing.md,
   },
   title: {
-    fontSize: 18,
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   message: {
-    fontSize: 14,
     textAlign: "center",
     lineHeight: 22,
     maxWidth: 300,
   },
   button: {
-    marginTop: 8,
+    marginTop: spacing.sm,
   },
 });

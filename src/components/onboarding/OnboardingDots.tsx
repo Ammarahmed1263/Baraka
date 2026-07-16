@@ -6,6 +6,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
 
 interface OnboardingDotsProps {
   total: number;
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 10,
+    gap: spacing.sm,
   },
   dot: {
     width: 8,

@@ -4,6 +4,8 @@ import Animated from "react-native-reanimated";
 import { AppIcon as Feather } from "@components/UI/AppIcon";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface SettingsToastProps {
   message: string;
@@ -31,7 +33,7 @@ export function SettingsToast({ message, animatedStyle, isWeb }: SettingsToastPr
       pointerEvents="none"
     >
       <Feather name="unlock" size={16} color="#C9A84C" />
-      <AppText weight="Medium" style={[styles.toastText, { color: C.text }]}>
+      <AppText weight="Medium" variant='body' style={styles.toastText}>
         {message}
       </AppText>
     </Animated.View>
@@ -41,17 +43,16 @@ export function SettingsToast({ message, animatedStyle, isWeb }: SettingsToastPr
 const styles = StyleSheet.create({
   toast: {
     position: "absolute",
-    left: 20,
-    right: 20,
+    left: spacing.xl,
+    right: spacing.xl,
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    borderRadius: 12,
-    gap: 12,
+    padding: spacing.lg,
+    borderRadius: radius.md,
+    gap: spacing.md,
     zIndex: 999,
   },
   toastText: {
-    fontSize: 14,
     flex: 1,
   },
 });

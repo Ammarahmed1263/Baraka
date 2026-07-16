@@ -21,6 +21,8 @@ import { Platform, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { KeyboardAwareScrollViewCompat } from "@components/KeyboardAwareScrollViewCompat";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 export default function JournalScreen() {
   const localize = useLocalize();
@@ -94,9 +96,13 @@ export default function JournalScreen() {
     { label: t("journal.general"), value: "__all__" },
     ...Array.from(new Set(journalEntries.map((e) => e.activityId))).map(
       (activityId) => {
-        const firstEntry = journalEntries.find((e) => e.activityId === activityId);
+        const firstEntry = journalEntries.find(
+          (e) => e.activityId === activityId,
+        );
         return {
-          label: firstEntry ? localize(firstEntry.activityName) || t("journal.general") : t("journal.general"),
+          label: firstEntry
+            ? localize(firstEntry.activityName) || t("journal.general")
+            : t("journal.general"),
           value: activityId,
         };
       },
@@ -108,18 +114,19 @@ export default function JournalScreen() {
       <KeyboardAwareScrollViewCompat
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: topPadding + 16, paddingBottom: isWeb ? 34 + 84 : 100 },
+          { paddingTop: topPadding + spacing.lg, paddingBottom: isWeb ? 34 + 84 : 100 },
         ]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps='handled'
       >
         <View style={styles.header}>
           <View>
-            <AppText weight='Bold' style={[styles.title, { color: C.gold }]}>
+            <AppText weight='Bold' variant='hero' style={[styles.title, { color: C.gold }]}>
               {t("journal.title")}
             </AppText>
             <AppText
               weight='Regular'
+              variant='body'
               style={[styles.subtitle, { color: C.textSecondary }]}
             >
               {t(
@@ -162,7 +169,7 @@ export default function JournalScreen() {
         )}
 
         {journalEntries.length > 0 && (
-          <View style={{ marginBottom: 12 }}>
+          <View style={{ marginBottom: spacing.md }}>
             <AppTextInput
               value={search}
               onChangeText={setSearch}
@@ -184,6 +191,7 @@ export default function JournalScreen() {
             items={filterOptions}
             selectedValue={filterActivity}
             onSelect={setFilterActivity}
+            style={{ marginHorizontal: -spacing.xl }}
           />
         )}
 
@@ -197,40 +205,33 @@ export default function JournalScreen() {
           />
         )}
 
-            {Object.entries(groupedLocalized).map(
-              ([date, entries], outerIndex) => (
-                <View key={date} style={styles.dateGroup}>
-                  <AppText
-                    weight='Bold'
-                    style={[styles.dateGroupLabel, { color: C.gold }]}
-                  >
-                    {date}
-                  </AppText>
-                  <View style={{ gap: 10 }}>
-                    {entries.map((entry, innerIndex) => (
-                      <Animated.View
-                        key={entry.id}
-                        entering={FadeInDown.delay(
-                          (outerIndex * 2 + innerIndex) * 50,
-                        ).duration(250)}
-                      >
-                        <JournalCard
-                          entry={entry}
-                          onOptions={handleOptions}
-                        />
-                      </Animated.View>
-                    ))}
-                  </View>
-                </View>
-              ),
-            )}
+        {Object.entries(groupedLocalized).map(([date, entries], outerIndex) => (
+          <View key={date} style={styles.dateGroup}>
+            <AppText
+              weight='Bold'
+              variant='footnote'
+              style={[styles.dateGroupLabel, { color: C.gold }]}
+            >
+              {date}
+            </AppText>
+            <View style={{ gap: spacing.sm }}>
+              {entries.map((entry, innerIndex) => (
+                <Animated.View
+                  key={entry.id}
+                  entering={FadeInDown.delay(
+                    (outerIndex * 2 + innerIndex) * 50,
+                  ).duration(250)}
+                >
+                  <JournalCard entry={entry} onOptions={handleOptions} />
+                </Animated.View>
+              ))}
+            </View>
+          </View>
+        ))}
 
-            {filtered.length === 0 && journalEntries.length > 0 && (
-              <EmptyState
-                icon='search'
-                message={t("journal.noFilterResults")}
-              />
-            )}
+        {filtered.length === 0 && journalEntries.length > 0 && (
+          <EmptyState icon='search' message={t("journal.noFilterResults")} />
+        )}
       </KeyboardAwareScrollViewCompat>
 
       <AppBottomSheet
@@ -240,7 +241,7 @@ export default function JournalScreen() {
           setSelectedEntry(undefined);
         }}
       >
-        <View style={[styles.sheetContent, { paddingBottom: 32 }]}>
+        <View style={[styles.sheetContent, { paddingBottom: spacing.xxxl }]}>
           <AppButton
             variant='outline'
             label={t("journal.editReflection", "Edit reflection")}
@@ -250,7 +251,7 @@ export default function JournalScreen() {
               setEditingEntry(selectedEntry);
               setShowAdd(true);
             }}
-            style={{ width: "100%", marginBottom: 12 }}
+            style={{ width: "100%", marginBottom: spacing.md }}
           />
           <AppButton
             variant='destructive'
@@ -267,55 +268,31 @@ export default function JournalScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  scrollContent: { paddingHorizontal: 20 },
+  scrollContent: { paddingHorizontal: spacing.xl },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 20,
+    alignItems: "flex-end",
+    marginBottom: spacing.xl,
   },
-  title: { fontSize: 28, marginBottom: 4 },
-  subtitle: { fontSize: 14 },
+  title: { marginBottom: spacing.xs },
+  subtitle: {},
   addButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
+    borderRadius: radius.xl,
     alignItems: "center",
     justifyContent: "center",
   },
-  dateGroup: { marginBottom: 24 },
+  dateGroup: { marginBottom: spacing.xxl },
   dateGroupLabel: {
-    fontSize: 13,
-    marginBottom: 10,
+    marginBottom: spacing.md,
     textTransform: "uppercase",
     letterSpacing: 0.6,
   },
   sheetContent: {
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 8,
-  },
-  sheetIconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
-  },
-  sheetTitle: {
-    fontSize: 20,
-    marginBottom: 8,
-    textAlign: "center",
-  },
-  sheetMessage: {
-    fontSize: 15,
-    textAlign: "center",
-    marginBottom: 24,
-  },
-  sheetActions: {
-    flexDirection: "row",
-    gap: 12,
-    width: "100%",
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
   },
 });

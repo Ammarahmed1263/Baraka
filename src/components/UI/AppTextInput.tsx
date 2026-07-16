@@ -9,6 +9,9 @@ import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
 import { Feather } from "@expo/vector-icons";
 import { useLanguage } from "@i18n";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
+import { typography } from "@constants/typography";
 
 interface AppTextInputProps extends TextInputProps {
   label?: string;
@@ -39,19 +42,21 @@ export function AppTextInput({
     if (onBlur) onBlur(e);
   };
 
-  const fontFamily = language === "ar" ? "Tajawal-Regular" : "SourceSerif4-Regular";
+  const isAr = language === "ar";
+  const fontFamily = isAr ? "Tajawal-Regular" : "SourceSerif4-Regular";
   const dynamicStyle = useMemo(() => ({
     color: C.text,
     backgroundColor: C.backgroundSubtle,
     borderColor: isFocused ? C.tint : C.border,
     fontFamily,
+    fontSize: typography.bodyLarge[isAr ? "ar" : "en"].fontSize,
     letterSpacing: 0,
-  }), [C, isFocused, fontFamily]);
+  }), [C, isFocused, fontFamily, isAr]);
 
   return (
     <View style={styles.container}>
       {label && (
-        <AppText weight="Medium" style={[styles.label, { color: C.textSecondary }]}>
+        <AppText weight="Medium" variant='body' style={[styles.label, { color: C.textSecondary }]}>
           {label}
         </AppText>
       )}
@@ -81,7 +86,7 @@ export function AppTextInput({
         )}
       </View>
       {error && (
-        <AppText style={[styles.error, { color: C.error }]}>
+        <AppText variant='caption' style={[styles.error, { color: C.error }]}>
           {error}
         </AppText>
       )}
@@ -91,13 +96,12 @@ export function AppTextInput({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 8,
+    marginVertical: spacing.sm,
     width: "100%",
   },
   label: {
-    fontSize: 14,
-    marginBottom: 8,
-    marginLeft: 4,
+    marginBottom: spacing.sm,
+    marginLeft: spacing.xs,
   },
   inputContainer: {
     position: "relative",
@@ -105,30 +109,28 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 52,
-    borderRadius: 16,
+    borderRadius: radius.lg,
     borderWidth: 1.5,
-    paddingHorizontal: 16,
-    fontSize: 16,
+    paddingHorizontal: spacing.lg,
   },
   leftIcon: {
     position: "absolute",
-    left: 16,
+    left: spacing.lg,
     zIndex: 1,
   },
   rightIconContainer: {
     position: "absolute",
-    right: 16,
+    right: spacing.lg,
     zIndex: 1,
   },
   multiline: {
     height: 120,
-    paddingTop: 16,
+    paddingTop: spacing.lg,
     textAlignVertical: "top",
   },
   error: {
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 4,
+    marginTop: spacing.xs,
+    marginLeft: spacing.xs,
   },
   withLeftIcon: { paddingStart: 42 },
   withRightIcon: { paddingEnd: 42 },

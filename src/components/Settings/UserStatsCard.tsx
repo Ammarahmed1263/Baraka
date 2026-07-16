@@ -4,6 +4,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface UserStatsCardProps {
   streak: number;
@@ -32,7 +34,7 @@ export default function UserStatsCard({
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <AppText weight="Bold" style={[styles.statsTitle, { color: C.gold }]}>
+      <AppText weight="Bold" variant='body' style={[styles.statsTitle, { color: C.gold }]}>
         {t("settings.yourJourney")}
       </AppText>
 
@@ -42,10 +44,10 @@ export default function UserStatsCard({
           <View style={[styles.iconBox, { backgroundColor: C.backgroundSubtle }]}>
             <Feather name="zap" size={24} color={C.gold} />
           </View>
-          <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
+          <AppText weight="Bold" variant='titleLarge' style={[styles.statValue, { color: C.gold }]}>
             {streak}
           </AppText>
-          <AppText weight="Regular" style={[styles.statLabel, { color: C.textSecondary }]}>
+          <AppText weight="Regular" variant='caption' style={[styles.statLabel, { color: C.textSecondary }]}>
             {t("settings.stats.streak_label")}
           </AppText>
         </View>
@@ -55,10 +57,10 @@ export default function UserStatsCard({
           <View style={[styles.iconBox, { backgroundColor: C.backgroundSubtle }]}>
             <Feather name="check-circle" size={24} color={C.gold} />
           </View>
-          <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
+          <AppText weight="Bold" variant='titleLarge' style={[styles.statValue, { color: C.gold }]}>
             {totalCompleted}
           </AppText>
-          <AppText weight="Regular" style={[styles.statLabel, { color: C.textSecondary }]}>
+          <AppText weight="Regular" variant='caption' style={[styles.statLabel, { color: C.textSecondary }]}>
             {t("settings.stats.renewed_label")}
           </AppText>
         </View>
@@ -68,10 +70,10 @@ export default function UserStatsCard({
           <View style={[styles.iconBox, { backgroundColor: C.backgroundSubtle }]}>
             <Feather name="book-open" size={24} color={C.gold} />
           </View>
-          <AppText weight="Bold" style={[styles.statValue, { color: C.gold }]}>
+          <AppText weight="Bold" variant='titleLarge' style={[styles.statValue, { color: C.gold }]}>
             {totalJournal}
           </AppText>
-          <AppText weight="Regular" style={[styles.statLabel, { color: C.textSecondary }]}>
+          <AppText weight="Regular" variant='caption' style={[styles.statLabel, { color: C.textSecondary }]}>
             {t("settings.stats.journal_label")}
           </AppText>
         </View>
@@ -82,14 +84,13 @@ export default function UserStatsCard({
 
 const styles = StyleSheet.create({
   statsCard: {
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 24,
-    gap: 20,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.xxl,
+    gap: spacing.xl,
     overflow: "hidden",
   },
   statsTitle: {
-    fontSize: 14,
     textTransform: "uppercase",
     letterSpacing: 1,
     opacity: 0.9,
@@ -102,22 +103,20 @@ const styles = StyleSheet.create({
   statItem: {
     flex: 1,
     alignItems: "center",
-    gap: 4,
+    gap: spacing.xs,
   },
   iconBox: {
     width: 40,
     height: 40,
-    borderRadius: 12,
+    borderRadius: radius.md,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   statValue: {
-    fontSize: 24,
     lineHeight: 28,
   },
   statLabel: {
-    fontSize: 12,
     textAlign: "center",
     textTransform: "uppercase",
     letterSpacing: 0.5,

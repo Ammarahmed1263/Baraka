@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AddActivityForm from "@components/Reminders/AddActivityForm";
 import CategorySection from "@components/Reminders/CategorySection";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { spacing } from "@constants/spacing";
 
 export default function RemindersScreen() {
   const { t } = useTranslation();
@@ -47,19 +48,20 @@ export default function RemindersScreen() {
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: topPadding + 16, paddingBottom: isWeb ? 34 + 84 : 100 },
+          { paddingTop: topPadding + spacing.lg, paddingBottom: isWeb ? 34 + 84 : 100 },
         ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <AppText weight='Bold' style={[styles.title, { color: C.gold }]}>
+            <AppText weight='Bold' variant='hero' style={[styles.title, { color: C.gold }]}>
               {t("reminders.title")}
             </AppText>
             <AppText
               weight='Regular'
-              style={[styles.subtitle, { color: C.textSecondary }]}
+              variant='body'
+              style={{ color: C.textSecondary }}
             >
               {t("reminders.subtitle")}
             </AppText>
@@ -85,7 +87,7 @@ export default function RemindersScreen() {
             <Animated.View
               key={group.category}
               entering={FadeInDown.delay(index * 50).duration(250)}
-              style={{ marginBottom: 20 }}
+              style={{ marginBottom: spacing.xl }}
             >
               <CategorySection
                 category={group.category}
@@ -102,15 +104,14 @@ export default function RemindersScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  scrollContent: { paddingHorizontal: 20 },
+  scrollContent: { paddingHorizontal: spacing.xl },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 20,
+    marginBottom: spacing.xl,
   },
-  title: { fontSize: 28, marginBottom: 4 },
-  subtitle: { fontSize: 14 },
+  title: { marginBottom: spacing.xs },
   addButton: {
     width: 44,
     height: 44,

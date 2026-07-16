@@ -6,6 +6,8 @@ import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
 import { AppButton } from "./AppButton";
 import Colors from "@constants/colors";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 interface ErrorFallbackUIProps {
   error: Error | null;
@@ -34,26 +36,26 @@ export function ErrorFallbackUI({
         name='alert-triangle'
         size={80}
         color={C.error}
-        style={{ marginBottom: 24 }}
+        style={{ marginBottom: spacing.xxl }}
       />
 
-      <AppText weight='Bold' style={dynamicStyles.title}>
+      <AppText weight='Bold' variant='titleLarge' style={dynamicStyles.title}>
         {title || t("error.title")}
       </AppText>
 
-      <AppText style={dynamicStyles.subtitle}>
+      <AppText variant='bodyLarge' style={dynamicStyles.subtitle}>
         {subtitle || t("error.message")}
       </AppText>
 
       {showDetails && error && (
         <View style={dynamicStyles.errorDetails}>
-          <AppText weight='Medium' style={dynamicStyles.errorLabel}>
+          <AppText weight='Medium' variant='body' style={dynamicStyles.errorLabel}>
             {t("error.details")}:
           </AppText>
-          <AppText style={dynamicStyles.errorMessage}>{error.message}</AppText>
+          <AppText variant='body' style={dynamicStyles.errorMessage}>{error.message}</AppText>
           {error.stack && (
             <ScrollView style={dynamicStyles.errorStackContainer}>
-              <AppText style={dynamicStyles.errorStack}>{error.stack}</AppText>
+              <AppText variant='caption' style={dynamicStyles.errorStack}>{error.stack}</AppText>
             </ScrollView>
           )}
         </View>
@@ -78,48 +80,43 @@ const createStyles = (C: typeof Colors.light) =>
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      padding: 28,
+      padding: spacing.xxl,
       backgroundColor: C.background,
     },
     title: {
-      fontSize: 24,
       color: C.text,
-      marginBottom: 12,
+      marginBottom: spacing.md,
       textAlign: "center",
     },
     subtitle: {
-      fontSize: 16,
       color: C.textSecondary,
-      marginBottom: 32,
+      marginBottom: spacing.xxxl,
       lineHeight: 24,
       textAlign: "center",
     },
     errorDetails: {
       width: "100%",
       backgroundColor: C.backgroundSubtle,
-      borderRadius: 16,
-      padding: 16,
-      marginBottom: 32,
+      borderRadius: radius.lg,
+      padding: spacing.lg,
+      marginBottom: spacing.xxxl,
       borderWidth: 1,
       borderColor: C.border,
     },
     errorLabel: {
-      fontSize: 14,
       color: C.error,
-      marginBottom: 8,
+      marginBottom: spacing.sm,
       textAlign: "left",
     },
     errorMessage: {
-      fontSize: 14,
       color: C.text,
-      marginBottom: 8,
+      marginBottom: spacing.sm,
       textAlign: "left",
     },
     errorStackContainer: {
       maxHeight: 180,
     },
     errorStack: {
-      fontSize: 12,
       color: C.textMuted,
       fontFamily: "monospace",
       textAlign: "left",

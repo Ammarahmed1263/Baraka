@@ -18,6 +18,8 @@ import { useTranslation } from "react-i18next";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
 export default function TodayScreen() {
   const { t } = useTranslation();
@@ -80,7 +82,7 @@ export default function TodayScreen() {
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: topPadding + 16, paddingBottom: isWeb ? 34 + 84 : 100 },
+          { paddingTop: topPadding + spacing.lg, paddingBottom: isWeb ? 34 + 84 : 100 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -90,7 +92,8 @@ export default function TodayScreen() {
             <View style={styles.greetingContainer}>
               <AppText
                 weight='Medium'
-                style={[styles.greeting, { color: C.gold }]}
+                variant='subtitle'
+                style={{ color: C.gold }}
               >
                 {getDayGreeting()}
               </AppText>
@@ -98,7 +101,7 @@ export default function TodayScreen() {
             <StreakBadge streak={streak} />
           </View>
 
-          <AppText weight='Bold' style={[styles.dayName, { color: C.text }]}>
+          <AppText weight='Bold' variant='titleLarge' style={[styles.dayName, { color: C.text }]}>
             {getDayName()}
           </AppText>
         </View>
@@ -122,7 +125,8 @@ export default function TodayScreen() {
           <View style={styles.sectionHeader}>
             <AppText
               weight='Bold'
-              style={[styles.sectionTitle, { color: C.gold }]}
+              variant='title'
+              style={{ color: C.gold }}
             >
               {t("dashboard.yourIntentions")}
             </AppText>
@@ -136,10 +140,7 @@ export default function TodayScreen() {
                   },
                 ]}
               >
-                <AppText
-                  weight='Bold'
-                  style={[styles.countBadgeText, { color: C.gold }]}
-                >
+                <AppText weight='Bold' variant='footnote' style={{ color: C.gold }}>
                   {completedCount}/{enabledActivities.length}
                 </AppText>
               </View>
@@ -166,12 +167,14 @@ export default function TodayScreen() {
                 </View>
                 <AppText
                   weight='Medium'
-                  style={[styles.emptyTitle, { color: C.text }]}
+                  variant='title'
+                  style={{ color: C.text }}
                 >
                   {t("common.noActivities", "Ready to start?")}
                 </AppText>
                 <AppText
                   weight='Regular'
+                  variant='bodyLarge'
                   style={[styles.emptyText, { color: C.textSecondary }]}
                 >
                   {t("dashboard.emptyActivities")}
@@ -180,7 +183,7 @@ export default function TodayScreen() {
                   variant='primary'
                   label={t("dashboard.addActivities")}
                   onPress={() => router.push("/(tabs)/reminders")}
-                  style={{ marginTop: 20 }}
+                  style={{ marginTop: spacing.xl }}
                 />
               </View>
             </Animated.View>
@@ -206,7 +209,8 @@ export default function TodayScreen() {
             <Feather name='info' size={13} color={C.textMuted} />
             <AppText
               weight='Regular'
-              style={[styles.ajrFooterText, { color: C.textMuted }]}
+              variant='caption'
+              style={{ flex: 1, color: C.textMuted }}
             >
               {t("dashboard.ajrFooter")}
             </AppText>
@@ -219,40 +223,37 @@ export default function TodayScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  scrollContent: { paddingHorizontal: 20 },
+  scrollContent: { paddingHorizontal: spacing.xl },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   heroArea: {
-    marginBottom: 24,
-    paddingTop: 8,
+    marginBottom: spacing.xxl,
+    paddingTop: spacing.sm,
   },
   greetingContainer: { flex: 1 },
-  greeting: { fontSize: 18 },
-  dayName: { fontSize: 24, letterSpacing: -0.5 },
+  dayName: { letterSpacing: -0.5 },
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
-  sectionTitle: { fontSize: 20 },
   countBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.md,
     borderWidth: 1,
   },
-  countBadgeText: { fontSize: 13 },
   emptyState: {
     alignItems: "center",
-    padding: 40,
-    borderRadius: 24,
+    padding: spacing.huge,
+    borderRadius: radius.xl,
     borderWidth: 1,
-    gap: 16,
+    gap: spacing.lg,
   },
   emptyIconContainer: {
     width: 70,
@@ -260,31 +261,18 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
-  emptyTitle: { fontSize: 20 },
   emptyText: {
-    fontSize: 15,
     textAlign: "center",
-    lineHeight: 22,
     opacity: 0.8,
-  },
-  emptyButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 16,
-    marginTop: 8,
   },
   ajrFooter: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    marginTop: 24,
-    padding: 16,
-    borderRadius: 16,
+    gap: spacing.sm,
+    marginTop: spacing.xxl,
+    padding: spacing.lg,
+    borderRadius: radius.lg,
   },
-  ajrFooterText: { flex: 1, fontSize: 12, lineHeight: 18 },
 });

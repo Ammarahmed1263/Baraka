@@ -4,15 +4,16 @@ import EducationCard from "@components/Learn/EducationCard";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppText } from "@components/UI/AppText";
 import { AppTextInput } from "@components/UI/AppTextInput";
+import { ChipSelector } from "@components/UI/ChipSelector";
 import { useTheme } from "@context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
-import { Haptic } from "@utils/haptics";
+import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { spacing } from "@constants/spacing";
 
 export default function LearnScreen() {
   const { t } = useTranslation();
@@ -46,21 +47,22 @@ export default function LearnScreen() {
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: topPadding + 16, paddingBottom: isWeb ? 34 + 84 : 100 },
+          { paddingTop: topPadding + spacing.lg, paddingBottom: isWeb ? 34 + 84 : 100 },
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <AppText weight='Bold' style={[styles.title, { color: C.gold }]}>
+        <AppText weight='Bold' variant='hero' style={[styles.title, { color: C.gold }]}>
           {t("learn.title")}
         </AppText>
         <AppText
           weight='Regular'
+          variant='body'
           style={[styles.subtitle, { color: C.textSecondary }]}
         >
           {t("learn.subtitle")}
         </AppText>
 
-        <View style={{ marginBottom: 14 }}>
+        <View style={{ marginBottom: spacing.md }}>
           <AppTextInput
             value={search}
             onChangeText={setSearch}
@@ -76,47 +78,16 @@ export default function LearnScreen() {
           />
         </View>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
+        <ChipSelector
+          items={LEARN_CATEGORIES.map(cat => ({ label: t("category." + cat), value: cat }))}
+          selectedValue={activeCategory}
+          onSelect={setActiveCategory}
           style={styles.filterScroll}
-          contentContainerStyle={styles.filterContent}
-        >
-          {LEARN_CATEGORIES.map((cat) => (
-            <AnimatedPressable
-              key={cat}
-              scaleDownTo={0.94}
-              onPress={() => {
-                Haptic.selection();
-                setActiveCategory(cat);
-              }}
-              style={[
-                styles.filterChip,
-                {
-                  backgroundColor:
-                    activeCategory === cat ? C.tint : C.backgroundSubtle,
-                  borderColor: activeCategory === cat ? C.tint : C.border,
-                },
-              ]}
-            >
-              <AppText
-                weight='Medium'
-                style={[
-                  styles.filterText,
-                  {
-                    color:
-                      activeCategory === cat ? C.textOnTint : C.textSecondary,
-                  },
-                ]}
-              >
-                {t("category." + cat)}
-              </AppText>
-            </AnimatedPressable>
-          ))}
-        </ScrollView>
+        />
 
         <AppText
           weight='Regular'
+          variant='footnote'
           style={[styles.count, { color: C.textMuted }]}
         >
           {t(
@@ -132,6 +103,7 @@ export default function LearnScreen() {
             <Feather name='book-open' size={32} color={C.textMuted} />
             <AppText
               weight='Regular'
+              variant='bodyLarge'
               style={[styles.emptyText, { color: C.textSecondary }]}
             >
               {t("learn.noResults")}
@@ -142,7 +114,7 @@ export default function LearnScreen() {
             <Animated.View
               key={entry.id}
               entering={FadeInDown.delay(index * 50).duration(250)}
-              style={{ marginBottom: 12 }}
+              style={{ marginBottom: spacing.md }}
             >
               <EducationCard
                 entry={entry}
@@ -163,19 +135,11 @@ export default function LearnScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  scrollContent: { paddingHorizontal: 20 },
-  title: { fontSize: 28, marginBottom: 4 },
-  subtitle: { fontSize: 14, marginBottom: 16 },
-  filterScroll: { marginBottom: 12, marginHorizontal: -20 },
-  filterContent: { gap: 8, paddingHorizontal: 20 },
-  filterChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  filterText: { fontSize: 13 },
-  count: { fontSize: 13, marginBottom: 16 },
-  emptyState: { alignItems: "center", paddingVertical: 40, gap: 12 },
-  emptyText: { fontSize: 15 },
+  scrollContent: { paddingHorizontal: spacing.xl },
+  title: { marginBottom: spacing.xs },
+  subtitle: { marginBottom: spacing.lg },
+  filterScroll: { marginBottom: spacing.md, marginHorizontal: -spacing.xl },
+  count: { marginBottom: spacing.lg },
+  emptyState: { alignItems: "center", paddingVertical: spacing.huge, gap: spacing.md },
+  emptyText: {},
 });
