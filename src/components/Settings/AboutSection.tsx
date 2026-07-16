@@ -46,7 +46,11 @@ OS: ${Platform.OS} ${Platform.Version}
 
   return (
     <>
-      <AppText weight='Bold' variant='bodyLarge' style={[styles.sectionLabel, { color: C.gold }]}>
+      <AppText
+        weight='Bold'
+        variant='bodyLarge'
+        style={[styles.sectionLabel, { color: C.gold }]}
+      >
         {t("settings.about")}
       </AppText>
       <View
@@ -92,7 +96,7 @@ OS: ${Platform.OS} ${Platform.Version}
           { backgroundColor: C.backgroundCard, borderColor: C.border },
         ]}
       >
-        {/* 
+        {/*
         <SettingRow
           icon='help-circle'
           iconColor='#3B82F6'
@@ -153,35 +157,30 @@ OS: ${Platform.OS} ${Platform.Version}
         </AppText>
       </View>
 
-      <View
+      <AnimatedPressable
+        onPress={handlePrivacyPress}
         style={[
           styles.privacyNote,
-          { backgroundColor: C.successLight, borderColor: C.tint + "30" },
+          { backgroundColor: C.backgroundCard, borderColor: C.border },
         ]}
       >
-        <Feather name='shield' size={16} color={C.tint} />
-        <View style={{ flex: 1 }}>
+        <View style={[styles.iconCircle, { backgroundColor: C.successLight }]}>
+          <Feather name='shield' size={20} color={C.tint} />
+        </View>
+        <View style={styles.privacyTextContainer}>
+          <AppText weight='Medium' variant='body' style={{ color: C.text }}>
+            {t("settings.privacyPolicy")}
+          </AppText>
           <AppText
             weight='Regular'
-            variant='body'
-            style={{ color: C.tint }}
+            variant='caption'
+            style={{ color: C.textMuted, marginTop: spacing.xs, lineHeight: 18 }}
           >
             {t("settings.privacy")}
           </AppText>
-          <AnimatedPressable onPress={handlePrivacyPress} hitSlop={20}>
-            <AppText
-              weight='Medium'
-              variant='body'
-              style={[
-                styles.privacyLink,
-                { color: C.gold, textDecorationLine: "underline" },
-              ]}
-            >
-              {t("settings.privacyPolicy")}
-            </AppText>
-          </AnimatedPressable>
         </View>
-      </View>
+        <Feather name='external-link' size={24} color={C.gold} flipRTL />
+      </AnimatedPressable>
     </>
   );
 });
@@ -225,7 +224,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   aboutQuote: {
-    fontStyle: "italic",
     textAlign: "center",
     marginTop: spacing.md,
     lineHeight: 22,
@@ -236,14 +234,23 @@ const styles = StyleSheet.create({
   },
   privacyNote: {
     flexDirection: "row",
+    alignItems: "center",
     gap: spacing.md,
-    padding: spacing.lg,
+    padding: spacing.md,
+    paddingEnd: spacing.lg,
     borderRadius: radius.lg,
     borderWidth: 1,
     marginTop: spacing.sm,
     marginBottom: spacing.xxl,
   },
-  privacyLink: {
-    marginTop: spacing.xs,
+  iconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: radius.xl,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  privacyTextContainer: {
+    flex: 1,
   },
 });

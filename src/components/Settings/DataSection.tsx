@@ -42,14 +42,14 @@ export const DataSection = React.memo(({ onExport, onClear }: DataSectionProps) 
             <View>
               <AppText
                 weight="Medium"
-                variant='bodyLarge'
+                variant='body'
                 style={[styles.settingName, { color: C.text }]}
               >
                 {t("settings.exportData")}
               </AppText>
               <AppText
                 weight="Regular"
-                variant='body'
+                variant='caption'
                 style={{ color: C.textMuted }}
               >
                 {t("settings.exportDataDesc")}
@@ -80,14 +80,14 @@ export const DataSection = React.memo(({ onExport, onClear }: DataSectionProps) 
             <View>
               <AppText
                 weight="Medium"
-                variant='bodyLarge'
+                variant='body'
                 style={[styles.settingName, { color: C.error }]}
               >
                 {t("settings.clearData")}
               </AppText>
               <AppText
                 weight="Regular"
-                variant='body'
+                variant='caption'
                 style={{ color: C.textMuted }}
               >
                 {t("settings.clearDataDesc")}

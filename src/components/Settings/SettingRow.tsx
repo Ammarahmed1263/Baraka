@@ -37,7 +37,7 @@ export default function SettingRow({
         <View style={{ flex: 1 }}>
           <AppText
             weight='Medium'
-            variant='bodyLarge'
+            variant='body'
             style={{ color: C.text }}
           >
             {label}
@@ -45,7 +45,7 @@ export default function SettingRow({
           {desc && (
             <AppText
               weight='Regular'
-              variant='body'
+              variant='caption'
               style={[styles.settingDesc, { color: C.textMuted }]}
             >
               {desc}
