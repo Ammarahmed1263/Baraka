@@ -9,7 +9,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "ios": "expo run:ios",
     "clean": "bunx expo prebuild --clean",
-    "android:release": "bunx expo run:android --variant release"
+    "android:release": "bunx expo run:android --variant release",
+    "android:prod": "eas build --platform android --profile production"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

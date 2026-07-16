@@ -300,6 +300,17 @@ We need the user to review the proposed wording shifts to ensure they meet the d
 
 ## Post-MVP Polish (After Main Phases)
 
+- [ ] **Unit Testing for Core Architecture**: Add unit testing for critical global logic, specifically focusing on complex hooks and layout boot sequences that rely heavily on native module integrations (Sentry, Expo Router, Expo Notifications).
+  - **Testing Strategy for `useNotifications`**: Use `@testing-library/react-native` (`renderHook`). Mock `expo-notifications` (`useLastNotificationResponse`, listener adders) and `expo-router` (`useRootNavigationState`, `router.navigate`). Verify:
+    1. Cold Start Navigation triggers correct `router.navigate`.
+    2. Mounting Guard correctly blocks navigation if the router isn't ready.
+    3. Cold Start De-duplication prevents navigating to the same notification ID twice.
+    4. Foreground/Background Tap manually triggers navigation via mocked listeners.
+  - **Testing Strategy for `_layout.tsx`**: Use `@testing-library/react-native` (`render`). Mock `expo-splash-screen` (`hideAsync`), `@sentry/react-native` methods, and the `settingsStore`. Verify:
+    1. Boot Sequence Blocking (splash screen waits while `isLoading` is true).
+    2. Boot Sequence Success (splash screen hides once loaded).
+    3. Sentry Context Sync correctly applies mocked user/settings context.
+    4. Effect Isolation (unrelated settings changes do not cause layout/Sentry re-renders).
 - [ ] **Bottom Sheet Journal UX**: Replace the inline journal Add/Edit form with `@gorhom/bottom-sheet`. It runs on the UI thread via Reanimated, supports gesture-based dismissal, and integrates cleanly with the existing animation and haptics stack. Apply the same treatment to any future action confirmations that would otherwise use system `Alert.alert`.
 - [ ] **Additional Export Formats**: Add support for **CSV** and **PDF** exports.
 - [ ] **Android Widgets**: Home screen widgets for daily niyyah.
