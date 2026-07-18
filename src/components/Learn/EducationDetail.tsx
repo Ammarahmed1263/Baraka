@@ -1,4 +1,4 @@
-﻿import { Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import {
@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
+import { AppIcon } from "@components/UI/AppIcon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppText } from "@components/UI/AppText";
 import { type EducationEntry } from "@types";
@@ -55,10 +56,11 @@ export default function EducationDetail({
             { backgroundColor: C.backgroundSubtle, borderColor: C.border },
           ]}
         >
-          <Feather
-            name={I18nManager.isRTL ? "arrow-right" : "arrow-left"}
-            size={20}
+          <AppIcon
+            name="chevron-left"
+            size={24}
             color={C.text}
+            flipRTL
           />
         </AnimatedPressable>
 
@@ -161,9 +163,9 @@ const styles = StyleSheet.create({
   detailContainer: { flex: 1 },
   detailContent: { paddingHorizontal: spacing.xl },
   closeButton: {
-    width: 40,
-    height: 40,
-    borderRadius: radius.xl,
+    width: 44,
+    height: 44,
+    borderRadius: radius.full,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: spacing.lg,

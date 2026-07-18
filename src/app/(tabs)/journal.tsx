@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   addButton: {
     width: 44,
     height: 44,
-    borderRadius: radius.xl,
+    borderRadius: radius.full,
     alignItems: "center",
     justifyContent: "center",
   },

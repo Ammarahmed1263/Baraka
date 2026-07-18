@@ -69,7 +69,7 @@ export const ActivityReflectStep = React.memo(
               { backgroundColor: C.backgroundSubtle, borderColor: C.border },
             ]}
           >
-            <Feather name="x" size={20} color={C.text} />
+            <Feather name="chevron-down" size={24} color={C.text} />
           </AnimatedPressable>
         </View>
 
@@ -232,9 +232,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: radius.xl,
+    width: 44,
+    height: 44,
+    borderRadius: radius.full,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
