@@ -2,6 +2,7 @@ import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppText } from "@components/UI/AppText";
 import { useTheme } from "@context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
+import { AppIcon } from "@components/UI/AppIcon";
 import { useActivitiesStore } from "@store";
 import { type UserActivity } from "@types";
 import { Haptic } from "@utils/haptics";
@@ -9,13 +10,15 @@ import { useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
-import AddActivityForm from "@components/Reminders/AddActivityForm";
-import CategorySection from "@components/Reminders/CategorySection";
+import AddActivityForm from "@components/Activities/AddActivityForm";
+import CategorySection from "@components/Activities/CategorySection";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { spacing } from "@constants/spacing";
+import { radius } from "@constants/radius";
 
-export default function RemindersScreen() {
+export default function ManageActivitiesScreen() {
   const { t } = useTranslation();
   const { colors: C } = useTheme();
   const insets = useSafeAreaInsets();
@@ -24,6 +27,7 @@ export default function RemindersScreen() {
   const activities = useActivitiesStore((s) => s.activities);
   const toggleActivity = useActivitiesStore((s) => s.toggleActivity);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [lastToggledCategory, setLastToggledCategory] = useState<string | null>(null);
 
   const categoryGroups = useMemo(() => {
     const cats = [...new Set(activities.map((a) => a.category))];
@@ -37,6 +41,7 @@ export default function RemindersScreen() {
     (activity: UserActivity) => {
       Haptic.selection();
       toggleActivity(activity.id);
+      setLastToggledCategory(activity.category);
     },
     [toggleActivity],
   );
@@ -52,18 +57,27 @@ export default function RemindersScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
+        <AnimatedPressable
+          onPress={() => router.back()}
+          style={[
+            styles.backButton,
+            { backgroundColor: C.backgroundSubtle, borderColor: C.border },
+          ]}
+        >
+          <AppIcon name="chevron-left" size={24} color={C.text} flipRTL />
+        </AnimatedPressable>
+
         <View style={styles.header}>
           <View>
             <AppText weight='Bold' variant='hero' style={[styles.title, { color: C.gold }]}>
-              {t("reminders.title")}
+              {t("manageActivities.title")}
             </AppText>
             <AppText
               weight='Regular'
               variant='body'
               style={{ color: C.textSecondary }}
             >
-              {t("reminders.subtitle")}
+              {t("manageActivities.subtitle")}
             </AppText>
           </View>
           <AnimatedPressable
@@ -93,6 +107,7 @@ export default function RemindersScreen() {
                 category={group.category}
                 categoryActivities={group.activities}
                 onToggleActivity={handleToggle}
+                isRecentlyToggled={lastToggledCategory === group.category}
               />
             </Animated.View>
           );
@@ -105,6 +120,16 @@ export default function RemindersScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollContent: { paddingHorizontal: spacing.xl },
+  backButton: {
+    width: 44,
+    height: 44,
+    borderRadius: radius.full,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    marginBottom: spacing.md,
+    alignSelf: "flex-start",
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",

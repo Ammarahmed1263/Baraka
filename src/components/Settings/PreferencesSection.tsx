@@ -8,6 +8,7 @@ import { AppIcon as Feather } from "@components/UI/AppIcon";
 import SettingRow from "./SettingRow";
 import { spacing } from "@constants/spacing";
 import { radius } from "@constants/radius";
+import { router } from "expo-router";
 
 interface PreferencesSectionProps {
   lang: string;
@@ -45,6 +46,24 @@ export const PreferencesSection = React.memo(
             { backgroundColor: C.backgroundCard, borderColor: C.border },
           ]}
         >
+          <AnimatedPressable onPress={() => router.push("/manage-activities" as any)}>
+            <SettingRow
+              icon='list'
+              iconColor={C.textSecondary}
+              label={t("settings.manageActivities")}
+              right={
+                <Feather
+                  name='chevron-right'
+                  size={18}
+                  color={C.textMuted}
+                  flipRTL
+                />
+              }
+            />
+          </AnimatedPressable>
+
+          <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
+
           <AnimatedPressable onPress={onLanguageOpen}>
             <SettingRow
               icon='globe'

@@ -65,18 +65,7 @@ export default function TabLayout() {
             ),
         }}
       />
-      <Tabs.Screen
-        name="reminders"
-        options={{
-          title: t("tabs.reminders"),
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView name="bell" tintColor={color} size={24} />
-            ) : (
-              <Feather name="bell" size={22} color={color} />
-            ),
-        }}
-      />
+
       <Tabs.Screen
         name="learn"
         options={{

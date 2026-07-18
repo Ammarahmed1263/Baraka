@@ -4,6 +4,7 @@ import NiyyahCard from "@components/NiyyahCard";
 import StreakBadge from "@components/StreakBadge";
 import { AppButton } from "@components/UI/AppButton";
 import { AppText } from "@components/UI/AppText";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { useTheme } from "@context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
 import { useActivityStats } from "@hooks/useActivityStats";
@@ -130,21 +131,30 @@ export default function TodayScreen() {
             >
               {t("dashboard.yourIntentions")}
             </AppText>
-            {enabledActivities.length > 0 && (
-              <View
-                style={[
-                  styles.countBadge,
-                  {
-                    backgroundColor: C.gold + "15",
-                    borderColor: C.gold + "30",
-                  },
-                ]}
+            <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.sm }}>
+              {enabledActivities.length > 0 && (
+                <View
+                  style={[
+                    styles.countBadge,
+                    {
+                      backgroundColor: C.gold + "15",
+                      borderColor: C.gold + "30",
+                    },
+                  ]}
+                >
+                  <AppText weight='Bold' variant='footnote' style={{ color: C.gold }}>
+                    {completedCount}/{enabledActivities.length}
+                  </AppText>
+                </View>
+              )}
+              <AnimatedPressable
+                accessibilityLabel={t("dashboard.manageActivitiesButton")}
+                onPress={() => router.push("/manage-activities" as any)}
+                style={{ padding: spacing.xs }}
               >
-                <AppText weight='Bold' variant='footnote' style={{ color: C.gold }}>
-                  {completedCount}/{enabledActivities.length}
-                </AppText>
-              </View>
-            )}
+                <Feather name="sliders" size={20} color={C.textSecondary} />
+              </AnimatedPressable>
+            </View>
           </View>
           {enabledActivities.length === 0 ? (
             <Animated.View entering={FadeInDown.duration(300).delay(100)}>
@@ -182,7 +192,7 @@ export default function TodayScreen() {
                 <AppButton
                   variant='primary'
                   label={t("dashboard.addActivities")}
-                  onPress={() => router.push("/(tabs)/reminders")}
+                  onPress={() => router.push("/manage-activities" as any)}
                   style={{ marginTop: spacing.xl }}
                 />
               </View>

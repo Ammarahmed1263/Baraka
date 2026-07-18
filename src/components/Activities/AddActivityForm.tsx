@@ -14,7 +14,6 @@ import { useTheme } from "@context/ThemeContext";
 import { spacing } from "@constants/spacing";
 import { radius } from "@constants/radius";
 
-
 import { generateCustomId } from "@utils/id";
 
 interface AddActivityFormProps {
@@ -32,12 +31,12 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
   const handleAddActivity = async () => {
     if (!newName.trim()) {
       Alert.alert(
-        t("reminders.alert.nameRequiredTitle"),
-        t("reminders.alert.nameRequiredMessage"),
+        t("manageActivities.alert.nameRequiredTitle"),
+        t("manageActivities.alert.nameRequiredMessage"),
       );
       return;
     }
-    const defaultNiyyah = t("reminders.defaultIntention", {
+    const defaultNiyyah = t("manageActivities.defaultIntention", {
       activity: newName.trim(),
     });
     const newActivity = {
@@ -66,26 +65,22 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
       ]}
     >
       <AppText weight='Bold' variant='subtitle' style={styles.formTitle}>
-        {t("reminders.newActivity")}
+        {t("manageActivities.newActivity")}
       </AppText>
       <AppTextInput
         value={newName}
         onChangeText={setNewName}
-        placeholder={t("reminders.activityNamePlaceholder")}
+        placeholder={t("manageActivities.activityNamePlaceholder")}
       />
       <AppTextInput
         value={newNiyyah}
         onChangeText={setNewNiyyah}
-        placeholder={t("reminders.intentionPlaceholder")}
+        placeholder={t("manageActivities.intentionPlaceholder")}
         multiline
       />
 
-
-
-
-
       <AppButton
-        label={t("reminders.addActivity")}
+        label={t("manageActivities.addActivity")}
         onPress={handleAddActivity}
         variant="primary"
         style={{ marginTop: spacing.xs }}
