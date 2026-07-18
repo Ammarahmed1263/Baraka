@@ -6,11 +6,11 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
     "ios": "expo run:ios",
-    "clean": "bunx expo prebuild --clean",
-    "android:release": "bunx expo run:android --variant release",
-    "android:prod": "eas build --platform android --profile production"
+    "build:android": "bunx expo run:android --variant release",
+    "build:eas:android": "eas build --platform android --profile production",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "bunx expo prebuild --clean"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
