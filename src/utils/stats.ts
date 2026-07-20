@@ -13,7 +13,6 @@ export function computeStreak(logs: DailyLog[]): number {
     })
     .sort((a, b) => b.getTime() - a.getTime());
 
-  let streak = 0;
   const today = new Date();
   const todayMidnight = new Date(
     today.getFullYear(),
@@ -21,12 +20,20 @@ export function computeStreak(logs: DailyLog[]): number {
     today.getDate(),
   );
 
-  for (const date of uniqueDates) {
-    const diffTime = todayMidnight.getTime() - date.getTime();
-    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+  const diffDaysFor = (date: Date) =>
+    Math.round((todayMidnight.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
 
-    if (diffDays === streak) {
+  const mostRecentDiff = diffDaysFor(uniqueDates[0]);
+
+  if (mostRecentDiff > 1) return 0;
+
+  let streak = 0;
+  let expectedDiff = mostRecentDiff;
+  for (const date of uniqueDates) {
+    const diffDays = diffDaysFor(date);
+    if (diffDays === expectedDiff) {
       streak++;
+      expectedDiff++;
     } else {
       break;
     }

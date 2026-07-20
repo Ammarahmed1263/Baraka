@@ -25,7 +25,7 @@ Device Info:
 OS: ${Platform.OS} ${Platform.Version}
 `);
     try {
-      await Linking.openURL(`mailto:${email}?subject=${subject}&body=${body}`);
+      await Linking.openURL(`mailto:${email}?to=${email}&subject=${subject}&body=${body}`);
       console.log("email sent");
     } catch (error) {
       console.log("url failed: ", error);

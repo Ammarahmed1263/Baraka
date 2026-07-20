@@ -41,7 +41,7 @@ yarn-error.*
 .env
 .env.local
 
-.env.local
+.env.production
 
 
 # docs

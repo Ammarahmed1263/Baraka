@@ -22,20 +22,27 @@ export function AnimatedPressable({
   onPressIn,
   onPressOut,
   children,
+  disabled,
   ...props
 }: AnimatedPressableProps) {
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    opacity: opacity.value,
-  }));
+  const animatedStyle = useAnimatedStyle(
+    () => ({
+      transform: [{ scale: scale.value }],
+      opacity: disabled ? 0.5 : opacity.value,
+    }),
+    [disabled],
+  );
 
   const handlePressIn = (e: any) => {
     scale.value = withSpring(scaleDownTo, { damping: 15, stiffness: 300 });
     if (activeOpacity < 1) {
-      opacity.value = withSpring(activeOpacity, { damping: 15, stiffness: 300 });
+      opacity.value = withSpring(activeOpacity, {
+        damping: 15,
+        stiffness: 300,
+      });
     }
     if (onPressIn) onPressIn(e);
   };
@@ -50,9 +57,10 @@ export function AnimatedPressable({
 
   return (
     <AnimatedPressableComponent
+      disabled={disabled}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      style={[style, animatedStyle]}
+      style={[animatedStyle, style]}
       {...props}
     >
       {children}
