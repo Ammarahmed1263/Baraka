@@ -15,6 +15,7 @@ import { Haptic } from "@utils/haptics";
 import { getNiyyahOptions } from "@data/niyyahTemplates";
 import { useNiyyahSelection } from "./useNiyyahSelection";
 import { type NiyyahOption } from "@types";
+import { evaluateStreakRisk } from "@/services/notifications";
 
 type Step = "view" | "reflect";
 
@@ -91,7 +92,14 @@ export function useActivityDetail(id: string) {
         updateTodaySelection(activity.id, nextClean);
       }
     },
-    [localSelected, toggleNiyyah, completed, activity, updateActivity, updateTodaySelection],
+    [
+      localSelected,
+      toggleNiyyah,
+      completed,
+      activity,
+      updateActivity,
+      updateTodaySelection,
+    ],
   );
 
   const [step, setStep] = useState<Step>("view");
@@ -102,20 +110,41 @@ export function useActivityDetail(id: string) {
     activity?.customNiyyah ?? "",
   );
 
+  const refreshStreakRisk = useCallback(() => {
+    const today = getTodayString();
+    const completedSomethingToday = useLogsStore
+      .getState()
+      .dailyLogs.some((l) => l.date === today);
+    evaluateStreakRisk({
+      notificationsEnabled: settings.notificationsEnabled,
+      streakCount: useLogsStore.getState().streak,
+      completedSomethingToday,
+      t,
+    });
+  }, [settings.notificationsEnabled, t]);
+
   const handleSaveAndRenew = useCallback(async () => {
     if (!activity) return;
     Haptic.success();
     updateActivity(activity.id, { selectedNiyyahIds: cleanSelected });
     markComplete(activity.id, cleanSelected);
+    refreshStreakRisk();
     setStep("reflect");
-  }, [activity, cleanSelected, updateActivity, markComplete]);
+  }, [
+    activity,
+    cleanSelected,
+    updateActivity,
+    markComplete,
+    refreshStreakRisk,
+  ]);
 
   const handleUnmark = useCallback(async () => {
     if (!activity) return;
     Haptic.lightTap();
     unmarkComplete(activity.id);
     updateActivity(activity.id, { selectedNiyyahIds: [] });
-  }, [activity, unmarkComplete, updateActivity]);
+    refreshStreakRisk();
+  }, [activity, unmarkComplete, updateActivity, refreshStreakRisk]);
 
   const handleSaveReflection = useCallback(async () => {
     if (!activity || !reflectionNote.trim()) return;

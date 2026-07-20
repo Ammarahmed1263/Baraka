@@ -13,8 +13,14 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useNotifications } from "@/hooks/useNotifications";
 import { ErrorBoundary } from "@components/ErrorBoundary";
 import { useSettingsStore } from "@store/settingsStore";
-import { recheckAndRescheduleIfNeeded } from "@/services/notifications";
+import { useLogsStore } from "@store/logsStore";
+import { getTodayString } from "@utils/date";
+import {
+  recheckAndRescheduleIfNeeded,
+  evaluateStreakRisk,
+} from "@/services/notifications";
 import { useLocalize } from "@hooks/useLocalize";
+import { useTranslation } from "react-i18next";
 import { getAnonymousUserId } from "@/utils/device";
 import { Platform } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
@@ -44,9 +50,7 @@ Sentry.init({
 
   replaysSessionSampleRate: __DEV__ ? 1.0 : 0.0,
   replaysOnErrorSampleRate: __DEV__ ? 1.0 : 0.1,
-  integrations: [
-    Sentry.mobileReplayIntegration(),
-  ],
+  integrations: [Sentry.mobileReplayIntegration()],
 
   spotlight: __DEV__,
 });
@@ -64,10 +68,7 @@ function RootLayoutNav() {
           name='activity/[id]'
           options={{ presentation: "modal" }}
         />
-        <Stack.Screen
-          name='learn/[id]'
-          options={{ presentation: "card" }}
-        />
+        <Stack.Screen name='learn/[id]' options={{ presentation: "card" }} />
       </Stack.Protected>
 
       <Stack.Protected guard={!onboardingComplete}>
@@ -82,6 +83,7 @@ function App() {
   const isLoading = useSettingsStore((s) => s.isLoading);
   const settings = useSettingsStore((s) => s.settings);
   const localize = useLocalize();
+  const { t } = useTranslation();
   useNotifications();
 
   useEffect(() => {
@@ -103,8 +105,30 @@ function App() {
         localize,
         settings.notificationsEnabled,
       );
+
+      const logsState = useLogsStore.getState();
+      logsState.recomputeStreak();
+      const freshStreak = useLogsStore.getState().streak;
+      const today = getTodayString();
+      const completedSomethingToday = useLogsStore
+        .getState()
+        .dailyLogs.some((l) => l.date === today);
+
+      evaluateStreakRisk({
+        notificationsEnabled: settings.notificationsEnabled,
+        streakCount: freshStreak,
+        completedSomethingToday,
+        t,
+      });
     }
-  }, [i18nReady, isLoading, settings.reminderTime, settings.notificationsEnabled, localize]);
+  }, [
+    i18nReady,
+    isLoading,
+    settings.reminderTime,
+    settings.notificationsEnabled,
+    localize,
+    t,
+  ]);
 
   useEffect(() => {
     if (i18nReady && !isLoading) {

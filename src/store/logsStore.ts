@@ -13,6 +13,7 @@ type LogsStore = {
   markComplete: (activityId: string, niyyahIds?: string[]) => string;
   unmarkComplete: (activityId: string) => void;
   updateTodaySelection: (activityId: string, niyyahIds: string[]) => void;
+  recomputeStreak: () => void;
   getStreakForActivity: (activityId: string) => number;
 };
 
@@ -51,6 +52,10 @@ export const useLogsStore = create<LogsStore>()(
             : l
         );
         set({ dailyLogs: updated });
+      },
+
+      recomputeStreak: () => {
+        set({ streak: computeStreak(get().dailyLogs) });
       },
 
       getStreakForActivity: (activityId) => {

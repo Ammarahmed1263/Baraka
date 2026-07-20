@@ -166,6 +166,89 @@ export async function cancelDailyNotifications() {
   );
 }
 
+const STREAK_RISK_IDENTIFIER = "streak-risk";
+const STREAK_RISK_HOUR = 21; // 9 PM local device time — separate concern from the user's chosen daily reminderTime
+
+/**
+ * Schedules a single one-shot notification warning the user they're about to
+ * lose their streak, if — and only if — they're actually at risk right now:
+ * notifications enabled + granted, streak > 0, and nothing completed yet
+ * today. Unlike scheduleDailyNotifications, this is never a multi-day batch —
+ * "at risk" is an inherently today-only condition, so it's re-evaluated and
+ * rescheduled reactively (see evaluateStreakRisk) rather than pre-scheduled
+ * in advance.
+ */
+export async function scheduleStreakRiskNotification(
+  streakCount: number,
+  t: (key: string, options?: Record<string, unknown>) => string,
+) {
+  try {
+    await cancelStreakRiskNotification();
+
+    const now = new Date();
+    const triggerDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      STREAK_RISK_HOUR,
+      0,
+    );
+
+    if (triggerDate <= now) return;
+
+    await Notifications.scheduleNotificationAsync({
+      identifier: STREAK_RISK_IDENTIFIER,
+      content: {
+        title: t("notifications.streakRiskTitle"),
+        body: t("notifications.streakRiskBody", { count: streakCount }),
+        sound: true,
+        data: { screen: "/(tabs)" },
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        date: triggerDate,
+      },
+    });
+  } catch (error) {
+    Sentry.captureException(error, {
+      tags: { feature: "notifications" },
+      extra: { phase: "scheduleStreakRiskNotification", streakCount },
+    });
+    console.error("Failed to schedule streak-risk notification:", error);
+  }
+}
+
+export async function cancelStreakRiskNotification() {
+  try {
+    await Notifications.cancelScheduledNotificationAsync(STREAK_RISK_IDENTIFIER);
+  } catch {
+    // no-op — nothing was scheduled, which is a valid state, not an error
+  }
+}
+
+/**
+ * Central decision point for whether a streak-risk notification should exist
+ * right now. Call this after anything that could change the answer: app
+ * boot, marking/unmarking an activity complete, or toggling notifications.
+ */
+export async function evaluateStreakRisk(params: {
+  notificationsEnabled: boolean;
+  streakCount: number;
+  completedSomethingToday: boolean;
+  t: (key: string, options?: Record<string, unknown>) => string;
+}) {
+  const { notificationsEnabled, streakCount, completedSomethingToday, t } = params;
+
+  const atRisk = notificationsEnabled && streakCount > 0 && !completedSomethingToday;
+
+  if (!atRisk) {
+    await cancelStreakRiskNotification();
+    return;
+  }
+
+  await scheduleStreakRiskNotification(streakCount, t);
+}
+
 export async function recheckAndRescheduleIfNeeded(
   time: string,
   localize: (key: LocalizedString) => string,

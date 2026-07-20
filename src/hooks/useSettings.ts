@@ -11,7 +11,10 @@ import {
   cancelDailyNotifications,
   registerForPushNotificationsAsync,
   scheduleDailyNotifications,
+  cancelStreakRiskNotification,
+  evaluateStreakRisk,
 } from "@/services/notifications";
+import { getTodayString } from "@utils/date";
 import {
   useActivitiesStore,
   useJournalStore,
@@ -91,6 +94,15 @@ export function useSettings() {
             settings.reminderTime || "08:00",
             localize,
           );
+          const completedSomethingToday = dailyLogs.some(
+            (l) => l.date === getTodayString(),
+          );
+          await evaluateStreakRisk({
+            notificationsEnabled: true,
+            streakCount: streak,
+            completedSomethingToday,
+            t,
+          });
         } else {
           Alert.alert(
             t("settings.notifPermissionTitle"),
@@ -107,9 +119,10 @@ export function useSettings() {
       } else {
         updateSettings({ notificationsEnabled: false });
         await cancelDailyNotifications();
+        await cancelStreakRiskNotification();
       }
     },
-    [settings.reminderTime, updateSettings, localize, t],
+    [settings.reminderTime, updateSettings, localize, t, dailyLogs, streak],
   );
 
   const handleTimeChange = useCallback(
@@ -136,6 +149,7 @@ export function useSettings() {
 
         if (notificationsActive) {
           await cancelDailyNotifications();
+          await cancelStreakRiskNotification();
         }
 
         await changeLanguage(nextLanguage);
