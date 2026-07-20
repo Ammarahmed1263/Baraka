@@ -28,11 +28,13 @@ const CATEGORY_ICONS: Record<string, any> = {
   learning: "book-open",
 };
 
-function getCategoryIcon(cat: string) {
+// Exported so other screens (e.g. Home's category filter chips) can reuse
+// the exact same category taxonomy/labels rather than re-deriving their own.
+export function getCategoryIcon(cat: string) {
   return CATEGORY_ICONS[cat] || "circle";
 }
 
-function getCategoryLabel(cat: string, t: any) {
+export function getCategoryLabel(cat: string, t: any) {
   const labels: Record<string, string> = {
     worship: t("manageActivities.category.worship"),
     daily: t("manageActivities.category.daily"),

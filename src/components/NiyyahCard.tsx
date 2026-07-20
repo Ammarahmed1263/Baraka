@@ -7,6 +7,9 @@ import Animated, {
   withSequence,
   withTiming,
   withSpring,
+  LinearTransition,
+  FadeIn,
+  FadeOut,
 } from "react-native-reanimated";
 import { AnimatedPressable } from "./UI/AnimatedPressable";
 import type { UserActivity } from "@types";
@@ -21,6 +24,7 @@ type Props = {
   completed: boolean;
   onToggle: () => void;
   onPress: () => void;
+  compact?: boolean;
 };
 
 export default function NiyyahCard({
@@ -28,7 +32,9 @@ export default function NiyyahCard({
   completed,
   onToggle,
   onPress,
+  compact = false,
 }: Props) {
+  const isCompact = compact && completed;
   const { colors: C } = useTheme();
   const checkScale = useSharedValue(1);
   const localize = useLocalize();
@@ -53,23 +59,34 @@ export default function NiyyahCard({
   }));
 
   return (
-    <Animated.View style={[animatedStyle, { marginBottom: spacing.sm }]}>
+    <Animated.View
+      layout={LinearTransition.duration(280)}
+      style={[animatedStyle, { marginBottom: spacing.sm }]}
+    >
       <AnimatedPressable
         onPress={onPress}
         style={[
           styles.card,
           {
-            backgroundColor: completed
-              ? C.successLight
-              : C.backgroundCard,
+            backgroundColor: completed ? C.successLight : C.backgroundCard,
             borderColor: completed ? C.tint + "40" : C.border,
           },
         ]}
       >
-        <View style={styles.content}>
-          <View style={[styles.sidePill, { backgroundColor: C.tint }]} />
+        <Animated.View
+          layout={LinearTransition.duration(280)}
+          style={[styles.content, isCompact && styles.contentCompact]}
+        >
+          <Animated.View
+            entering={FadeIn.duration(200)}
+            exiting={FadeOut.duration(150)}
+            style={[styles.sidePill, { backgroundColor: C.tint, top: isCompact ? 10 : 14 }]}
+          />
 
-          <View style={styles.textContainer}>
+          <Animated.View
+            layout={LinearTransition.duration(280)}
+            style={styles.textContainer}
+          >
             <View style={styles.nameRow}>
               <AppText
                 weight='Bold'
@@ -79,8 +96,10 @@ export default function NiyyahCard({
               >
                 {displayName}
               </AppText>
-              {selectedCount > 0 && (
-                <View
+              {!isCompact && selectedCount > 0 && (
+                <Animated.View
+                  entering={FadeIn.duration(200)}
+                  exiting={FadeOut.duration(150)}
                   style={[
                     styles.countBadge,
                     {
@@ -89,30 +108,32 @@ export default function NiyyahCard({
                     },
                   ]}
                 >
-                  <AppText weight='Bold' variant='caption' style={{ color: C.gold }}>
+                  <AppText
+                    weight='Bold'
+                    variant='caption'
+                    style={{ color: C.gold }}
+                  >
                     ×{selectedCount + 1}
                   </AppText>
-                </View>
+                </Animated.View>
               )}
             </View>
-            <AppText
-              weight='Regular'
-              variant='footnote'
-              style={{ color: C.textSecondary }}
-              numberOfLines={2}
-            >
-              {displayNiyyah}
-            </AppText>
-            {activity.hadithRef && (
-              <AppText
-                weight='Regular'
-                variant='caption'
-                style={[styles.hadithFootnote, { color: C.textMuted }]}
+            {!isCompact && (
+              <Animated.View
+                entering={FadeIn.duration(200)}
+                exiting={FadeOut.duration(150)}
               >
-                {localize(activity.hadithRef)}
-              </AppText>
+                <AppText
+                  weight='Regular'
+                  variant='footnote'
+                  style={{ color: C.textSecondary }}
+                  numberOfLines={2}
+                >
+                  {displayNiyyah}
+                </AppText>
+              </Animated.View>
             )}
-          </View>
+          </Animated.View>
 
           <View style={styles.checkWrapper}>
             <AnimatedPressable
@@ -127,7 +148,9 @@ export default function NiyyahCard({
                 },
               ]}
             >
-              {completed && <Feather name='check' size={11} color={C.textOnTint} />}
+              {completed && (
+                <Feather name='check' size={11} color={C.textOnTint} />
+              )}
             </AnimatedPressable>
             {!completed && (
               <View
@@ -138,7 +161,7 @@ export default function NiyyahCard({
               />
             )}
           </View>
-        </View>
+        </Animated.View>
       </AnimatedPressable>
     </Animated.View>
   );
@@ -158,9 +181,9 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     gap: spacing.md,
   },
-  hadithFootnote: {
-    marginTop: spacing.xs,
-    opacity: 0.8,
+  contentCompact: {
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
   },
   textContainer: { flex: 1, gap: 3 },
   nameRow: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
@@ -192,7 +215,6 @@ const styles = StyleSheet.create({
   sidePill: {
     position: "absolute",
     left: 0,
-    top: 14,
     width: 3.5,
     height: 24,
     borderTopRightRadius: 2,

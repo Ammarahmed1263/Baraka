@@ -5,6 +5,8 @@ import StreakBadge from "@components/StreakBadge";
 import { AppButton } from "@components/UI/AppButton";
 import { AppText } from "@components/UI/AppText";
 import { AnimatedPressable } from "@components/UI/AnimatedPressable";
+import { ChipSelector } from "@components/UI/ChipSelector";
+import { getCategoryLabel } from "@components/Activities/CategorySection";
 import { useTheme } from "@context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
 import { useActivityStats } from "@hooks/useActivityStats";
@@ -13,11 +15,12 @@ import { useLanguage } from "@i18n";
 import { useActivitiesStore, useLogsStore } from "@store";
 import { type UserActivity } from "@types";
 import { Haptic } from "@utils/haptics";
+import { parseReminderTime } from "@utils/parseReminderTime";
 import { router } from "expo-router";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
-import Animated, { FadeInDown } from "react-native-reanimated";
+import Animated, { FadeInDown, FadeOut, LinearTransition } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { spacing } from "@constants/spacing";
 import { radius } from "@constants/radius";
@@ -29,6 +32,7 @@ export default function TodayScreen() {
   const isWeb = Platform.OS === "web";
 
   const activities = useActivitiesStore((s) => s.activities);
+  const updateActivity = useActivitiesStore((s) => s.updateActivity);
 
   const streak = useLogsStore((s) => s.streak);
   const markComplete = useLogsStore((s) => s.markComplete);
@@ -38,7 +42,26 @@ export default function TodayScreen() {
   const { getTodayCompletionRate, getAjrMultiplier } = useActivityStats();
 
   const { language: lang } = useLanguage();
-  const enabledActivities = activities.filter((a) => a.enabled);
+
+  const getActivityMinutes = (activity: UserActivity): number | null => {
+    const time = activity.customTime ?? activity.defaultTime;
+    if (!time) return null;
+    const { hour, minute } = parseReminderTime(time);
+    return hour * 60 + minute;
+  };
+
+  const enabledActivities = activities
+    .filter((a) => a.enabled)
+    .slice()
+    .sort((a, b) => {
+      const aMin = getActivityMinutes(a);
+      const bMin = getActivityMinutes(b);
+      if (aMin === null && bMin === null) return 0;
+      if (aMin === null) return 1;
+      if (bMin === null) return -1;
+      return aMin - bMin;
+    });
+
   const completionRate = getTodayCompletionRate();
   const ajr = getAjrMultiplier();
 
@@ -62,11 +85,12 @@ export default function TodayScreen() {
       await Haptic.selection();
       if (isCompletedToday(activity.id)) {
         unmarkComplete(activity.id);
+        updateActivity(activity.id, { selectedNiyyahIds: [] });
       } else {
         markComplete(activity.id, activity.selectedNiyyahIds ?? []);
       }
     },
-    [isCompletedToday, markComplete, unmarkComplete],
+    [isCompletedToday, markComplete, unmarkComplete, updateActivity],
   );
 
   const handleCardPress = useCallback((activity: UserActivity) => {
@@ -77,6 +101,17 @@ export default function TodayScreen() {
   const completedCount = enabledActivities.filter((a) =>
     isCompletedToday(a.id),
   ).length;
+
+  // User-controlled category filter, reusing the same taxonomy already
+  // established in Manage Activities — nothing is ever hidden by default
+  // ("all" shows every category, chronologically sorted). Completed
+  // activities still render as compact rows wherever they appear, but
+  // they're never pulled out of the flow based on category.
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const availableCategories = [...new Set(enabledActivities.map((a) => a.category))];
+  const filteredActivities = enabledActivities.filter(
+    (activity) => categoryFilter === "all" || activity.category === categoryFilter,
+  );
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
@@ -198,19 +233,43 @@ export default function TodayScreen() {
               </View>
             </Animated.View>
           ) : (
-            enabledActivities.map((activity, index) => (
-              <Animated.View
-                key={activity.id}
-                entering={FadeInDown.delay(index * 50).duration(250)}
-              >
-                <NiyyahCard
-                  activity={activity}
-                  completed={isCompletedToday(activity.id)}
-                  onToggle={() => handleToggle(activity)}
-                  onPress={() => handleCardPress(activity)}
+            <>
+              {availableCategories.length > 1 && (
+                <ChipSelector
+                  items={[
+                    { label: t("dashboard.filterAllCategories"), value: "all" },
+                    ...availableCategories.map((cat) => ({
+                      label: getCategoryLabel(cat, t),
+                      value: cat,
+                    })),
+                  ]}
+                  selectedValue={categoryFilter}
+                  onSelect={setCategoryFilter}
+                  style={styles.filterChips}
+                  contentContainerStyle={styles.filterChipsContent}
                 />
-              </Animated.View>
-            ))
+              )}
+
+              {filteredActivities.map((activity, index) => {
+                const done = isCompletedToday(activity.id);
+                return (
+                  <Animated.View
+                    key={activity.id}
+                    entering={FadeInDown.delay(index * 50).duration(250)}
+                    exiting={FadeOut.duration(150)}
+                    layout={LinearTransition.duration(250)}
+                  >
+                    <NiyyahCard
+                      activity={activity}
+                      completed={done}
+                      compact={done}
+                      onToggle={() => handleToggle(activity)}
+                      onPress={() => handleCardPress(activity)}
+                    />
+                  </Animated.View>
+                );
+              })}
+            </>
           )}
 
         {/* Ajr explanation footer */}
@@ -246,6 +305,13 @@ const styles = StyleSheet.create({
   },
   greetingContainer: { flex: 1 },
   dayName: { letterSpacing: -0.5 },
+  filterChips: {
+    marginBottom: spacing.md,
+    marginHorizontal: -spacing.xl, // must match scrollContent's paddingHorizontal exactly, or the chip row's resting position won't line up with the rest of the screen's content
+  },
+  filterChipsContent: {
+    paddingHorizontal: spacing.xl,
+  },
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
