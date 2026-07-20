@@ -2,7 +2,6 @@ import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import {
-  I18nManager,
   Platform,
   ScrollView,
   StyleSheet,
