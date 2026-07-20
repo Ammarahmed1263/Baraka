@@ -12,6 +12,7 @@ type LogsStore = {
   streak: number;
   markComplete: (activityId: string, niyyahIds?: string[]) => string;
   unmarkComplete: (activityId: string) => void;
+  updateTodaySelection: (activityId: string, niyyahIds: string[]) => void;
   getStreakForActivity: (activityId: string) => number;
 };
 
@@ -40,6 +41,16 @@ export const useLogsStore = create<LogsStore>()(
           (l) => !(l.activityId === activityId && l.date === getTodayString())
         );
         set({ dailyLogs: updated, streak: computeStreak(updated) });
+      },
+
+      updateTodaySelection: (activityId, niyyahIds) => {
+        const today = getTodayString();
+        const updated = get().dailyLogs.map((l) =>
+          l.activityId === activityId && l.date === today
+            ? { ...l, selectedNiyyahIds: niyyahIds }
+            : l
+        );
+        set({ dailyLogs: updated });
       },
 
       getStreakForActivity: (activityId) => {

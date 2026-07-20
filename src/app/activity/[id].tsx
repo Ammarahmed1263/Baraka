@@ -1,11 +1,12 @@
 
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@context/ThemeContext";
 import { useActivityDetail } from "@hooks/useActivityDetail";
 import { ActivityNotFound } from "@components/Activity/ActivityNotFound";
 import { ActivityViewStep } from "@components/Activity/ActivityViewStep";
 import { ActivityReflectStep } from "@components/Activity/ActivityReflectStep";
+import { SettingsToast } from "@components/Settings/SettingsToast";
 
 export default function ActivityDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -18,6 +19,11 @@ export default function ActivityDetailScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
+      <SettingsToast
+        message={state.toastMessage}
+        animatedStyle={state.animatedToastStyle}
+        isWeb={Platform.OS === "web"}
+      />
       {state.step === "reflect" ? (
         <ActivityReflectStep
           activityName={state.activityName}

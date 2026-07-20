@@ -9,6 +9,7 @@ import {
 } from "@store";
 import { useTodayLogs } from "@hooks/useTodayLogs";
 import { useLocalize } from "@hooks/useLocalize";
+import { useToast } from "@hooks/useToast";
 import { getTodayString } from "@utils/date";
 import { Haptic } from "@utils/haptics";
 import { getNiyyahOptions } from "@data/niyyahTemplates";
@@ -19,7 +20,9 @@ type Step = "view" | "reflect";
 
 export function useActivityDetail(id: string) {
   const localize = useLocalize();
-  const { language: lang } = useTranslation().i18n;
+  const { t, i18n } = useTranslation();
+  const { language: lang } = i18n;
+  const { toastMessage, showToast, animatedToastStyle } = useToast();
 
   const activities = useActivitiesStore((s) => s.activities);
   const updateActivity = useActivitiesStore((s) => s.updateActivity);
@@ -27,6 +30,7 @@ export function useActivityDetail(id: string) {
   const getProfileTags = useSettingsStore((s) => s.getProfileTags);
   const markComplete = useLogsStore((s) => s.markComplete);
   const unmarkComplete = useLogsStore((s) => s.unmarkComplete);
+  const updateTodaySelection = useLogsStore((s) => s.updateTodaySelection);
   const addJournalEntry = useJournalStore((s) => s.addJournalEntry);
   const { isCompletedToday } = useTodayLogs();
 
@@ -36,22 +40,26 @@ export function useActivityDetail(id: string) {
   const completed = isCompletedToday(id);
   const activityName = activity ? localize(activity.name) : "";
 
-  const profileTagsKey = profileTags.join(',');
+  const profileTagsKey = profileTags.join(",");
   const predefinedNiyyahs = useMemo(
     () => (activity ? getNiyyahOptions(activity.id, profileTags) : []),
-    [activity?.id, profileTagsKey]
+    [activity?.id, profileTagsKey],
   );
 
   const advancedNiyyahs = useMemo(
     () => predefinedNiyyahs.filter((n) => n.level === "advanced"),
-    [predefinedNiyyahs]
+    [predefinedNiyyahs],
   );
 
   const allAdvanced = useMemo(() => {
     if (!activity) return [];
-    const customOptions: NiyyahOption[] = (activity.customNiyyahOptions || []).map(
-      (o) => ({ ...o, activityId: activity.id, level: "advanced" as const })
-    );
+    const customOptions: NiyyahOption[] = (
+      activity.customNiyyahOptions || []
+    ).map((o) => ({
+      ...o,
+      activityId: activity.id,
+      level: "advanced" as const,
+    }));
     return [...advancedNiyyahs, ...customOptions];
   }, [activity, advancedNiyyahs]);
 
@@ -68,11 +76,31 @@ export function useActivityDetail(id: string) {
     toggleNiyyah,
   } = useNiyyahSelection(activitySelectedIds);
 
+  const handleToggleNiyyah = useCallback(
+    (niyyahId: string) => {
+      const wasSelected = localSelected.includes(niyyahId);
+      const nextSelected = wasSelected
+        ? localSelected.filter((x) => x !== niyyahId)
+        : [...localSelected, niyyahId];
+
+      toggleNiyyah(niyyahId);
+
+      if (completed && activity) {
+        const nextClean = nextSelected.filter((nId) => !nId.endsWith("_basic"));
+        updateActivity(activity.id, { selectedNiyyahIds: nextClean });
+        updateTodaySelection(activity.id, nextClean);
+      }
+    },
+    [localSelected, toggleNiyyah, completed, activity, updateActivity, updateTodaySelection],
+  );
+
   const [step, setStep] = useState<Step>("view");
   const [reflectionNote, setReflectionNote] = useState("");
   const [impactfulNiyyah, setImpactfulNiyyah] = useState("");
   const [showEditNiyyah, setShowEditNiyyah] = useState(false);
-  const [editedNiyyah, setEditedNiyyah] = useState(activity?.customNiyyah ?? "");
+  const [editedNiyyah, setEditedNiyyah] = useState(
+    activity?.customNiyyah ?? "",
+  );
 
   const handleSaveAndRenew = useCallback(async () => {
     if (!activity) return;
@@ -86,22 +114,31 @@ export function useActivityDetail(id: string) {
     if (!activity) return;
     Haptic.lightTap();
     unmarkComplete(activity.id);
-  }, [activity, unmarkComplete]);
+    updateActivity(activity.id, { selectedNiyyahIds: [] });
+  }, [activity, unmarkComplete, updateActivity]);
 
   const handleSaveReflection = useCallback(async () => {
-    if (!activity) return;
-    if (reflectionNote.trim()) {
-      addJournalEntry({
-        activityId: activity.id,
-        activityName: activity.name,
-        date: getTodayString(),
-        note: reflectionNote.trim(),
-        selectedNiyyahCount: ajrCount,
-        impactfulNiyyah: impactfulNiyyah || undefined,
-      });
-    }
-    router.back();
-  }, [activity, reflectionNote, ajrCount, impactfulNiyyah, addJournalEntry]);
+    if (!activity || !reflectionNote.trim()) return;
+    addJournalEntry({
+      activityId: activity.id,
+      activityName: activity.name,
+      date: getTodayString(),
+      note: reflectionNote.trim(),
+      selectedNiyyahCount: ajrCount,
+      impactfulNiyyah: impactfulNiyyah || undefined,
+    });
+    Haptic.success();
+    showToast(t("activity.reflectionSavedToast"));
+    setTimeout(() => router.back(), 550);
+  }, [
+    activity,
+    reflectionNote,
+    ajrCount,
+    impactfulNiyyah,
+    addJournalEntry,
+    showToast,
+    t,
+  ]);
 
   const handleSaveNiyyah = useCallback(async () => {
     if (!activity) return;
@@ -110,16 +147,16 @@ export function useActivityDetail(id: string) {
   }, [activity, editedNiyyah, updateActivity]);
 
   const handleAddCustomNiyyah = useCallback(
-    async (text: string, textAr: string) => {
+    async (text: string) => {
       if (!activity || !text.trim()) return;
       const newOption = {
         id:
           "custom_" +
           Date.now().toString() +
-          Math.random().toString(36).substr(2, 5),
+          Math.random().toString(36).substring(2, 5),
         text: {
-          en: text.trim() || textAr.trim(),
-          ar: textAr.trim() || text.trim(),
+          en: text.trim(),
+          ar: text.trim(),
         },
       };
       const existing = activity.customNiyyahOptions || [];
@@ -127,7 +164,7 @@ export function useActivityDetail(id: string) {
         customNiyyahOptions: [...existing, newOption],
       });
     },
-    [activity, updateActivity]
+    [activity, updateActivity],
   );
 
   return {
@@ -141,7 +178,7 @@ export function useActivityDetail(id: string) {
     localSelected,
     cleanSelectedCount,
     ajrCount,
-    toggleNiyyah,
+    toggleNiyyah: handleToggleNiyyah,
     reflectionNote,
     setReflectionNote,
     impactfulNiyyah,
@@ -155,6 +192,8 @@ export function useActivityDetail(id: string) {
     handleSaveReflection,
     handleSaveNiyyah,
     handleAddCustomNiyyah,
+    toastMessage,
+    animatedToastStyle,
     lang,
     localize,
   };

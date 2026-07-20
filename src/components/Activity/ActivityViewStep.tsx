@@ -33,7 +33,7 @@ interface ActivityViewStepProps {
   editedNiyyah: string;
   setEditedNiyyah: (text: string) => void;
   onSaveNiyyah: () => void;
-  onAddCustomNiyyah: (text: string, textAr: string) => void;
+  onAddCustomNiyyah: (text: string) => void;
   onSaveAndRenew: () => void;
   onUnmark: () => void;
   localize: (text: any) => string;
@@ -168,6 +168,7 @@ export const ActivityViewStep = React.memo(
                   variant='primary'
                   label={t("common.save")}
                   onPress={onSaveNiyyah}
+                  disabled={!editedNiyyah.trim()}
                 />
               </View>
             </>
@@ -388,7 +389,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: spacing.sm,
-    padding: spacing.lg,
+    height: 52,
     borderRadius: radius.lg,
     marginBottom: spacing.sm,
   },

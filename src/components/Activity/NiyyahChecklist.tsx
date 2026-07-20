@@ -16,7 +16,7 @@ interface NiyyahChecklistProps {
   allAdvanced: NiyyahOption[];
   localSelected: string[];
   onToggleNiyyah: (id: string) => void;
-  onAddCustomNiyyah: (text: string, textAr: string) => void;
+  onAddCustomNiyyah: (text: string) => void;
   showBilingual: boolean;
   localize: (text: any) => string;
 }
@@ -35,12 +35,10 @@ export const NiyyahChecklist = React.memo(
 
     const [showAddCustom, setShowAddCustom] = useState(false);
     const [customText, setCustomText] = useState("");
-    const [customTextAr, setCustomTextAr] = useState("");
 
     const handleAdd = () => {
-      onAddCustomNiyyah(customText, customTextAr);
+      onAddCustomNiyyah(customText);
       setCustomText("");
-      setCustomTextAr("");
       setShowAddCustom(false);
     };
 
@@ -102,16 +100,16 @@ export const NiyyahChecklist = React.memo(
                 )}
               </View>
               <View style={{ flex: 1 }}>
-                <View style={styles.optionHeader}>
-                  <AppText
-                    weight={checked ? "Medium" : "Regular"}
-                    variant='body'
-                    style={[styles.optionText, { color: checked ? C.text : C.textSecondary }]}
-                  >
-                    {localize(option.text)}
-                  </AppText>
-                  {option.profileTags &&
-                    option.profileTags.map((tag) => {
+                <AppText
+                  weight={checked ? "Medium" : "Regular"}
+                  variant='body'
+                  style={[styles.optionText, { color: checked ? C.text : C.textSecondary }]}
+                >
+                  {localize(option.text)}
+                </AppText>
+                {option.profileTags && option.profileTags.length > 0 && (
+                  <View style={styles.roleBadgeRow}>
+                    {option.profileTags.map((tag) => {
                       const role = getRoleByTag(tag);
                       const roleColor = role?.color || C.tint;
                       const roleIcon = (role?.icon || "star") as any;
@@ -133,12 +131,13 @@ export const NiyyahChecklist = React.memo(
                             variant='caption'
                             style={{ color: roleColor }}
                           >
-                            {t(`settings.profile.${tag}`)}
+                            {t(`settings.role.${tag}`)}
                           </AppText>
                         </View>
                       );
                     })}
-                </View>
+                  </View>
+                )}
                 {showBilingual && (
                   <AppText
                     weight='Regular'
@@ -168,7 +167,7 @@ export const NiyyahChecklist = React.memo(
             style={[
               styles.customInputCard,
               {
-                backgroundColor: C.backgroundSubtle,
+                backgroundColor: C.backgroundCard,
                 borderColor: C.border,
               },
             ]}
@@ -176,13 +175,8 @@ export const NiyyahChecklist = React.memo(
             <AppTextInput
               value={customText}
               onChangeText={setCustomText}
-              placeholder={t("activity.customEnPlaceholder")}
-            />
-            <AppTextInput
-              value={customTextAr}
-              onChangeText={setCustomTextAr}
-              placeholder={t("activity.customArPlaceholder")}
-              textAlign='right'
+              placeholder={t("activity.customNiyyahPlaceholder")}
+              multiline
             />
             <View style={styles.editActions}>
               <AppButton
@@ -194,6 +188,7 @@ export const NiyyahChecklist = React.memo(
                 variant='primary'
                 label={t("common.add")}
                 onPress={handleAdd}
+                disabled={!customText.trim()}
               />
             </View>
           </View>
@@ -240,13 +235,13 @@ const styles = StyleSheet.create({
     marginTop: 1,
     flexShrink: 0,
   },
-  optionHeader: {
+  optionText: { lineHeight: 20 },
+  roleBadgeRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    gap: spacing.sm,
+    flexWrap: "wrap",
+    gap: spacing.xs,
+    marginTop: spacing.xs,
   },
-  optionText: { flex: 1, lineHeight: 20 },
   roleBadge: {
     flexDirection: "row",
     alignItems: "center",
@@ -255,7 +250,6 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xs,
     borderRadius: radius.sm,
     alignSelf: "flex-start",
-    marginTop: spacing.xs,
   },
   optionTextAr: {
     textAlign: "right",

@@ -69,7 +69,7 @@ export const ActivityReflectStep = React.memo(
               { backgroundColor: C.backgroundSubtle, borderColor: C.border },
             ]}
           >
-            <Feather name="chevron-down" size={24} color={C.text} />
+            <Feather name="x" size={20} color={C.text} />
           </AnimatedPressable>
         </View>
 
@@ -87,7 +87,11 @@ export const ActivityReflectStep = React.memo(
           <AppText weight="Bold" variant="title" style={{ color: C.text }}>
             {t("activity.renewed")}
           </AppText>
-          <AppText weight="Regular" variant="bodyLarge" style={{ color: C.textSecondary }}>
+          <AppText
+            weight="Regular"
+            variant="bodyLarge"
+            style={[styles.activityNameText, { color: C.textSecondary }]}
+          >
             {activityName}
           </AppText>
           {cleanSelectedCount > 0 && (
@@ -215,6 +219,7 @@ export const ActivityReflectStep = React.memo(
             label={t("activity.saveReflection")}
             icon="book"
             onPress={onSaveReflection}
+            disabled={!reflectionNote.trim()}
             style={{ flex: 2 }}
           />
         </View>
@@ -245,6 +250,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: spacing.sm,
     marginBottom: spacing.lg,
+  },
+  activityNameText: {
+    textAlign: "center",
+    lineHeight: 24,
   },
   multiplierBadge: {
     paddingHorizontal: spacing.md,
