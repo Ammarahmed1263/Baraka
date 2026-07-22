@@ -67,7 +67,8 @@
           "project": "react-native",
           "organization": "solodev-x3"
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,

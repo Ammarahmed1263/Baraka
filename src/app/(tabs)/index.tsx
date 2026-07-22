@@ -1,12 +1,15 @@
+import { evaluateStreakRisk } from "@/services/notifications";
+import { getCategoryLabel } from "@components/Activities/CategorySection";
 import DashboardStats from "@components/Home/DashboardStats";
 import HadithCard from "@components/Home/HadithCard";
 import NiyyahCard from "@components/NiyyahCard";
 import StreakBadge from "@components/StreakBadge";
+import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { AppButton } from "@components/UI/AppButton";
 import { AppText } from "@components/UI/AppText";
-import { AnimatedPressable } from "@components/UI/AnimatedPressable";
 import { ChipSelector } from "@components/UI/ChipSelector";
-import { getCategoryLabel } from "@components/Activities/CategorySection";
+import { radius } from "@constants/radius";
+import { spacing } from "@constants/spacing";
 import { useTheme } from "@context/ThemeContext";
 import { Feather } from "@expo/vector-icons";
 import { useActivityStats } from "@hooks/useActivityStats";
@@ -14,10 +17,9 @@ import { useTodayLogs } from "@hooks/useTodayLogs";
 import { useLanguage } from "@i18n";
 import { useActivitiesStore, useLogsStore, useSettingsStore } from "@store";
 import { type UserActivity } from "@types";
+import { getTodayString } from "@utils/date";
 import { Haptic } from "@utils/haptics";
 import { parseReminderTime } from "@utils/parseReminderTime";
-import { getTodayString } from "@utils/date";
-import { evaluateStreakRisk } from "@/services/notifications";
 import { router } from "expo-router";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,8 +30,6 @@ import Animated, {
   LinearTransition,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { spacing } from "@constants/spacing";
-import { radius } from "@constants/radius";
 
 export default function TodayScreen() {
   const { t } = useTranslation();
@@ -155,7 +155,6 @@ export default function TodayScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header Hero Area */}
         <View style={styles.heroArea}>
           <View style={styles.header}>
             <View style={styles.greetingContainer}>
@@ -180,12 +179,10 @@ export default function TodayScreen() {
         </View>
 
         <Animated.View entering={FadeInDown.duration(300)}>
-          {/* Hadith Card */}
           <HadithCard />
         </Animated.View>
 
         <Animated.View entering={FadeInDown.duration(300).delay(50)}>
-          {/* Progress + Ajr Row */}
           <DashboardStats
             completionRate={completionRate}
             completedCount={completedCount}
@@ -194,7 +191,6 @@ export default function TodayScreen() {
           />
         </Animated.View>
 
-        {/* Activities Section Header */}
         <View style={styles.sectionHeader}>
           <AppText weight='Bold' variant='title' style={{ color: C.gold }}>
             {t("dashboard.yourIntentions")}
@@ -315,7 +311,6 @@ export default function TodayScreen() {
           </>
         )}
 
-        {/* Ajr explanation footer */}
         {ajr.acts > 0 && (
           <View
             style={[

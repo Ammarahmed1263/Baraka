@@ -4,7 +4,7 @@ export const HADITH_OPENER = {
     ar: '"إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى."',
   },
   ref: {
-    en: "— Prophet Muhammad ﷺ (Bukhari & Muslim)",
-    ar: "— محمد رسول الله ﷺ (البخاري ومسلم)",
+    en: "- Prophet Mohamed ﷺ (Bukhari & Muslim)",
+    ar: "- محمد رسول الله ﷺ (البخاري ومسلم)",
   },
 };

@@ -138,7 +138,7 @@ export default function NiyyahCard({
           <View style={styles.checkWrapper}>
             <AnimatedPressable
               onPress={handleCheckPress}
-              hitSlop={20}
+              hitSlop={28}
               style={[
                 styles.checkButton,
                 {
