@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useActivitiesStore, useJournalStore } from "@store";
 import { useLanguage } from "@i18n";
 import { type JournalEntry } from "@types";
@@ -43,6 +43,17 @@ export function useFilteredJournal() {
     });
     return groups;
   }, [filtered, lang]);
+
+  useEffect(() => {
+    if (filterActivity !== "__all__") {
+      const hasEntriesForFilter = journalEntries.some(
+        (e) => e.activityId === filterActivity
+      );
+      if (!hasEntriesForFilter) {
+        setFilterActivity("__all__");
+      }
+    }
+  }, [journalEntries, filterActivity]);
 
   return {
     journalEntries,

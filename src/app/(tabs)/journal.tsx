@@ -93,7 +93,7 @@ export default function JournalScreen() {
   };
 
   const filterOptions = [
-    { label: t("journal.general"), value: "__all__" },
+    { label: t("category.All"), value: "__all__" },
     ...Array.from(new Set(journalEntries.map((e) => e.activityId))).map(
       (activityId) => {
         const firstEntry = journalEntries.find(
@@ -114,14 +114,21 @@ export default function JournalScreen() {
       <KeyboardAwareScrollViewCompat
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: topPadding + spacing.lg, paddingBottom: isWeb ? 34 + 84 : 100 },
+          {
+            paddingTop: topPadding + spacing.lg,
+            paddingBottom: isWeb ? 34 + 84 : 100,
+          },
         ]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps='handled'
       >
         <View style={styles.header}>
           <View>
-            <AppText weight='Bold' variant='hero' style={[styles.title, { color: C.gold }]}>
+            <AppText
+              weight='Bold'
+              variant='hero'
+              style={[styles.title, { color: C.gold }]}
+            >
               {t("journal.title")}
             </AppText>
             <AppText
@@ -149,7 +156,7 @@ export default function JournalScreen() {
             style={[styles.addButton, { backgroundColor: C.tint }]}
           >
             <Feather
-              name={showAdd ? "x" : "edit-3"}
+              name={showAdd ? "x" : "feather"}
               size={20}
               color={C.background}
             />
@@ -197,7 +204,7 @@ export default function JournalScreen() {
 
         {journalEntries.length === 0 && !showAdd && (
           <EmptyState
-            icon='edit-3'
+            icon='feather'
             title={t("journal.empty.title")}
             message={t("journal.empty.message")}
             actionLabel={t("journal.empty.button")}
@@ -245,7 +252,7 @@ export default function JournalScreen() {
           <AppButton
             variant='outline'
             label={t("journal.editReflection", "Edit reflection")}
-            icon='edit-3'
+            icon='feather'
             onPress={() => {
               bottomSheetRef.current?.dismiss();
               setEditingEntry(selectedEntry);

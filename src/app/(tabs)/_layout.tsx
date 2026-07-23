@@ -84,9 +84,9 @@ export default function TabLayout() {
           title: t("tabs.journal"),
           tabBarIcon: ({ color }) =>
             isIOS ? (
-              <SymbolView name="pencil.and.list.clipboard" tintColor={color} size={24} />
+              <SymbolView name="scribble" tintColor={color} size={24} />
             ) : (
-              <Feather name="edit-3" size={22} color={color} />
+              <Feather name="feather" size={22} color={color} />
             ),
         }}
       />
