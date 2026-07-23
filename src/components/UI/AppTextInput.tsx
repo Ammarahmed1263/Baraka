@@ -1,10 +1,5 @@
 import React, { useState, useMemo } from "react";
-import {
-  TextInput,
-  TextInputProps,
-  StyleSheet,
-  View,
-} from "react-native";
+import { TextInput, TextInputProps, StyleSheet, View } from "react-native";
 import { useTheme } from "@context/ThemeContext";
 import { AppText } from "./AppText";
 import { Feather } from "@expo/vector-icons";
@@ -24,6 +19,8 @@ export function AppTextInput({
   label,
   error,
   style,
+  leftIcon,
+  rightIcon,
   onFocus,
   onBlur,
   ...props
@@ -44,34 +41,46 @@ export function AppTextInput({
 
   const isAr = language === "ar";
   const fontFamily = isAr ? "Tajawal-Regular" : "SourceSerif4-Regular";
-  const dynamicStyle = useMemo(() => ({
-    color: C.text,
-    backgroundColor: C.backgroundSubtle,
-    borderColor: isFocused ? C.tint : C.border,
-    fontFamily,
-    fontSize: typography.bodyLarge[isAr ? "ar" : "en"].fontSize,
-    letterSpacing: 0,
-  }), [C, isFocused, fontFamily, isAr]);
+  const dynamicStyle = useMemo(
+    () => ({
+      color: C.text,
+      backgroundColor: C.backgroundSubtle,
+      borderColor: isFocused ? C.tint : C.border,
+      fontFamily,
+      fontSize: typography.bodyLarge[isAr ? "ar" : "en"].fontSize,
+      letterSpacing: 0,
+    }),
+    [C, isFocused, fontFamily, isAr],
+  );
 
   return (
     <View style={styles.container}>
       {label && (
-        <AppText weight="Medium" variant='body' style={[styles.label, { color: C.textSecondary }]}>
+        <AppText
+          weight='Medium'
+          variant='body'
+          style={[styles.label, { color: C.textSecondary }]}
+        >
           {label}
         </AppText>
       )}
       <View style={styles.inputContainer}>
-        {props.leftIcon && (
-          <Feather name={props.leftIcon} size={18} color={C.textMuted} style={styles.leftIcon} />
+        {leftIcon && (
+          <Feather
+            name={leftIcon}
+            size={18}
+            color={C.textMuted}
+            style={styles.leftIcon}
+          />
         )}
         <TextInput
           style={[
             styles.input,
             dynamicStyle,
             props.multiline && styles.multiline,
-            props.leftIcon ? styles.withLeftIcon : undefined,
-            props.rightIcon ? styles.withRightIcon : undefined,
-            style,
+            leftIcon ? styles.withLeftIcon : undefined,
+            rightIcon ? styles.withRightIcon : undefined,
+            style
           ]}
           placeholderTextColor={C.textMuted}
           onFocus={handleFocus}
@@ -79,10 +88,8 @@ export function AppTextInput({
           cursorColor={C.tint}
           {...props}
         />
-        {props.rightIcon && (
-          <View style={styles.rightIconContainer}>
-            {props.rightIcon}
-          </View>
+        {rightIcon && (
+          <View style={styles.rightIconContainer}>{rightIcon}</View>
         )}
       </View>
       {error && (
@@ -112,6 +119,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     borderWidth: 1.5,
     paddingHorizontal: spacing.lg,
+    overflow: "hidden",
   },
   leftIcon: {
     position: "absolute",

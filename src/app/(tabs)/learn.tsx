@@ -10,7 +10,8 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
+import { KeyboardAwareScrollViewCompat } from "@components/KeyboardAwareScrollViewCompat";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { spacing } from "@constants/spacing";
@@ -44,12 +45,13 @@ export default function LearnScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
-      <ScrollView
+      <KeyboardAwareScrollViewCompat
         contentContainerStyle={[
           styles.scrollContent,
           { paddingTop: topPadding + spacing.lg, paddingBottom: isWeb ? 34 + 84 : 100 },
         ]}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps='handled'
       >
         <AppText weight='Bold' variant='hero' style={[styles.title, { color: C.gold }]}>
           {t("learn.title")}
@@ -69,11 +71,13 @@ export default function LearnScreen() {
             placeholder={t("learn.searchPlaceholder")}
             leftIcon='search'
             rightIcon={
-              search.length > 0 ? (
-                <AnimatedPressable onPress={() => setSearch("")}>
-                  <Feather name='x' size={16} color={C.textMuted} />
-                </AnimatedPressable>
-              ) : undefined
+              <AnimatedPressable
+                onPress={() => setSearch("")}
+                disabled={search.length === 0}
+                style={{ opacity: search.length > 0 ? 1 : 0 }}
+              >
+                <Feather name='x' size={16} color={C.textMuted} />
+              </AnimatedPressable>
             }
           />
         </View>
@@ -128,7 +132,7 @@ export default function LearnScreen() {
             </Animated.View>
           ))
         )}
-      </ScrollView>
+      </KeyboardAwareScrollViewCompat>
     </View>
   );
 }
