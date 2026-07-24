@@ -39,9 +39,8 @@ yarn-error.*
 .vercel
 
 .env
-.env.local
+.env.*
 
-.env.production
 
 
 # docs
