@@ -195,9 +195,10 @@
   "onboarding.skip": "Skip",
   "onboarding.next": "Next",
   "onboarding.getStarted": "Get Started",
-  "onboarding.pickTitle": "Pick your first 5 activities",
+  "onboarding.pickTitle": "Build your daily intentions",
+  "onboarding.pickPrayersLabel": "Your prayers, pre-selected. Adjust if needed.",
+  "onboarding.pickOthersLabel": "Add up to 5 more from daily life",
   "onboarding.pickSubtext": "You can always add more later. ({{count}}/{{max}})",
   "onboarding.done": "Done",
-  "onboarding.skipForNow": "Skip for now",
-  "onboarding.continueWithDefaults": "Continue with defaults"
+  "onboarding.skipForNow": "Skip for now"
 }

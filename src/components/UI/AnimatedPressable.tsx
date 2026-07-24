@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, PressableProps, StyleProp, ViewStyle } from "react-native";
+import { Pressable, PressableProps, StyleProp, StyleSheet, ViewStyle } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -28,12 +28,20 @@ export function AnimatedPressable({
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
 
+  const disabledOpacity = React.useMemo(
+    () => {
+      const flattened = StyleSheet.flatten(style);
+      return (flattened?.opacity as number | undefined) ?? 0.5;
+    },
+    [style]
+  );
+
   const animatedStyle = useAnimatedStyle(
     () => ({
       transform: [{ scale: scale.value }],
-      opacity: disabled ? 0.5 : opacity.value,
+      opacity: disabled ? disabledOpacity : opacity.value,
     }),
-    [disabled],
+    [disabled, disabledOpacity],
   );
 
   const handlePressIn = (e: any) => {

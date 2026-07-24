@@ -214,9 +214,10 @@
   "onboarding.skip": "تخطي",
   "onboarding.next": "التالي",
   "onboarding.getStarted": "ابدأ الآن",
-  "onboarding.pickTitle": "اختر أول ٥ أنشطة لك",
+  "onboarding.pickTitle": "ابنِ نواياك اليومية",
+  "onboarding.pickPrayersLabel": "صلواتك، محددة مسبقاً. عدّلها إن أردت.",
+  "onboarding.pickOthersLabel": "أضف حتى ٥ أنشطة أخرى من حياتك اليومية",
   "onboarding.pickSubtext": "يمكنك إضافة المزيد لاحقاً. ({{count}}/{{max}})",
   "onboarding.done": "تم",
-  "onboarding.skipForNow": "تخطي الآن",
-  "onboarding.continueWithDefaults": "المتابعة بالأنشطة الافتراضية"
+  "onboarding.skipForNow": "تخطي الآن"
 }

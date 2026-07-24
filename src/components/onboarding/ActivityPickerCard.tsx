@@ -12,12 +12,14 @@ interface ActivityPickerCardProps {
   activity: Activity;
   selected: boolean;
   onPress: () => void;
+  disabled?: boolean;
 }
 
 export function ActivityPickerCard({
   activity,
   selected,
   onPress,
+  disabled = false,
 }: ActivityPickerCardProps) {
   const { colors: C } = useTheme();
   const localize = useLocalize();
@@ -25,17 +27,19 @@ export function ActivityPickerCard({
   return (
     <AnimatedPressable
       onPress={onPress}
+      disabled={disabled}
       style={[
         styles.card,
         {
           backgroundColor: selected ? C.backgroundSubtle : C.backgroundCard,
           borderColor: selected ? C.gold : C.border,
+          opacity: disabled ? 0.4 : 1,
         },
       ]}
     >
       {selected && (
         <View style={[styles.checkBadge, { backgroundColor: C.gold }]}>
-          <Feather name='check' size={12} color={C.textOnTint} />
+          <Feather name='check' size={10} color={C.textOnTint} />
         </View>
       )}
 
@@ -65,9 +69,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: spacing.sm,
     right: spacing.sm,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
   },

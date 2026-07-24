@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import { AppButton } from "@components/UI/AppButton";
 import { router } from "expo-router";
@@ -17,7 +17,8 @@ import { ONBOARDING_SLIDES } from "@data/onboardingSlides";
 import type { Activity } from "@types";
 import { spacing } from "@constants/spacing";
 
-const MAX_SELECTION = 5;
+const PRAYER_IDS = DEFAULT_ACTIVITY_IDS;
+const MAX_OTHER_SELECTION = 5;
 
 export default function ActivityPickerScreen() {
   const { colors: C } = useTheme();
@@ -25,16 +26,29 @@ export default function ActivityPickerScreen() {
   const insets = useSafeAreaInsets();
   const { complete } = useOnboarding();
 
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const { prayerActivities, otherActivities } = useMemo(() => {
+    const prayers: Activity[] = [];
+    const others: Activity[] = [];
+    DEFAULT_ACTIVITIES.forEach((a) => {
+      (PRAYER_IDS.includes(a.id) ? prayers : others).push(a);
+    });
+    return { prayerActivities: prayers, otherActivities: others };
+  }, []);
 
-  const toggleSelection = useCallback((id: string) => {
-    setSelectedIds((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter((x) => x !== id);
-      }
-      if (prev.length >= MAX_SELECTION) {
-        return prev;
-      }
+  const [selectedPrayerIds, setSelectedPrayerIds] =
+    useState<string[]>(PRAYER_IDS);
+  const [selectedOtherIds, setSelectedOtherIds] = useState<string[]>([]);
+
+  const togglePrayer = useCallback((id: string) => {
+    setSelectedPrayerIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  }, []);
+
+  const toggleOther = useCallback((id: string) => {
+    setSelectedOtherIds((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= MAX_OTHER_SELECTION) return prev;
       return [...prev, id];
     });
   }, []);
@@ -54,51 +68,101 @@ export default function ActivityPickerScreen() {
   );
 
   const handleDone = useCallback(() => {
-    applyAndFinish(selectedIds.length === 0 ? DEFAULT_ACTIVITY_IDS : selectedIds);
-  }, [selectedIds, applyAndFinish]);
+    applyAndFinish([...selectedPrayerIds, ...selectedOtherIds]);
+  }, [selectedPrayerIds, selectedOtherIds, applyAndFinish]);
 
-  const renderCard = useCallback(
-    ({ item }: { item: Activity }) => (
-      <ActivityPickerCard
-        activity={item}
-        selected={selectedIds.includes(item.id)}
-        onPress={() => toggleSelection(item.id)}
-      />
+  const otherAtMax = selectedOtherIds.length >= MAX_OTHER_SELECTION;
+
+  const renderOtherCard = useCallback(
+    ({ item }: { item: Activity }) => {
+      const isSelected = selectedOtherIds.includes(item.id);
+      return (
+        <ActivityPickerCard
+          activity={item}
+          selected={isSelected}
+          onPress={() => toggleOther(item.id)}
+          disabled={otherAtMax && !isSelected}
+        />
+      );
+    },
+    [selectedOtherIds, toggleOther, otherAtMax],
+  );
+
+  const listHeader = useMemo(
+    () => (
+      <View style={styles.prayerSection}>
+        <AppText
+          weight='Bold'
+          variant='body'
+          style={[styles.sectionLabel, { color: C.textSecondary }]}
+        >
+          {t("onboarding.pickPrayersLabel")}
+        </AppText>
+        <View style={styles.prayerGrid}>
+          {prayerActivities.map((activity) => (
+            <View key={activity.id} style={styles.prayerCardWrapper}>
+              <ActivityPickerCard
+                activity={activity}
+                selected={selectedPrayerIds.includes(activity.id)}
+                onPress={() => togglePrayer(activity.id)}
+              />
+            </View>
+          ))}
+        </View>
+
+        <AppText
+          weight='Bold'
+          variant='body'
+          style={[
+            styles.sectionLabel,
+            styles.othersLabel,
+            { color: C.textSecondary },
+          ]}
+        >
+          {t("onboarding.pickOthersLabel")}
+        </AppText>
+      </View>
     ),
-    [selectedIds, toggleSelection],
+    [prayerActivities, selectedPrayerIds, togglePrayer, C.textSecondary, t],
   );
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>
-      {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + spacing.lg }]}>
         <AppText weight='Bold' variant='titleLarge' style={{ color: C.text }}>
           {t("onboarding.pickTitle")}
         </AppText>
         <AppText variant='body' style={{ color: C.textSecondary }}>
-          {t("onboarding.pickSubtext", { count: selectedIds.length, max: MAX_SELECTION })}
+          {t("onboarding.pickSubtext", {
+            count: selectedOtherIds.length,
+            max: MAX_OTHER_SELECTION,
+          })}
         </AppText>
       </View>
 
-      {/* Activity grid */}
       <FlatList
-        data={DEFAULT_ACTIVITIES}
-        renderItem={renderCard}
+        data={otherActivities}
+        renderItem={renderOtherCard}
         keyExtractor={(item) => item.id}
         numColumns={2}
+        ListHeaderComponent={listHeader}
         contentContainerStyle={styles.grid}
         showsVerticalScrollIndicator={false}
       />
 
-      {/* Footer */}
-      <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.xxl }]}>
+      <View
+        style={[styles.footer, { paddingBottom: insets.bottom + spacing.xxl }]}
+      >
         <View style={{ paddingBottom: spacing.lg }}>
-          <OnboardingDots total={ONBOARDING_SLIDES.length + 1} currentIndex={ONBOARDING_SLIDES.length} />
+          <OnboardingDots
+            total={ONBOARDING_SLIDES.length + 1}
+            currentIndex={ONBOARDING_SLIDES.length}
+          />
         </View>
 
         <AppButton
-          variant="primary"
-          label={selectedIds.length === 0 ? t("onboarding.continueWithDefaults") : t("onboarding.done")}
+          variant='primary'
+          label={t("onboarding.done")}
           onPress={handleDone}
           style={[styles.confirm, { backgroundColor: C.gold }]}
         />
@@ -121,6 +185,23 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
     paddingBottom: spacing.lg,
   },
+  prayerSection: {
+    paddingHorizontal: spacing.xs,
+  },
+  sectionLabel: {
+    paddingHorizontal: spacing.sm,
+    marginBottom: spacing.xs,
+  },
+  othersLabel: {
+    marginTop: spacing.md,
+  },
+  prayerGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  prayerCardWrapper: {
+    width: "50%",
+  },
   footer: {
     paddingHorizontal: spacing.xxl,
     paddingTop: spacing.md,
@@ -130,5 +211,5 @@ const styles = StyleSheet.create({
   confirm: {
     width: "100%",
     height: 52,
-  }
+  },
 });
