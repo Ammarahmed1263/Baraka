@@ -1,28 +1,28 @@
 import type { NiyyahOption } from "@types";
 
 export const NIYYAH_OPTIONS: NiyyahOption[] = [
-  // ── Eating & Drinking (Breakfast) ──
+  // ── Eating & Drinking ──
   {
-    id: "breakfast_basic",
-    activityId: "breakfast",
+    id: "eating_basic",
+    activityId: "eating",
     level: "basic",
     text: {
-      en: "I say Bismillah and eat with my right hand, exactly as the Prophet ﷺ taught.",
+      en: "I say Bismillah and eat with my right hand, exactly as the Prophet Mohamed ﷺ taught.",
       ar: "أسمي الله، وآكل بيميني، فهذا من هدي النبي ﷺ.",
     },
   },
   {
-    id: "breakfast_1",
-    activityId: "breakfast",
+    id: "eating_1",
+    activityId: "eating",
     level: "advanced",
     text: {
-      en: "I begin my meal with Bismillah and eat with my right hand, following the Sunnah of the Prophet ﷺ.",
+      en: "I begin my meal with Bismillah and eat with my right hand, following the Sunnah of the Prophet Mohamed ﷺ.",
       ar: "أبدأ طعامي ببسم الله، وآكل بيميني؛ اقتداءً بسنة النبي ﷺ.",
     },
   },
   {
-    id: "breakfast_2",
-    activityId: "breakfast",
+    id: "eating_2",
+    activityId: "eating",
     level: "advanced",
     text: {
       en: "I eat this to provide for myself and those I love, knowing every bite I place for my family is counted as sadaqah.",
@@ -30,8 +30,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     },
   },
   {
-    id: "breakfast_3",
-    activityId: "breakfast",
+    id: "eating_3",
+    activityId: "eating",
     level: "advanced",
     text: {
       en: "I praise Allah when I finish, knowing a single meal eaten with gratitude earns His pleasure.",
@@ -39,8 +39,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     },
   },
   {
-    id: "breakfast_4",
-    activityId: "breakfast",
+    id: "eating_4",
+    activityId: "eating",
     level: "advanced",
     text: {
       en: "I eat enough to keep me going, no more, a third for food, a third for drink, a third for air.",
@@ -48,8 +48,8 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     },
   },
   {
-    id: "breakfast_5",
-    activityId: "breakfast",
+    id: "eating_5",
+    activityId: "eating",
     level: "advanced",
     text: {
       en: "I gather my family around this table if I can, knowing eating together brings blessing to the meal.",
@@ -57,81 +57,69 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     },
   },
 
-  // ── Lunch ──
+  // ── Cooking & Feeding ──
   {
-    id: "lunch_basic",
-    activityId: "lunch",
+    id: "cooking_basic",
+    activityId: "cooking",
     level: "basic",
     text: {
-      en: "I eat this to sustain my body, Allah's trust to me.",
-      ar: "آكل هذا لأُديم جسمي، أمانة الله عندي.",
+      en: "I prepare this food to feed my household and others, seeking Allah's pleasure, as feeding food is among the best of deeds.",
+      ar: "أُعِدُّ هذا الطعام لإطعام أهلي وغيرهم، لوجه الله تعالى، موقناً أن إطعام الطعام من خير الإسلام.",
     },
   },
   {
-    id: "lunch_1",
-    activityId: "lunch",
+    id: "cooking_paradise",
+    activityId: "cooking",
     level: "advanced",
     text: {
-      en: "I say Bismillah and eat with my right hand, even mid-day.",
-      ar: "أقول بسم الله وآكل بيميني، حتى في منتصف اليوم.",
+      en: "I feed others and spread peace, seeking to enter Paradise in peace as the Prophet ﷺ promised.",
+      ar: "أُطعم الطعام وأُفشي السلام، راجياً أن أدخل الجنة بسلام كما وعد النبي ﷺ.",
+    },
+    source: {
+      en: "Abdullah bin Amr - Tirmidhi 1855",
+      ar: "عبد الله بن عمرو - الترمذي ١٨٥٥",
     },
   },
   {
-    id: "lunch_2",
-    activityId: "lunch",
+    id: "cooking_charity",
+    activityId: "cooking",
     level: "advanced",
     text: {
-      en: "I eat now to recharge for Asr and the rest of my afternoon.",
-      ar: "آكل الآن لأجدد طاقتي لصلاة العصر وما تبقى من يومي.",
+      en: "I feed them purely for the sake of Allah, desiring neither reward nor thanks from them.",
+      ar: "إِنَّمَا نُطْعِمُكُمْ لِوَجْهِ اللَّهِ لَا نُرِيدُ مِنْكُمْ جَزَاءً وَلَا شُكُورًا.",
+    },
+    source: {
+      en: "Surah Al-Insan: 9",
+      ar: "سورة الإنسان: ٩",
     },
   },
   {
-    id: "lunch_3",
-    activityId: "lunch",
+    id: "cooking_neighbor",
+    activityId: "cooking",
     level: "advanced",
     text: {
-      en: "I thank Allah for the provision and health that's carried me this far today.",
-      ar: "أشكر الله على الرزق والصحة التي رافقتني حتى الآن اليوم.",
+      en: "I cook this meal intending to share a portion with my neighbor, following the Sunnah.",
+      ar: "أطبخ هذا الطعام بنية إكثار مرقه لمناولة جاري منه، اتباعاً للسنة.",
+    },
+    source: {
+      en: "Abu Dharr - Sahih Muslim 2625b",
+      ar: "أبو ذر - صحيح مسلم ٢٦٢٥ب",
+    },
+  },
+  {
+    id: "cooking_servant",
+    activityId: "cooking",
+    level: "advanced",
+    text: {
+      en: "I invite the one who helped prepare this food to eat with us, honoring their effort.",
+      ar: "أُجلس من صنع لي هذا الطعام ليأكل معي، تقديراً لجهده وحرّه.",
+    },
+    source: {
+      en: "Abu Huraira - Bukhari 5460",
+      ar: "أبو هريرة - البخاري ٥٤٦٠",
     },
   },
 
-  // ── Dinner ──
-  {
-    id: "dinner_basic",
-    activityId: "dinner",
-    level: "basic",
-    text: {
-      en: "I gather for this meal in Allah's name.",
-      ar: "أجتمع على هذه الوجبة باسم الله.",
-    },
-  },
-  {
-    id: "dinner_1",
-    activityId: "dinner",
-    level: "advanced",
-    text: {
-      en: "I say Bismillah and eat with my right hand, even at the end of the day.",
-      ar: "أقول بسم الله وآكل بيميني، حتى في آخر اليوم.",
-    },
-  },
-  {
-    id: "dinner_2",
-    activityId: "dinner",
-    level: "advanced",
-    text: {
-      en: "I share this meal with my family, knowing it strengthens our bond and counts as worship too.",
-      ar: "أشارك هذه الوجبة مع عائلتي، موقناً أنها تقوّي الرابط، وهي عبادة أيضاً.",
-    },
-  },
-  {
-    id: "dinner_3",
-    activityId: "dinner",
-    level: "advanced",
-    text: {
-      en: "I close my day with gratitude, before Isha calls me to pray.",
-      ar: "أختم يومي بالشكر، قبل أن يدعوني العشاء للصلاة.",
-    },
-  },
 
   // ── Exercise ──
   {
@@ -166,7 +154,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "exercise",
     level: "advanced",
     text: {
-      en: "The Prophet ﷺ said the strong believer is more beloved to Allah, so I train to be counted among them.",
+      en: "The Prophet Mohamed ﷺ said the strong believer is more beloved to Allah, so I train to be counted among them.",
       ar: "قال رسول الله ﷺ: «المؤمن القوي خيرٌ وأحبُّ إلى الله من المؤمن الضعيف». فأتدرَّب لأكون من المؤمنين الأقوياء.",
     },
   },
@@ -580,7 +568,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     activityId: "maghrib",
     level: "advanced",
     text: {
-      en: "I pray two rak'ahs before it, a small gift the Prophet ﷺ recommended.",
+      en: "I pray two rak'ahs before it, a small gift the Prophet Mohamed ﷺ recommended.",
       ar: "أصلي ركعتين قبلها، هدية صغيرة أوصى بها النبي ﷺ.",
     },
   },

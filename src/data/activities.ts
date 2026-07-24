@@ -13,11 +13,11 @@ export const DEFAULT_ACTIVITIES: Activity[] = [
     defaultTime: "05:00",
   },
   {
-    id: "breakfast",
+    id: "eating",
     name: { en: "Eating & Drinking", ar: "الأكل والشرب" },
     category: "daily",
     niyyahText: {
-      en: "I say Bismillah and eat with my right hand, exactly as the Prophet ﷺ taught.",
+      en: "I say Bismillah and eat with my right hand, exactly as the Prophet Mohamed ﷺ taught.",
       ar: "أقول بسم الله وآكل بيميني، تماماً كما علّمنا النبي ﷺ.",
     },
     hadithRef: {
@@ -53,14 +53,14 @@ export const DEFAULT_ACTIVITIES: Activity[] = [
     name: { en: "Siwak", ar: "السواك" },
     category: "daily",
     niyyahText: {
-      en: "I clean my mouth with siwak, following what the Prophet ﷺ nearly made required before every prayer.",
+      en: "I clean my mouth with siwak, following what the Prophet Mohamed ﷺ nearly made required before every prayer.",
       ar: "أنظّف فمي بالسواك، اتباعاً لما كاد النبي ﷺ يجعله واجباً قبل كل صلاة.",
     },
     hadithRef: { en: "Bukhari 887, Muslim 252", ar: "البخاري ٨٨٧، مسلم ٢٥٢" },
   },
   {
     id: "cleaning",
-    name: { en: "Cleaning / Chores", ar: "التنظيف / الأعمال المنزلية" },
+    name: { en: "Chores", ar: "الأعمال المنزلية" },
     category: "daily",
     niyyahText: {
       en: "I clean my home today, knowing purity is half of faith, so this work counts as worship too.",
@@ -94,8 +94,8 @@ export const DEFAULT_ACTIVITIES: Activity[] = [
     name: { en: "Commute", ar: "التنقل" },
     category: "daily",
     niyyahText: {
-      en: 'I say this before I set off: "Glory is to Him Who has subjected this to us, and we could never have subdued it ourselves. Indeed, to our Lord we will return." It\'s the Prophet\'s ﷺ own prayer for any journey, long or short.',
-      ar: "أقول هذا قبل أن أتحرك: «سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ، وَإِنَّا إِلَى رَبِّنَا لَمُنقَلِبُونَ». هذا دعاء النبي ﷺ نفسه لأي رحلة، طويلة كانت أو قصيرة.",
+      en: 'I say this before I set off: "Glory is to Him Who has subjected this to us, and we could never have subdued it ourselves. Indeed, to our Lord we will return." It\'s the Prophet Mohamed\'s ﷺ own prayer for any journey, long or short.',
+      ar: 'أقول قبل أن أنطلق: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ، وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ". إنه دعاء النبي ﷺ لأي رحلة، طويلة كانت أو قصيرة.',
     },
     hadithRef: { en: "Sahih Muslim (Ibn Umar)", ar: "صحيح مسلم (ابن عمر)" },
     defaultTime: "08:00",
@@ -127,21 +127,21 @@ export const DEFAULT_ACTIVITIES: Activity[] = [
     name: { en: "Maghrib Prayer", ar: "صلاة المغرب" },
     category: "worship",
     niyyahText: {
-      en: "I pray two rak'ahs before Maghrib, following what the Prophet ﷺ recommended for whoever wants the extra reward.",
-      ar: "أصلي ركعتين قبل المغرب، اتباعاً لما أوصى به النبي ﷺ لمن أراد الأجر الزائد.",
+      en: "I pray two rak'ahs before Maghrib, following what the Prophet Mohamed ﷺ recommended for whoever wants the extra reward.",
+      ar: "أصلي ركعتين قبل المغرب، اتباعاً لما أوصى به النبي ﷺ لمن شاء الأجر الزائد.",
     },
     hadithRef: { en: "Bukhari 7368", ar: "البخاري ٧٣٦٨" },
     defaultTime: "18:30",
   },
   {
-    id: "dinner",
-    name: { en: "Dinner", ar: "العشاء" },
+    id: "cooking",
+    name: { en: "Cooking & Feeding", ar: "الطبخ وإطعام الطعام" },
     category: "daily",
     niyyahText: {
-      en: "I sit down for dinner with gratitude, sharing this meal with the people I love.",
-      ar: "أجلس لتناول العشاء بامتنان، أشارك هذه الوجبة مع من أحب.",
+      en: "I prepare this food to feed my household and others, seeking Allah's pleasure, as feeding food is among the best of deeds.",
+      ar: "أُعِدُّ هذا الطعام لإطعام أهلي وغيرهم، لوجه الله تعالى، موقناً أن إطعام الطعام من خير الإسلام.",
     },
-    defaultTime: "20:00",
+    hadithRef: { en: "Bukhari 56", ar: "البخاري ٥٦" },
   },
   {
     id: "isha",
