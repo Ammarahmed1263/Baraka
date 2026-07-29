@@ -3,15 +3,6 @@ import type { NiyyahOption } from "@types";
 export const NIYYAH_OPTIONS: NiyyahOption[] = [
   // ── Eating & Drinking ──
   {
-    id: "eating_basic",
-    activityId: "eating",
-    level: "basic",
-    text: {
-      en: "I say Bismillah and eat with my right hand, exactly as the Prophet Mohamed ﷺ taught.",
-      ar: "أسمي الله، وآكل بيميني، فهذا من هدي النبي ﷺ.",
-    },
-  },
-  {
     id: "eating_1",
     activityId: "eating",
     level: "advanced",
@@ -58,15 +49,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
   },
 
   // ── Cooking & Feeding ──
-  {
-    id: "cooking_basic",
-    activityId: "cooking",
-    level: "basic",
-    text: {
-      en: "I prepare this food to feed my household and others, seeking Allah's pleasure, as feeding food is among the best of deeds.",
-      ar: "أُعِدُّ هذا الطعام لإطعام أهلي وغيرهم، لوجه الله تعالى، موقناً أن إطعام الطعام من خير الإسلام.",
-    },
-  },
   {
     id: "cooking_paradise",
     activityId: "cooking",
@@ -120,17 +102,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     },
   },
 
-
   // ── Exercise ──
-  {
-    id: "exercise_basic",
-    activityId: "exercise",
-    level: "basic",
-    text: {
-      en: "I train today to worship better tomorrow, knowing a strong body is a stronger servant of Allah.",
-      ar: "أتدرَّب اليوم لأكون أكثر قدرة على عبادة الله غداً، موقناً أن الجسم القوي أكثر قدرة على طاعة الله.",
-    },
-  },
   {
     id: "exercise_1",
     activityId: "exercise",
@@ -169,15 +141,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
   },
 
   // ── Work ──
-  {
-    id: "work_basic",
-    activityId: "work",
-    level: "basic",
-    text: {
-      en: "I work today to earn halal provision for myself and my family.",
-      ar: "أعمل اليوم لأكسب رزقاً حلالاً لنفسي ولعائلتي.",
-    },
-  },
   {
     id: "work_1",
     activityId: "work",
@@ -245,94 +208,7 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
     },
   },
 
-  // ── Cooking ──
-  {
-    id: "cooking_basic",
-    activityId: "cooking",
-    level: "basic",
-    text: {
-      en: "I prepare this meal to nourish my household.",
-      ar: "أحضّر هذه الوجبة لتغذية أسرتي.",
-    },
-  },
-  {
-    id: "cooking_1",
-    activityId: "cooking",
-    level: "advanced",
-    text: {
-      en: "I feed my family today, an act of charity and love.",
-      ar: "أطعم عائلتي اليوم، عملاً من الصدقة والمحبة.",
-    },
-  },
-  {
-    id: "cooking_2",
-    activityId: "cooking",
-    level: "advanced",
-    profileTags: ["homemaker", "parent"],
-    text: {
-      en: "I spend on my household, knowing every bit of it is counted as charity.",
-      ar: "أنفق على أسرتي، موقناً أن كل ما أقدّمه يُحتسب صدقة.",
-    },
-  },
-  {
-    id: "cooking_3",
-    activityId: "cooking",
-    level: "advanced",
-    text: {
-      en: "I cook with care, knowing a healthy household can worship better.",
-      ar: "أطبخ باهتمام، موقناً أن الأسرة السليمة أقدر على العبادة.",
-    },
-  },
-  {
-    id: "cooking_4",
-    activityId: "cooking",
-    level: "advanced",
-    text: {
-      en: "I say Bismillah at every step, even while preparing the food.",
-      ar: "أقول بسم الله في كل خطوة، حتى وأنا أحضّر الطعام.",
-    },
-  },
-  {
-    id: "cooking_homemaker_1",
-    activityId: "cooking",
-    level: "advanced",
-    profileTags: ["homemaker"],
-    text: {
-      en: "I cook to make this home a place of warmth and blessing.",
-      ar: "أطبخ لأجعل هذا البيت مكاناً من الدفء والبركة.",
-    },
-  },
-  {
-    id: "cooking_homemaker_2",
-    activityId: "cooking",
-    level: "advanced",
-    profileTags: ["homemaker"],
-    text: {
-      en: "Taking care of my household is an act of worship, and I treat it that way.",
-      ar: "الاعتناء بأسرتي عبادة، وأتعامل معه على هذا الأساس.",
-    },
-  },
-  {
-    id: "cooking_parent_1",
-    activityId: "cooking",
-    level: "advanced",
-    profileTags: ["parent"],
-    text: {
-      en: "I feed my children well, knowing good food helps raise righteous kids.",
-      ar: "أطعم أطفالي جيداً، موقناً أن الطعام الجيد يساعد على تربية أبناء صالحين.",
-    },
-  },
-
   // ── Cleaning ──
-  {
-    id: "cleaning_basic",
-    activityId: "cleaning",
-    level: "basic",
-    text: {
-      en: "I clean my home, following the Sunnah of cleanliness.",
-      ar: "أنظّف بيتي، اتباعاً لسنة النظافة.",
-    },
-  },
   {
     id: "cleaning_1",
     activityId: "cleaning",
@@ -394,15 +270,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
 
   // ── Sleep ──
   {
-    id: "sleep_basic",
-    activityId: "sleep",
-    level: "basic",
-    text: {
-      en: "I rest now to recharge for tomorrow's worship.",
-      ar: "أرتاح الآن لأجدد طاقتي لعبادة الغد.",
-    },
-  },
-  {
     id: "sleep_1",
     activityId: "sleep",
     level: "advanced",
@@ -441,15 +308,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
 
   // ── Fajr ──
   {
-    id: "fajr_basic",
-    activityId: "fajr",
-    level: "basic",
-    text: {
-      en: "I pray Fajr now, as Allah commanded.",
-      ar: "أصلي الفجر الآن، كما أمر الله بها.",
-    },
-  },
-  {
     id: "fajr_1",
     activityId: "fajr",
     level: "advanced",
@@ -479,15 +337,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
 
   // ── Dhuhur ──
   {
-    id: "dhuhur_basic",
-    activityId: "dhuhur",
-    level: "basic",
-    text: {
-      en: "I pause from work and pray, at the time Allah commanded.",
-      ar: "أتوقف عن العمل وأصلي، في الوقت الذي أمر الله به.",
-    },
-  },
-  {
     id: "dhuhur_1",
     activityId: "dhuhur",
     level: "advanced",
@@ -507,15 +356,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
   },
 
   // ── Asr ──
-  {
-    id: "asr_basic",
-    activityId: "asr",
-    level: "basic",
-    text: {
-      en: "I pray Asr now, guarding the middle prayer that Allah named specifically.",
-      ar: "أصلي العصر الآن، أحافظ على الصلاة الوسطى التي خصّها الله بالذكر.",
-    },
-  },
   {
     id: "asr_1",
     activityId: "asr",
@@ -555,15 +395,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
 
   // ── Maghrib ──
   {
-    id: "maghrib_basic",
-    activityId: "maghrib",
-    level: "basic",
-    text: {
-      en: "I pray Maghrib now and thank Allah for completing another day.",
-      ar: "أصلي المغرب الآن وأشكر الله على إتمام يوم آخر.",
-    },
-  },
-  {
     id: "maghrib_1",
     activityId: "maghrib",
     level: "advanced",
@@ -584,15 +415,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
 
   // ── Isha ──
   {
-    id: "isha_basic",
-    activityId: "isha",
-    level: "basic",
-    text: {
-      en: "I pray Isha now and end my day in submission to Allah.",
-      ar: "أصلي العشاء الآن وأختم يومي بالخضوع لله.",
-    },
-  },
-  {
     id: "isha_1",
     activityId: "isha",
     level: "advanced",
@@ -612,15 +434,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
   },
 
   // ── Reading ──
-  {
-    id: "reading_basic",
-    activityId: "reading",
-    level: "basic",
-    text: {
-      en: "I read now, knowing seeking knowledge is a religious obligation.",
-      ar: "أقرأ الآن، موقناً أن طلب العلم واجب ديني.",
-    },
-  },
   {
     id: "reading_1",
     activityId: "reading",
@@ -680,15 +493,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
   },
 
   // ── Family ──
-  {
-    id: "family_basic",
-    activityId: "family",
-    level: "basic",
-    text: {
-      en: "I spend this time with my family, fulfilling their rights.",
-      ar: "أقضي هذا الوقت مع عائلتي، وأؤدي حقوقهم.",
-    },
-  },
   {
     id: "family_1",
     activityId: "family",
@@ -750,15 +554,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
 
   // ── Charity ──
   {
-    id: "charity_basic",
-    activityId: "charity",
-    level: "basic",
-    text: {
-      en: "I give today, purely for Allah's sake.",
-      ar: "أتصدّق اليوم، خالصاً لوجه الله.",
-    },
-  },
-  {
     id: "charity_1",
     activityId: "charity",
     level: "advanced",
@@ -787,15 +582,6 @@ export const NIYYAH_OPTIONS: NiyyahOption[] = [
   },
 
   // ── Commute ──
-  {
-    id: "commute_basic",
-    activityId: "commute",
-    level: "basic",
-    text: {
-      en: "I set off now, entrusting myself to Allah's protection.",
-      ar: "أستودِع الله نفسي، وأنطلق مستعيناً به.",
-    },
-  },
   {
     id: "commute_1",
     activityId: "commute",
