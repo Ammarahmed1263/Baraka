@@ -27,6 +27,9 @@ export function useActivityDetail(id: string) {
 
   const activities = useActivitiesStore((s) => s.activities);
   const updateActivity = useActivitiesStore((s) => s.updateActivity);
+  const deleteCustomNiyyahOption = useActivitiesStore(
+    (s) => s.deleteCustomNiyyahOption,
+  );
   const settings = useSettingsStore((s) => s.settings);
   const getProfileTags = useSettingsStore((s) => s.getProfileTags);
   const markComplete = useLogsStore((s) => s.markComplete);
@@ -196,6 +199,14 @@ export function useActivityDetail(id: string) {
     [activity, updateActivity],
   );
 
+  const handleDeleteCustomNiyyah = useCallback(
+    (optionId: string) => {
+      if (!activity) return;
+      deleteCustomNiyyahOption(activity.id, optionId);
+    },
+    [activity, deleteCustomNiyyahOption],
+  );
+
   return {
     activity,
     activityName,
@@ -221,6 +232,7 @@ export function useActivityDetail(id: string) {
     handleSaveReflection,
     handleSaveNiyyah,
     handleAddCustomNiyyah,
+    handleDeleteCustomNiyyah,
     toastMessage,
     animatedToastStyle,
     lang,

@@ -17,6 +17,7 @@ interface NiyyahChecklistProps {
   localSelected: string[];
   onToggleNiyyah: (id: string) => void;
   onAddCustomNiyyah: (text: string) => void;
+  onDeleteCustomNiyyah: (optionId: string) => void;
   showBilingual: boolean;
   localize: (text: any) => string;
 }
@@ -27,6 +28,7 @@ export const NiyyahChecklist = React.memo(
     localSelected,
     onToggleNiyyah,
     onAddCustomNiyyah,
+    onDeleteCustomNiyyah,
     showBilingual,
     localize,
   }: NiyyahChecklistProps) => {
@@ -148,6 +150,15 @@ export const NiyyahChecklist = React.memo(
                   </AppText>
                 )}
               </View>
+              {option.id.startsWith("custom_") && (
+                <AnimatedPressable
+                  onPress={() => onDeleteCustomNiyyah(option.id)}
+                  hitSlop={12}
+                  style={styles.deleteButton}
+                >
+                  <Feather name='trash-2' size={16} color={C.textMuted} />
+                </AnimatedPressable>
+              )}
             </AnimatedPressable>
           );
         })}
@@ -255,6 +266,10 @@ const styles = StyleSheet.create({
     textAlign: "right",
     marginTop: spacing.xs,
     lineHeight: 20,
+  },
+  deleteButton: {
+    padding: spacing.xs,
+    marginTop: 1,
   },
   addCustomBtn: {
     flexDirection: "row",

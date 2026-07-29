@@ -34,6 +34,7 @@ interface ActivityViewStepProps {
   setEditedNiyyah: (text: string) => void;
   onSaveNiyyah: () => void;
   onAddCustomNiyyah: (text: string) => void;
+  onDeleteCustomNiyyah: (optionId: string) => void;
   onSaveAndRenew: () => void;
   onUnmark: () => void;
   localize: (text: any) => string;
@@ -54,6 +55,7 @@ export const ActivityViewStep = React.memo(
     setEditedNiyyah,
     onSaveNiyyah,
     onAddCustomNiyyah,
+    onDeleteCustomNiyyah,
     onSaveAndRenew,
     onUnmark,
     localize,
@@ -144,14 +146,16 @@ export const ActivityViewStep = React.memo(
                 {t("activity.coreIntention")}
               </AppText>
             </View>
-            <AnimatedPressable
-              onPress={() => setShowEditNiyyah(!showEditNiyyah)}
-            >
-              <Feather name='edit-2' size={16} color={C.tintLight} />
-            </AnimatedPressable>
+            {activity.id.startsWith("custom_") && (
+              <AnimatedPressable
+                onPress={() => setShowEditNiyyah(!showEditNiyyah)}
+              >
+                <Feather name='edit-2' size={16} color={C.tintLight} />
+              </AnimatedPressable>
+            )}
           </View>
 
-          {showEditNiyyah ? (
+          {showEditNiyyah && activity.id.startsWith("custom_") ? (
             <>
               <AppTextInput
                 value={editedNiyyah}
@@ -194,6 +198,7 @@ export const ActivityViewStep = React.memo(
           localSelected={localSelected}
           onToggleNiyyah={toggleNiyyah}
           onAddCustomNiyyah={onAddCustomNiyyah}
+          onDeleteCustomNiyyah={onDeleteCustomNiyyah}
           showBilingual={showBilingual}
           localize={localize}
         />

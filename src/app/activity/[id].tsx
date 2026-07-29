@@ -53,6 +53,7 @@ export default function ActivityDetailScreen() {
           setEditedNiyyah={state.setEditedNiyyah}
           onSaveNiyyah={state.handleSaveNiyyah}
           onAddCustomNiyyah={state.handleAddCustomNiyyah}
+          onDeleteCustomNiyyah={state.handleDeleteCustomNiyyah}
           onSaveAndRenew={state.handleSaveAndRenew}
           onUnmark={state.handleUnmark}
           localize={state.localize}
