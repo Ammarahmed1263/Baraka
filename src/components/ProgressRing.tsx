@@ -53,7 +53,7 @@ export default function ProgressRing({
           fill='none'
           strokeDasharray={`${circumference}`}
           strokeDashoffset={strokeDashoffset}
-          strokeLinecap='round'
+          strokeLinecap={progress >= 100 ? "butt" : "round"}
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
       </Svg>

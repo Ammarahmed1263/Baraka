@@ -193,7 +193,7 @@ export default function JournalScreen() {
           </View>
         )}
 
-        {journalEntries.length > 0 && (
+        {filterOptions.length > 2 && (
           <ChipSelector
             items={filterOptions}
             selectedValue={filterActivity}

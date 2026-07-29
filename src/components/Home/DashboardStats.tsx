@@ -63,7 +63,7 @@ export default function DashboardStats({
           <AppText
             weight='Regular'
             variant='caption'
-            style={{ color: isDark ? C.gold + "AA" : C.tint }}
+            style={{ color: isDark ? C.gold + "AA" : C.tint, lineHeight: 16 }}
           >
             {completedCount}/{totalActivities} {t("dashboard.done")}
           </AppText>
@@ -102,7 +102,7 @@ export default function DashboardStats({
           <AppText
             weight='Regular'
             variant='caption'
-            style={{ color: isDark ? C.gold + "AA" : C.gold }}
+            style={{ color: isDark ? C.gold + "AA" : C.gold, lineHeight: 16 }}
           >
             +{ajr.acts} {t("dashboard.multiplierActs")}
           </AppText>
