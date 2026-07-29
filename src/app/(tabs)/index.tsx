@@ -21,7 +21,7 @@ import { getTodayString } from "@utils/date";
 import { Haptic } from "@utils/haptics";
 import { parseReminderTime } from "@utils/parseReminderTime";
 import { router } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import Animated, {
@@ -129,11 +129,6 @@ export default function TodayScreen() {
     isCompletedToday(a.id),
   ).length;
 
-  // User-controlled category filter, reusing the same taxonomy already
-  // established in Manage Activities — nothing is ever hidden by default
-  // ("all" shows every category, chronologically sorted). Completed
-  // activities still render as compact rows wherever they appear, but
-  // they're never pulled out of the flow based on category.
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const availableCategories = [
     ...new Set(enabledActivities.map((a) => a.category)),
@@ -142,6 +137,12 @@ export default function TodayScreen() {
     (activity) =>
       categoryFilter === "all" || activity.category === categoryFilter,
   );
+
+  useEffect(() => {
+    if (categoryFilter !== "all" && !availableCategories.includes(categoryFilter)) {
+      setCategoryFilter("all");
+    }
+  }, [categoryFilter, availableCategories]);
 
   return (
     <View style={[styles.container, { backgroundColor: C.background }]}>

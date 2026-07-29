@@ -20,6 +20,7 @@ import {
   evaluateStreakRisk,
 } from "@/services/notifications";
 import { useLocalize } from "@hooks/useLocalize";
+import { useDayChange } from "@hooks/useDayChange";
 import { useTranslation } from "react-i18next";
 import { getAnonymousUserId } from "@/utils/device";
 import { Platform } from "react-native";
@@ -85,6 +86,7 @@ function App() {
   const localize = useLocalize();
   const { t } = useTranslation();
   useNotifications();
+  useDayChange();
 
   useEffect(() => {
     if (i18n.isInitialized) {
