@@ -8,11 +8,15 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "build:android": "bunx expo run:android --variant release",
-"build:eas:android": "eas build --platform android --profile production",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest",
     "clean": "bunx expo prebuild --clean",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "build:preview": "eas build -p android --profile preview",
+    "build:preview:local": "eas build -p android --profile preview --local",
+    "build:production": "eas build -p android --profile production",
+    "update:preview": "eas update --branch preview --channel preview",
+    "update:production": "eas update --branch production --channel production"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
