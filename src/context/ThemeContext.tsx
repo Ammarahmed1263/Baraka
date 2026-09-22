@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
-import { useColorScheme, StatusBar } from "react-native";
+import { useColorScheme } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 import {
   ThemeProvider as NavThemeProvider,
@@ -50,10 +51,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     <ThemeContext.Provider value={value}>
       <NavThemeProvider value={navTheme}>
         <StatusBar
-          barStyle={theme === "dark" ? "light-content" : "dark-content"}
-          translucent={true}
-          backgroundColor="transparent"
-          animated={true}
+          style={theme === "dark" ? "light" : "dark"}
+          animated
         />
         {children}
       </NavThemeProvider>
