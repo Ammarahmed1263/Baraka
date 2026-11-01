@@ -46,6 +46,7 @@ export default function SettingsScreen() {
     handleLanguageSelect,
     handleExportData,
     handleClearData,
+    handleAnalyticsToggle,
     totalCompleted,
     totalJournal,
     streak,
@@ -108,9 +109,11 @@ export default function SettingsScreen() {
           notificationsToggling={notificationsToggling}
           streakNotificationsActive={streakNotificationsActive}
           streakNotificationsToggling={streakNotificationsToggling}
+          analyticsEnabled={settings.analyticsEnabled}
           formattedReminderTime={formattedReminderTime}
           onNotificationToggle={handleNotificationToggle}
           onStreakNotificationToggle={handleStreakNotificationToggle}
+          onAnalyticsToggle={handleAnalyticsToggle}
           onTimePickerOpen={() => setShowTimePicker(true)}
           onLanguageOpen={() => langSheetRef.current?.present()}
           onThemeChange={(mode) => updateSettings({ darkMode: mode })}

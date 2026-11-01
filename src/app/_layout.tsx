@@ -30,6 +30,7 @@ import { db, expoDb } from "@/db/db";
 import { migrations } from "@/db/migrations";
 import { seedIfNeeded } from "@/db/seed";
 import { RootNavigator } from "@/navigation/RootNavigator";
+import { initAnalytics } from "@lib/analytics";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -180,6 +181,12 @@ function App() {
       });
     }
   }, [appReady]);
+
+  useEffect(() => {
+    if (appReady) {
+      initAnalytics(settings.analyticsEnabled);
+    }
+  }, [appReady, settings.analyticsEnabled]);
 
   useEffect(() => {
     if (!migrationsError) return;

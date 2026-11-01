@@ -18,9 +18,11 @@ interface PreferencesSectionProps {
   notificationsToggling: boolean;
   streakNotificationsActive: boolean;
   streakNotificationsToggling: boolean;
+  analyticsEnabled: boolean;
   formattedReminderTime: string;
   onNotificationToggle: (v: boolean) => void;
   onStreakNotificationToggle: (v: boolean) => void;
+  onAnalyticsToggle: (v: boolean) => void;
   onTimePickerOpen: () => void;
   onLanguageOpen: () => void;
   onThemeChange: (mode: "light" | "auto" | "dark") => void;
@@ -34,9 +36,11 @@ export const PreferencesSection = React.memo(
     notificationsToggling,
     streakNotificationsActive,
     streakNotificationsToggling,
+    analyticsEnabled,
     formattedReminderTime,
     onNotificationToggle,
     onStreakNotificationToggle,
+    onAnalyticsToggle,
     onTimePickerOpen,
     onLanguageOpen,
     onThemeChange,
@@ -210,6 +214,19 @@ export const PreferencesSection = React.memo(
                   </AnimatedPressable>
                 ))}
               </View>
+            }
+          />
+
+          <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
+
+          <SettingRow
+            icon='bar-chart-2'
+            iconColor={C.wisdom}
+            iconBg={C.wisdom + '20'}
+            label={t("settings.analytics")}
+            desc={t("settings.analyticsDesc")}
+            right={
+              <AppSwitch value={analyticsEnabled} onValueChange={onAnalyticsToggle} />
             }
           />
         </View>

@@ -72,6 +72,8 @@ export type AppSettings = {
   notificationsStatus: NotificationPermissionStatus;
   notificationsEnabled: boolean;
   streakNotificationsEnabled: boolean;
+  analyticsEnabled: boolean;
+  analyticsPromptShown: boolean;
   reminderTime: string;
   onboardingComplete: boolean;
   profile: UserProfile;

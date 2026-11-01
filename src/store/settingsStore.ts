@@ -9,6 +9,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   notificationsStatus: "undetermined",
   notificationsEnabled: false,
   streakNotificationsEnabled: false,
+  analyticsEnabled: false,
+  analyticsPromptShown: false,
   reminderTime: "08:00",
   onboardingComplete: false,
   profile: {

@@ -20,6 +20,7 @@ import { useEnabledActivities } from "@hooks/db/useActivities";
 import { useDailyLogs } from "@hooks/db/useDailyLogs";
 import { useJournalEntries } from "@hooks/db/useJournal";
 import { clearUserData } from "@hooks/db/clearUserData";
+import { setAnalyticsEnabled } from "@lib/analytics";
 import { useToast } from "./useToast";
 import { type RoleKey } from "@utils/roleHelpers";
 
@@ -276,6 +277,14 @@ export function useSettings() {
     await clearAppData(() => storage.clearAll());
   }, []);
 
+  const handleAnalyticsToggle = useCallback(
+    (v: boolean) => {
+      updateSettings({ analyticsEnabled: v });
+      setAnalyticsEnabled(v);
+    },
+    [updateSettings],
+  );
+
   return {
     settings,
     lang,
@@ -294,6 +303,7 @@ export function useSettings() {
     handleLanguageSelect,
     handleExportData,
     handleClearData,
+    handleAnalyticsToggle,
     totalCompleted: dailyLogs.length,
     totalJournal: journalEntries.length,
     streak,

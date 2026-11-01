@@ -15,6 +15,8 @@ import { Feather } from "@expo/vector-icons";
 import { useEnabledActivities, type DbUserActivity } from "@hooks/db/useActivities";
 import { useDailyLogs, getFreshDailyLogState } from "@hooks/db/useDailyLogs";
 import { useDailyLogActions } from "@hooks/db/useDailyLogActions";
+import { AnalyticsConsentSheet } from "@components/Home/AnalyticsConsentSheet";
+import { useAnalyticsConsentPrompt } from "@hooks/useAnalyticsConsentPrompt";
 import { useLanguage } from "@i18n";
 import { useSettingsStore } from "@store";
 import { Haptic } from "@utils/haptics";
@@ -40,7 +42,9 @@ export default function TodayScreen() {
   const { activities: rawEnabledActivities, isLoading } =
     useEnabledActivities();
 
-  const { streak, isCompletedToday, getTodayAjrMultiplier } = useDailyLogs();
+  const { streak, isCompletedToday, getTodayAjrMultiplier, logs } =
+    useDailyLogs();
+  const consentPrompt = useAnalyticsConsentPrompt(logs.length > 0);
   const { markComplete, unmarkComplete } = useDailyLogActions();
   const streakNotificationsEnabled = useSettingsStore(
     (s) => s.settings.streakNotificationsEnabled,
@@ -335,6 +339,12 @@ export default function TodayScreen() {
           </View>
         )}
       </KeyboardAwareScrollViewCompat>
+
+      <AnalyticsConsentSheet
+        ref={consentPrompt.sheetRef}
+        onAccept={consentPrompt.accept}
+        onDecline={consentPrompt.decline}
+      />
     </View>
   );
 }
