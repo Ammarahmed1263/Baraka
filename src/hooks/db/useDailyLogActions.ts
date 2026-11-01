@@ -4,6 +4,7 @@ import { db } from "@/db/db";
 import { dailyLogs, dailyLogNiyyahs } from "@/db/schema";
 import { generateId } from "@utils/id";
 import { getTodayString } from "@utils/date";
+import { activityProps, track } from "@lib/analytics";
 
 export function useDailyLogActions() {
   const markComplete = useCallback(
@@ -23,6 +24,10 @@ export function useDailyLogActions() {
               niyyahIds.map((niyyahId) => ({ dailyLogId: id, niyyahId })),
             );
         }
+      });
+      track("niyyah_renewed", {
+        ...activityProps(activityId),
+        niyyah_count: niyyahIds.length,
       });
       return id;
     },

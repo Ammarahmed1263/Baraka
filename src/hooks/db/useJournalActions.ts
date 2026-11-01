@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db/db";
 import { journalEntries } from "@/db/schema";
 import { generateId } from "@utils/id";
+import { activityProps, track } from "@lib/analytics";
 
 export function useJournalActions() {
   const addJournalEntry = useCallback(
@@ -25,6 +26,7 @@ export function useJournalActions() {
         impactfulNiyyahId: entry.impactfulNiyyahId ?? null,
         createdAt: new Date(),
       });
+      track("journal_entry_saved", activityProps(entry.activityId));
       return id;
     },
     [],
