@@ -1,5 +1,9 @@
 import { DAILY_NOTIFICATIONS } from "@/data/notifications";
-import { LocalizedString, NotificationPermissionStatus } from "@/types";
+import {
+  LocalizedString,
+  NotificationKind,
+  NotificationPermissionStatus,
+} from "@/types";
 import { parseReminderTime } from "@/utils/parseReminderTime";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
@@ -168,6 +172,13 @@ export async function cancelDailyNotifications() {
 
 const STREAK_RISK_IDENTIFIER = "streak-risk";
 const STREAK_RISK_HOUR = 21; // 9 PM local device time — separate concern from the user's chosen daily reminderTime
+
+/** Maps a scheduled notification identifier to the kind we report to analytics. */
+export function getNotificationKind(identifier: string): NotificationKind {
+  if (identifier.startsWith(NOTIFICATION_IDENTIFIER_PREFIX)) return "daily_reminder";
+  if (identifier === STREAK_RISK_IDENTIFIER) return "streak_risk";
+  return "other";
+}
 
 export async function scheduleStreakRiskNotification(
   streakCount: number,

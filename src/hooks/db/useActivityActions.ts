@@ -9,6 +9,8 @@ import {
   dailyLogNiyyahs,
 } from "@/db/schema";
 import { generateCustomId } from "@utils/id";
+import { getLengthBucket } from "@utils/lengthBucket";
+import { activityProps, track } from "@lib/analytics";
 
 export function useActivityActions() {
   const toggleActivity = useCallback(
@@ -63,18 +65,28 @@ export function useActivityActions() {
         .update(userActivityPrefs)
         .set(updates)
         .where(eq(userActivityPrefs.activityId, activityId));
+      if (updates.customNiyyahText?.trim()) {
+        track("intention_written", {
+          ...activityProps(activityId),
+          length_bucket: getLengthBucket(updates.customNiyyahText),
+        });
+      }
     },
     [],
   );
 
   const addCustomActivity = useCallback(
-    async (data: {
-      nameEn: string;
-      nameAr: string;
-      category: string;
-      niyyahTextEn: string;
-      niyyahTextAr: string;
-    }) => {
+    async (
+      data: {
+        nameEn: string;
+        nameAr: string;
+        category: string;
+        niyyahTextEn: string;
+        niyyahTextAr: string;
+      },
+      // True when the user typed their own intention rather than accepting the generated default.
+      options: { userWroteIntention?: boolean } = {},
+    ) => {
       const id = generateCustomId();
       await db.insert(customActivities).values({
         id,
@@ -82,6 +94,13 @@ export function useActivityActions() {
         isEnabled: true,
         createdAt: new Date(),
       });
+      track("custom_activity_created", {});
+      if (options.userWroteIntention) {
+        track("intention_written", {
+          ...activityProps(id),
+          length_bucket: getLengthBucket(data.niyyahTextEn),
+        });
+      }
       return id;
     },
     [],
@@ -93,6 +112,12 @@ export function useActivityActions() {
         .update(customActivities)
         .set({ niyyahTextEn: text, niyyahTextAr: text })
         .where(eq(customActivities.id, activityId));
+      if (text.trim()) {
+        track("intention_written", {
+          ...activityProps(activityId),
+          length_bucket: getLengthBucket(text),
+        });
+      }
     },
     [],
   );
@@ -140,6 +165,9 @@ export function useActivityActions() {
         textEn,
         textAr,
         createdAt: new Date(),
+      });
+      track("sub_intention_created", {
+        parent_custom: activityProps(activityId).custom,
       });
       return id;
     },

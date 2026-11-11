@@ -4,7 +4,8 @@ import { db } from "@/db/db";
 import { dailyLogs, dailyLogNiyyahs } from "@/db/schema";
 import { generateId } from "@utils/id";
 import { getTodayString } from "@utils/date";
-import { activityProps, track } from "@lib/analytics";
+import { activityProps, getSessionSource, track } from "@lib/analytics";
+import { getFreshDailyLogState } from "./useDailyLogs";
 
 export function useDailyLogActions() {
   const markComplete = useCallback(
@@ -25,10 +26,17 @@ export function useDailyLogActions() {
             );
         }
       });
-      track("niyyah_renewed", {
-        ...activityProps(activityId),
-        niyyah_count: niyyahIds.length,
-      });
+      // The log is saved by now; analytics must never be able to fail it.
+      try {
+        // Read after the insert, so this is the streak including this renewal.
+        const { streak } = await getFreshDailyLogState();
+        track("niyyah_renewed", {
+          ...activityProps(activityId),
+          niyyah_count: niyyahIds.length,
+          streak_length: streak,
+          source: getSessionSource(),
+        });
+      } catch {}
       return id;
     },
     [],

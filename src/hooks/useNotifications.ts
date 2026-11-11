@@ -1,6 +1,23 @@
+import { claimOnce, markNotificationSession, track } from "@/lib/analytics";
+import { getNotificationKind } from "@/services/notifications";
 import * as Notifications from "expo-notifications";
 import { router, useRootNavigationState, type Href } from "expo-router";
 import { useEffect, useRef } from "react";
+
+/** Tracks notification taps for cold starts and warm resumes; deduplicated via identifier and delivery time. */
+function reportNotificationOpened(response: Notifications.NotificationResponse) {
+  if (response.actionIdentifier !== Notifications.DEFAULT_ACTION_IDENTIFIER) {
+    return;
+  }
+  const { notification } = response;
+  const key = `${notification.request.identifier}:${notification.date}`;
+  if (!claimOnce("notification_open", key)) return;
+
+  markNotificationSession();
+  track("notification_opened", {
+    notification_kind: getNotificationKind(notification.request.identifier),
+  });
+}
 
 export function useNotifications(): void {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
@@ -25,6 +42,7 @@ export function useNotifications(): void {
       const screen = lastNotificationResponse.notification.request.content.data
         ?.screen as Href | undefined;
 
+      reportNotificationOpened(lastNotificationResponse);
       if (screen) {
         router.navigate(screen);
       }
@@ -45,6 +63,8 @@ export function useNotifications(): void {
         if (__DEV__) {
           console.log("User interacted with notification:", response);
         }
+
+        reportNotificationOpened(response);
 
         const screen = response.notification.request.content.data?.screen as
           | Href

@@ -39,13 +39,16 @@ export default function AddActivityForm({ onClose }: AddActivityFormProps) {
     });
     const niyyahText = newNiyyah.trim() || defaultNiyyah;
 
-    await addCustomActivity({
-      nameEn: newName.trim(),
-      nameAr: newName.trim(),
-      category: "daily",
-      niyyahTextEn: niyyahText,
-      niyyahTextAr: niyyahText,
-    });
+    await addCustomActivity(
+      {
+        nameEn: newName.trim(),
+        nameAr: newName.trim(),
+        category: "daily",
+        niyyahTextEn: niyyahText,
+        niyyahTextAr: niyyahText,
+      },
+      { userWroteIntention: newNiyyah.trim().length > 0 },
+    );
 
     Haptic.success();
     setNewName("");
