@@ -52,6 +52,24 @@ Breadcrumbs, tags, and context (language, platform, an anonymous UUID, app confi
 
 ---
 
+## Product analytics: opt-in PostHog behind a single wrapper
+
+Sentry answers "is it broken"; it can't answer "do people come back". Baraka uses PostHog (Product Analytics only, US cloud) for retention and a small set of usage events. It is built around the fact that this app holds private reflection text.
+
+- **Opt-in, off by default.** A "Share Usage Data" toggle in Settings plus a one-time consent sheet on Home after the user's first completed activity. Asking at the end of onboarding was built and reverted: it was friction at first impression for little gain, and the cost is that nothing can be captured before consent, so an `onboarding_completed` event was dropped.
+- **One door.** `src/lib/analytics.ts` is the only file that imports `posthog-react-native`. It exposes `initAnalytics`, `setAnalyticsEnabled`, `track` and `activityProps`. `track()` is typed against `AnalyticsEventMap` (`src/types/analytics.ts`), the single catalog of every event and its exact properties, so a misspelled event or an extra property such as a note fails typecheck and a call site cannot pass free text by construction, and `activityProps()` collapses custom activity ids to `"custom"` so user-named activities never leave the device.
+- **Standalone client, not `PostHogProvider`.** Touch and screen autocapture are provider features, so they cannot run here at all. The docs allow passing this instance to a provider later through its `client` prop.
+- **Dedicated MMKV instance (`id: "posthog"`).** Kept apart from the `"baraka-store"` instance that `seed.ts` reads for the legacy migration, so SDK state can never interact with the most fragile storage in the app. "Clear Data" does not wipe it unless that is wired in deliberately.
+- **Identity.** No `identify()` call: the app has no accounts, so PostHog keeps its own random anonymous id (separate from the one Sentry gets).
+- **Dev safety.** `disabled` is `__DEV__ && EXPO_PUBLIC_POSTHOG_DEBUG !== "true"`, so development never pollutes the production project. Setting the debug variable in `.env.local` is the deliberate escape hatch for testing.
+- **Events:** the full list, properties, privacy rules and the question each answers are in `docs/analytics.md`, which is the source of truth. Summary: `analytics_opted_in`, `niyyah_renewed`, `intention_written`, `custom_activity_created`, `sub_intention_created`, `journal_entry_saved`, `streak_broken`, `notification_opened`, a manual `$screen` carrying the route pattern, and the SDK's lifecycle events. Three super properties (`app_language`, `reminders_enabled`, `notification_permission`) ride on every event. Retention is read from "Application Opened" in a Retention insight.
+- **Consent is the SDK's.** `defaultOptIn: false` plus persisted `optIn()` / `optOut()`; the SDK drops every event (custom, `$screen`, lifecycle) while opted out. Session wiring (screen tracking, super properties, streak-break check) is in `src/hooks/useAnalyticsTracking.ts`; once-only guards (`claimOnce`) and the notification session source live in `src/lib/analytics.ts`.
+- **Project settings:** discard client IP data on; session replay, console log capture, canvas capture and exception autocapture off.
+
+Because the SDK ships native modules (`posthog-react-native`, `expo-device`, `expo-application`), this had to go out as a store release, not an OTA update.
+
+---
+
 ## Content integrity as an engineering constraint, not just a content rule
 
 Every niyyah option must trace to a canonical hadith source (Bukhari, Muslim, Tirmidhi, Abu Dawud, Ibn Majah, Nasai) with a specific number, verified against sunnah.com. No weak or fabricated hadith, ever, even if it means cutting a whole activity rather than lowering the bar. Niyyah itself is treated as heart-based, not spoken (per Ibn Taymiyyah, *Majmu' al-Fatawa*). That shows up as an explicit disclaimer in onboarding and on the activity screen, not just as a data constraint.
@@ -84,6 +102,8 @@ Real bugs found and fixed during the SQLite migration and afterward.
 | "Clear Data" left most user data intact | It only ever wiped the old key-value storage, never touched SQLite | Added a real `clearUserData()` covering every user table |
 | New `AppSwitch` toggle animated in the wrong direction in Arabic (thumb exited the track on the wrong side) | `transform`/`translateX` is never auto-mirrored by RN's RTL layout flip — only flexbox layout is | Flip travel distance explicitly via `I18nManager.isRTL` |
 | New rename/delete bottom sheet's text input was completely covered by the keyboard, and nothing happened when it opened | Two compounding bugs: (1) the input used plain RN `TextInput`, but `@gorhom/bottom-sheet`'s keyboard-follow logic only activates for a `TextInput` that registers itself via their own `BottomSheetTextInput` on focus; (2) `android_keyboardInputMode="adjustResize"` was tried as a fix but actually *disables* the library's JS keyboard-follow logic on Android (confirmed by reading `BottomSheet.tsx`'s source) — the opposite of what the name suggests | `AppTextInput` gained a `bottomSheet` prop that swaps in `BottomSheetTextInput`; `android_keyboardInputMode` left at its default (`adjustPan`), with `keyboardBehavior="interactive"` + `keyboardBlurBehavior="restore"` doing the actual work |
+| A user with analytics off could still have had events queued at startup | `posthog-react-native` defaults to `defaultOptIn: true`, so the client tracks from the moment it is constructed, and calling `optOut()` afterwards happens too late for events captured in between | Set `defaultOptIn: false` so nothing is captured until `optIn()` is called. Found by reading the installed type definitions, not from a bug report |
+| PostHog would have duplicated Sentry's crash reporting | The SDK autocaptures every uncaught JS exception as a `$exception` event by default | Set `errorTracking: { autocapture: false }` and left the product off in the PostHog project as well |
 
 ---
 

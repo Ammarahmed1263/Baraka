@@ -52,6 +52,7 @@ Full reasoning and the complete bug writeups live in **[ARCHITECTURE.md](./ARCHI
 - **Arabic is the enforced default**, regardless of device locale, with full RTL layout — including a real bug where a manual RTL animation compensation clamped the first onboarding screen to invisible.
 - **A legacy-data migration bug found by self-audit**, not a bug report: journal entries and daily logs had no backfill path from the old storage, meaning upgrading users would have silently lost their history.
 - **Sentry tuned for a free-tier quota** — breadcrumbs/tags/context are free and used liberally; exception/message capture reserved for real events.
+- **Opt-in product analytics behind a single wrapper** — PostHog is off by default, can only be reached through one file whose `track()` accepts primitives only (so private journal/niyyah text cannot be sent by construction), and is built to never duplicate Sentry's crash reporting.
 - **Every niyyah traces to a canonical, verified hadith reference** — no weak or fabricated sources, even if it means cutting a feature.
 
 ---
@@ -66,6 +67,8 @@ Full reasoning and the complete bug writeups live in **[ARCHITECTURE.md](./ARCHI
 | Animation | React Native Reanimated 4, RN Gesture Handler |
 | Localization | i18next / react-i18next, full RTL support |
 | Observability | Sentry (breadcrumbs, tags, context, quota-aware error capture) |
+| Analytics | PostHog (opt-in, Product Analytics only, anonymous id, no content ever sent) |
+| Updates | EAS Update (JS-only OTA) with fingerprint runtime versions |
 | Notifications | expo-notifications |
 | UI | Custom design-token system (spacing/radius/typography), `AnimatedPressable`, `@gorhom/bottom-sheet`, Feather icons |
 | Testing | Jest, targeted at migrations, streak computation, notifications, date/id utilities |
@@ -145,7 +148,8 @@ What's already built is covered above in [Overview](#overview) and [Architecture
 - [ ] Basic user insights (streak trends, completion history)
 - [ ] CSV/PDF export
 - [ ] ESLint + Prettier + pre-commit enforcement
-- [ ] OTA updates via EAS Update, so JS-only fixes don't wait on a full store review
+- [ ] OTA updates via EAS Update, so JS-only fixes don't wait on a full store review (config committed; goes live with the next store build)
+- [ ] Retention work: contextual notification ask and Android battery-optimization prompt, measured with the opt-in analytics above
 
 Open gaps tracked deliberately rather than hidden: see [ARCHITECTURE.md's Open Gaps](./ARCHITECTURE.md#open-gaps).
 
