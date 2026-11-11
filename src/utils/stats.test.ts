@@ -1,4 +1,4 @@
-import { computeStreak } from "./stats";
+import { computeStreak, computeStreakBreak } from "./stats";
 
 describe("computeStreak", () => {
   it("returns 0 for no logs", () => {
@@ -66,7 +66,65 @@ describe("computeStreak", () => {
   it("safely handles undefined/invalid today and corrupted log entries", () => {
     // @ts-expect-error testing invalid today parameter
     expect(computeStreak([{ date: "2026-08-15" }], undefined)).toBe(0);
-    // @ts-expect-error testing corrupted log entries
-    expect(computeStreak([{ date: undefined }, { date: "2026-08-15" }], "2026-08-15")).toBe(1);
+    expect(
+      computeStreak(
+        // @ts-expect-error testing corrupted log entries
+        [{ date: undefined }, { date: "2026-08-15" }],
+        "2026-08-15",
+      ),
+    ).toBe(1);
+  });
+});
+
+describe("computeStreakBreak", () => {
+  it("returns null with no logs", () => {
+    expect(computeStreakBreak([], "2026-08-15")).toBeNull();
+  });
+
+  it("returns null while the streak is alive (logged today or yesterday)", () => {
+    const logs = [{ date: "2026-08-13" }, { date: "2026-08-14" }];
+    expect(computeStreakBreak(logs, "2026-08-14")).toBeNull();
+    expect(computeStreakBreak(logs, "2026-08-15")).toBeNull();
+  });
+
+  it("reports the lost streak once a full day is skipped", () => {
+    const logs = [
+      { date: "2026-08-10" },
+      { date: "2026-08-11" },
+      { date: "2026-08-12" },
+    ];
+    expect(computeStreakBreak(logs, "2026-08-14")).toEqual({
+      lastLogDate: "2026-08-12",
+      previousLength: 3,
+    });
+  });
+
+  it("measures the run that ended at the last log, not older runs", () => {
+    const logs = [
+      { date: "2026-08-01" },
+      { date: "2026-08-02" },
+      { date: "2026-08-03" },
+      { date: "2026-08-10" },
+    ];
+    expect(computeStreakBreak(logs, "2026-08-20")).toEqual({
+      lastLogDate: "2026-08-10",
+      previousLength: 1,
+    });
+  });
+
+  it("identifies the same break the same way on later days", () => {
+    const logs = [{ date: "2026-08-10" }, { date: "2026-08-11" }];
+    const a = computeStreakBreak(logs, "2026-08-14");
+    const b = computeStreakBreak(logs, "2026-08-30");
+    expect(a?.lastLogDate).toBe(b?.lastLogDate);
+  });
+
+  it("starts a new, different break after the user logs again and lapses again", () => {
+    const first = computeStreakBreak([{ date: "2026-08-10" }], "2026-08-14");
+    const second = computeStreakBreak(
+      [{ date: "2026-08-10" }, { date: "2026-08-15" }],
+      "2026-08-20",
+    );
+    expect(first?.lastLogDate).not.toBe(second?.lastLogDate);
   });
 });

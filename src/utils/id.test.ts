@@ -1,4 +1,16 @@
-import { generateId, generateCustomId } from "./id";
+import { generateId, generateCustomId, isCustomId } from "./id";
+
+describe("isCustomId", () => {
+  it("recognises ids from generateCustomId with the default prefix", () => {
+    expect(isCustomId(generateCustomId())).toBe(true);
+  });
+
+  it("rejects built-in activity ids and other prefixes", () => {
+    expect(isCustomId("fajr")).toBe(false);
+    expect(isCustomId(generateCustomId("niyyah"))).toBe(false);
+    expect(isCustomId("")).toBe(false);
+  });
+});
 
 describe("generateId", () => {
   it("produces unique values across many calls", () => {

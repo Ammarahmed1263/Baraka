@@ -12,3 +12,10 @@ export function generateId(): string {
 export function generateCustomId(prefix: string = "custom"): string {
   return `${prefix}_${Date.now().toString()}_${Math.random().toString(36).substring(2, 7)}`;
 }
+
+/**
+ * True for ids made by generateCustomId() with the default prefix (user-created activities).
+ */
+export function isCustomId(id: string): boolean {
+  return id.startsWith("custom_");
+}

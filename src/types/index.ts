@@ -1,6 +1,13 @@
 import type { LocalizedString } from "./i18n";
 
 export type { LocalizedString };
+export type {
+  AnalyticsEventMap,
+  AnalyticsSuperProperties,
+  EventSource,
+  LengthBucket,
+  NotificationKind,
+} from "./analytics";
 
 export type Activity = {
   id: string;

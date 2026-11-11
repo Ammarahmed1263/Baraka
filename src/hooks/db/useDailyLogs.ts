@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { db } from "@/db/db";
 import { dailyLogs, dailyLogNiyyahs } from "@/db/schema";
-import { computeStreak } from "@utils/stats";
+import { computeStreak, computeStreakBreak } from "@utils/stats";
 import { getTodayString } from "@utils/date";
 import { useToday } from "@hooks/useToday";
 import { useSafeLiveQuery } from "./useSafeLiveQuery";
@@ -74,6 +74,12 @@ export function useDailyLogs() {
     getTodayAjrMultiplier,
     isLoading,
   };
+}
+
+/** Reads fresh from the DB (not a live query) so it is safe to call from a foreground handler. */
+export async function getStreakBreakState() {
+  const logs = await db.select({ date: dailyLogs.date }).from(dailyLogs);
+  return computeStreakBreak(logs, getTodayString());
 }
 
 export async function getFreshDailyLogState() {

@@ -48,3 +48,29 @@ export function computeStreak(
 
   return streak;
 }
+
+export type StreakBreak = {
+  lastLogDate: string;
+  previousLength: number;
+};
+
+/** Detects a broken streak when computeStreak drops to 0; returns last log date and lost streak length. */
+export function computeStreakBreak(
+  logs: { date: string }[],
+  today: string,
+): StreakBreak | null {
+  if (!today || !logs || logs.length === 0) return null;
+  if (computeStreak(logs, today) > 0) return null;
+
+  const lastLogDate = logs
+    .map((l) => l?.date)
+    .filter((d): d is string => typeof d === "string" && d.includes("-"))
+    .sort()
+    .pop();
+  if (!lastLogDate) return null;
+
+  const previousLength = computeStreak(logs, lastLogDate);
+  if (previousLength < 1) return null;
+
+  return { lastLogDate, previousLength };
+}
