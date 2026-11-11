@@ -31,6 +31,7 @@ import { migrations } from "@/db/migrations";
 import { seedIfNeeded } from "@/db/seed";
 import { RootNavigator } from "@/navigation/RootNavigator";
 import { initAnalytics } from "@lib/analytics";
+import { useAnalyticsTracking } from "@hooks/useAnalyticsTracking";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -187,6 +188,9 @@ function App() {
       initAnalytics(settings.analyticsEnabled);
     }
   }, [appReady, settings.analyticsEnabled]);
+
+  // Declared after the initAnalytics effect so consent is applied first.
+  useAnalyticsTracking(appReady);
 
   useEffect(() => {
     if (!migrationsError) return;
