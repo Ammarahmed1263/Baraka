@@ -20,7 +20,11 @@ import { useEnabledActivities } from "@hooks/db/useActivities";
 import { useDailyLogs } from "@hooks/db/useDailyLogs";
 import { useJournalEntries } from "@hooks/db/useJournal";
 import { clearUserData } from "@hooks/db/clearUserData";
-import { setAnalyticsEnabled } from "@lib/analytics";
+import {
+  optInAnalytics,
+  optOutAnalytics,
+  resetAnalytics,
+} from "@lib/analytics";
 import { useToast } from "./useToast";
 import { type RoleKey } from "@utils/roleHelpers";
 
@@ -273,6 +277,9 @@ export function useSettings() {
   }, [settings.profile, enabledActivities, dailyLogs, journalEntries, streak, t]);
 
   const handleClearData = useCallback(async () => {
+    // First, so the persisted opt-in flag and anonymous id are gone before the
+    // settings reset and the next boot.
+    await resetAnalytics();
     await clearUserData();
     await clearAppData(() => storage.clearAll());
   }, []);
@@ -280,7 +287,8 @@ export function useSettings() {
   const handleAnalyticsToggle = useCallback(
     (v: boolean) => {
       updateSettings({ analyticsEnabled: v });
-      setAnalyticsEnabled(v);
+      if (v) void optInAnalytics("settings");
+      else void optOutAnalytics();
     },
     [updateSettings],
   );

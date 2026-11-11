@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useSettingsStore } from "@store";
-import { setAnalyticsEnabled } from "@lib/analytics";
+import { optInAnalytics } from "@lib/analytics";
 
 export function useAnalyticsConsentPrompt(hasCompletedAny: boolean) {
   const sheetRef = useRef<BottomSheetModal>(null);
@@ -26,7 +26,7 @@ export function useAnalyticsConsentPrompt(hasCompletedAny: boolean) {
 
   const accept = useCallback(() => {
     updateSettings({ analyticsEnabled: true });
-    setAnalyticsEnabled(true);
+    void optInAnalytics("sheet");
     sheetRef.current?.dismiss();
   }, [updateSettings]);
 
