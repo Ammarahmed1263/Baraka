@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { Haptic } from "@utils/haptics";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -107,10 +107,19 @@ export default function NiyyahCard({
             )}
           </View>
 
+        </View>
+
+        <Pressable
+          onPress={handleCheckPress}
+          accessibilityRole='checkbox'
+          accessibilityState={{ checked: completed }}
+          style={({ pressed }) => [
+            styles.checkStrip,
+            { opacity: pressed ? 0.6 : 1 },
+          ]}
+        >
           <View style={styles.checkWrapper}>
-            <AnimatedPressable
-              onPress={handleCheckPress}
-              hitSlop={28}
+            <View
               style={[
                 styles.checkButton,
                 {
@@ -121,9 +130,9 @@ export default function NiyyahCard({
               ]}
             >
               {completed && (
-                <Feather name='check' size={11} color={C.textOnTint} />
+                <Feather name='check' size={13} color={C.textOnTint} />
               )}
-            </AnimatedPressable>
+            </View>
             {!completed && (
               <View
                 style={[
@@ -133,7 +142,7 @@ export default function NiyyahCard({
               />
             )}
           </View>
-        </View>
+        </Pressable>
       </AnimatedPressable>
     </Animated.View>
   );
@@ -151,17 +160,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: spacing.md,
+    paddingEnd: 0,
     gap: spacing.md,
   },
   contentCompact: {
     paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
+    paddingStart: spacing.md,
+    paddingEnd: 0,
+  },
+  checkStrip: {
+    width: 56,
+    alignSelf: "stretch",
+    alignItems: "center",
+    justifyContent: "center",
   },
   textContainer: { flex: 1, gap: 3 },
   nameRow: { flexDirection: "row", alignItems: "center", gap: spacing.sm, marginStart: -spacing.md },
   checkButton: {
-    width: 24,
-    height: 24,
+    width: 28,
+    height: 28,
     borderRadius: radius.sm,
     alignItems: "center",
     justifyContent: "center",
