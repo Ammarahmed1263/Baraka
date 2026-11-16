@@ -32,6 +32,7 @@ import { seedIfNeeded } from "@/db/seed";
 import { RootNavigator } from "@/navigation/RootNavigator";
 import { initAnalytics } from "@lib/analytics";
 import { useAnalyticsTracking } from "@hooks/useAnalyticsTracking";
+import { useSyncNotificationPermission } from "@hooks/useSyncNotificationPermission";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -132,19 +133,24 @@ function App() {
   // This prevents screens from firing queries before the DB tables exist.
   const appReady = i18nReady && !isLoading && migrationsSuccess && seedDone;
 
+  // Keeps the stored notification status equal to the real OS permission.
+  useSyncNotificationPermission(appReady);
+
   useEffect(() => {
     if (appReady) {
       SplashScreen.hideAsync();
+      const permissionGranted = settings.notificationsStatus === "granted";
       recheckAndRescheduleIfNeeded(
         settings.reminderTime || "08:00",
         localize,
-        settings.notificationsEnabled,
+        settings.notificationsEnabled && permissionGranted,
       );
 
       getFreshDailyLogState()
         .then(({ streak, completedSomethingToday }) =>
           evaluateStreakRisk({
-            streakNotificationsEnabled: settings.streakNotificationsEnabled,
+            streakNotificationsEnabled:
+              settings.streakNotificationsEnabled && permissionGranted,
             streakCount: streak,
             completedSomethingToday,
             t,
@@ -161,6 +167,7 @@ function App() {
     appReady,
     settings.reminderTime,
     settings.notificationsEnabled,
+    settings.notificationsStatus,
     settings.streakNotificationsEnabled,
     localize,
     t,
