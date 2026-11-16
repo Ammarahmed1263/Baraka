@@ -65,12 +65,6 @@ export function useActivityActions() {
         .update(userActivityPrefs)
         .set(updates)
         .where(eq(userActivityPrefs.activityId, activityId));
-      if (updates.customNiyyahText?.trim()) {
-        track("intention_written", {
-          ...activityProps(activityId),
-          length_bucket: getLengthBucket(updates.customNiyyahText),
-        });
-      }
     },
     [],
   );
