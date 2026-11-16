@@ -59,8 +59,10 @@ Sentry.init({
   // of them) to Sentry as log events.
   enableLogs: __DEV__,
 
-  replaysSessionSampleRate: __DEV__ ? 1.0 : 0.0,
-  replaysOnErrorSampleRate: __DEV__ ? 1.0 : 0.1,
+  // Error replays only. The free Sentry plan includes 50 replays a month, so
+  // session replays are off everywhere and dev sessions send none.
+  replaysSessionSampleRate: 0,
+  replaysOnErrorSampleRate: __DEV__ ? 0 : 0.1,
   // Explicit masking rather than relying on SDK defaults - this app stores
   // private journal/reflection text, and session replay must never capture it.
   integrations: [
