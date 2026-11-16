@@ -9,7 +9,9 @@ import { spacing } from "@constants/spacing";
 import { radius } from "@constants/radius";
 
 interface DataSectionProps {
-  onExport: () => void;
+  // Optional: the export row is hidden while the feature is unfinished.
+  // Pass `onExport` again to bring it back.
+  onExport?: () => void;
   onClear: () => void;
 }
 
@@ -28,43 +30,47 @@ export const DataSection = React.memo(({ onExport, onClear }: DataSectionProps) 
           { backgroundColor: C.backgroundCard, borderColor: C.border },
         ]}
       >
-        <AnimatedPressable
-          style={styles.settingRow}
-          onPress={onExport}
-          activeOpacity={0.7}
-        >
-          <View style={styles.settingLeft}>
-            <View
-              style={[styles.settingIcon, { backgroundColor: C.tint + "18" }]}
+        {onExport && (
+          <>
+            <AnimatedPressable
+              style={styles.settingRow}
+              onPress={onExport}
+              activeOpacity={0.7}
             >
-              <Feather name="share" size={16} color={C.tint} />
-            </View>
-            <View>
-              <AppText
-                weight="Medium"
-                variant='body'
-                style={[styles.settingName, { color: C.text }]}
-              >
-                {t("settings.exportData")}
-              </AppText>
-              <AppText
-                weight="Regular"
-                variant='caption'
-                style={{ color: C.textMuted }}
-              >
-                {t("settings.exportDataDesc")}
-              </AppText>
-            </View>
-          </View>
-          <Feather
-            name="chevron-right"
-            size={18}
-            color={C.textMuted}
-            flipRTL
-          />
-        </AnimatedPressable>
+              <View style={styles.settingLeft}>
+                <View
+                  style={[styles.settingIcon, { backgroundColor: C.tint + "18" }]}
+                >
+                  <Feather name="share" size={16} color={C.tint} />
+                </View>
+                <View>
+                  <AppText
+                    weight="Medium"
+                    variant='body'
+                    style={[styles.settingName, { color: C.text }]}
+                  >
+                    {t("settings.exportData")}
+                  </AppText>
+                  <AppText
+                    weight="Regular"
+                    variant='caption'
+                    style={{ color: C.textMuted }}
+                  >
+                    {t("settings.exportDataDesc")}
+                  </AppText>
+                </View>
+              </View>
+              <Feather
+                name="chevron-right"
+                size={18}
+                color={C.textMuted}
+                flipRTL
+              />
+            </AnimatedPressable>
 
-        <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
+            <View style={[styles.divider, { backgroundColor: C.borderLight }]} />
+          </>
+        )}
 
         <AnimatedPressable
           style={styles.settingRow}

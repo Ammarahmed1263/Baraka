@@ -44,7 +44,6 @@ export default function SettingsScreen() {
     handleStreakNotificationToggle,
     handleTimeChange,
     handleLanguageSelect,
-    handleExportData,
     handleClearData,
     handleAnalyticsToggle,
     totalCompleted,
@@ -119,8 +118,9 @@ export default function SettingsScreen() {
           onThemeChange={(mode) => updateSettings({ darkMode: mode })}
         />
 
+        {/* Export hidden for now (unfinished). To restore, pass
+            onExport={handleExportData} and re-add it to the useSettings destructure. */}
         <DataSection
-          onExport={handleExportData}
           onClear={() => clearDataSheetRef.current?.present()}
         />
 
