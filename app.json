@@ -8,10 +8,7 @@
     "scheme": "baraka",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": false,
-      "infoPlist": {
-        "ExpoLocalization_supportsRTL": true
-      }
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
@@ -80,7 +77,6 @@
       "reactCompiler": true
     },
     "extra": {
-      "supportsRTL": true,
       "router": {},
       "eas": {
         "projectId": "cc6d34eb-dfa5-442c-86de-d1b3358a0246"
