@@ -1,4 +1,4 @@
-import i18n, { needsRTLReload } from "@i18n";
+import i18n, { i18nInitPromise, needsRTLReload } from "@i18n";
 import * as Sentry from "@sentry/react-native";
 
 import * as SplashScreen from "expo-splash-screen";
@@ -77,6 +77,12 @@ Sentry.init({
   spotlight: __DEV__,
 });
 
+function hideSplash() {
+  SplashScreen.hideAsync().catch((error) =>
+    Sentry.captureException(error, { tags: { feature: "boot" } }),
+  );
+}
+
 function App() {
   useDrizzleStudio(__DEV__ ? expoDb : null);
   const [i18nReady, setI18nReady] = useState(false);
@@ -91,22 +97,26 @@ function App() {
   const { t } = useTranslation();
   useNotifications();
 
-  useEffect(() => {
-    if (i18n.isInitialized) {
-      setI18nReady(true);
-      return;
-    }
+  // A pending RTL reload keeps the splash up and the app unrendered, so the
+  // wrong-direction UI never shows before the restart.
+  const [rtlReloadPending, setRtlReloadPending] = useState(needsRTLReload);
 
-    const onInit = () => setI18nReady(true);
-    i18n.on("initialized", onInit);
-    return () => i18n.off("initialized", onInit);
+  useEffect(() => {
+    let cancelled = false;
+    i18nInitPromise.then(() => {
+      if (!cancelled) setI18nReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
-    if (i18nReady && needsRTLReload) {
-      reloadApp();
-    }
-  }, [i18nReady]);
+    if (!i18nReady || !rtlReloadPending) return;
+    reloadApp().then((started) => {
+      if (!started) setRtlReloadPending(false);
+    });
+  }, [i18nReady, rtlReloadPending]);
 
   useEffect(() => {
     if (!migrationsSuccess || isLoading) return;
@@ -131,14 +141,15 @@ function App() {
 
   // Wait for i18n, settings, migrations, and seeding to finish.
   // This prevents screens from firing queries before the DB tables exist.
-  const appReady = i18nReady && !isLoading && migrationsSuccess && seedDone;
+  const appReady =
+    i18nReady && !isLoading && migrationsSuccess && seedDone && !rtlReloadPending;
 
   // Keeps the stored notification status equal to the real OS permission.
   useSyncNotificationPermission(appReady);
 
   useEffect(() => {
     if (appReady) {
-      SplashScreen.hideAsync();
+      hideSplash();
       const permissionGranted = settings.notificationsStatus === "granted";
       recheckAndRescheduleIfNeeded(
         settings.reminderTime || "08:00",
@@ -208,7 +219,7 @@ function App() {
       extra: { phase: "bootMigrations" },
     });
     // DB is unusable. Drop the splash screen immediately to show the error UI.
-    SplashScreen.hideAsync();
+    hideSplash();
   }, [migrationsError]);
 
   // Boot watchdog: If stuck on splash for 10s, report the exact loading flags to Sentry.
@@ -219,11 +230,11 @@ function App() {
       Sentry.captureMessage("App boot watchdog timed out", {
         level: "warning",
         tags: { feature: "boot" },
-        extra: { i18nReady, isLoading, migrationsSuccess, seedDone },
+        extra: { i18nReady, isLoading, migrationsSuccess, seedDone, rtlReloadPending },
       });
     }, 10000);
     return () => clearTimeout(timeoutId);
-  }, [appReady, i18nReady, isLoading, migrationsSuccess, seedDone]);
+  }, [appReady, i18nReady, isLoading, migrationsSuccess, seedDone, rtlReloadPending]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

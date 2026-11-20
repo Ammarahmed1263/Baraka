@@ -3,6 +3,7 @@ import { Appearance, DevSettings } from "react-native";
 import * as Updates from "expo-updates";
 import { useSettingsStore } from "@store/settingsStore";
 import Colors from "@constants/colors";
+import * as Sentry from "@sentry/react-native";
 
 export function getAnonymousUserId(): string {
   const existing = storage.getString("@niyyah_anonymous_user_id");
@@ -28,8 +29,9 @@ function getReloadScreenOptions(): Updates.ReloadScreenOptions {
   };
 }
 
-export const reloadApp = async () => {
-  if (isReloading) return;
+// Resolves false if the reload could not start, so callers can carry on.
+export const reloadApp = async (): Promise<boolean> => {
+  if (isReloading) return true;
   isReloading = true;
 
   try {
@@ -38,5 +40,10 @@ export const reloadApp = async () => {
     } else {
       await Updates.reloadAsync({ reloadScreenOptions: getReloadScreenOptions() });
     }
-  } catch {}
+    return true;
+  } catch (error) {
+    isReloading = false;
+    Sentry.captureException(error, { tags: { feature: "reload" } });
+    return false;
+  }
 };
