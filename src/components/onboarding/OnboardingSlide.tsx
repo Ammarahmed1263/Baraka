@@ -1,5 +1,3 @@
-import { ONBOARDING_SLIDES } from "@/data/onboardingSlides";
-import { I18nManager } from "react-native";
 import Animated, {
   useAnimatedStyle,
   interpolate,
@@ -21,11 +19,7 @@ export function OnboardingSlide({
   width,
 }: OnboardingSlideProps) {
   const animatedStyle = useAnimatedStyle(() => {
-    const isRTL = I18nManager.isRTL;
-    const normalizedIndex = isRTL
-      ? ONBOARDING_SLIDES.length - 1 - index
-      : index;
-    const position = scrollX.value / width - normalizedIndex;
+    const position = scrollX.value / width - index;
 
     const opacity = interpolate(
       position,

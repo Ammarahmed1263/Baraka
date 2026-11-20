@@ -5,6 +5,7 @@ import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
+  I18nManager,
   ListRenderItemInfo,
   StyleSheet,
   useWindowDimensions,
@@ -38,6 +39,7 @@ export default function OnboardingPager() {
   const flatListRef =
     useAnimatedRef<FlatList<(typeof ONBOARDING_SLIDES)[number]>>();
   const scrollX = useSharedValue(0);
+  const isRTL = I18nManager.isRTL;
 
   // const resetToFirstSlide = useCallback(() => {
   //   scrollX.value = 0;
@@ -47,7 +49,12 @@ export default function OnboardingPager() {
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
-      scrollX.value = event.contentOffset.x;
+      const offset = isRTL
+        ? event.contentSize.width -
+          event.contentOffset.x -
+          event.layoutMeasurement.width
+        : event.contentOffset.x;
+      scrollX.value = Math.max(0, offset);
     },
   });
 
