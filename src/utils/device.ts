@@ -1,6 +1,8 @@
 import { storage } from "@/lib/storage";
-import { DevSettings } from "react-native";
+import { Appearance, DevSettings } from "react-native";
 import * as Updates from "expo-updates";
+import { useSettingsStore } from "@store/settingsStore";
+import Colors from "@constants/colors";
 
 export function getAnonymousUserId(): string {
   const existing = storage.getString("@niyyah_anonymous_user_id");
@@ -14,6 +16,18 @@ export function getAnonymousUserId(): string {
 
 let isReloading = false;
 
+function getReloadScreenOptions(): Updates.ReloadScreenOptions {
+  const preference = useSettingsStore.getState().settings.darkMode;
+  const scheme = preference === "auto" ? Appearance.getColorScheme() : preference;
+  const colors = scheme === "dark" ? Colors.dark : Colors.light;
+
+  return {
+    backgroundColor: colors.background,
+    spinner: { enabled: false },
+    fade: true,
+  };
+}
+
 export const reloadApp = async () => {
   if (isReloading) return;
   isReloading = true;
@@ -22,7 +36,7 @@ export const reloadApp = async () => {
     if (__DEV__) {
       DevSettings.reload();
     } else {
-      await Updates.reloadAsync();
+      await Updates.reloadAsync({ reloadScreenOptions: getReloadScreenOptions() });
     }
   } catch {}
 };

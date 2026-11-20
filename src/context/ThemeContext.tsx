@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
 import { useColorScheme } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import * as SystemUI from "expo-system-ui";
 
 import {
   ThemeProvider as NavThemeProvider,
@@ -42,6 +43,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     }),
     [theme],
   );
+
+  useEffect(() => {
+    SystemUI.setBackgroundColorAsync(value.colors.background).catch(() => {});
+  }, [value.colors.background]);
 
   const navTheme = theme === "dark" ? DarkTheme : DefaultTheme;
   navTheme.colors.background = value.colors.background;
