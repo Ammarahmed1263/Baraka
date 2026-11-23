@@ -1,5 +1,6 @@
 import { claimOnce, markNotificationSession, track } from "@/lib/analytics";
 import { getNotificationKind } from "@/services/notifications";
+import * as Sentry from "@sentry/react-native";
 import * as Notifications from "expo-notifications";
 import { router, useRootNavigationState, type Href } from "expo-router";
 import { useEffect, useRef } from "react";
@@ -9,14 +10,18 @@ function reportNotificationOpened(response: Notifications.NotificationResponse) 
   if (response.actionIdentifier !== Notifications.DEFAULT_ACTION_IDENTIFIER) {
     return;
   }
-  const { notification } = response;
-  const key = `${notification.request.identifier}:${notification.date}`;
-  if (!claimOnce("notification_open", key)) return;
+  try {
+    const { notification } = response;
+    const key = `${notification.request.identifier}:${notification.date}`;
+    if (!claimOnce("notification_open", key)) return;
 
-  markNotificationSession();
-  track("notification_opened", {
-    notification_kind: getNotificationKind(notification.request.identifier),
-  });
+    markNotificationSession();
+    track("notification_opened", {
+      notification_kind: getNotificationKind(notification.request.identifier),
+    });
+  } catch (error) {
+    Sentry.captureException(error, { tags: { feature: "analytics" } });
+  }
 }
 
 export function useNotifications(): void {

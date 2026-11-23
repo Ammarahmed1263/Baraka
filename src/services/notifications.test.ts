@@ -8,6 +8,7 @@ import {
   cancelStreakRiskNotification,
   evaluateStreakRisk,
   recheckAndRescheduleIfNeeded,
+  getNotificationKind,
 } from "./notifications";
 
 jest.mock("@sentry/react-native", () => ({
@@ -394,5 +395,21 @@ describe("recheckAndRescheduleIfNeeded", () => {
     await recheckAndRescheduleIfNeeded("08:00", localize, true);
 
     expect(Notifications.scheduleNotificationAsync).not.toHaveBeenCalled();
+  });
+});
+
+describe("getNotificationKind", () => {
+  it("maps daily reminder and streak risk identifiers", () => {
+    expect(getNotificationKind("daily-reminder-3")).toBe("daily_reminder");
+    expect(getNotificationKind("streak-risk")).toBe("streak_risk");
+  });
+
+  it("returns other for unknown identifiers", () => {
+    expect(getNotificationKind("something-else")).toBe("other");
+  });
+
+  it("returns other instead of throwing when the identifier is missing", () => {
+    expect(getNotificationKind(null)).toBe("other");
+    expect(getNotificationKind(undefined)).toBe("other");
   });
 });

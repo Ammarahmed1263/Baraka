@@ -174,7 +174,10 @@ const STREAK_RISK_IDENTIFIER = "streak-risk";
 const STREAK_RISK_HOUR = 21; // 9 PM local device time — separate concern from the user's chosen daily reminderTime
 
 /** Maps a scheduled notification identifier to the kind we report to analytics. */
-export function getNotificationKind(identifier: string): NotificationKind {
+export function getNotificationKind(
+  identifier: string | null | undefined,
+): NotificationKind {
+  if (!identifier) return "other";
   if (identifier.startsWith(NOTIFICATION_IDENTIFIER_PREFIX)) return "daily_reminder";
   if (identifier === STREAK_RISK_IDENTIFIER) return "streak_risk";
   return "other";
