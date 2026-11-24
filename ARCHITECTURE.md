@@ -20,6 +20,145 @@ The app migrated from Zustand+MMKV arrays to a relational SQLite schema with Dri
 
 Core tables: `categories`, `activities`, `niyyah_options`, `niyyah_profile_tags`, `niyyah_sources`, `learn_content`, `content_meta`, `user_activity_prefs`, `custom_activities`, `custom_niyyah_options`, `daily_logs`, `daily_log_niyyahs`, `journal_entries`.
 
+### Entity relationship diagram
+
+Source of truth: `src/db/schema.ts`. Solid lines are real foreign keys (enforced by `PRAGMA foreign_keys = ON`). Dotted lines are logical references with no foreign key, on purpose (see above).
+
+```mermaid
+erDiagram
+    %% Content tables: wiped and re-seeded on content-version bumps
+    categories ||--o{ activities : "category (FK)"
+    categories ||--o{ custom_activities : "category (FK)"
+    activities ||--o{ niyyah_options : "activity_id (FK)"
+    niyyah_options ||--o{ niyyah_profile_tags : "niyyah_id (FK)"
+    niyyah_options ||--o{ niyyah_sources : "niyyah_id (FK)"
+
+    %% User tables: never touched by seeding
+    activities ||--o| user_activity_prefs : "activity_id (PK, FK)"
+
+    %% Polymorphic activity_id: can point to activities OR custom_activities
+    activities ||..o{ custom_niyyah_options : "activity_id (no FK)"
+    custom_activities ||..o{ custom_niyyah_options : "activity_id (no FK)"
+    activities ||..o{ daily_logs : "activity_id (no FK)"
+    custom_activities ||..o{ daily_logs : "activity_id (no FK)"
+    activities ||..o{ journal_entries : "activity_id (no FK)"
+    custom_activities ||..o{ journal_entries : "activity_id (no FK)"
+
+    daily_logs ||--o{ daily_log_niyyahs : "daily_log_id (FK, cascade delete)"
+    niyyah_options ||..o{ daily_log_niyyahs : "niyyah_id (no FK)"
+    niyyah_options ||..o{ journal_entries : "impactful_niyyah_id (no FK)"
+
+    categories {
+        text id PK
+        text label_en
+        text label_ar
+        text icon
+        bool is_custom
+        int sort_order
+    }
+    activities {
+        text id PK
+        text name_en
+        text name_ar
+        text category FK
+        text niyyah_text_en
+        text niyyah_text_ar
+        text hadith_ref_en
+        text hadith_ref_ar
+        text default_time
+        int sort_order
+    }
+    niyyah_options {
+        text id PK
+        text activity_id FK
+        text text_en
+        text text_ar
+        text source_en
+        text source_ar
+        int sort_order
+    }
+    niyyah_profile_tags {
+        text niyyah_id FK
+        text tag
+    }
+    niyyah_sources {
+        text id PK
+        text niyyah_id FK
+        text type "quran, hadith, athar, scholar"
+        text text_en
+        text text_ar
+        text reference_en
+        text reference_ar
+        int sort_order
+    }
+    learn_content {
+        text id PK
+        text title_en
+        text title_ar
+        text category "plain text, no FK"
+        text content_en
+        text content_ar
+        text source_en
+        text source_ar
+        text keywords
+        int sort_order
+    }
+    content_meta {
+        text key PK "version, migration flags"
+        text value
+    }
+    user_activity_prefs {
+        text activity_id PK, FK
+        bool is_enabled
+        text custom_time
+        text custom_niyyah_text
+    }
+    custom_activities {
+        text id PK
+        text name_en
+        text name_ar
+        text category FK
+        text niyyah_text_en
+        text niyyah_text_ar
+        bool is_enabled
+        timestamp created_at
+    }
+    custom_niyyah_options {
+        text id PK
+        text activity_id "no FK"
+        text text_en
+        text text_ar
+        timestamp created_at
+    }
+    daily_logs {
+        text id PK
+        text activity_id "no FK"
+        text date
+        timestamp completed_at
+    }
+    daily_log_niyyahs {
+        text daily_log_id FK
+        text niyyah_id "no FK"
+    }
+    journal_entries {
+        text id PK
+        text activity_id "no FK"
+        text activity_name_en "snapshot"
+        text activity_name_ar "snapshot"
+        text note
+        int selected_niyyah_count
+        text impactful_niyyah_id "no FK"
+        timestamp created_at
+    }
+```
+
+Notes on reading it:
+- `content_meta` is a standalone key-value table (content version, legacy-migration flags) and relates to nothing.
+- `learn_content` is standalone too; its `category` is plain text, not a reference to `categories`.
+- Built-in activities keep their enabled state in `user_activity_prefs`; custom activities keep it in their own `is_enabled` column, so custom rows have no prefs row.
+- `journal_entries` snapshots the activity name, so entries still read correctly after a custom activity is deleted.
+- `niyyah_profile_tags` and `daily_log_niyyahs` have no primary key; each row is a (parent id, value) pair.
+
 Content tables (`activities`, `niyyah_options`, `learn_content`, etc.) are wiped and re-seeded on content-version bumps. User tables are never touched by seeding. `niyyah_sources` exists ahead of use: the schema already supports layering Qur'an/athar/scholar citations alongside a hadith reference, for a planned multi-source evidencing feature.
 
 **Why not sync from the start, given cross-device sync might matter eventually?** WatermelonDB's "built-in sync" is a client-side protocol, not a hosted service. It still requires building and running your own sync backend, which is the actual hard part regardless of local DB choice. The current architecture doesn't block adding sync later (a changes/outbox table, timestamp-based diffing, syncing through a future API). It just means sync is a deliberate v2+ addition on top of a working local-first app, not something built speculatively before it's needed.
