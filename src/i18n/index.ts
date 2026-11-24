@@ -49,6 +49,9 @@ function requestDirection(lng: AppLanguage) {
   } catch {}
 }
 
+export const crossesDirection = (lng: AppLanguage): boolean =>
+  I18nManager.isRTL !== isRTLLanguage(lng);
+
 export let needsRTLReload = false;
 
 function syncInitialRTL() {
@@ -130,7 +133,7 @@ async function initI18n() {
   i18n.on("languageChanged", async (lng) => {
     const language = normalizeLanguage(lng);
 
-    if (I18nManager.isRTL !== isRTLLanguage(language)) {
+    if (crossesDirection(language)) {
       requestDirection(language);
 
       await reloadApp();
