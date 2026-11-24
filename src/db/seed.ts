@@ -75,25 +75,22 @@ type LegacyDailyLog = {
 
 const DEFAULT_ENABLED_IDS = new Set(DEFAULT_ACTIVITY_IDS);
 
-// Legacy MMKV keys are archived under this suffix rather than deleted outright.
-// A one-shot import that silently extracts nothing must never be able to
-// destroy the only copy of a user's pre-SQLite data.
+// Legacy MMKV keys are archived under this suffix, never deleted outright,
+// so a bad import can't destroy the only copy of pre-SQLite data.
 const BACKUP_SUFFIX = "__backup";
 
 /**
- * Outcome of a one-shot legacy MMKV -> SQLite import.
- * - "imported": source key existed and rows were written.
- * - "absent": source key genuinely not present (fresh install) - nothing to do.
- * - "anomaly": source key existed but yielded no rows, or the import threw.
- *   Never mark migrated and never let cleanup run on this - the source blob is
- *   the only copy of the data.
+ * Result of a one-shot legacy MMKV -> SQLite import.
+ * - "imported": rows were written.
+ * - "absent": nothing to import (fresh install or validly empty store).
+ * - "anomaly": data existed but yielded no rows, or parsing threw. Never mark
+ *   migrated or run cleanup: the source blob is the only copy.
  */
 type MigrationOutcome = "imported" | "absent" | "anomaly";
 
-// Raw data existed but produced nothing. This is the failure mode that silently
-// destroyed user data in the first SQLite release, so report it as a real Sentry
-// EVENT (breadcrumbs only surface attached to a later error, and no error fires
-// on this path - which is why the original incident produced zero Sentry data).
+// Data existed but produced nothing: the failure that silently destroyed user
+// data in the first SQLite release. Sent as a Sentry event because no error is
+// thrown on this path, so breadcrumbs alone would never be reported.
 function reportMigrationAnomaly(
   key: string,
   reason: string,
@@ -104,6 +101,12 @@ function reportMigrationAnomaly(
     tags: { feature: "db", phase: "legacyMigration" },
     extra: { key, reason, ...extra },
   });
+}
+
+// True only for an existing, empty array. A missing or non-array value is a
+// shape mismatch (the original data-loss cause) and must still alarm.
+function isValidlyEmpty(list: unknown): boolean {
+  return Array.isArray(list) && list.length === 0;
 }
 
 async function getContentMetaValue(key: string): Promise<string | undefined> {
@@ -206,8 +209,8 @@ async function seedContent() {
   });
 }
 
-// one time migration from mmkv user to sqlite user.
-// must run after seedContent() and before clearStaleMmkvContentIfNeeded()
+// One-time activities import (mmkv -> sqlite). Runs after seedContent() and
+// before archiveStaleMmkvContentIfNeeded().
 async function migrateLegacyActivitiesIfNeeded(): Promise<MigrationOutcome> {
   const markMigrated = () =>
     db
@@ -221,11 +224,9 @@ async function migrateLegacyActivitiesIfNeeded(): Promise<MigrationOutcome> {
   const migrated = await getContentMetaValue(ACTIVITIES_MIGRATED_KEY);
   const raw = storage.getString("@niyyah_activities");
 
-  // A build before 2026-08-21 could mark this flag "1" without actually
-  // importing anything (see the incident this fix addresses). Only trust the
-  // flag when the source key is also gone - if it's still sitting there, a
-  // prior run never got as far as archiving it, so retry the import for real
-  // rather than letting the caller treat this as safe to clean up.
+  // Builds before 2026-08-21 could set this flag without importing anything.
+  // Trust the flag only if the source key is gone; if it's still there, the
+  // earlier run never archived it, so retry the import.
   if (migrated === "1") {
     if (raw === undefined) return "absent";
     reportMigrationAnomaly(
@@ -244,10 +245,10 @@ async function migrateLegacyActivitiesIfNeeded(): Promise<MigrationOutcome> {
   try {
     const parsed = JSON.parse(raw);
     parsedStateKeys = parsed?.state ? Object.keys(parsed.state) : [];
-    legacyActivities = parsed?.state?.activities ?? [];
+    legacyActivities = Array.isArray(parsed?.state?.activities)
+      ? parsed.state.activities
+      : [];
   } catch (err) {
-    // Do NOT mark migrated: the blob is unreadable now, but it is still the
-    // only copy. Leaving the flag unset lets a fixed build retry.
     Sentry.captureException(err, {
       tags: { feature: "db", phase: "legacyMigration" },
       extra: { key: "@niyyah_activities" },
@@ -327,7 +328,7 @@ async function migrateLegacyActivitiesIfNeeded(): Promise<MigrationOutcome> {
   return "imported";
 }
 
-// one‑time migration for legacy journal entries (mmkv → sqlite); run after seedContent() and before clearStaleMmkvContentIfNeeded()
+// One-time journal import (mmkv -> sqlite). Same ordering as the activities import.
 async function migrateLegacyJournalIfNeeded(): Promise<MigrationOutcome> {
   const markMigrated = () =>
     db
@@ -341,7 +342,7 @@ async function migrateLegacyJournalIfNeeded(): Promise<MigrationOutcome> {
   const migrated = await getContentMetaValue(JOURNAL_MIGRATED_KEY);
   const raw = storage.getString("@niyyah_journal");
 
-  // See migrateLegacyActivitiesIfNeeded for why the flag alone isn't trusted.
+  // Stale-flag retry: see migrateLegacyActivitiesIfNeeded.
   if (migrated === "1") {
     if (raw === undefined) return "absent";
     reportMigrationAnomaly(
@@ -357,16 +358,25 @@ async function migrateLegacyJournalIfNeeded(): Promise<MigrationOutcome> {
 
   let legacyEntries: LegacyJournalEntry[] = [];
   let parsedStateKeys: string[] = [];
+  let validlyEmpty = false;
   try {
     const parsed = JSON.parse(raw);
     parsedStateKeys = parsed?.state ? Object.keys(parsed.state) : [];
-    legacyEntries = parsed?.state?.journalEntries ?? [];
+    legacyEntries = Array.isArray(parsed?.state?.journalEntries)
+      ? parsed.state.journalEntries
+      : [];
+    validlyEmpty = isValidlyEmpty(parsed?.state?.journalEntries);
   } catch (err) {
     Sentry.captureException(err, {
       tags: { feature: "db", phase: "legacyMigration" },
       extra: { key: "@niyyah_journal" },
     });
     return "anomaly";
+  }
+
+  if (validlyEmpty) {
+    await markMigrated();
+    return "absent";
   }
 
   if (legacyEntries.length === 0) {
@@ -404,7 +414,7 @@ async function migrateLegacyJournalIfNeeded(): Promise<MigrationOutcome> {
   return "imported";
 }
 
-// one‑time migration for legacy daily logs (mmkv → sqlite); run after seedContent() and before clearStaleMmkvContentIfNeeded()
+// One-time daily logs import (mmkv -> sqlite). Same ordering as the activities import.
 async function migrateLegacyDailyLogsIfNeeded(): Promise<MigrationOutcome> {
   const markMigrated = () =>
     db
@@ -418,7 +428,7 @@ async function migrateLegacyDailyLogsIfNeeded(): Promise<MigrationOutcome> {
   const migrated = await getContentMetaValue(DAILY_LOGS_MIGRATED_KEY);
   const raw = storage.getString("@niyyah_daily_logs");
 
-  // See migrateLegacyActivitiesIfNeeded for why the flag alone isn't trusted.
+  // Stale-flag retry: see migrateLegacyActivitiesIfNeeded.
   if (migrated === "1") {
     if (raw === undefined) return "absent";
     reportMigrationAnomaly(
@@ -434,16 +444,25 @@ async function migrateLegacyDailyLogsIfNeeded(): Promise<MigrationOutcome> {
 
   let legacyLogs: LegacyDailyLog[] = [];
   let parsedStateKeys: string[] = [];
+  let validlyEmpty = false;
   try {
     const parsed = JSON.parse(raw);
     parsedStateKeys = parsed?.state ? Object.keys(parsed.state) : [];
-    legacyLogs = parsed?.state?.dailyLogs ?? [];
+    legacyLogs = Array.isArray(parsed?.state?.dailyLogs)
+      ? parsed.state.dailyLogs
+      : [];
+    validlyEmpty = isValidlyEmpty(parsed?.state?.dailyLogs);
   } catch (err) {
     Sentry.captureException(err, {
       tags: { feature: "db", phase: "legacyMigration" },
       extra: { key: "@niyyah_daily_logs" },
     });
     return "anomaly";
+  }
+
+  if (validlyEmpty) {
+    await markMigrated();
+    return "absent";
   }
 
   if (legacyLogs.length === 0) {
@@ -476,10 +495,8 @@ async function migrateLegacyDailyLogsIfNeeded(): Promise<MigrationOutcome> {
         .onConflictDoNothing();
 
       for (const niyyahId of log.selectedNiyyahIds ?? []) {
-        // dailyLogNiyyahs has no unique constraint on (dailyLogId, niyyahId),
-        // and the stale-flag retry above means this loop can legitimately run
-        // twice for the same log - check first so a retry can't duplicate
-        // rows and inflate niyyah counts.
+        // No unique constraint on (dailyLogId, niyyahId) and a stale-flag retry
+        // can re-run this loop, so skip existing rows to avoid inflated counts.
         const existing = await tx
           .select({ niyyahId: dailyLogNiyyahs.niyyahId })
           .from(dailyLogNiyyahs)
@@ -497,14 +514,9 @@ async function migrateLegacyDailyLogsIfNeeded(): Promise<MigrationOutcome> {
   return "imported";
 }
 
-// One-time MMKV cleanup.
-//
-// Archives rather than deletes: each legacy blob is copied to `<key>__backup`
-// before the original is removed, so a bad import can never be the last event
-// standing between a user and their data. Only runs once every import has
-// confirmed success ("imported") or confirmed there was nothing to import
-// ("absent") - a single "anomaly" aborts cleanup and leaves the originals in
-// place for a later build to retry.
+// One-time MMKV cleanup. Copies each legacy blob to `<key>__backup` before
+// removing the original. Runs only when every import is "imported" or "absent";
+// a single "anomaly" skips it and keeps the originals for a later retry.
 async function archiveStaleMmkvContentIfNeeded(outcomes: MigrationOutcome[]) {
   if (outcomes.includes("anomaly")) {
     Sentry.captureMessage("Legacy MMKV cleanup skipped: import anomaly", {
@@ -545,9 +557,7 @@ export async function seedIfNeeded() {
     await seedContent();
   }
 
-  // Run all three even if an earlier one reports an anomaly: they are
-  // independent, and a failure to import journal entries must not also block
-  // daily logs from being imported.
+  // Run all three even after an anomaly; the imports are independent.
   const outcomes: MigrationOutcome[] = [
     await migrateLegacyActivitiesIfNeeded(),
     await migrateLegacyJournalIfNeeded(),

@@ -171,6 +171,38 @@ describe("seedIfNeeded - legacy MMKV migration", () => {
     );
   });
 
+  it("validly empty daily logs and journal: no anomaly, marked migrated, archived (the Sentry REACT-NATIVE-12 case)", async () => {
+    const rawLogs = JSON.stringify({ state: { dailyLogs: [], streak: 0 }, version: 0 });
+    const rawJournal = JSON.stringify({ state: { journalEntries: [] }, version: 0 });
+    storage.set("@niyyah_daily_logs", rawLogs);
+    storage.set("@niyyah_journal", rawJournal);
+
+    await seedIfNeeded();
+
+    expect(Sentry.captureMessage).not.toHaveBeenCalled();
+    expect(contentMetaValue("daily_logs_migrated_from_mmkv")).toBe("1");
+    expect(contentMetaValue("journal_migrated_from_mmkv")).toBe("1");
+    expect(contentMetaValue("mmkv_content_cleared")).toBe("1");
+    expect(mmkvState.has("@niyyah_daily_logs")).toBe(false);
+    expect(mmkvState.get("@niyyah_daily_logs__backup")).toBe(rawLogs);
+    expect(mmkvState.get("@niyyah_journal__backup")).toBe(rawJournal);
+  });
+
+  it("anomaly (daily logs wrong shape: dailyLogs missing or not an array): still reports and keeps the source", async () => {
+    const raw = JSON.stringify({ state: { dailyLogs: { oops: true }, streak: 0 } });
+    storage.set("@niyyah_daily_logs", raw);
+
+    await seedIfNeeded();
+
+    expect(contentMetaValue("daily_logs_migrated_from_mmkv")).toBeUndefined();
+    expect(Sentry.captureMessage).toHaveBeenCalledWith(
+      expect.stringContaining("Legacy migration anomaly: @niyyah_daily_logs"),
+      expect.objectContaining({ level: "warning" }),
+    );
+    expect(storage.delete).not.toHaveBeenCalled();
+    expect(mmkvState.get("@niyyah_daily_logs")).toBe(raw);
+  });
+
   it("anomaly (malformed JSON): reports captureException, does not mark migrated, skips cleanup", async () => {
     storage.set("@niyyah_activities", "not valid json{");
 
@@ -232,8 +264,9 @@ describe("seedIfNeeded - legacy MMKV migration", () => {
       "@niyyah_activities",
       JSON.stringify({ state: { activities: [{ id: "fajr", enabled: true }] } }),
     );
-    // journal present but empty -> anomaly. daily logs absent -> fine.
-    storage.set("@niyyah_journal", JSON.stringify({ state: { journalEntries: [] } }));
+    // journal present but the wrong shape (no journalEntries array) -> anomaly.
+    // daily logs absent -> fine.
+    storage.set("@niyyah_journal", JSON.stringify({ state: { somethingElse: [] } }));
 
     await seedIfNeeded();
 
