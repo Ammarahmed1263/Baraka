@@ -1,6 +1,1 @@
-# Gradle output that local release builds (expo run:android) write into
-# Sentry's Expo sub-module. EAS cloud builds never have it, so hashing it gives
-# a runtime version no store build matches and OTA updates reach nobody.
-# Keep this path specific: a broad node_modules/**/build pattern also drops
-# files that are part of the store build's fingerprint.
 node_modules/@sentry/react-native/android/expo-handler/build/**/*
